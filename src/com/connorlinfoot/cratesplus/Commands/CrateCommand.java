@@ -1,7 +1,6 @@
 package com.connorlinfoot.cratesplus.Commands;
 
 import com.connorlinfoot.cratesplus.CrateHandler;
-import com.connorlinfoot.cratesplus.CrateType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

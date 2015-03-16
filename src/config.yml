@@ -2,11 +2,12 @@
 #             Crates Plus V1.0
 # [][][][][][][][][][][][][][][][][][][][][]
 
-# ITEMNAME:AMOUNT:ENCHANTMENTS|SEPERATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
+# ITEMNAME:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
+# Commands can be like COMMAND:/give %name% 100 coins
 Crate Items:
   Common:
-    - IRON_SWORD:1:DAMAGE_ALL
-    - STEAK:32
+    - IRON_SWORD:1:DAMAGE_ALL-3
+    - COOKED_BEEF:32:DAMAGE_ALL-100
   Rare:
     - DIAMOND_SWORD:1:DAMAGE_ALL
   Ultra:

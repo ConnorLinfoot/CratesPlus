@@ -5,11 +5,16 @@ import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ChestOpen implements Listener {
 
@@ -24,7 +29,7 @@ public class ChestOpen implements Listener {
             } else if( event.getInventory().getTitle().contains("Ultra") ) {
                 crateType = CrateType.ULTRA;
             }
-            if (item.hasItemMeta() && item.getItemMeta().getDisplayName().contains(crateType.getCode(true) + " Crate Key!")) {
+            if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(crateType.getCode(true) + " Crate Key!")) {
                 event.setCancelled(true);
                 if (item.getAmount() != 1) {
                     player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Please only hold 1 " + crateType.getCode(true) + ChatColor.RED + " key at a time");
@@ -38,6 +43,32 @@ public class ChestOpen implements Listener {
                     Bukkit.broadcastMessage(CratesPlus.pluginPrefix + ChatColor.DARK_PURPLE + "--------------------------------------------");
                 }
 
+                // Get Items, Percentages currently don't work and player gets ALL items (While in testing)
+                List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
+                for( String i : items ) {
+                    String[] args = i.split(":", -1);
+                    if( args.length == 1 ) {
+                        player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0])));
+                    } else if( args.length == 2 ) {
+                        player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1])));
+                    } else if( args.length == 3 ) {
+                        String[] enchantments = args[2].split("\\|", -1);
+                        ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
+                        for( String e : enchantments ) {
+                            String[] args1 = e.split("-", -1);
+                            if( args1.length == 1 ) {
+                                try {
+                                    itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
+                                } catch( Exception ignored) {}
+                            } else if( args1.length == 2 ) {
+                                try {
+                                    itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
+                                } catch( Exception ignored) {}
+                            }
+                        }
+                        player.getInventory().addItem(itemStack);
+                    }
+                }
             } else {
                 player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You must be holding a " + crateType.getCode(true) + ChatColor.RED + " key to open this crate");
                 event.setCancelled(true);
