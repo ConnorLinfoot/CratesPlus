@@ -16,12 +16,12 @@ public enum CrateType {
     }
 
     public String getCode(boolean includeColor) {
-        if( includeColor ) {
-            if( code.equalsIgnoreCase("common") ) {
+        if (includeColor) {
+            if (code.equalsIgnoreCase("common")) {
                 return ChatColor.GREEN + code + ChatColor.RESET;
-            } else if( code.equalsIgnoreCase("rare") ) {
+            } else if (code.equalsIgnoreCase("rare")) {
                 return ChatColor.GOLD + code + ChatColor.RESET;
-            } else if( code.equalsIgnoreCase("ultra") ) {
+            } else if (code.equalsIgnoreCase("ultra")) {
                 return ChatColor.DARK_PURPLE + code + ChatColor.RESET;
             }
         }

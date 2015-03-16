@@ -13,13 +13,13 @@ public class BlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
-        if( item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate Key!") ) {
+        if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate Key!")) {
             event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You cant place crate keys!");
             event.setCancelled(true);
             return;
         }
 
-        if( item.hasItemMeta() && item.getItemMeta().getDisplayName().contains("Crate!") ) {
+        if (item.hasItemMeta() && item.getItemMeta().getDisplayName().contains("Crate!")) {
             Location location = event.getBlock().getLocation();
 
         }

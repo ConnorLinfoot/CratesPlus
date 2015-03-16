@@ -12,13 +12,13 @@ public class CrateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
         // This file is currently not ready for "production" and is for testing!
-        if( !sender.isOp() ) {
+        if (!sender.isOp()) {
             return false;
         }
 
-        if( args.length == 1 ) {
+        if (args.length == 1) {
             Player player = Bukkit.getPlayer(args[0]);
-            if( player == null ) return false;
+            if (player == null) return false;
 
             CrateHandler.giveCrateKey(player);
         }

@@ -21,56 +21,56 @@ public class CrateHandler {
 
     private static Color getColor(int i) {
         Color c = null;
-        if(i==1){
-            c=Color.AQUA;
+        if (i == 1) {
+            c = Color.AQUA;
         }
-        if(i==2){
-            c=Color.BLACK;
+        if (i == 2) {
+            c = Color.BLACK;
         }
-        if(i==3){
-            c=Color.BLUE;
+        if (i == 3) {
+            c = Color.BLUE;
         }
-        if(i==4){
-            c=Color.FUCHSIA;
+        if (i == 4) {
+            c = Color.FUCHSIA;
         }
-        if(i==5){
-            c=Color.GRAY;
+        if (i == 5) {
+            c = Color.GRAY;
         }
-        if(i==6){
-            c=Color.GREEN;
+        if (i == 6) {
+            c = Color.GREEN;
         }
-        if(i==7){
-            c=Color.LIME;
+        if (i == 7) {
+            c = Color.LIME;
         }
-        if(i==8){
-            c=Color.MAROON;
+        if (i == 8) {
+            c = Color.MAROON;
         }
-        if(i==9){
-            c=Color.NAVY;
+        if (i == 9) {
+            c = Color.NAVY;
         }
-        if(i==10){
-            c=Color.OLIVE;
+        if (i == 10) {
+            c = Color.OLIVE;
         }
-        if(i==11){
-            c=Color.ORANGE;
+        if (i == 11) {
+            c = Color.ORANGE;
         }
-        if(i==12){
-            c=Color.PURPLE;
+        if (i == 12) {
+            c = Color.PURPLE;
         }
-        if(i==13){
-            c=Color.RED;
+        if (i == 13) {
+            c = Color.RED;
         }
-        if(i==14){
-            c=Color.SILVER;
+        if (i == 14) {
+            c = Color.SILVER;
         }
-        if(i==15){
-            c=Color.TEAL;
+        if (i == 15) {
+            c = Color.TEAL;
         }
-        if(i==16){
-            c=Color.WHITE;
+        if (i == 16) {
+            c = Color.WHITE;
         }
-        if(i==17){
-            c=Color.YELLOW;
+        if (i == 17) {
+            c = Color.YELLOW;
         }
         return c;
     }
@@ -100,11 +100,11 @@ public class CrateHandler {
     public static void giveCrateKey(Player player) {
         Integer number = randInt(0, 100);
         // Not really good at a way to do this, hoping this works. Any ideas on improvements send them! :)
-        if( number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Common") ) {
+        if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Common")) {
             giveCrateKey(player, CrateType.COMMON);
-        } else if( number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Rare") ) {
+        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Rare")) {
             giveCrateKey(player, CrateType.RARE);
-        } else if( number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Ultra") ) {
+        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Ultra")) {
             giveCrateKey(player, CrateType.ULTRA);
         } else {
             giveCrateKey(player, CrateType.COMMON);
@@ -112,7 +112,7 @@ public class CrateHandler {
     }
 
     public static void giveCrateKey(Player player, CrateType crateType) {
-        if( player == null || !player.isOnline() ) return;
+        if (player == null || !player.isOnline()) return;
 
         ItemStack key = new ItemStack(Material.TRIPWIRE_HOOK);
         ItemMeta keyMeta = key.getItemMeta();
@@ -128,7 +128,7 @@ public class CrateHandler {
     }
 
     public static void giveCrate(Player player, CrateType crateType) {
-        if( player == null || !player.isOnline() ) return;
+        if (player == null || !player.isOnline()) return;
         // This is the chest crate for staff to be placed!
 
         ItemStack crate = new ItemStack(Material.CHEST);
