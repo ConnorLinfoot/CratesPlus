@@ -1,0 +1,25 @@
+# [][][][][][][][][][][][][][][][][][][][][]
+#             Crates Plus V1.0
+# [][][][][][][][][][][][][][][][][][][][][]
+
+# ITEMNAME:AMOUNT:ENCHANTMENTS|SEPERATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
+Crate Items:
+  Common:
+    - IRON_SWORD:1:DAMAGE_ALL
+    - STEAK:32
+  Rare:
+    - DIAMOND_SWORD:1:DAMAGE_ALL
+  Ultra:
+    - DIAMOND_SWORD:1:DAMAGE_ALL-3
+Crate Chances:
+  Common: 60
+  Rare: 30
+  Ultra: 10
+Broadcast On Crate Open:
+  Common: false
+  Rare: false
+  Ultra: true
+Firework On Crate Open:
+  Common: false
+  Rare: false
+  Ultra: true
