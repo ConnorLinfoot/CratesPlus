@@ -1,7 +1,6 @@
 package com.connorlinfoot.cratesplus.Commands;
 
 import com.connorlinfoot.cratesplus.CrateHandler;
-import com.connorlinfoot.cratesplus.CrateType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +20,7 @@ public class CrateCommand implements CommandExecutor {
             Player player = Bukkit.getPlayer(args[0]);
             if (player == null) return false;
 
-            CrateHandler.giveCrate(player, CrateType.COMMON);
+            CrateHandler.giveCrateKey(player);
         }
         return true;
     }

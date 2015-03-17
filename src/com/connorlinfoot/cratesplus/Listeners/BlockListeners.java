@@ -17,15 +17,15 @@ public class BlockListeners implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        final ItemStack item = event.getItemInHand();
+        ItemStack item = event.getItemInHand();
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate Key!")) {
-            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You cant place crate keys!");
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You cant place crate keys");
             event.setCancelled(true);
             return;
         }
 
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate!")) {
-            final Location location = event.getBlock().getLocation();
+            Location location = event.getBlock().getLocation();
             location.setY(location.getBlockY() - 1);
             location.setX(location.getBlockX() + 0.5);
             location.setZ(location.getBlockZ() + 0.5);
@@ -45,9 +45,11 @@ public class BlockListeners implements Listener {
             if (chest.getInventory().getTitle() != null && chest.getInventory().getTitle().contains("Crate!")) {
                 Location location = chest.getLocation();
                 for (Entity entity : location.getWorld().getEntities()) {
-                    if (entity.isDead()) continue;
-                    if (entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ()) {
+                    if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
+                    String name = chest.getInventory().getTitle().replace(" Crate!", "");
+                    if (name != null && name.equals(entity.getCustomName()) && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ() && entity.getLocation().getBlockX() + 1 == chest.getY()) {
                         entity.remove();
+                        break;
                     }
                 }
             }
