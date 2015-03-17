@@ -21,7 +21,7 @@ public class CrateCommand implements CommandExecutor {
             Player player = Bukkit.getPlayer(args[0]);
             if (player == null) return false;
 
-            CrateHandler.giveCrate(player, CrateType.ULTRA);
+            CrateHandler.giveCrate(player, CrateType.COMMON);
         }
         return true;
     }

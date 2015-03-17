@@ -1,7 +1,7 @@
 package com.connorlinfoot.cratesplus;
 
 import com.connorlinfoot.cratesplus.Commands.CrateCommand;
-import com.connorlinfoot.cratesplus.Listeners.BlockPlace;
+import com.connorlinfoot.cratesplus.Listeners.BlockListeners;
 import com.connorlinfoot.cratesplus.Listeners.ChestOpen;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +35,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
 
         // Register Events
-        Bukkit.getPluginManager().registerEvents(new BlockPlace(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
         Bukkit.getPluginManager().registerEvents(new ChestOpen(), this);
     }
 
