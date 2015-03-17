@@ -51,6 +51,12 @@ public class ChestOpen implements Listener {
                 List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
                 for (String i : items) {
                     String[] args = i.split(":", -1);
+                    if (args.length == 2 && args[0].equalsIgnoreCase("command")) {
+                        String command = args[1];
+                        command = command.replaceAll("%name%", player.getName());
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                        continue;
+                    }
                     if (args.length == 1) {
                         player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0])));
                     } else if (args.length == 2) {

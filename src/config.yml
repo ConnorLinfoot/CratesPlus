@@ -3,14 +3,14 @@
 # [][][][][][][][][][][][][][][][][][][][][]
 
 # ITEMNAME:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
-# Commands can be like COMMAND:/give %name% 100 coins
+# Commands can be like COMMAND:give %name% 100 coins
 Crate Items:
   Common:
     - IRON_SWORD:1:DAMAGE_ALL-3
     - COOKED_BEEF:32:DAMAGE_ALL-100
   Rare:
     - DIAMOND_SWORD:1:DAMAGE_ALL
-    - COMMAND:/gamemode c %name%
+    - COMMAND:gamemode c %name%
   Ultra:
     - DIAMOND_SWORD:1:DAMAGE_ALL-3
 Crate Chances:
