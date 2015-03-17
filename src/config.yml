@@ -10,12 +10,17 @@ Crate Items:
     - COOKED_BEEF:32:DAMAGE_ALL-100
   Rare:
     - DIAMOND_SWORD:1:DAMAGE_ALL
+    - COMMAND:/gamemode c %name%
   Ultra:
     - DIAMOND_SWORD:1:DAMAGE_ALL-3
 Crate Chances:
   Common: 60
   Rare: 30
   Ultra: 10
+Crate Knockback:
+  Common: 1.0
+  Rare: 5.0
+  Ultra: 10.0
 Broadcast On Crate Open:
   Common: false
   Rare: false

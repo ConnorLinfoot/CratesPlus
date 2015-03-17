@@ -47,7 +47,7 @@ public class BlockListeners implements Listener {
                 for (Entity entity : location.getWorld().getEntities()) {
                     if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
                     String name = chest.getInventory().getTitle().replace(" Crate!", "");
-                    if (name != null && name.equals(entity.getCustomName()) && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ() && entity.getLocation().getBlockX() + 1 == chest.getY()) {
+                    if (name != null && name.equals(entity.getCustomName()) && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ() && entity.getLocation().getBlockY() + 1 == chest.getY()) {
                         entity.remove();
                         break;
                     }

@@ -78,6 +78,12 @@ public class ChestOpen implements Listener {
             } else {
                 player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You must be holding a " + crateType.getCode(true) + ChatColor.RED + " key to open this crate");
                 event.setCancelled(true);
+
+                // Knockback fun! :D
+                double knock = CratesPlus.getPlugin().getConfig().getDouble("Crate Knockback." + crateType.getCode());
+                if (knock != 0) {
+                    player.setVelocity(player.getLocation().getDirection().multiply(-knock));
+                }
             }
         }
     }
