@@ -57,7 +57,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         return instance;
     }
 
-    private void checkUpdate(ConsoleCommandSender console, boolean enabled) {
+    private void checkUpdate(final ConsoleCommandSender console, final boolean enabled) {
         final Updater updater = new Updater(this, 5018, !enabled);
         final Updater.UpdateResult result = updater.getResult();
         switch (result) {
@@ -67,11 +67,21 @@ public class CratesPlus extends JavaPlugin implements Listener {
             case FAIL_NOVERSION:
             case FAIL_SPIGOT:
                 updateAvailable = false;
-                updateMessage = pluginPrefix + "Failed to check for updates";
+                updateMessage = pluginPrefix + "Failed to check for updates. Will try again later.";
+                getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                    public void run() {
+                        checkUpdate(console, enabled);
+                    }
+                }, 60 * (60 * 20L)); // Checks again an hour later
                 break;
             case NO_UPDATE:
                 updateAvailable = false;
-                updateMessage = pluginPrefix + "No update was found, you are running the latest version";
+                updateMessage = pluginPrefix + "No update was found, you are running the latest version. Will check again later.";
+                getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                    public void run() {
+                        checkUpdate(console, enabled);
+                    }
+                }, 60 * (60 * 20L)); // Checks again an hour later
                 break;
             case DISABLED:
                 updateAvailable = false;
