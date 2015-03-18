@@ -55,9 +55,9 @@ public class ChestOpen implements Listener {
                     command = command.replaceAll("%name%", player.getName());
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                 } else if (args.length == 1) {
-                    player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0])));
+                    player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0].toUpperCase())));
                 } else if (args.length == 2) {
-                    player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1])));
+                    player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0].toUpperCase()), Integer.parseInt(args[1])));
                 } else if (args.length == 3) {
                     String[] enchantments = args[2].split("\\|", -1);
                     ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
