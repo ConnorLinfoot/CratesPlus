@@ -2,6 +2,7 @@ package com.connorlinfoot.cratesplus.Commands;
 
 import com.connorlinfoot.cratesplus.CrateHandler;
 import com.connorlinfoot.cratesplus.CrateType;
+import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,21 +14,9 @@ public class CrateCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
-        // This file is currently not ready for "production" and is for testing!
-        if (!sender.isOp()) {
+        if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You do not have the correct permission to run this command");
             return false;
-        }
-
-//        if (args.length == 1) {
-//            Player player = Bukkit.getPlayer(args[0]);
-//            if (player == null) return false;
-//
-//            CrateHandler.giveCrateKey(player);
-//        }
-
-        if (args.length == 0 || (args.length >= 1 && args[0].equalsIgnoreCase("help"))) {
-            // Help messages
-            return true;
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {
@@ -80,8 +69,9 @@ public class CrateCommand implements CommandExecutor {
             return true;
         }
 
-
-
+        // Help Messages
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> - Give player a random crate key");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");
 
         return true;
     }

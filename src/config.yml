@@ -14,13 +14,13 @@ Crate Items:
   Ultra:
     - DIAMOND_SWORD:1:DAMAGE_ALL-3
 Crate Chances:
-  Common: 60
-  Rare: 30
-  Ultra: 10
+  Common: 85
+  Rare: 14
+  Ultra: 1
 Crate Knockback:
-  Common: 1.0
-  Rare: 5.0
-  Ultra: 10.0
+  Common: 0.5
+  Rare: 1.0
+  Ultra: 2.0
 Broadcast On Crate Open:
   Common: false
   Rare: false

@@ -1,7 +1,10 @@
 name: CratesPlus
-description: A free and yet great crates plugin for Minecraft
+description: A free and great crates plugin for Minecraft
 main: com.connorlinfoot.cratesplus.CratesPlus
 version: 1.0
 commands:
   crate:
     description: Main CratesPlus command
+permissions:
+  cratesplus.admin:
+    default: op
