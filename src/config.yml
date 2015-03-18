@@ -2,6 +2,12 @@
 #             Crates Plus V1.0
 # [][][][][][][][][][][][][][][][][][][][][]
 
+# There are many placeholders that can now be used withing the config file for commands and messages, place holders are as followed:
+# - %name% - Replaces with the players name, Example: "Notch".
+# - %displayname% - Replaces with the players display name, Example: "[Owner] Notch".
+# - %uuid% - Replaces with the players UUID.
+# - %crate% - The crate types name.
+
 Update Checks: true
 
 Crate Items:
@@ -29,3 +35,10 @@ Firework On Crate Open:
   Common: false
   Rare: false
   Ultra: true
+
+Messages:
+  Command No Permission: "&cYou do not have the correct permission to run this command"
+  Crate Open Without Key: "&cYou must be holding a %crate% &ckey to open this crate"
+  Key Given: "&aYou have been given a %crate% &acrate key"
+  Broadcast: "&d%displayname% &dopened a %crate% &dcrate"
+  Cant Place: "&cYou cant place crate keys"

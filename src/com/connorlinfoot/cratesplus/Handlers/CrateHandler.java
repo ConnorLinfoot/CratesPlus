@@ -1,5 +1,7 @@
-package com.connorlinfoot.cratesplus;
+package com.connorlinfoot.cratesplus.Handlers;
 
+import com.connorlinfoot.cratesplus.CrateType;
+import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -129,7 +131,7 @@ public class CrateHandler {
         keyMeta.setLore(lore);
         key.setItemMeta(keyMeta);
         player.getInventory().addItem(key);
-        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + crateType.getCode(true) + ChatColor.GREEN + " crate key!");
+        player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crateType));
     }
 
     public static void giveCrate(Player player, CrateType crateType) {

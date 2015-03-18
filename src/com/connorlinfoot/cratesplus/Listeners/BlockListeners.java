@@ -1,7 +1,8 @@
 package com.connorlinfoot.cratesplus.Listeners;
 
+import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
-import org.bukkit.ChatColor;
+import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
@@ -19,7 +20,7 @@ public class BlockListeners implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate Key!")) {
-            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You cant place crate keys");
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), CrateType.UNKNOWN));
             event.setCancelled(true);
             return;
         }

@@ -1,8 +1,9 @@
 package com.connorlinfoot.cratesplus.Commands;
 
-import com.connorlinfoot.cratesplus.CrateHandler;
 import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
+import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
+import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,7 +16,7 @@ public class CrateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
         if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
-            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You do not have the correct permission to run this command");
+            sender.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, CrateType.UNKNOWN));
             return false;
         }
 

@@ -1,8 +1,9 @@
 package com.connorlinfoot.cratesplus.Listeners;
 
-import com.connorlinfoot.cratesplus.CrateHandler;
 import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
+import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
+import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -43,7 +44,7 @@ public class ChestOpen implements Listener {
 
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Broadcast On Crate Open." + crateType.getCode())) {
                     Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-                    Bukkit.broadcastMessage(CratesPlus.pluginPrefix + ChatColor.LIGHT_PURPLE + player.getDisplayName() + ChatColor.LIGHT_PURPLE + " opened a " + crateType.getCode(true) + ChatColor.LIGHT_PURPLE + " crate!");
+                    Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateType));
                     Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
                 }
 
@@ -79,7 +80,7 @@ public class ChestOpen implements Listener {
                 }
                 player.updateInventory();
             } else {
-                player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You must be holding a " + crateType.getCode(true) + ChatColor.RED + " key to open this crate");
+                player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crateType));
                 event.setCancelled(true);
                 double knock = CratesPlus.getPlugin().getConfig().getDouble("Crate Knockback." + crateType.getCode());
                 if (knock != 0) {

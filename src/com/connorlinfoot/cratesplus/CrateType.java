@@ -3,7 +3,7 @@ package com.connorlinfoot.cratesplus;
 import org.bukkit.ChatColor;
 
 public enum CrateType {
-    COMMON("Common"), RARE("Rare"), ULTRA("Ultra");
+    COMMON("Common"), RARE("Rare"), ULTRA("Ultra"), UNKNOWN("Unknown");
 
     private String code;
 
