@@ -30,11 +30,11 @@ public class ChestOpen implements Listener {
             }
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(crateType.getCode(true) + " Crate Key!")) {
                 event.setCancelled(true);
-                if (item.getAmount() != 1) {
-                    player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Please only hold 1 " + crateType.getCode(true) + ChatColor.RED + " key at a time");
-                    return;
+                if (item.getAmount() > 1) {
+                    item.setAmount(item.getAmount() - 1);
+                } else {
+                    player.getInventory().remove(item);
                 }
-                player.getInventory().remove(item);
 
                 // Spawn firework
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Firework On Crate Open." + crateType.getCode())) {
@@ -42,50 +42,45 @@ public class ChestOpen implements Listener {
                 }
 
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Broadcast On Crate Open." + crateType.getCode())) {
-                    Bukkit.broadcastMessage(CratesPlus.pluginPrefix + ChatColor.DARK_PURPLE + "--------------------------------------------");
+                    Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
                     Bukkit.broadcastMessage(CratesPlus.pluginPrefix + ChatColor.LIGHT_PURPLE + player.getDisplayName() + ChatColor.LIGHT_PURPLE + " opened a " + crateType.getCode(true) + ChatColor.LIGHT_PURPLE + " crate!");
-                    Bukkit.broadcastMessage(CratesPlus.pluginPrefix + ChatColor.DARK_PURPLE + "--------------------------------------------");
+                    Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
                 }
 
-                // Get Items, Percentages currently don't work and player gets ALL items (While in testing)
                 List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
-                for (String i : items) {
-                    String[] args = i.split(":", -1);
-                    if (args.length == 2 && args[0].equalsIgnoreCase("command")) {
-                        String command = args[1];
-                        command = command.replaceAll("%name%", player.getName());
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-                        continue;
-                    }
-                    if (args.length == 1) {
-                        player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0])));
-                    } else if (args.length == 2) {
-                        player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1])));
-                    } else if (args.length == 3) {
-                        String[] enchantments = args[2].split("\\|", -1);
-                        ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
-                        for (String e : enchantments) {
-                            String[] args1 = e.split("-", -1);
-                            if (args1.length == 1) {
-                                try {
-                                    itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
-                                } catch (Exception ignored) {
-                                }
-                            } else if (args1.length == 2) {
-                                try {
-                                    itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
-                                } catch (Exception ignored) {
-                                }
+                String i = items.get(CrateHandler.randInt(0, items.size() - 1));
+                String[] args = i.split(":", -1);
+                if (args.length == 2 && args[0].equalsIgnoreCase("command")) {
+                    String command = args[1];
+                    command = command.replaceAll("%name%", player.getName());
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                } else if (args.length == 1) {
+                    player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0])));
+                } else if (args.length == 2) {
+                    player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1])));
+                } else if (args.length == 3) {
+                    String[] enchantments = args[2].split("\\|", -1);
+                    ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
+                    for (String e : enchantments) {
+                        String[] args1 = e.split("-", -1);
+                        if (args1.length == 1) {
+                            try {
+                                itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
+                            } catch (Exception ignored) {
+                            }
+                        } else if (args1.length == 2) {
+                            try {
+                                itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
+                            } catch (Exception ignored) {
                             }
                         }
-                        player.getInventory().addItem(itemStack);
                     }
+                    player.getInventory().addItem(itemStack);
                 }
+                player.updateInventory();
             } else {
                 player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You must be holding a " + crateType.getCode(true) + ChatColor.RED + " key to open this crate");
                 event.setCancelled(true);
-
-                // Knockback fun! :D
                 double knock = CratesPlus.getPlugin().getConfig().getDouble("Crate Knockback." + crateType.getCode());
                 if (knock != 0) {
                     player.setVelocity(player.getLocation().getDirection().multiply(-knock));
