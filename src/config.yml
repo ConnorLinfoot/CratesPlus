@@ -16,7 +16,7 @@ Crate Items:
     - COOKED_BEEF:32:DAMAGE_ALL-100
   Rare:
     - DIAMOND_SWORD:1:DAMAGE_ALL
-    - COMMAND:gamemode c %name%
+    - COMMAND:say %name% This is all you won... enjoy!
   Ultra:
     - DIAMOND_SWORD:1:DAMAGE_ALL-3
 Crate Chances:
