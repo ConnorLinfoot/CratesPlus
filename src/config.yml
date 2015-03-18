@@ -10,6 +10,9 @@
 
 Update Checks: true
 
+# ITEMNAME:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
+# Commands can be like COMMAND:give %name% 100 coins
+# Item name must be a Bukkit material, list here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/material/package-summary.html (Best in uppercase)
 Crate Items:
   Common:
     - IRON_SWORD:1:DAMAGE_ALL-3
