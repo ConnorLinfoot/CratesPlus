@@ -1,10 +1,7 @@
 CratesPlus
 =====================
 
-A free and yet great crates plugin for Minecraft.
-
-
-I'm now aiming to release all my plugins FREE and open source.
+A free and great crates plugin for Minecraft.
 
 
 TODO:
@@ -18,4 +15,4 @@ Changeslogs:
 
 1.1:
  - Added update checker (Works with Spigot)
- -
+ - Minor changes to how the plugin gets the material from the config
