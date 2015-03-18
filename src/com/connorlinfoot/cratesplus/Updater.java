@@ -1,5 +1,6 @@
 package com.connorlinfoot.cratesplus;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -79,15 +80,18 @@ public class Updater {
     }
 
     private void versionCheck() {
-        if (shouldUpdate(oldVersion, version)) {
-            result = UpdateResult.UPDATE_AVAILABLE;
+        if (!oldVersion.equalsIgnoreCase(version)) {
+            Bukkit.getLogger().info(oldVersion);
+            String[] localParts = oldVersion.split("\\.");
+            String[] remoteParts = version.split("\\.");
+            if (Integer.parseInt(localParts[0]) < Integer.parseInt(remoteParts[0])) {
+                result = UpdateResult.MAJOR_UPDATE_AVALIABLE;
+            } else {
+                result = UpdateResult.UPDATE_AVAILABLE;
+            }
         } else {
             result = UpdateResult.NO_UPDATE;
         }
-    }
-
-    public boolean shouldUpdate(String localVersion, String remoteVersion) {
-        return !localVersion.equalsIgnoreCase(remoteVersion);
     }
 
     public UpdateResult getResult() {

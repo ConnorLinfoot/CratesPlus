@@ -79,7 +79,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
                 break;
             case UPDATE_AVAILABLE:
                 updateAvailable = true;
-                updateMessage = pluginPrefix + "An update for CratesPlus is available, new version is " + updater.getVersion() + ", your installed version is " + getDescription().getVersion() + "\nPlease update to the latest version :)";
+                updateMessage = pluginPrefix + "An update for CratesPlus is available, new version is " + updater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
+                break;
+            case MAJOR_UPDATE_AVALIABLE:
+                updateAvailable = true;
+                updateMessage = pluginPrefix + "A major update for CratesPlus is available, new version is " + updater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
                 break;
         }
         console.sendMessage(updateMessage);
