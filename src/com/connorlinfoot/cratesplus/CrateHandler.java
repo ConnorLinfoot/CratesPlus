@@ -20,57 +20,62 @@ public class CrateHandler {
     }
 
     private static Color getColor(int i) {
-        Color c = null;
-        if (i == 1) {
-            c = Color.AQUA;
-        }
-        if (i == 2) {
-            c = Color.BLACK;
-        }
-        if (i == 3) {
-            c = Color.BLUE;
-        }
-        if (i == 4) {
-            c = Color.FUCHSIA;
-        }
-        if (i == 5) {
-            c = Color.GRAY;
-        }
-        if (i == 6) {
-            c = Color.GREEN;
-        }
-        if (i == 7) {
-            c = Color.LIME;
-        }
-        if (i == 8) {
-            c = Color.MAROON;
-        }
-        if (i == 9) {
-            c = Color.NAVY;
-        }
-        if (i == 10) {
-            c = Color.OLIVE;
-        }
-        if (i == 11) {
-            c = Color.ORANGE;
-        }
-        if (i == 12) {
-            c = Color.PURPLE;
-        }
-        if (i == 13) {
-            c = Color.RED;
-        }
-        if (i == 14) {
-            c = Color.SILVER;
-        }
-        if (i == 15) {
-            c = Color.TEAL;
-        }
-        if (i == 16) {
-            c = Color.WHITE;
-        }
-        if (i == 17) {
-            c = Color.YELLOW;
+        Color c;
+        switch (i) {
+            case 1:
+                c = Color.AQUA;
+                break;
+            case 2:
+                c = Color.BLACK;
+                break;
+            case 3:
+                c = Color.BLUE;
+                break;
+            case 4:
+                c = Color.FUCHSIA;
+                break;
+            case 5:
+                c = Color.GRAY;
+                break;
+            case 6:
+                c = Color.GREEN;
+                break;
+            case 7:
+                c = Color.LIME;
+                break;
+            case 8:
+                c = Color.MAROON;
+                break;
+            case 9:
+                c = Color.NAVY;
+                break;
+            case 10:
+                c = Color.OLIVE;
+                break;
+            case 11:
+                c = Color.ORANGE;
+                break;
+            case 12:
+                c = Color.PURPLE;
+                break;
+            case 13:
+                c = Color.RED;
+                break;
+            case 14:
+                c = Color.SILVER;
+                break;
+            case 15:
+                c = Color.TEAL;
+                break;
+            case 16:
+                c = Color.WHITE;
+                break;
+            case 17:
+                c = Color.YELLOW;
+                break;
+            default:
+                c = Color.AQUA;
+                break;
         }
         return c;
     }
