@@ -1,5 +1,5 @@
 # [][][][][][][][][][][][][][][][][][][][][]
-#             Crates Plus V1.1
+#             Crates Plus V1.2
 # [][][][][][][][][][][][][][][][][][][][][]
 
 # There are many placeholders that can now be used withing the config file for commands and messages, place holders are as followed:
@@ -30,6 +30,7 @@ Crate Knockback:
   Common: 0.5
   Rare: 1.0
   Ultra: 2.0
+Crate Previews: false
 Broadcast On Crate Open:
   Common: false
   Rare: false
