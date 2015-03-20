@@ -30,7 +30,6 @@ Crate Knockback:
   Common: 0.5
   Rare: 1.0
   Ultra: 2.0
-Crate Previews: false
 Broadcast On Crate Open:
   Common: false
   Rare: false
@@ -39,6 +38,15 @@ Firework On Crate Open:
   Common: false
   Rare: false
   Ultra: true
+
+# Currently the plugin uses the chest open event, if you have chest-access disabled and don't want to enable try changing the below value to true (not yet done)
+Use Interact Event: false
+
+# If true knockback will not happen and a GUI will open with what items can be won
+Crate Previews: false
+
+# If true when the player claims a crate a GUI will open with the winning item in (not yet done)
+Crate Open GUI: false
 
 Messages:
   Command No Permission: "&cYou do not have the correct permission to run this command"
