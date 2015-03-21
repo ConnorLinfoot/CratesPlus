@@ -125,7 +125,6 @@ public class CrateHandler {
         ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
         List<String> enchantments = CratesPlus.getPlugin().getConfig().getStringList("Crate Keys.Enchantments");
         if (enchantments.size() > 0) {
-            Bukkit.broadcastMessage("WORKING");
             for (String e : enchantments) {
                 String[] args = e.split("-");
                 if (args.length == 1) {
