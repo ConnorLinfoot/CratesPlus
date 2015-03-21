@@ -1,3 +1,6 @@
+# THIS CONFIG WILL NOT BE USED, I'M THINKING OF USING IT FOR 2.0
+
+
 # [][][][][][][][][][][][][][][][][][][][][]
 #              CratesPlus V1.2
 # [][][][][][][][][][][][][][][][][][][][][]
@@ -13,11 +16,25 @@ Update Checks: true
 # ITEMNAME-DATA:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
 # Commands can be like COMMAND:give %name% 100 coins
 # Item name must be a Bukkit material, list here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/material/package-summary.html
-Crate Items:
+
+Crates:
   Common:
+    Crate Items:
     - IRON_SWORD:1:DAMAGE_ALL-3
     - COOKED_BEEF:32:DAMAGE_ALL-100
     - WOOL-5
+    Crate Chance: 85
+    Crate Knockback: 0.5
+    Broadcast on Open: false
+    Firework on Open: false
+  Rare:
+  Ultra:
+
+# OLD CONFIG
+
+Crate Items:
+  Common:
+
   Rare:
     - DIAMOND_SWORD:1:DAMAGE_ALL
     - COMMAND:say %name% This is all you won... enjoy!
@@ -40,12 +57,8 @@ Firework On Crate Open:
   Rare: false
   Ultra: true
 
-# Customise the crate keys, note: changing the item will allow old keys to work, however changing the name will NOT.
-Crate Keys:
-  Item: TRIPWIRE_HOOK
-  Name: "%type% Crate Key!"
-  Enchantments:
-  - DAMAGE_ALL-3
+# Currently the plugin uses the chest open event, if you have chest-access disabled and don't want to enable try changing the below value to true (not yet done)
+Use Interact Event: false
 
 # If true knockback will not happen and a GUI will open with what items can be won
 Crate Previews: false

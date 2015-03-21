@@ -12,7 +12,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
 public class CratesPlus extends JavaPlugin implements Listener {
     private static CratesPlus instance;
     public static boolean updateAvailable = false;

@@ -17,6 +17,10 @@ Changeslogs:
 
 1.2 (In Progress):
  - Added Crate previews
+ - Added a winning GUI
+ - Can now use item data ID's for items such as wool, spawn eggs etc
+ - Added it so you can now specify a crate key type with the command
+ - Can now change settings of the key
 
 1.1:
  - Added update checker (Works with Spigot)

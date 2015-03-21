@@ -21,7 +21,8 @@ public class CrateCommand implements CommandExecutor {
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {
-            if (args.length != 2) {
+            if (args.length < 2) {
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate key <player> [type]");
                 return false;
             }
 
@@ -31,7 +32,11 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
-            CrateHandler.giveCrateKey(player);
+            if (args.length >= 3) {
+                CrateHandler.giveCrateKey(player, CrateType.valueOf(args[2].toUpperCase()));
+            } else {
+                CrateHandler.giveCrateKey(player);
+            }
             sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
             return true;
         }
@@ -71,7 +76,8 @@ public class CrateCommand implements CommandExecutor {
         }
 
         // Help Messages
-        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> - Give player a random crate key");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "----- CratePlus Help -----");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> [type] - Give player a random crate key");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");
 
         return true;

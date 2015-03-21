@@ -31,7 +31,8 @@ public class ChestOpen implements Listener {
             } else if (event.getInventory().getTitle().contains("Ultra")) {
                 crateType = CrateType.ULTRA;
             }
-            if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(crateType.getCode(true) + " Crate Key!")) {
+            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crateType.getCode(true));
+            if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                 event.setCancelled(true);
                 if (item.getAmount() > 1) {
                     item.setAmount(item.getAmount() - 1);
@@ -52,10 +53,10 @@ public class ChestOpen implements Listener {
 
                 List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
                 boolean useGui = CratesPlus.getPlugin().getConfig().getBoolean("Crate Open GUI");
-                Inventory inventory = Bukkit.createInventory(player, 27, crateType.getCode(true) + " Win!");
+                Inventory inventory = Bukkit.createInventory(null, 27, crateType.getCode(true) + " Win!");
 
                 Integer ii = 0;
-                while (ii < 9) {
+                while (ii < 10) {
                     inventory.setItem(ii, new ItemStack(Material.STAINED_GLASS_PANE));
                     ii++;
                 }
@@ -69,8 +70,9 @@ public class ChestOpen implements Listener {
                 String i = items.get(CrateHandler.randInt(0, items.size() - 1));
                 String[] args = i.split(":", -1);
                 if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
+                    /** Commands */
                     String command = args[1];
-                    String title = "Command: /" + command;
+                    title = "Command: /" + command;
                     if (args.length == 3) {
                         title = args[2];
                     }
@@ -84,10 +86,19 @@ public class ChestOpen implements Listener {
                         inventory.setItem(13, itemStack);
                     }
                 } else if (args.length == 1) {
-                    if (useGui) {
-                        inventory.setItem(13, new ItemStack(Material.getMaterial(args[0].toUpperCase())));
+                    /** Item without any amounts or enchantments */
+                    String[] args1 = args[0].split("-");
+                    ItemStack itemStack;
+                    if (args1.length == 1) {
+                        itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
                     } else {
-                        player.getInventory().addItem(new ItemStack(Material.getMaterial(args[0].toUpperCase())));
+                        itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
+                    }
+
+                    if (useGui) {
+                        inventory.setItem(13, itemStack);
+                    } else {
+                        player.getInventory().addItem(itemStack);
                     }
                 } else if (args.length == 2) {
                     if (useGui) {
@@ -126,19 +137,30 @@ public class ChestOpen implements Listener {
             } else {
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Previews")) {
                     List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
-                    Inventory inventory = Bukkit.createInventory(player, (items.size() + 8) / 9 * 9, crateType.getCode(true) + " Possible Wins:");
+                    Inventory inventory = Bukkit.createInventory(null, (items.size() + 8) / 9 * 9, crateType.getCode(true) + " Possible Wins:");
                     for (String i : items) {
                         String[] args = i.split(":", -1);
-                        if (args.length == 2 && args[0].equalsIgnoreCase("command")) {
+                        if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
+                            /** Commands */
                             String command = args[1];
-                            command = command.replaceAll("%name%", player.getName());
+                            title = "Command: /" + command;
+                            if (args.length == 3) {
+                                title = args[2];
+                            }
                             ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
                             ItemMeta itemMeta = itemStack.getItemMeta();
-                            itemMeta.setDisplayName(ChatColor.RESET + "Command: /" + command);
+                            itemMeta.setDisplayName(ChatColor.RESET + title);
                             itemStack.setItemMeta(itemMeta);
                             inventory.addItem(itemStack);
                         } else if (args.length == 1) {
-                            ItemStack itemStack = new ItemStack(Material.getMaterial(args[0].toUpperCase()));
+                            /** Item without any amounts or enchantments */
+                            String[] args1 = args[0].split("-");
+                            ItemStack itemStack;
+                            if (args1.length == 1) {
+                                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
+                            } else {
+                                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
+                            }
                             inventory.addItem(itemStack);
                         } else if (args.length == 2) {
                             ItemStack itemStack = new ItemStack(Material.getMaterial(args[0].toUpperCase()), Integer.parseInt(args[1]));

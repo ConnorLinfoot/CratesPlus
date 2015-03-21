@@ -3,6 +3,7 @@ package com.connorlinfoot.cratesplus.Handlers;
 import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -121,9 +122,30 @@ public class CrateHandler {
     public static void giveCrateKey(Player player, CrateType crateType) {
         if (player == null || !player.isOnline()) return;
 
-        ItemStack key = new ItemStack(Material.TRIPWIRE_HOOK);
+        ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
+        List<String> enchantments = CratesPlus.getPlugin().getConfig().getStringList("Crate Keys.Enchantments");
+        if (enchantments.size() > 0) {
+            Bukkit.broadcastMessage("WORKING");
+            for (String e : enchantments) {
+                String[] args = e.split("-");
+                if (args.length == 1) {
+                    try {
+                        key.addUnsafeEnchantment(Enchantment.getByName(e), 1);
+                    } catch (Exception ee) {
+                        ee.printStackTrace();
+                    }
+                } else {
+                    try {
+                        key.addUnsafeEnchantment(Enchantment.getByName(args[0]), Integer.parseInt(args[1]));
+                    } catch (Exception ee) {
+                        ee.printStackTrace();
+                    }
+                }
+            }
+        }
         ItemMeta keyMeta = key.getItemMeta();
-        keyMeta.setDisplayName(crateType.getCode(true) + " Crate Key!");
+        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crateType.getCode(true));
+        keyMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
         lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + crateType.getCode(true) + ChatColor.DARK_GRAY + "\" crate");
         lore.add(ChatColor.DARK_GRAY + "to win an item!");
