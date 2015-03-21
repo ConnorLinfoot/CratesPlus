@@ -15,7 +15,7 @@ TODO:
 
 Changeslogs:
 
-1.2 (In Progress):
+1.2:
  - Added Crate previews
  - Added a winning GUI
  - Can now use item data ID's for items such as wool, spawn eggs etc
