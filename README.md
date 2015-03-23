@@ -7,13 +7,16 @@ A free and great crates plugin for Minecraft.
 TODO:
  - Custom crates
  - Better holographic titles
- - Crate Previews
- - Win GUI
+ - Crate Previews - DONE
+ - Win GUI - DONE
  - Custom messages - DONE
  - Update checks - DONE
 
 
 Changeslogs:
+
+1.3 (In Progress):
+ -
 
 1.2:
  - Added Crate previews
