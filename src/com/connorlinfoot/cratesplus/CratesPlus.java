@@ -1,10 +1,7 @@
 package com.connorlinfoot.cratesplus;
 
 import com.connorlinfoot.cratesplus.Commands.CrateCommand;
-import com.connorlinfoot.cratesplus.Listeners.BlockListeners;
-import com.connorlinfoot.cratesplus.Listeners.ChestOpen;
-import com.connorlinfoot.cratesplus.Listeners.InventoryInteract;
-import com.connorlinfoot.cratesplus.Listeners.PlayerJoin;
+import com.connorlinfoot.cratesplus.Listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -39,9 +36,13 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Register Events
         Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
-        Bukkit.getPluginManager().registerEvents(new ChestOpen(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
+        if (getConfig().getBoolean("Use Interact")) {
+            Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
+        } else {
+            Bukkit.getPluginManager().registerEvents(new ChestOpen(), this);
+        }
 
         getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
             public void run() {

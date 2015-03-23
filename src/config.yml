@@ -47,6 +47,9 @@ Crate Keys:
   Enchantments:
   - DAMAGE_ALL-3
 
+# If true the plugin will use the interact event instead of the inventory open event
+Use Interact: false
+
 # If true knockback will not happen and a GUI will open with what items can be won
 Crate Previews: false
 
