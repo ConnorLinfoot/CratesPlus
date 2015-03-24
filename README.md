@@ -16,7 +16,8 @@ TODO:
 Changeslogs:
 
 1.3 (In Progress):
- -
+ - You can now use the Interact event if the Inventory Open event doesn't work for you
+ - You can now change the plugin prefix
 
 1.2:
  - Added Crate previews

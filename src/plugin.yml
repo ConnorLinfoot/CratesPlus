@@ -5,6 +5,7 @@ version: 1.3
 commands:
   crate:
     description: Main CratesPlus command
+    aliases: [cratesplus,crates]
 permissions:
   cratesplus.admin:
     default: op

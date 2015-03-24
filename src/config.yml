@@ -57,6 +57,7 @@ Crate Previews: false
 Crate Open GUI: false
 
 Messages:
+  Prefix: "&7[&bCratesPlus&7]"
   Command No Permission: "&cYou do not have the correct permission to run this command"
   Crate Open Without Key: "&cYou must be holding a %crate% &ckey to open this crate"
   Key Given: "&aYou have been given a %crate% &acrate key"

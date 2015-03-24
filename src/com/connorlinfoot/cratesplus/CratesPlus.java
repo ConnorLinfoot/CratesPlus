@@ -31,6 +31,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
         console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         console.sendMessage("");
 
+        // Do Prefix
+        pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + ChatColor.RESET;
+
         // Register /crate command
         Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
 
