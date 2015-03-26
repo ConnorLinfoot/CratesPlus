@@ -15,6 +15,13 @@ TODO:
 
 Changeslogs:
 
+NOTE: As 2.0 is currently in development no more updates of 1.x will be released EXCEPT for bug fixes if required. There is currently no ETA of 2.0.
+
+2.0 (In Progress):
+ - An all new config layout (Old versions will be converted to the new version on first run)
+ - Custom crates (WIP)
+ - Better holographic titles above crates (WIP)
+
 1.3:
  - You can now use the Interact event if the Inventory Open event doesn't work for you
  - You can now change the plugin prefix

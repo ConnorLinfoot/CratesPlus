@@ -1,51 +1,50 @@
 # [][][][][][][][][][][][][][][][][][][][][]
-#              CratesPlus V1.3
+#              CratesPlus V2.0
 # [][][][][][][][][][][][][][][][][][][][][]
-
+# ------------------------------------------
 # There are many placeholders that can now be used withing the config file for commands and messages, place holders are as followed:
 # - %name% - Replaces with the players name, Example: "Notch".
 # - %displayname% - Replaces with the players display name, Example: "[Owner] Notch".
 # - %uuid% - Replaces with the players UUID.
 # - %crate% - The crate types name.
+# ------------------------------------------
+# Don't change the config version!
 
+Config Version: 2
 Update Checks: true
 
 # ITEMNAME-DATA:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
 # Commands can be like COMMAND:give %name% 100 coins
 # Item name must be a Bukkit material, list here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/material/package-summary.html
-Crate Items:
+Crates:
   Common:
+    Items:
     - IRON_SWORD:1:DAMAGE_ALL-3
     - COOKED_BEEF:32:DAMAGE_ALL-100
     - WOOL-5
+    Knockback: 0.5
+    Broadcast: false
+    Firework: false
   Rare:
+    Items:
     - DIAMOND_SWORD:1:DAMAGE_ALL
     - COMMAND:say %name% This is all you won... enjoy!
+    Knockback: 1.0
+    Broadcast: false
+    Firework: false
   Ultra:
+    Items:
     - DIAMOND_SWORD:1:DAMAGE_ALL-3
-Crate Chances:
-  Common: 85
-  Rare: 14
-  Ultra: 1
-Crate Knockback:
-  Common: 0.5
-  Rare: 1.0
-  Ultra: 2.0
-Broadcast On Crate Open:
-  Common: false
-  Rare: false
-  Ultra: true
-Firework On Crate Open:
-  Common: false
-  Rare: false
-  Ultra: true
+    Knockback: 2.0
+    Broadcast: true
+    Firework: true
 
-# Customise the crate keys, note: changing the item will allow old keys to work, however changing the name will NOT.
+# Modify different options of the crate key
 Crate Keys:
   Item: TRIPWIRE_HOOK
   Name: "%type% Crate Key!"
   Enchantments:
-  - DAMAGE_ALL-3
+  - DAMAGE_ALL
 
 # If true the plugin will use the interact event instead of the inventory open event
 Use Interact: false
@@ -56,6 +55,7 @@ Crate Previews: false
 # If true when the player claims a crate a GUI will open with the winning item in (not yet done)
 Crate Open GUI: false
 
+# Below are all messages that can me edited in the plugin
 Messages:
   Prefix: "&7[&bCratesPlus&7]"
   Command No Permission: "&cYou do not have the correct permission to run this command"

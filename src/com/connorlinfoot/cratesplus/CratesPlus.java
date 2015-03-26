@@ -9,6 +9,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public class CratesPlus extends JavaPlugin implements Listener {
     private static CratesPlus instance;
     public static boolean updateAvailable = false;
@@ -21,6 +23,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
         saveConfig();
         Server server = getServer();
         final ConsoleCommandSender console = server.getConsoleSender();
+        if (getConfig().isSet("Crate Knockback") || (getConfig().isSet("Config Version") && getConfig().getInt("Config Version") < 2)) {
+            convertConfig(console);
+        }
 
         console.sendMessage("");
         console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
@@ -52,6 +57,84 @@ public class CratesPlus extends JavaPlugin implements Listener {
                 checkUpdate(console, getConfig().getBoolean("Update Checks"));
             }
         }, 10L);
+    }
+
+    private void convertConfig(ConsoleCommandSender console) {
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 2...");
+
+        // Convert crate items
+        if (getConfig().isSet("Crate Items.Common")) {
+            List<String> oldCommonItems = getConfig().getStringList("Crate Items.Common");
+            getConfig().set("Crates.Common.Items", oldCommonItems);
+        }
+        if (getConfig().isSet("Crate Items.Rare")) {
+            List<String> oldRareItems = getConfig().getStringList("Crate Items.Rare");
+            getConfig().set("Crates.Rare.Items", oldRareItems);
+        }
+        if (getConfig().isSet("Crate Items.Ultra")) {
+            List<String> oldUltraItems = getConfig().getStringList("Crate Items.Ultra");
+            getConfig().set("Crates.Ultra.Items", oldUltraItems);
+        }
+
+        // Convert knockback settings
+        if (getConfig().isSet("Crate Knockback.Common")) {
+            double oldCommonKnockback = getConfig().getDouble("Crate Knockback.Common");
+            getConfig().set("Crates.Common.Knockback", oldCommonKnockback);
+        }
+        if (getConfig().isSet("Crate Knockback.Rare")) {
+            double oldRareKnockback = getConfig().getDouble("Crate Knockback.Rare");
+            getConfig().set("Crates.Rare.Knockback", oldRareKnockback);
+        }
+        if (getConfig().isSet("Crate Knockback.Ultra")) {
+            double oldUltraKnockback = getConfig().getDouble("Crate Knockback.Ultra");
+            getConfig().set("Crates.Ultra.Knockback", oldUltraKnockback);
+        }
+
+        // Convert broadcast settings
+        if (getConfig().isSet("Broadcast On Crate Open.Common")) {
+            boolean oldCommonBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Common");
+            getConfig().set("Crates.Common.Broadcast", oldCommonBroadcast);
+        }
+        if (getConfig().isSet("Broadcast On Crate Open.Rare")) {
+            boolean oldRareBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Rare");
+            getConfig().set("Crates.Rare.Broadcast", oldRareBroadcast);
+        }
+        if (getConfig().isSet("Broadcast On Crate Open.Ultra")) {
+            boolean oldUltraBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Ultra");
+            getConfig().set("Crates.Ultra.Broadcast", oldUltraBroadcast);
+        }
+
+        // Convert firework settings
+        if (getConfig().isSet("Firework On Crate Open.Common")) {
+            boolean oldCommonFirework = getConfig().getBoolean("Firework On Crate Open.Common");
+            getConfig().set("Crates.Common.Firework", oldCommonFirework);
+        }
+        if (getConfig().isSet("Firework On Crate Open.Rare")) {
+            boolean oldRareFirework = getConfig().getBoolean("Firework On Crate Open.Rare");
+            getConfig().set("Crates.Rare.Firework", oldRareFirework);
+        }
+        if (getConfig().isSet("Firework On Crate Open.Ultra")) {
+            boolean oldUltraFirework = getConfig().getBoolean("Firework On Crate Open.Ultra");
+            getConfig().set("Crates.Ultra.Firework", oldUltraFirework);
+        }
+
+        // Clear all old config
+        if (getConfig().isSet("Crate Items"))
+            getConfig().set("Crate Items", null);
+        if (getConfig().isSet("Crate Knockback"))
+            getConfig().set("Crate Knockback", null);
+        if (getConfig().isSet("Broadcast On Crate Open"))
+            getConfig().set("Broadcast On Crate Open", null);
+        if (getConfig().isSet("Firework On Crate Open"))
+            getConfig().set("Firework On Crate Open", null);
+
+        // Set config version
+        getConfig().set("Config Version", 2);
+
+        // Save config
+        saveConfig();
+
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
     }
 
     public void onDisable() {
