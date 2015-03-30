@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CratesPlus extends JavaPlugin implements Listener {
     private static CratesPlus instance;
-    public static HashMap<String, ChatColor> crates = new HashMap<String, ChatColor>();
+    public static HashMap<String, Crate> crates = new HashMap<String, Crate>();
     public static boolean updateAvailable = false;
     public static String updateMessage = "";
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
@@ -30,11 +30,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
         }
 
         // Do Prefix
-        pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + ChatColor.RESET;
+        pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
 
         // Register Crates
         for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
-            crates.put(crate, ChatColor.valueOf(getConfig().getString("Crates." + crate + ".Color").toUpperCase()));
+            crates.put(crate, new Crate(crate));
         }
 
         // Register /crate command

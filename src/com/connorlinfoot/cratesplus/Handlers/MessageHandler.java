@@ -19,7 +19,7 @@ public class MessageHandler {
         String name = player.getName();
         String displayName = player.getDisplayName();
         String uuid = player.getUniqueId().toString();
-        String crate = CratesPlus.crates.get(crateType) + crateType;
+        String crate = CratesPlus.crates.get(crateType).getColor() + crateType;
         return message.replaceAll("%name%", name).replaceAll("%displayname%", displayName).replaceAll("%uuid%", uuid).replaceAll("%crate%", crate);
     }
 

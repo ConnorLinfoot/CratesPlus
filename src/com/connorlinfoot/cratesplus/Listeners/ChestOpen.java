@@ -19,7 +19,7 @@ public class ChestOpen implements Listener {
         if (event.getInventory().getTitle().contains(" Crate!")) {
             String crateType = "Common";
             // TODO get crates from config and check etc
-            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType) + crateType);
+            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                 if (item.getAmount() > 1) {
                     item.setAmount(item.getAmount() - 1);
@@ -29,6 +29,7 @@ public class ChestOpen implements Listener {
                 CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
                 if (!crateOpenEvent.isCanceled())
                     crateOpenEvent.doEvent();
+                event.setCancelled(true);
             } else {
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Previews")) {
                     CratePreviewEvent cratePreviewEvent = new CratePreviewEvent(player, crateType);

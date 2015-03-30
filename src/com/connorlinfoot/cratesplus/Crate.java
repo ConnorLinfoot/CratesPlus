@@ -2,9 +2,9 @@ package com.connorlinfoot.cratesplus;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Crate {
     private String name;
@@ -13,10 +13,49 @@ public class Crate {
     private boolean firework = false;
     private boolean broadcast = false;
     private double knockback = 0.0;
-    private ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+    private List<String> items = new ArrayList<String>();
 
     public Crate(String name) {
+        this.name = name;
+        this.color = ChatColor.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Color").toUpperCase());
+        this.block = Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Block").toUpperCase());
+        this.firework = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Firework");
+        this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");
+        this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
+        this.items = CratesPlus.getPlugin().getConfig().getStringList("Crates." + name + ".Items");
+    }
 
+    public String getName() {
+        return getName(false);
+    }
+
+    public String getName(boolean includecolor) {
+        if (includecolor) return getColor() + this.name;
+        return this.name;
+    }
+
+    public ChatColor getColor() {
+        return this.color;
+    }
+
+    public Material getBlock() {
+        return this.block;
+    }
+
+    public boolean isFirework() {
+        return this.firework;
+    }
+
+    public boolean isBroadcast() {
+        return this.broadcast;
+    }
+
+    public double getKnockback() {
+        return this.knockback;
+    }
+
+    public List<String> getItems() {
+        return this.items;
     }
 
 }

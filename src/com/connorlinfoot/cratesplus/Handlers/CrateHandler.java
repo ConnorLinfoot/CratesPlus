@@ -143,10 +143,10 @@ public class CrateHandler {
             }
         }
         ItemMeta keyMeta = key.getItemMeta();
-        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType) + crateType);
+        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
         keyMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + CratesPlus.crates.get(crateType) + crateType + ChatColor.DARK_GRAY + "\" crate");
+        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + CratesPlus.crates.get(crateType).getColor() + crateType + ChatColor.DARK_GRAY + "\" crate");
         lore.add(ChatColor.DARK_GRAY + "to win an item!");
         lore.add("");
         keyMeta.setLore(lore);
@@ -161,14 +161,14 @@ public class CrateHandler {
 
         ItemStack crate = new ItemStack(Material.CHEST);
         ItemMeta crateMeta = crate.getItemMeta();
-        crateMeta.setDisplayName(CratesPlus.crates.get(crateType) + crateType + " Crate!");
+        crateMeta.setDisplayName(CratesPlus.crates.get(crateType).getColor() + crateType + " Crate!");
         List<String> lore = new ArrayList<String>();
         lore.add(ChatColor.DARK_GRAY + "Place this crate somewhere!");
         lore.add("");
         crateMeta.setLore(lore);
         crate.setItemMeta(crateMeta);
         player.getInventory().addItem(crate);
-        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType) + crateType + ChatColor.GREEN + " crate!");
+        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType).getColor() + crateType + ChatColor.GREEN + " crate!");
     }
 
 }

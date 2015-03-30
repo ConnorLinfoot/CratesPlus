@@ -26,7 +26,7 @@ public class ChestInteract implements Listener {
         if (chestInventory.getTitle().contains(" Crate!")) {
             String crateType = "Common";
             // TODO get crates from config and check etc
-            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType) + crateType);
+            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                 event.setCancelled(true);
                 if (item.getAmount() > 1) {

@@ -61,6 +61,9 @@ Crate Previews: false
 # If true when the player claims a crate a GUI will open with the winning item in (not yet done)
 Crate Open GUI: false
 
+# If true it will stop players without the admin perm breaking crates
+Crate Protection: false
+
 # Below are all messages that can me edited in the plugin
 Messages:
   Prefix: "&7[&bCratesPlus&7]"
