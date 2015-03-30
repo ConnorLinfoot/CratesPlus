@@ -1,0 +1,106 @@
+package com.connorlinfoot.cratesplus.Events;
+
+import com.connorlinfoot.cratesplus.CrateType;
+import com.connorlinfoot.cratesplus.CratesPlus;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
+
+public class CratePreviewEvent extends Event {
+    private Player player;
+    private CrateType crateType;
+    private boolean canceled = false;
+
+    public CratePreviewEvent(Player player, CrateType crateType) {
+        this.player = player;
+        this.crateType = crateType;
+    }
+
+    public void doEvent() {
+        List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
+        Inventory inventory = Bukkit.createInventory(null, (items.size() + 8) / 9 * 9, crateType.getCode(true) + " Possible Wins:");
+        for (String i : items) {
+            String[] args = i.split(":", -1);
+            if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
+                /** Commands */
+                String command = args[1];
+                String title = "Command: /" + command;
+                if (args.length == 3) {
+                    title = args[2];
+                }
+                ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.RESET + title);
+                itemStack.setItemMeta(itemMeta);
+                inventory.addItem(itemStack);
+            } else if (args.length == 1) {
+                /** Item without any amounts or enchantments */
+                String[] args1 = args[0].split("-");
+                ItemStack itemStack;
+                if (args1.length == 1) {
+                    itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
+                } else {
+                    itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
+                }
+                inventory.addItem(itemStack);
+            } else if (args.length == 2) {
+                ItemStack itemStack = new ItemStack(Material.getMaterial(args[0].toUpperCase()), Integer.parseInt(args[1]));
+                inventory.addItem(itemStack);
+            } else if (args.length == 3) {
+                String[] enchantments = args[2].split("\\|", -1);
+                ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
+                for (String e : enchantments) {
+                    String[] args1 = e.split("-", -1);
+                    if (args1.length == 1) {
+                        try {
+                            itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
+                        } catch (Exception ignored) {
+                        }
+                    } else if (args1.length == 2) {
+                        try {
+                            itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }
+                inventory.addItem(itemStack);
+            }
+        }
+        player.openInventory(inventory);
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return null;
+    }
+
+    public boolean isCanceled() {
+        return this.canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public void setCrateType(CrateType crateType) {
+        this.crateType = crateType;
+    }
+
+    public CrateType getCrateType() {
+        return this.crateType;
+    }
+
+}

@@ -137,10 +137,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
     }
 
-    public void onDisable() {
-        getLogger().info(getDescription().getName() + " has been disabled!");
-    }
-
     public static CratesPlus getPlugin() {
         return instance;
     }
