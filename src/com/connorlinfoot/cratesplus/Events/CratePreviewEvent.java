@@ -1,6 +1,5 @@
 package com.connorlinfoot.cratesplus.Events;
 
-import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,17 +16,17 @@ import java.util.List;
 
 public class CratePreviewEvent extends Event {
     private Player player;
-    private CrateType crateType;
+    private String crateType;
     private boolean canceled = false;
 
-    public CratePreviewEvent(Player player, CrateType crateType) {
+    public CratePreviewEvent(Player player, String crateType) {
         this.player = player;
         this.crateType = crateType;
     }
 
     public void doEvent() {
-        List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
-        Inventory inventory = Bukkit.createInventory(null, (items.size() + 8) / 9 * 9, crateType.getCode(true) + " Possible Wins:");
+        List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType);
+        Inventory inventory = Bukkit.createInventory(null, (items.size() + 8) / 9 * 9, CratesPlus.crates.get(crateType) + crateType + " Possible Wins:");
         for (String i : items) {
             String[] args = i.split(":", -1);
             if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
@@ -95,11 +94,11 @@ public class CratePreviewEvent extends Event {
         return this.player;
     }
 
-    public void setCrateType(CrateType crateType) {
+    public void setCrateType(String crateType) {
         this.crateType = crateType;
     }
 
-    public CrateType getCrateType() {
+    public String getCrateType() {
         return this.crateType;
     }
 

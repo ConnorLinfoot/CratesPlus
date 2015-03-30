@@ -9,10 +9,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CratesPlus extends JavaPlugin implements Listener {
     private static CratesPlus instance;
+    public static HashMap<String, ChatColor> crates = new HashMap<String, ChatColor>();
     public static boolean updateAvailable = false;
     public static String updateMessage = "";
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
@@ -27,17 +29,13 @@ public class CratesPlus extends JavaPlugin implements Listener {
             convertConfig(console);
         }
 
-        console.sendMessage("");
-        console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        console.sendMessage("");
-        console.sendMessage(ChatColor.AQUA + getDescription().getName());
-        console.sendMessage(ChatColor.AQUA + "Version " + getDescription().getVersion());
-        console.sendMessage("");
-        console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        console.sendMessage("");
-
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + ChatColor.RESET;
+
+        // Register Crates
+        for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+            crates.put(crate, ChatColor.valueOf(getConfig().getString("Crates." + crate + ".Color").toUpperCase()));
+        }
 
         // Register /crate command
         Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
@@ -57,6 +55,15 @@ public class CratesPlus extends JavaPlugin implements Listener {
                 checkUpdate(console, getConfig().getBoolean("Update Checks"));
             }
         }, 10L);
+
+        console.sendMessage("");
+        console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        console.sendMessage("");
+        console.sendMessage(ChatColor.AQUA + getDescription().getName());
+        console.sendMessage(ChatColor.AQUA + "Version " + getDescription().getVersion());
+        console.sendMessage("");
+        console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        console.sendMessage("");
     }
 
     private void convertConfig(ConsoleCommandSender console) {

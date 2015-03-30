@@ -1,6 +1,5 @@
 package com.connorlinfoot.cratesplus.Handlers;
 
-import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -107,19 +106,20 @@ public class CrateHandler {
 
     public static void giveCrateKey(Player player) {
         Integer number = randInt(0, 100);
+        // TODO FIX THIS
         // Not really good at a way to do this, hoping this works. Any ideas on improvements send them! :)
-        if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Common")) {
-            giveCrateKey(player, CrateType.COMMON);
-        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Rare")) {
-            giveCrateKey(player, CrateType.RARE);
-        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Ultra")) {
-            giveCrateKey(player, CrateType.ULTRA);
-        } else {
-            giveCrateKey(player, CrateType.COMMON);
-        }
+//        if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Common")) {
+//            giveCrateKey(player, CrateType.COMMON);
+//        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Rare")) {
+//            giveCrateKey(player, CrateType.RARE);
+//        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Ultra")) {
+//            giveCrateKey(player, CrateType.ULTRA);
+//        } else {
+//            giveCrateKey(player, CrateType.COMMON);
+//        }
     }
 
-    public static void giveCrateKey(Player player, CrateType crateType) {
+    public static void giveCrateKey(Player player, String crateType) {
         if (player == null || !player.isOnline()) return;
 
         ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
@@ -143,10 +143,10 @@ public class CrateHandler {
             }
         }
         ItemMeta keyMeta = key.getItemMeta();
-        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crateType.getCode(true));
+        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType) + crateType);
         keyMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + crateType.getCode(true) + ChatColor.DARK_GRAY + "\" crate");
+        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + CratesPlus.crates.get(crateType) + crateType + ChatColor.DARK_GRAY + "\" crate");
         lore.add(ChatColor.DARK_GRAY + "to win an item!");
         lore.add("");
         keyMeta.setLore(lore);
@@ -155,20 +155,20 @@ public class CrateHandler {
         player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crateType));
     }
 
-    public static void giveCrate(Player player, CrateType crateType) {
+    public static void giveCrate(Player player, String crateType) {
         if (player == null || !player.isOnline()) return;
         // This is the chest crate for staff to be placed!
 
         ItemStack crate = new ItemStack(Material.CHEST);
         ItemMeta crateMeta = crate.getItemMeta();
-        crateMeta.setDisplayName(crateType.getCode(true) + " Crate!");
+        crateMeta.setDisplayName(CratesPlus.crates.get(crateType) + crateType + " Crate!");
         List<String> lore = new ArrayList<String>();
         lore.add(ChatColor.DARK_GRAY + "Place this crate somewhere!");
         lore.add("");
         crateMeta.setLore(lore);
         crate.setItemMeta(crateMeta);
         player.getInventory().addItem(crate);
-        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + crateType.getCode(true) + ChatColor.GREEN + " crate!");
+        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType) + crateType + ChatColor.GREEN + " crate!");
     }
 
 }

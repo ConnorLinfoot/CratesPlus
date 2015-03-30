@@ -1,6 +1,5 @@
 package com.connorlinfoot.cratesplus.Commands;
 
-import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
@@ -16,7 +15,7 @@ public class CrateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
         if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
-            sender.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, CrateType.UNKNOWN));
+            sender.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, "Unknown"));
             return false;
         }
 
@@ -33,7 +32,7 @@ public class CrateCommand implements CommandExecutor {
             }
 
             if (args.length >= 3) {
-                CrateHandler.giveCrateKey(player, CrateType.valueOf(args[2].toUpperCase()));
+                CrateHandler.giveCrateKey(player, args[2]);
             } else {
                 CrateHandler.giveCrateKey(player);
             }
@@ -43,7 +42,7 @@ public class CrateCommand implements CommandExecutor {
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("crate")) {
             Player player;
-            CrateType crateType;
+            String crateType;
             if (args.length == 1) {
                 sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
                 return false;
@@ -64,7 +63,7 @@ public class CrateCommand implements CommandExecutor {
             }
 
             try {
-                crateType = CrateType.valueOf(args[1].toUpperCase());
+                crateType = args[1];
             } catch (IllegalArgumentException e) {
                 sender.sendMessage(ChatColor.RED + "Please specify a valid crate type");
                 return false;

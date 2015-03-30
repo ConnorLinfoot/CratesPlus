@@ -1,6 +1,5 @@
 package com.connorlinfoot.cratesplus.Events;
 
-import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
@@ -19,29 +18,29 @@ import java.util.List;
 
 public class CrateOpenEvent extends Event {
     private Player player;
-    private CrateType crateType;
+    private String crateType;
     private boolean canceled = false;
 
-    public CrateOpenEvent(Player player, CrateType crateType) {
+    public CrateOpenEvent(Player player, String crateType) {
         this.player = player;
         this.crateType = crateType;
     }
 
     public void doEvent() {
         // Spawn firework
-        if (CratesPlus.getPlugin().getConfig().getBoolean("Firework On Crate Open." + crateType.getCode())) {
+        if (CratesPlus.getPlugin().getConfig().getBoolean("Firework On Crate Open." + crateType)) {
             CrateHandler.spawnFirework(player.getLocation());
         }
 
-        if (CratesPlus.getPlugin().getConfig().getBoolean("Broadcast On Crate Open." + crateType.getCode())) {
+        if (CratesPlus.getPlugin().getConfig().getBoolean("Broadcast On Crate Open." + crateType)) {
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
             Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateType));
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
         }
 
-        List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType.getCode());
+        List<String> items = CratesPlus.getPlugin().getConfig().getStringList("Crate Items." + crateType);
         boolean useGui = CratesPlus.getPlugin().getConfig().getBoolean("Crate Open GUI");
-        Inventory inventory = Bukkit.createInventory(null, 27, crateType.getCode(true) + " Win!");
+        Inventory inventory = Bukkit.createInventory(null, 27, CratesPlus.crates.get(crateType) + crateType + " Win!");
 
         Integer ii = 0;
         while (ii < 10) {
@@ -141,11 +140,11 @@ public class CrateOpenEvent extends Event {
         return this.player;
     }
 
-    public void setCrateType(CrateType crateType) {
+    public void setCrateType(String crateType) {
         this.crateType = crateType;
     }
 
-    public CrateType getCrateType() {
+    public String getCrateType() {
         return this.crateType;
     }
 

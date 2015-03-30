@@ -1,6 +1,5 @@
 package com.connorlinfoot.cratesplus.Listeners;
 
-import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.Location;
@@ -21,7 +20,7 @@ public class BlockListeners implements Listener {
         ItemStack item = event.getItemInHand();
         String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", "");
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
-            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), CrateType.UNKNOWN));
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), "Unknown"));
             event.setCancelled(true);
             return;
         }

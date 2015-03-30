@@ -1,6 +1,5 @@
 package com.connorlinfoot.cratesplus.Listeners;
 
-import com.connorlinfoot.cratesplus.CrateType;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Events.CrateOpenEvent;
 import com.connorlinfoot.cratesplus.Events.CratePreviewEvent;
@@ -18,13 +17,9 @@ public class ChestOpen implements Listener {
         final Player player = (Player) event.getPlayer();
         ItemStack item = player.getItemInHand();
         if (event.getInventory().getTitle().contains(" Crate!")) {
-            CrateType crateType = CrateType.COMMON;
-            if (event.getInventory().getTitle().contains("Rare")) {
-                crateType = CrateType.RARE;
-            } else if (event.getInventory().getTitle().contains("Ultra")) {
-                crateType = CrateType.ULTRA;
-            }
-            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crateType.getCode(true));
+            String crateType = "Common";
+            // TODO get crates from config and check etc
+            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType) + crateType);
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                 if (item.getAmount() > 1) {
                     item.setAmount(item.getAmount() - 1);
@@ -41,7 +36,7 @@ public class ChestOpen implements Listener {
                         cratePreviewEvent.doEvent();
                 } else {
                     player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crateType));
-                    double knock = CratesPlus.getPlugin().getConfig().getDouble("Crate Knockback." + crateType.getCode());
+                    double knock = CratesPlus.getPlugin().getConfig().getDouble("Crate Knockback." + crateType);
                     if (knock != 0) {
                         player.setVelocity(player.getLocation().getDirection().multiply(-knock));
                     }
