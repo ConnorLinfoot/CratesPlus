@@ -5,6 +5,7 @@ import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Events.CrateOpenEvent;
 import com.connorlinfoot.cratesplus.Events.CratePreviewEvent;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
@@ -24,9 +25,11 @@ public class ChestInteract implements Listener {
         Chest chest = (Chest) event.getClickedBlock().getState();
         Inventory chestInventory = chest.getInventory();
         ItemStack item = player.getItemInHand();
-        if (chestInventory.getTitle().contains(" Crate!")) {
-            String crateType = "Common";
-            // TODO get crates from config and check etc
+        if (chestInventory.getTitle() != null && chestInventory.getTitle().contains(" Crate!")) {
+            String crateType = ChatColor.stripColor(chestInventory.getTitle().replaceAll(" Crate!", ""));
+            if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + crateType)) {
+                return;
+            }
             Crate crate = new Crate(crateType);
             String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
