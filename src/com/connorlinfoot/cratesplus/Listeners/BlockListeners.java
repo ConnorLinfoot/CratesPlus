@@ -2,6 +2,7 @@ package com.connorlinfoot.cratesplus.Listeners;
 
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
@@ -45,6 +46,11 @@ public class BlockListeners implements Listener {
             Chest chest = (Chest) event.getBlock().getState();
             if (chest.getInventory().getTitle() != null && chest.getInventory().getTitle().contains("Crate!")) {
                 Location location = chest.getLocation();
+                if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin")) {
+                    event.getPlayer().sendMessage(ChatColor.RED + "You do not have permission to remove this crate");
+                    event.setCancelled(true);
+                    return;
+                }
                 for (Entity entity : location.getWorld().getEntities()) {
                     if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
                     String name = chest.getInventory().getTitle().replace(" Crate!", "");
