@@ -9,7 +9,6 @@ TODO:
  - Better holographic titles
  - Animation GUI for winning
  - In-Game crate editing, 0 access to the config would be required
- - 1.7 Compatibility with Holograms, either using an API or custom coded for 1.7 servers
 
 Changeslogs:
 
