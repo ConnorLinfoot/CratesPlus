@@ -29,7 +29,8 @@ public class CratePreviewEvent extends Event {
 
     public void doEvent() {
         List<String> items = crate.getItems();
-        Inventory inventory = Bukkit.createInventory(null, (items.size() + 8) / 9 * 9, CratesPlus.crates.get(crateType).getColor() + crateType + " Possible Wins:");
+        Integer size = (int) Math.ceil(items.size() / 9) * 9;
+        Inventory inventory = Bukkit.createInventory(null, size, CratesPlus.crates.get(crateType).getColor() + crateType + " Possible Wins:");
         for (String i : items) {
             String[] args = i.split(":", -1);
             if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
