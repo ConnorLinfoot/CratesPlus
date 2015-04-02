@@ -25,7 +25,6 @@ Crates:
     Knockback: 0.5
     Broadcast: false
     Firework: false
-    Block: CHEST
     Color: GREEN
   Rare:
     Items:
@@ -34,7 +33,6 @@ Crates:
     Knockback: 1.0
     Broadcast: false
     Firework: false
-    Block: CHEST
     Color: GOLD
   Ultra:
     Items:
@@ -42,7 +40,6 @@ Crates:
     Knockback: 2.0
     Broadcast: true
     Firework: true
-    Block: CHEST
     Color: DARK_PURPLE
 
 # Modify different options of the crate key
