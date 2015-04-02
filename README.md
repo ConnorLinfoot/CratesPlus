@@ -7,15 +7,13 @@ A free and great crates plugin for Minecraft.
 TODO:
  - Custom crates
  - Better holographic titles
- - Crate Previews - DONE
- - Win GUI - DONE
- - Custom messages - DONE
- - Update checks - DONE
-
+ - Animation GUI for winning
+ - In-Game crate editing, 0 access to the config would be required
+ - 1.7 Compatibility with Holograms, either using an API or custom coded for 1.7 servers
 
 Changeslogs:
 
-NOTE: As 2.0 is currently in development no more updates of 1.x will be released EXCEPT for bug fixes if required. There is currently no ETA of 2.0.
+NOTE: As 2.0 is currently in development no more updates of 1.x will be released EXCEPT for bug fixes if required. There is currently no ETA of 2.0 as it is going to be quite a major update and I don't have lots of time to work on it.
 
 2.0 (In Progress):
  - An all new config layout (Old versions will be converted to the new version on first run)
