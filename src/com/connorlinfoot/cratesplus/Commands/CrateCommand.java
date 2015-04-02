@@ -42,18 +42,27 @@ public class CrateCommand implements CommandExecutor {
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("crate")) {
             Player player;
+            Integer amount = null;
             String crateType;
             if (args.length == 1) {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player] [amount]");
                 return false;
             }
 
-            if (args.length == 3) {
+            if (args.length == 4) {
+                try {
+                    amount = Integer.parseInt(args[3]);
+                } catch (Exception ignore) {
+                    sender.sendMessage(ChatColor.RED + "Please enter a valid number");
+                    return false;
+                }
+                player = Bukkit.getPlayer(args[2]);
+            } else if (args.length == 3) {
                 player = Bukkit.getPlayer(args[2]);
             } else if (sender instanceof Player) {
                 player = (Player) sender;
             } else {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player] [amount]");
                 return false;
             }
 
@@ -69,7 +78,13 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
-            CrateHandler.giveCrate(player, crateType);
+            if (amount != null) {
+                for (Integer i = 0; i <= amount; i++) {
+                    CrateHandler.giveCrate(player, crateType);
+                }
+            } else {
+                CrateHandler.giveCrate(player, crateType);
+            }
             sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate");
             return true;
         }

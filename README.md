@@ -21,6 +21,7 @@ NOTE: As 2.0 is currently in development no more updates of 1.x will be released
  - An all new config layout (Old versions will be converted to the new version on first run)
  - Custom crates (WIP)
  - Better holographic titles above crates (WIP)
+ - Added amount "/crate key \<type\> [player] [amount]"
 
 1.3:
  - You can now use the Interact event if the Inventory Open event doesn't work for you
