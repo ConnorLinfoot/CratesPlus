@@ -30,11 +30,12 @@ public class CrateOpenEvent extends Event {
     }
 
     public void doEvent() {
-        // Spawn firework
+        /** Spawn firework */
         if (crate.isFirework()) {
             CrateHandler.spawnFirework(player.getLocation());
         }
 
+        /** Do broadcast */
         if (crate.isBroadcast()) {
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
             Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateType));

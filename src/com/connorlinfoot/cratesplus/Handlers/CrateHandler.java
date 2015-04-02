@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class CrateHandler {
 
@@ -105,18 +106,18 @@ public class CrateHandler {
     }
 
     public static void giveCrateKey(Player player) {
-        Integer number = randInt(0, 100);
-        // TODO FIX THIS
-        // Not really good at a way to do this, hoping this works. Any ideas on improvements send them! :)
-//        if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Common")) {
-//            giveCrateKey(player, CrateType.COMMON);
-//        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Rare")) {
-//            giveCrateKey(player, CrateType.RARE);
-//        } else if (number >= CratesPlus.getPlugin().getConfig().getInt("Crate Chances.Ultra")) {
-//            giveCrateKey(player, CrateType.ULTRA);
-//        } else {
-//            giveCrateKey(player, CrateType.COMMON);
-//        }
+        Set<String> crates = CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates").getKeys(false);
+        Integer random = randInt(0, crates.size() - 1);
+        String crateType = "";
+        Integer i = 0;
+        for (String crate : crates) {
+            if (i.equals(random)) {
+                crateType = crate;
+                break;
+            }
+            i++;
+        }
+        giveCrateKey(player, crateType);
     }
 
     public static void giveCrateKey(Player player, String crateType) {
