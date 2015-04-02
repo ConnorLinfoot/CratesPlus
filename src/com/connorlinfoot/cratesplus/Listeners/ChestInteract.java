@@ -1,5 +1,6 @@
 package com.connorlinfoot.cratesplus.Listeners;
 
+import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Events.CrateOpenEvent;
 import com.connorlinfoot.cratesplus.Events.CratePreviewEvent;
@@ -26,6 +27,7 @@ public class ChestInteract implements Listener {
         if (chestInventory.getTitle().contains(" Crate!")) {
             String crateType = "Common";
             // TODO get crates from config and check etc
+            Crate crate = new Crate(crateType);
             String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                 event.setCancelled(true);
@@ -44,9 +46,8 @@ public class ChestInteract implements Listener {
                         cratePreviewEvent.doEvent();
                 } else {
                     player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crateType));
-                    double knock = CratesPlus.getPlugin().getConfig().getDouble("Crate Knockback." + crateType);
-                    if (knock != 0) {
-                        player.setVelocity(player.getLocation().getDirection().multiply(-knock));
+                    if (crate.getKnockback() != 0) {
+                        player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
                     }
                 }
                 event.setCancelled(true);
