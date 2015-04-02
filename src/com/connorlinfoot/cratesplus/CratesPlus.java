@@ -2,6 +2,9 @@ package com.connorlinfoot.cratesplus;
 
 import com.connorlinfoot.cratesplus.Commands.CrateCommand;
 import com.connorlinfoot.cratesplus.Listeners.*;
+import com.connorlinfoot.cratesplus.Utils.PasteUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -9,6 +12,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +31,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Server server = getServer();
         final ConsoleCommandSender console = server.getConsoleSender();
         if (getConfig().isSet("Crate Knockback") || (getConfig().isSet("Config Version") && getConfig().getInt("Config Version") < 2)) {
-            convertConfig(console);
+            String oldConfig = backupConfig();
+            convertConfig(console, oldConfig);
         }
 
         // Do Prefix
@@ -66,7 +72,29 @@ public class CratesPlus extends JavaPlugin implements Listener {
         console.sendMessage("");
     }
 
-    private void convertConfig(ConsoleCommandSender console) {
+    private String backupConfig() {
+        File file = new File(getConfig().getCurrentPath());
+        if (!file.exists())
+            return null;
+        LineIterator it = null;
+        String lines = "";
+        try {
+            it = FileUtils.lineIterator(file, "UTF-8");
+            try {
+                while (it.hasNext()) {
+                    String line = it.nextLine();
+                    lines = lines + line + "\n";
+                }
+            } finally {
+                it.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return PasteUtils.paste(lines);
+    }
+
+    private void convertConfig(ConsoleCommandSender console, String oldConfig) {
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 2...");
 
         // Convert crate items
@@ -142,6 +170,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
         saveConfig();
 
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+        if (oldConfig != null && !oldConfig.equalsIgnoreCase(""))
+            console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
     }
 
     public static CratesPlus getPlugin() {
