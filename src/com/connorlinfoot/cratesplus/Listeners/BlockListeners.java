@@ -78,7 +78,7 @@ public class BlockListeners implements Listener {
 
                 @Override
                 public Plugin getOwningPlugin() {
-                    return null;
+                    return CratesPlus.getPlugin();
                 }
 
                 @Override

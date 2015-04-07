@@ -41,6 +41,13 @@ Crates:
     Broadcast: true
     Firework: true
     Color: DARK_PURPLE
+  Vote:
+    Items:
+    - GOLD_SWORD:1:DAMAGE_ALL-5
+    Knockback: 10.0
+    Broadcast: false
+    Firework: true
+    Color: YELLOW
 
 # Modify different options of the crate key
 Crate Keys:

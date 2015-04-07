@@ -122,6 +122,10 @@ public class CrateHandler {
 
     public static void giveCrateKey(Player player, String crateType) {
         if (player == null || !player.isOnline()) return;
+        if (crateType == null) {
+            giveCrateKey(player);
+            return;
+        }
 
         ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
         List<String> enchantments = CratesPlus.getPlugin().getConfig().getStringList("Crate Keys.Enchantments");

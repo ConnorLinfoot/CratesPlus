@@ -31,38 +31,35 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
+            String crateType = null;
             if (args.length >= 3) {
-                CrateHandler.giveCrateKey(player, args[2]);
+                crateType = args[2];
+            }
+
+            if (crateType != null) {
+                CrateHandler.giveCrateKey(player, crateType);
             } else {
                 CrateHandler.giveCrateKey(player);
             }
+
             sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
             return true;
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("crate")) {
             Player player;
-            Integer amount = null;
             String crateType;
             if (args.length == 1) {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player] [amount]");
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
                 return false;
             }
 
-            if (args.length == 4) {
-                try {
-                    amount = Integer.parseInt(args[3]);
-                } catch (Exception ignore) {
-                    sender.sendMessage(ChatColor.RED + "Please enter a valid number");
-                    return false;
-                }
-                player = Bukkit.getPlayer(args[2]);
-            } else if (args.length == 3) {
+            if (args.length == 3) {
                 player = Bukkit.getPlayer(args[2]);
             } else if (sender instanceof Player) {
                 player = (Player) sender;
             } else {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player] [amount]");
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
                 return false;
             }
 
@@ -77,14 +74,8 @@ public class CrateCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Please specify a valid crate type");
                 return false;
             }
+            CrateHandler.giveCrate(player, crateType);
 
-            if (amount != null) {
-                for (Integer i = 0; i <= amount; i++) {
-                    CrateHandler.giveCrate(player, crateType);
-                }
-            } else {
-                CrateHandler.giveCrate(player, crateType);
-            }
             sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate");
             return true;
         }
@@ -92,7 +83,7 @@ public class CrateCommand implements CommandExecutor {
         // Help Messages
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "----- CratePlus Help -----");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> [type] - Give player a random crate key");
-        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] [amount] - Give player a crate to be placed");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");
 
         return true;
     }
