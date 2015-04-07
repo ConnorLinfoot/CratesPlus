@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ChestOpen implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
         final Player player = (Player) event.getPlayer();
         ItemStack item = player.getItemInHand();

@@ -4,20 +4,19 @@ CratesPlus
 A free and great crates plugin for Minecraft.
 
 
-TODO:
- - Custom crates
- - Better holographic titles
- - Animation GUI for winning
- - In-Game crate editing, 0 access to the config would be required
-
 Changeslogs:
 
 NOTE: As 2.0 is currently in development no more updates of 1.x will be released EXCEPT for bug fixes if required. There is currently no ETA of 2.0 as it is going to be quite a major update and I don't have lots of time to work on it.
 
+2.1/TODO (Plans, Not Yet Being Worked On):
+ - In-Game crate editing
+ - Better titles
+ - Custom crate types
+
 2.0 (In Progress):
  - An all new config layout (Old versions will be converted to the new version on first run)
- - Custom crates (WIP)
- - Better holographic titles above crates (WIP)
+ - Custom crates and a whole new Crate setup
+ - Events, Developers can hook in if they wish to do stuff (CrateOpenEvent, CratePreviewEvent)
 
 1.3.1 (Not tested):
  - Fix for preview sizes not working correctly

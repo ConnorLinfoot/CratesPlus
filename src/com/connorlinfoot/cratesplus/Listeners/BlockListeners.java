@@ -18,18 +18,19 @@ import org.bukkit.plugin.Plugin;
 
 public class BlockListeners implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
         String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", "");
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
-            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), "Unknown"));
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), ChatColor.stripColor(item.getItemMeta().getDisplayName().replaceAll(title, ""))));
             event.setCancelled(true);
             return;
         }
 
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate!")) {
             final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
+            // BlockMeta to be used for some stuff in the future!
             event.getBlock().setMetadata("CrateType", new MetadataValue() {
                 @Override
                 public Object value() {
@@ -99,7 +100,7 @@ public class BlockListeners implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.getBlock().getState() instanceof Chest) {
             Chest chest = (Chest) event.getBlock().getState();

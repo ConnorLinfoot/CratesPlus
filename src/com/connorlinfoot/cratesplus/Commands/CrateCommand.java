@@ -36,6 +36,11 @@ public class CrateCommand implements CommandExecutor {
                 crateType = args[2];
             }
 
+            if (!CratesPlus.crates.containsKey(crateType)) {
+                sender.sendMessage(ChatColor.RED + "The specified crate type was not found");
+                return false;
+            }
+
             if (crateType != null) {
                 CrateHandler.giveCrateKey(player, crateType);
             } else {

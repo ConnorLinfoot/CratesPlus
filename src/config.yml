@@ -68,11 +68,11 @@ Crate Open GUI: false
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
 
-# Below are all messages that can me edited in the plugin
+# Below are all messages that can be edited in the plugin
 Messages:
   Prefix: "&7[&bCratesPlus&7]"
   Command No Permission: "&cYou do not have the correct permission to run this command"
   Crate Open Without Key: "&cYou must be holding a %crate% &ckey to open this crate"
   Key Given: "&aYou have been given a %crate% &acrate key"
   Broadcast: "&d%displayname% &dopened a %crate% &dcrate"
-  Cant Place: "&cYou cant place crate keys"
+  Cant Place: "&cYou can not place crate keys"

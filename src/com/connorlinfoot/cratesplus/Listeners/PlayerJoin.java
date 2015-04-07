@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoin implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (CratesPlus.updateAvailable && event.getPlayer().hasPermission("cratesplus.updates")) {
             event.getPlayer().sendMessage(CratesPlus.updateMessage);

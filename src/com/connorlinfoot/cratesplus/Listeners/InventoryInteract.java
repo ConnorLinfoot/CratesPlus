@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 public class InventoryInteract implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Possible Wins:")) {
             event.setCancelled(true);

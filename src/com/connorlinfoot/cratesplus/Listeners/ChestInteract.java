@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ChestInteract implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChestInteract(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
         if (event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.CHEST)
