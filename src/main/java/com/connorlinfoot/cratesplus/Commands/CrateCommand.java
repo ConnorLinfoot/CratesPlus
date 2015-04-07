@@ -9,7 +9,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CrateCommand implements CommandExecutor {
 
@@ -31,6 +35,34 @@ public class CrateCommand implements CommandExecutor {
             }
 
             sender.sendMessage(ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work");
+            return true;
+        }
+
+        if (args.length >= 1 && args[0].equalsIgnoreCase("create")) {
+            // /crate crate <name>
+            if (args.length < 2) {
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate create <name>");
+                return false;
+            }
+
+            String name = args[1];
+            FileConfiguration config = CratesPlus.getPlugin().getConfig();
+            if (config.isSet("Crates." + name)) {
+                sender.sendMessage(ChatColor.RED + name + " crate already exists");
+                return false;
+            }
+
+            List<String> items = new ArrayList<String>();
+            items.add("IRON_SWORD:1:DAMAGE_ALL-3");
+            config.set("Crates." + name + ".Items", items);
+            config.set("Crates." + name + ".Knockback", 0.0);
+            config.set("Crates." + name + ".Broadcast", false);
+            config.set("Crates." + name + ".Firework", false);
+            config.set("Crates." + name + ".Color", "WHITE");
+            CratesPlus.getPlugin().saveConfig();
+
+            sender.sendMessage(ChatColor.GREEN + name + " crate has been created");
+            return true;
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {
