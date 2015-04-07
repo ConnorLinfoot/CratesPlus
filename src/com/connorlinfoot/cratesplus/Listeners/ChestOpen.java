@@ -34,7 +34,6 @@ public class ChestOpen implements Listener {
                 CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
                 if (!crateOpenEvent.isCanceled())
                     crateOpenEvent.doEvent();
-                event.setCancelled(true);
             } else {
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Previews")) {
                     CratePreviewEvent cratePreviewEvent = new CratePreviewEvent(player, crateType);
@@ -46,8 +45,8 @@ public class ChestOpen implements Listener {
                         player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
                     }
                 }
-                event.setCancelled(true);
             }
+            event.setCancelled(true);
         }
     }
 

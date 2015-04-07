@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 public class BlockListeners implements Listener {
 
@@ -21,12 +23,69 @@ public class BlockListeners implements Listener {
         ItemStack item = event.getItemInHand();
         String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", "");
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
-            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), "Un"));
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), "Unknown"));
             event.setCancelled(true);
             return;
         }
 
         if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate!")) {
+            final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
+            event.getBlock().setMetadata("CrateType", new MetadataValue() {
+                @Override
+                public Object value() {
+                    return null;
+                }
+
+                @Override
+                public int asInt() {
+                    return 0;
+                }
+
+                @Override
+                public float asFloat() {
+                    return 0;
+                }
+
+                @Override
+                public double asDouble() {
+                    return 0;
+                }
+
+                @Override
+                public long asLong() {
+                    return 0;
+                }
+
+                @Override
+                public short asShort() {
+                    return 0;
+                }
+
+                @Override
+                public byte asByte() {
+                    return 0;
+                }
+
+                @Override
+                public boolean asBoolean() {
+                    return false;
+                }
+
+                @Override
+                public String asString() {
+                    return crateType;
+                }
+
+                @Override
+                public Plugin getOwningPlugin() {
+                    return null;
+                }
+
+                @Override
+                public void invalidate() {
+
+                }
+            });
             Location location = event.getBlock().getLocation();
             location.setY(location.getBlockY() - 1);
             location.setX(location.getBlockX() + 0.5);
@@ -36,7 +95,7 @@ public class BlockListeners implements Listener {
             armorStand.setVisible(false);
             armorStand.setGravity(false);
             armorStand.setCustomNameVisible(true);
-            armorStand.setCustomName(item.getItemMeta().getDisplayName().replace(" Crate!", ""));
+            armorStand.setCustomName(crateType);
         }
     }
 

@@ -29,7 +29,20 @@ public class CratePreviewEvent extends Event {
 
     public void doEvent() {
         List<String> items = crate.getItems();
-        Integer size = (int) Math.ceil(items.size() / 9) * 9;
+        Integer size;
+        if (items.size() <= 9) {
+            size = 9;
+        } else if (items.size() <= 18) {
+            size = 18;
+        } else if (items.size() <= 27) {
+            size = 27;
+        } else if (items.size() <= 36) {
+            size = 36;
+        } else if (items.size() <= 45) {
+            size = 45;
+        } else {
+            size = 54;
+        }
         Inventory inventory = Bukkit.createInventory(null, size, CratesPlus.crates.get(crateType).getColor() + crateType + " Possible Wins:");
         for (String i : items) {
             String[] args = i.split(":", -1);
