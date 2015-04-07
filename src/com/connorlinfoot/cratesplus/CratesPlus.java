@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,18 +23,19 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static HashMap<String, Crate> crates = new HashMap<String, Crate>();
     public static boolean updateAvailable = false;
     public static String updateMessage = "";
+    public static String configBackup = null;
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
 
     public void onEnable() {
         instance = this;
-        getConfig().options().copyDefaults(true);
-        saveConfig();
         Server server = getServer();
         final ConsoleCommandSender console = server.getConsoleSender();
         if (getConfig().isSet("Crate Knockback") || (getConfig().isSet("Config Version") && getConfig().getInt("Config Version") < 2)) {
             String oldConfig = backupConfig();
             convertConfig(console, oldConfig);
         }
+        getConfig().options().copyDefaults(true);
+        saveConfig();
 
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
@@ -70,13 +72,22 @@ public class CratesPlus extends JavaPlugin implements Listener {
         console.sendMessage("");
         console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         console.sendMessage("");
+
+        if (configBackup != null && Bukkit.getOnlinePlayers().length > 0) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.hasPermission("cratesplus.admin")) {
+                    player.sendMessage(pluginPrefix + ChatColor.GREEN + "Your config has been updated. Your old config was backed up to " + configBackup);
+                    configBackup = null;
+                }
+            }
+        }
     }
 
     private String backupConfig() {
-        File file = new File(getConfig().getCurrentPath());
+        File file = new File("plugins/CratesPlus/config.yml");
         if (!file.exists())
             return null;
-        LineIterator it = null;
+        LineIterator it;
         String lines = "";
         try {
             it = FileUtils.lineIterator(file, "UTF-8");
@@ -170,8 +181,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
         saveConfig();
 
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
-        if (oldConfig != null && !oldConfig.equalsIgnoreCase(""))
+        if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+            configBackup = oldConfig;
             console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+        }
     }
 
     public static CratesPlus getPlugin() {
