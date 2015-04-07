@@ -16,8 +16,8 @@ NOTE: As 2.0 is currently in development no more updates of 1.x will be released
  - Better titles
  - Custom crate types
 
-2.0 (In Progress):
- - An all new config layout (Old versions will be converted to the new version on first run)
+2.0:
+ - An all new config layout (Old versions will be converted to the new version on first run and a backup of the orginal will be given via a link)
  - Custom crates and a whole new Crate setup
  - Events, Developers can hook in if they wish to do stuff (CrateOpenEvent, CratePreviewEvent)
 

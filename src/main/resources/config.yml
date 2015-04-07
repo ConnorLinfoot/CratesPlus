@@ -1,5 +1,5 @@
 # [][][][][][][][][][][][][][][][][][][][][]
-#              CratesPlus V2.0
+#  CratesPlus V${project.version}
 # [][][][][][][][][][][][][][][][][][][][][]
 # ------------------------------------------
 # There are many placeholders that can now be used withing the config file for commands and messages, place holders are as followed:
