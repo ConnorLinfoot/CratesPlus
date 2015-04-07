@@ -18,7 +18,7 @@ public class Crate {
     public Crate(String name) {
         this.name = name;
         this.color = ChatColor.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Color").toUpperCase());
-        // TODO: Maybe for version 2.1? Or later in 2.0 we'll add custom blocks for crates
+        // TODO: Add custom blocks for crates
 //        this.block = Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Block").toUpperCase());
         this.firework = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Firework");
         this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");

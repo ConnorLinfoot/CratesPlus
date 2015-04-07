@@ -8,6 +8,10 @@
     <artifactId>CratesPlus</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -33,6 +37,9 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean package install</defaultGoal>
+        <finalName>CratesPlus</finalName>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
