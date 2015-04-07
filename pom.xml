@@ -12,6 +12,31 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <build>
+        <defaultGoal>clean package install</defaultGoal>
+        <finalName>CratesPlus-${project.version}</finalName>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -35,30 +60,5 @@
             <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <defaultGoal>clean package install</defaultGoal>
-        <finalName>CratesPlus</finalName>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-
-    </build>
 
 </project>
