@@ -18,7 +18,7 @@ NOTE: As 2.0 is currently in development no more updates of 1.x will be released
  - Custom crates and a whole new Crate setup
  - Events, Developers can hook in if they wish to do stuff (CrateOpenEvent, CratePreviewEvent)
 
-1.3.1 (Not tested):
+1.3.1:
  - Fix for preview sizes not working correctly
 
 1.3:
