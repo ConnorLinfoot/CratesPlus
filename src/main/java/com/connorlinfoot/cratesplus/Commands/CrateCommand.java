@@ -1,5 +1,6 @@
 package com.connorlinfoot.cratesplus.Commands;
 
+import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
@@ -17,6 +18,19 @@ public class CrateCommand implements CommandExecutor {
         if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
             sender.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, "Unknown"));
             return false;
+        }
+
+        if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
+            // Didn't really wanna add this, but so many requests so why the hell not
+
+            CratesPlus.getPlugin().reloadConfig();
+            CratesPlus.crates.clear();
+            // Register Crates
+            for (String crate : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates").getKeys(false)) {
+                CratesPlus.crates.put(crate, new Crate(crate));
+            }
+
+            sender.sendMessage(ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work");
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {

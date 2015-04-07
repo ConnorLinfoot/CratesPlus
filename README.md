@@ -9,15 +9,15 @@ A free and great crates plugin for Minecraft.
 
 Changeslogs:
 
-NOTE: As 2.0 is currently in development no more updates of 1.x will be released EXCEPT for bug fixes if required. There is currently no ETA of 2.0 as it is going to be quite a major update and I don't have lots of time to work on it.
 
-2.1/TODO (Plans, Not Yet Being Worked On):
+2.1 (In progress, some items may not make the final release):
+ - Added "/crate reload" command
  - In-Game crate editing
  - Better titles
  - Custom crate types
 
 2.0:
- - An all new config layout (Old versions will be converted to the new version on first run and a backup of the orginal will be given via a link)
+ - An all new config layout (Old versions will be converted to the new version on first run and a backup of the original will be given via a link)
  - Custom crates and a whole new Crate setup
  - Events, Developers can hook in if they wish to do stuff (CrateOpenEvent, CratePreviewEvent)
 
