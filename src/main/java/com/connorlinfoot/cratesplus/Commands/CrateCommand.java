@@ -65,6 +65,27 @@ public class CrateCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length >= 1 && args[0].equalsIgnoreCase("delete")) {
+            // /crate delete <name>
+            if (args.length < 2) {
+                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate delete <name>");
+                return false;
+            }
+
+            String name = args[1];
+            FileConfiguration config = CratesPlus.getPlugin().getConfig();
+            if (!config.isSet("Crates." + name)) {
+                sender.sendMessage(ChatColor.RED + name + " crate doesn't exist");
+                return false;
+            }
+
+            config.set("Crates." + name, null);
+            CratesPlus.getPlugin().saveConfig();
+
+            sender.sendMessage(ChatColor.GREEN + name + " crate has been deleted");
+            return true;
+        }
+
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Correct Usage: /crate key <player> [type]");
