@@ -12,9 +12,12 @@ Changeslogs:
 
 2.1 (In progress, some items may not make the final release):
  - Added "/crate reload" command
- - In-Game crate editing
+ - In-Game crate editing/managing
  - Better titles
  - Custom crate types
+
+2.0.1:
+ - Fixed an issue with not been able to run "/crate key" without specifying a key type (Thanks to kyle1264x on Spigot for reporting this)
 
 2.0:
  - An all new config layout (Old versions will be converted to the new version on first run and a backup of the original will be given via a link)
