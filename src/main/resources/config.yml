@@ -11,7 +11,15 @@
 # Don't change the config version!
 
 Config Version: 2
+
+# Different branches recieve different updates, Spigot uses the latest update from Spigot. Nightly uses the latest build from my CI server which may include bugs.
+Update Branch: Spigot
+
+# Checks if an update is available and notifies staff, uses Spigot
 Update Checks: true
+
+# If true the server will download and install an update when it becomes avaliable
+Auto Update: true
 
 # ITEMNAME-DATA:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
 # Commands can be like COMMAND:give %name% 100 coins

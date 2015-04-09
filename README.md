@@ -15,6 +15,7 @@ Changeslogs:
  - In-Game crate editing/managing
  - Better titles
  - Custom crate types
+ - Complete Auto-Updating, Including an option for early development/nightly builds
 
 2.0.1:
  - Fixed an issue with not been able to run "/crate key" without specifying a key type (Thanks to kyle1264x on Spigot for reporting this)
