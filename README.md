@@ -10,7 +10,7 @@ A free and great crates plugin for Minecraft.
 Changeslogs:
 
 
-2.1 (In progress, some items may not make the final release):
+3.0 (In progress, some items may not make the final release):
  - Added "/crate reload" command
  - In-Game crate editing/managing
  - Better titles
