@@ -79,8 +79,8 @@ public class Updater {
     }
 
     private void versionCheck() {
-        Double oldVersion = Double.valueOf(this.oldVersion);
-        Double currentVersion = Double.valueOf(this.version);
+        Integer oldVersion = Integer.parseInt(this.oldVersion.replace(".", ""));
+        Integer currentVersion = Integer.parseInt(this.version.replace(".", ""));
         if (oldVersion < currentVersion) {
             String[] localParts = this.oldVersion.split("\\.");
             String[] remoteParts = this.version.split("\\.");

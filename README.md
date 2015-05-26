@@ -14,7 +14,7 @@ Changeslogs:
  - Added "/crate reload" command
  - In-Game crate editing/managing
  - Better titles
- - Custom crate types
+ - Custom crate block types
  - Added /crate key all [type] - Give key to all players
  - Complete Auto-Updating, Including an option for early development/nightly builds
 
