@@ -21,36 +21,57 @@ public class Updater {
         NO_UPDATE,
         DISABLED,
         FAIL_SPIGOT,
-        FAIL_NOVERSION,
-        BAD_RESOURCEID,
-        UPDATE_AVAILABLE,
-        MAJOR_UPDATE_AVALIABLE
+        FAIL_NIGHTLY,
+        NIGHTLY_UPDATE_AVAILABLE,
+        SPIGOT_UPDATE_AVAILABLE,
+        MAJOR_NIGHTLY_UPDATE_AVAILABLE,
+        MAJOR_SPIGOT_UPDATE_AVAILABLE
     }
 
-    public Updater(JavaPlugin plugin, Integer resourceId, boolean disabled) {
-        String RESOURCE_ID = resourceId + "";
+    public Updater(JavaPlugin plugin, String branch) {
+        String RESOURCE_ID = "5018";
         oldVersion = plugin.getDescription().getVersion();
 
-        if (disabled) {
-            result = UpdateResult.DISABLED;
-            return;
-        }
+        if (branch.equalsIgnoreCase("spigot")) {
+            try {
+                String QUERY = "/api/general.php";
+                String HOST = "http://www.spigotmc.org";
+                connection = (HttpURLConnection) new URL(HOST + QUERY).openConnection();
+            } catch (IOException e) {
+                result = UpdateResult.FAIL_SPIGOT;
+                return;
+            }
 
-        try {
-            String QUERY = "/api/general.php";
-            String HOST = "http://www.spigotmc.org";
-            connection = (HttpURLConnection) new URL(HOST + QUERY).openConnection();
-        } catch (IOException e) {
-            result = UpdateResult.FAIL_SPIGOT;
-            return;
+            String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
+            WRITE_STRING = "key=" + API_KEY + "&resource=" + RESOURCE_ID;
+            runSpigot();
+        } else if (branch.equalsIgnoreCase("nightly")) {
+            runNightly();
         }
-
-        String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
-        WRITE_STRING = "key=" + API_KEY + "&resource=" + RESOURCE_ID;
-        run();
     }
 
-    private void run() {
+    private void runNightly() {
+        this.version = "0.0.0";
+        nightlyCheckUpdate();
+    }
+
+    private void nightlyCheckUpdate() {
+        Integer oldVersion = Integer.parseInt(this.oldVersion.replace(".", ""));
+        Integer currentVersion = Integer.parseInt(this.version.replace(".", ""));
+        if (oldVersion < currentVersion) {
+            String[] localParts = this.oldVersion.split("\\.");
+            String[] remoteParts = this.version.split("\\.");
+            if (Integer.parseInt(localParts[0]) < Integer.parseInt(remoteParts[0])) {
+                result = UpdateResult.MAJOR_NIGHTLY_UPDATE_AVAILABLE;
+            } else {
+                result = UpdateResult.NIGHTLY_UPDATE_AVAILABLE;
+            }
+        } else {
+            result = UpdateResult.NO_UPDATE;
+        }
+    }
+
+    private void runSpigot() {
         connection.setDoOutput(true);
         try {
             String REQUEST_METHOD = "POST";
@@ -67,27 +88,27 @@ public class Updater {
         try {
             version = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
         } catch (Exception e) {
-            result = UpdateResult.BAD_RESOURCEID;
+            result = UpdateResult.FAIL_SPIGOT;
             return;
         }
         if (version.length() <= 7) {
             this.version = version.replace("[^A-Za-z]", "").replace("|", "");
-            versionCheck();
+            spigotCheckUpdate();
             return;
         }
-        result = UpdateResult.BAD_RESOURCEID;
+        result = UpdateResult.FAIL_SPIGOT;
     }
 
-    private void versionCheck() {
+    private void spigotCheckUpdate() {
         Integer oldVersion = Integer.parseInt(this.oldVersion.replace(".", ""));
         Integer currentVersion = Integer.parseInt(this.version.replace(".", ""));
         if (oldVersion < currentVersion) {
             String[] localParts = this.oldVersion.split("\\.");
             String[] remoteParts = this.version.split("\\.");
             if (Integer.parseInt(localParts[0]) < Integer.parseInt(remoteParts[0])) {
-                result = UpdateResult.MAJOR_UPDATE_AVALIABLE;
+                result = UpdateResult.MAJOR_SPIGOT_UPDATE_AVAILABLE;
             } else {
-                result = UpdateResult.UPDATE_AVAILABLE;
+                result = UpdateResult.SPIGOT_UPDATE_AVAILABLE;
             }
         } else {
             result = UpdateResult.NO_UPDATE;

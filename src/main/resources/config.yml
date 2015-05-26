@@ -12,7 +12,7 @@
 
 Config Version: 2
 
-# Different branches recieve different updates, Spigot uses the latest update from Spigot. Nightly uses the latest build from my CI server which may include bugs.
+# Different branches receive different updates, Spigot uses the latest update from Spigot. Nightly uses the latest build from my CI server which may include bugs and unstable builds.
 Update Branch: Spigot
 
 # Checks if an update is available and notifies staff, uses Spigot

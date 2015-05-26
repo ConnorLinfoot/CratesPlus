@@ -1,6 +1,7 @@
 package com.connorlinfoot.cratesplus;
 
 import com.connorlinfoot.cratesplus.Commands.CrateCommand;
+import com.connorlinfoot.cratesplus.Handlers.SettingsHandler;
 import com.connorlinfoot.cratesplus.Listeners.*;
 import com.connorlinfoot.cratesplus.Utils.PasteUtils;
 import org.apache.commons.io.FileUtils;
@@ -26,6 +27,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static String updateMessage = "";
     public static String configBackup = null;
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
+    public static SettingsHandler settingsHandler;
 
     public void onEnable() {
         instance = this;
@@ -62,12 +64,12 @@ public class CratesPlus extends JavaPlugin implements Listener {
         if (!getConfig().getBoolean("Update Checks")) {
             getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
                 public void run() {
-                    checkUpdate(console,
-                            getConfig().getString("Update Branch"),
-                            getConfig().getBoolean("Auto Update"));
+                    checkUpdate(console, getConfig().getString("Update Branch"), getConfig().getBoolean("Auto Update"));
                 }
             }, 10L);
         }
+
+        settingsHandler = new SettingsHandler();
 
         console.sendMessage("");
         console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
@@ -199,24 +201,20 @@ public class CratesPlus extends JavaPlugin implements Listener {
     private void checkUpdate(final ConsoleCommandSender console, final String branch, final boolean install) {
         if (branch.equalsIgnoreCase("nightly")) {
             console.sendMessage(ChatColor.GREEN + "Oh, nightly builds? You're brave...");
-
+            console.sendMessage(ChatColor.RED + "Oh wait, sorry! Nightly builds aren't supported yet :(");
         } else if (branch.equalsIgnoreCase("spigot")) {
             console.sendMessage(ChatColor.GREEN + "Checking for updates via Spigot...");
-            final Updater updater = new Updater(this, 5018, false);
+            final Updater updater = new Updater(this, branch);
             final Updater.UpdateResult result = updater.getResult();
             switch (result) {
                 default:
                     break;
-                case BAD_RESOURCEID:
-                case FAIL_NOVERSION:
                 case FAIL_SPIGOT:
                     updateAvailable = false;
                     updateMessage = pluginPrefix + "Failed to check for updates. Will try again later.";
                     getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
                         public void run() {
-                            checkUpdate(console,
-                                    branch,
-                                    install);
+                            checkUpdate(console, branch, install);
                         }
                     }, 60 * (60 * 20L)); // Checks again an hour later
                     break;
@@ -225,9 +223,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
                     updateMessage = pluginPrefix + "No update was found, you are running the latest version. Will check again later.";
                     getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
                         public void run() {
-                            checkUpdate(console,
-                                    branch,
-                                    install);
+                            checkUpdate(console, branch, install);
                         }
                     }, 60 * (60 * 20L)); // Checks again an hour later
                     break;
@@ -235,11 +231,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
                     updateAvailable = false;
                     updateMessage = pluginPrefix + "You currently have update checks disabled";
                     break;
-                case UPDATE_AVAILABLE:
+                case SPIGOT_UPDATE_AVAILABLE:
                     updateAvailable = true;
                     updateMessage = pluginPrefix + "An update for CratesPlus is available, new version is " + updater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
                     break;
-                case MAJOR_UPDATE_AVALIABLE:
+                case MAJOR_SPIGOT_UPDATE_AVAILABLE:
                     updateAvailable = true;
                     updateMessage = pluginPrefix + "A major update for CratesPlus is available, new version is " + updater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
                     break;
@@ -247,4 +243,15 @@ public class CratesPlus extends JavaPlugin implements Listener {
             console.sendMessage(updateMessage);
         }
     }
+
+    public static void reloadPlugin() {
+        CratesPlus.getPlugin().reloadConfig();
+        CratesPlus.crates.clear();
+        for (String crate : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates").getKeys(false)) {
+            CratesPlus.crates.put(crate, new Crate(crate));
+        }
+        settingsHandler = new SettingsHandler();
+
+    }
+
 }
