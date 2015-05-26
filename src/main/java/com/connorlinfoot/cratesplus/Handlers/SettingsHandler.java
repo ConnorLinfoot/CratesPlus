@@ -82,7 +82,7 @@ public class SettingsHandler {
     }
 
     private void setupCratesInventory() {
-        crates = Bukkit.createInventory(null, 9, "Crates");
+        crates = Bukkit.createInventory(null, 54, "Crates");
 
         ItemStack itemStack;
         ItemMeta itemMeta;
@@ -102,6 +102,69 @@ public class SettingsHandler {
 
     public void openSettings(Player player) {
         player.openInventory(settings);
+    }
+
+    public void openCrates(Player player) {
+        player.openInventory(crates);
+    }
+
+    public void openCrate(Player player, String crateName) {
+        Crate crate = CratesPlus.crates.get(crateName);
+        if (crate == null) {
+            return; // TODO Better error handling here
+        }
+
+        Inventory inventory = Bukkit.createInventory(null, 9, "Edit " + crate.getName(false));
+
+        ItemStack itemStack;
+        ItemMeta itemMeta;
+        List<String> lore;
+
+
+        /** Rename Crate */
+
+        itemStack = new ItemStack(Material.NAME_TAG);
+        itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.WHITE + "Rename Crate");
+        lore = new ArrayList<String>();
+        lore.add("");
+        lore.add(ChatColor.DARK_GRAY + "Use /crate rename " + crate.getName(false).toLowerCase() + " <new name>");
+        lore.add("");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(1, itemStack);
+
+
+        /** Edit Crate Banter */
+
+
+        /** Edit Crate Winnings */
+
+        itemStack = new ItemStack(Material.DIAMOND);
+        itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.WHITE + "Edit Crate Winnings");
+        lore = new ArrayList<String>();
+        lore.add("");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(5, itemStack);
+
+
+        /** Delete Crate */
+
+        itemStack = new ItemStack(Material.BARRIER);
+        itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.WHITE + "Delete Crate");
+        lore = new ArrayList<String>();
+        lore.add("");
+        lore.add(ChatColor.DARK_GRAY + "Use /crate delete " + crate.getName(false).toLowerCase());
+        lore.add("");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(7, itemStack);
+
+        player.openInventory(inventory);
+
     }
 
 }
