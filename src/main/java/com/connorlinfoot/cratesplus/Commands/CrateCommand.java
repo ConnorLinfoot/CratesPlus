@@ -92,10 +92,13 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
-            Player player = Bukkit.getPlayer(args[1]);
-            if (player == null) {
-                sender.sendMessage(ChatColor.RED + "The player " + args[1] + " was not found");
-                return false;
+            Player player = null;
+            if (!args[1].equalsIgnoreCase("all")) {
+                player = Bukkit.getPlayer(args[1]);
+                if (player == null) {
+                    sender.sendMessage(ChatColor.RED + "The player " + args[1] + " was not found");
+                    return false;
+                }
             }
 
             String crateType = null;
@@ -104,12 +107,28 @@ public class CrateCommand implements CommandExecutor {
             }
 
             if (crateType != null) {
-                CrateHandler.giveCrateKey(player, crateType);
+                if (player == null) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        CrateHandler.giveCrateKey(p, crateType);
+                    }
+                } else {
+                    CrateHandler.giveCrateKey(player, crateType);
+                }
             } else {
-                CrateHandler.giveCrateKey(player);
+                if (player == null) {
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        CrateHandler.giveCrateKey(p);
+                    }
+                } else {
+                    CrateHandler.giveCrateKey(player);
+                }
             }
 
-            sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+            if (player == null) {
+                sender.sendMessage(ChatColor.GREEN + "Given all players " + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+            } else {
+                sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+            }
             return true;
         }
 

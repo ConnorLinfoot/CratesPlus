@@ -15,6 +15,7 @@ Changeslogs:
  - In-Game crate editing/managing
  - Better titles
  - Custom crate types
+ - Added /crate key all [type] - Give key to all players
  - Complete Auto-Updating, Including an option for early development/nightly builds
 
 2.0.1:
