@@ -7,6 +7,7 @@ import com.connorlinfoot.cratesplus.Events.CratePreviewEvent;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,8 +41,11 @@ public class ChestInteract implements Listener {
                     player.getInventory().remove(item);
                 }
                 CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
-                if (!crateOpenEvent.isCanceled())
+                if (!crateOpenEvent.isCanceled()) {
+                    // Open chest sound TODO add close sound?
+                    player.getLocation().getWorld().playSound(player.getLocation(), Sound.CHEST_OPEN, 10, 1);
                     crateOpenEvent.doEvent();
+                }
             } else {
                 if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Previews")) {
                     CratePreviewEvent cratePreviewEvent = new CratePreviewEvent(player, crateType);
