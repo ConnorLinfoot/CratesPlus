@@ -111,10 +111,10 @@ public class SettingsHandler {
     public void openCrate(Player player, String crateName) {
         Crate crate = CratesPlus.crates.get(crateName);
         if (crate == null) {
-            return; // TODO Better error handling here
+            return; // TODO Error handling here
         }
 
-        Inventory inventory = Bukkit.createInventory(null, 9, "Edit " + crate.getName(false));
+        Inventory inventory = Bukkit.createInventory(null, 9, "Edit " + crate.getName(false) + " Crate");
 
         ItemStack itemStack;
         ItemMeta itemMeta;
@@ -128,14 +128,14 @@ public class SettingsHandler {
         itemMeta.setDisplayName(ChatColor.WHITE + "Rename Crate");
         lore = new ArrayList<String>();
         lore.add("");
-        lore.add(ChatColor.DARK_GRAY + "Use /crate rename " + crate.getName(false).toLowerCase() + " <new name>");
+        lore.add(ChatColor.DARK_GRAY + "Use /crate rename " + crate.getName(false) + " <new name>");
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(1, itemStack);
 
 
-        /** Edit Crate Banter */
+        /** Edit Crate Banter (Not sure what to put here?) */
 
 
         /** Edit Crate Winnings */
@@ -156,8 +156,6 @@ public class SettingsHandler {
         itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + "Delete Crate");
         lore = new ArrayList<String>();
-        lore.add("");
-        lore.add(ChatColor.DARK_GRAY + "Use /crate delete " + crate.getName(false).toLowerCase());
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
