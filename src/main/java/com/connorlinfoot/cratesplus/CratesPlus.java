@@ -16,13 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class CratesPlus extends JavaPlugin implements Listener {
     private static CratesPlus instance;
-    public static Map<String, Crate> crates = new TreeMap<String, Crate>(String.CASE_INSENSITIVE_ORDER);
+    public static HashMap<String, Crate> crates = new HashMap<String, Crate>();
     public static boolean updateAvailable = false;
     public static String updateMessage = "";
     public static String configBackup = null;

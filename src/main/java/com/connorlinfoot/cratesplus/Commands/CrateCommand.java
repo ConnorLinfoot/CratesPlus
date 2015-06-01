@@ -101,6 +101,12 @@ public class CrateCommand implements CommandExecutor {
             }
 
             if (crateType != null) {
+
+                if (CratesPlus.crates.get(crateType) == null) {
+                    sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found, crates are case sensitive");
+                    return false;
+                }
+
                 if (player == null) {
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         CrateHandler.giveCrateKey(p, crateType);
@@ -154,6 +160,12 @@ public class CrateCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Please specify a valid crate type");
                 return false;
             }
+
+            if (CratesPlus.crates.get(crateType) == null) {
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found, crates are case sensitive");
+                return false;
+            }
+
             CrateHandler.giveCrate(player, crateType);
 
             sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate");
