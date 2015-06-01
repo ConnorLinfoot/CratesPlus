@@ -32,27 +32,12 @@ public class CrateCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length >= 1 && args[0].equalsIgnoreCase("gui")) { // Not sure what this arg will be on the final version
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                CratesPlus.settingsHandler.openSettings(player);
+        if (args.length >= 1 && args[0].equalsIgnoreCase("settings")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "This command must be ran as a player");
+                return false;
             }
-            return true;
-        }
-
-        if (args.length >= 1 && args[0].equalsIgnoreCase("gui2")) { // Not sure what this arg will be on the final version
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                CratesPlus.settingsHandler.openCrates(player);
-            }
-            return true;
-        }
-
-        if (args.length >= 1 && args[0].equalsIgnoreCase("gui3")) { // Not sure what this arg will be on the final version
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                CratesPlus.settingsHandler.openCrate(player, "Vote");
-            }
+            CratesPlus.settingsHandler.openSettings((Player) sender);
             return true;
         }
 
