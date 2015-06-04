@@ -20,24 +20,35 @@ public class SettingsListener implements Listener {
             return;
 
 
-        if (!event.getInventory().getTitle().contains("CratesPlus Settings"))
-            return;
+        if (event.getInventory().getTitle().contains("CratesPlus Settings")) {
 
-        if (itemStack == null || itemStack.getType() == Material.AIR || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
-            event.setCancelled(true);
-            return;
-        }
+            if (itemStack == null || itemStack.getType() == Material.AIR || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
+                event.setCancelled(true);
+                return;
+            }
 
-        if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crates")) {
-            player.closeInventory();
-            CratesPlus.settingsHandler.openCrates(player);
-            return;
-        }
+            if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crates")) {
+                player.closeInventory();
+                CratesPlus.settingsHandler.openCrates(player);
+                return;
+            }
 
-        if (event.getCurrentItem().getItemMeta().getDisplayName().contains(ChatColor.RED + "")) {
-            event.setCancelled(true);
-            player.closeInventory();
-            player.sendMessage(ChatColor.RED + "Coming Soon");
+            if (event.getCurrentItem().getItemMeta().getDisplayName().contains(ChatColor.RED + "")) {
+                event.setCancelled(true);
+                player.closeInventory();
+                player.sendMessage(ChatColor.RED + "Coming Soon");
+            }
+
+        } else if (event.getInventory().getTitle().contains("Crates")) {
+            if (itemStack == null || itemStack.getType() == Material.AIR || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if (event.getCurrentItem().getType() == Material.CHEST) {
+                player.closeInventory();
+                CratesPlus.settingsHandler.openCrate(player, ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
+            }
         }
 
     }
