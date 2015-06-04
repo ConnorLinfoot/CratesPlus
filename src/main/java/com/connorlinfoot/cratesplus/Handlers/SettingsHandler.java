@@ -47,7 +47,7 @@ public class SettingsHandler {
 
         itemStack = new ItemStack(Material.TRIPWIRE_HOOK);
         itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Edit Keys");
+        itemMeta.setDisplayName(ChatColor.RED + "Edit Keys");
         lore = new ArrayList<String>();
         lore.add("");
         itemMeta.setLore(lore);
@@ -59,7 +59,7 @@ public class SettingsHandler {
 
         itemStack = new ItemStack(Material.PAPER);
         itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Update Branch");
+        itemMeta.setDisplayName(ChatColor.RED + "Update Branch");
         lore = new ArrayList<String>();
         lore.add("");
         lore.add(ChatColor.DARK_GRAY + "Current Setting: " + CratesPlus.getPlugin().getConfig().getString("Update Branch"));
@@ -73,7 +73,7 @@ public class SettingsHandler {
 
         itemStack = new ItemStack(Material.BARRIER);
         itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Reload Config");
+        itemMeta.setDisplayName(ChatColor.RED + "Reload Config");
         lore = new ArrayList<String>();
         lore.add("");
         itemMeta.setLore(lore);

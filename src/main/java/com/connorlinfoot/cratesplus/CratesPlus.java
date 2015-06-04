@@ -54,6 +54,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
+        Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
         if (getConfig().getBoolean("Use Interact")) {
             Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
         } else {
