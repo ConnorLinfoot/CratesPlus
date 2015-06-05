@@ -1,3 +1,7 @@
+V3.0 Snapshot 2:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/68/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
+ - Fixed an issue with crate winnings not updating (Temp fix, will be improved soon)
+
 V3.0 Snapshot 1:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/67/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
  - Worked on updater, still got more work to do but it's more stable.
@@ -7,4 +11,4 @@ V3.0 Snapshot 1:
  - Added /crate reload
  - Added /crate key all [type]
  - Sound on crate opening when using interact event
- - Bug fixes and better handing with non-found crates
+ - Bug fixes and better handling with non-found crates

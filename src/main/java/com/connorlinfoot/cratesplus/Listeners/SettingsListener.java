@@ -32,7 +32,7 @@ public class SettingsListener implements Listener {
             }
             CratesPlus.getPlugin().getConfig().set("Crates." + crate.getName(false) + ".Items", items);
             CratesPlus.getPlugin().saveConfig();
-            CratesPlus.getPlugin().reloadConfig();
+            CratesPlus.reloadPlugin();
         }
     }
 
