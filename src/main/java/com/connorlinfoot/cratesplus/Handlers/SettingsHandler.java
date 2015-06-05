@@ -171,7 +171,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-        inventory.setItem(1, itemStack);
+//        inventory.setItem(1, itemStack);
 
 
         /** Edit Crate Banter (Not sure what to put here?) */
@@ -198,7 +198,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-        inventory.setItem(7, itemStack);
+//        inventory.setItem(7, itemStack);
 
         Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
             @Override

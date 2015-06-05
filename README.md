@@ -7,16 +7,19 @@ A free and great crates plugin for Minecraft.
 [![Build Status](http://ci.connorlinfoot.com:8080/buildStatus/icon?job=CratesPlus)](http://ci.connorlinfoot.com:8080/job/CratesPlus/)
 
 
+The latest dev build of this can be downloaded from the link on the image above. Please note this version can be buggy and will have uncompleted features and some features may be removed before release.
+
+
 Changeslogs:
 
 
 3.0 (In progress, some items may not make the final release):
  - Added "/crate reload" command
- - In-Game crate editing/managing
- - Better titles
- - Custom crate block types
+ - In-Game crate editing/managing, Use /crate settings
+ - Better titles - Not yet complete
+ - Custom crate block types - Not yet complete
  - Added /crate key all [type] - Give key to all players
- - Complete Auto-Updating, Including an option for early development/nightly builds
+ - Complete Auto-Updating, Including an option for early development/nightly builds - Not yet complete
 
 2.0.1:
  - Fixed an issue with not been able to run "/crate key" without specifying a key type (Thanks to kyle1264x on Spigot for reporting this)
