@@ -10,10 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class CrateHandler {
 
@@ -174,6 +171,83 @@ public class CrateHandler {
         crate.setItemMeta(crateMeta);
         player.getInventory().addItem(crate);
         player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType).getColor() + crateType + ChatColor.GREEN + " crate!");
+    }
+
+    public static ItemStack stringToItemstack(String i, Player player) {
+        String[] args = i.split(":", -1);
+        if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
+            /** Commands */
+            String command = args[1];
+            String title = "Command: /" + command;
+            if (args.length == 3) {
+                title = args[2];
+            }
+            command = command.replaceAll("%name%", player.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.RESET + title);
+            itemStack.setItemMeta(itemMeta);
+            return itemStack;
+        } else if (args.length == 1) {
+            /** Item without any amounts or enchantments */
+            String[] args1 = args[0].split("-");
+            ItemStack itemStack;
+            if (args1.length == 1) {
+                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
+            } else {
+                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
+            }
+            return itemStack;
+        } else if (args.length == 2) {
+            return new ItemStack(Material.getMaterial(args[0].toUpperCase()), Integer.parseInt(args[1]));
+        } else if (args.length == 3) {
+            String[] enchantments = args[2].split("\\|", -1);
+            ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
+            for (String e : enchantments) {
+                String[] args1 = e.split("-", -1);
+                if (args1.length == 1) {
+                    try {
+                        itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
+                    } catch (Exception ignored) {
+                    }
+                } else if (args1.length == 2) {
+                    try {
+                        itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+            return itemStack;
+        }
+        return null;
+    }
+
+    public static String itemstackToString(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR)
+            return null;
+
+        String finalString = "";
+        finalString = finalString + itemStack.getType().toString();
+        finalString = finalString + "-" + itemStack.getData().getData();
+        finalString = finalString + ":" + itemStack.getAmount();
+
+        int i = 0;
+        for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            Integer level = entry.getValue();
+            if (i == 0) {
+                finalString = finalString + ":";
+            }
+            if (level > 1) {
+                finalString = finalString + "|" + enchantment.toString() + "-" + level;
+            } else {
+                finalString = finalString + "|" + enchantment.toString();
+            }
+            i++;
+        }
+
+        return finalString;
     }
 
 }

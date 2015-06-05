@@ -100,21 +100,60 @@ public class SettingsHandler {
         }
     }
 
-    public void openSettings(Player player) {
-        player.openInventory(settings);
+    public void openSettings(final Player player) {
+        Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                player.openInventory(settings);
+            }
+        }, 1L);
     }
 
-    public void openCrates(Player player) {
-        player.openInventory(crates);
+    public void openCrates(final Player player) {
+        Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                player.openInventory(crates);
+            }
+        }, 1L);
     }
 
-    public void openCrate(Player player, String crateName) {
+    public void openCrateWinnings(final Player player, String crateName) {
         Crate crate = CratesPlus.crates.get(crateName);
         if (crate == null) {
             return; // TODO Error handling here
         }
 
-        Inventory inventory = Bukkit.createInventory(null, 9, "Edit " + crate.getName(false) + " Crate");
+        final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " Crate Winnings");
+
+        ItemStack itemStack;
+        ItemMeta itemMeta;
+        List<String> lore;
+
+        List<?> items = CratesPlus.getPlugin().getConfig().getList("Crates." + crate.getName(false) + ".Items");
+
+        for (Object item : items) {
+            String i = item.toString();
+            itemStack = CrateHandler.stringToItemstack(i, player);
+            inventory.addItem(itemStack);
+        }
+
+        Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                player.openInventory(inventory);
+            }
+        }, 1L);
+
+    }
+
+    public void openCrate(final Player player, String crateName) {
+        Crate crate = CratesPlus.crates.get(crateName);
+        if (crate == null) {
+            return; // TODO Error handling here
+        }
+
+        final Inventory inventory = Bukkit.createInventory(null, 9, "Edit " + crate.getName(false) + " Crate");
 
         ItemStack itemStack;
         ItemMeta itemMeta;
@@ -161,7 +200,12 @@ public class SettingsHandler {
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(7, itemStack);
 
-        player.openInventory(inventory);
+        Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                player.openInventory(inventory);
+            }
+        }, 1L);
 
     }
 
