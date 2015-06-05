@@ -1,3 +1,8 @@
+V3.0 Snapshot 3:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/69/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
+ - Improved crate winnings reload
+ - Fixes for crate deletion and creation
+
 V3.0 Snapshot 2:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/68/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
  - Fixed an issue with crate winnings not updating (Temp fix, will be improved soon)

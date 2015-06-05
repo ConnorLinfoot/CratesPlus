@@ -28,11 +28,12 @@ public class SettingsListener implements Listener {
             }
             Crate crate = CratesPlus.crates.get(crateName);
             if (crate == null) {
-                return; // TODO Error handling here
+                return;
             }
             CratesPlus.getPlugin().getConfig().set("Crates." + crate.getName(false) + ".Items", items);
             CratesPlus.getPlugin().saveConfig();
-            CratesPlus.reloadPlugin();
+            crate.reloadItems();
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Crate winnings updated");
         }
     }
 

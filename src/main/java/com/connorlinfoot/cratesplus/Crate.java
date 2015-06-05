@@ -55,6 +55,11 @@ public class Crate {
         return this.knockback;
     }
 
+    public void reloadItems() {
+        CratesPlus.getPlugin().reloadConfig();
+        this.items = CratesPlus.getPlugin().getConfig().getStringList("Crates." + name + ".Items");
+    }
+
     public List<String> getItems() {
         return this.items;
     }

@@ -1,5 +1,6 @@
 package com.connorlinfoot.cratesplus.Commands;
 
+import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
@@ -28,7 +29,7 @@ public class CrateCommand implements CommandExecutor {
 
             CratesPlus.reloadPlugin();
 
-            sender.sendMessage(ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work");
+            sender.sendMessage(ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
             return true;
         }
 
@@ -63,6 +64,9 @@ public class CrateCommand implements CommandExecutor {
             config.set("Crates." + name + ".Firework", false);
             config.set("Crates." + name + ".Color", "WHITE");
             CratesPlus.getPlugin().saveConfig();
+            CratesPlus.getPlugin().reloadConfig();
+
+            CratesPlus.crates.put(name, new Crate(name));
 
             sender.sendMessage(ChatColor.GREEN + name + " crate has been created");
             return true;
@@ -84,6 +88,8 @@ public class CrateCommand implements CommandExecutor {
 
             config.set("Crates." + name, null);
             CratesPlus.getPlugin().saveConfig();
+            CratesPlus.getPlugin().reloadConfig();
+            CratesPlus.crates.remove(name);
 
             sender.sendMessage(ChatColor.GREEN + name + " crate has been deleted");
             return true;
