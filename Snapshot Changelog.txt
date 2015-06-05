@@ -1,0 +1,10 @@
+V3.0 Snapshot 1:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/67/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
+ - Worked on updater, still got more work to do but it's more stable.
+ - Added /crate settings - Allows in-game crate editing, some features will be added soon
+ - Added /crate create <name>
+ - Added /crate delete <name>
+ - Added /crate reload
+ - Added /crate key all [type]
+ - Sound on crate opening when using interact event
+ - Bug fixes and better handing with non-found crates
