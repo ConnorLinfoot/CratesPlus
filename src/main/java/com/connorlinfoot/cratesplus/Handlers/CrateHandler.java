@@ -229,7 +229,9 @@ public class CrateHandler {
 
         String finalString = "";
         finalString = finalString + itemStack.getType().toString();
-        finalString = finalString + "-" + itemStack.getData().getData();
+        if (itemStack.getData().getData() != 0) {
+            finalString = finalString + "-" + itemStack.getData().getData();
+        }
         finalString = finalString + ":" + itemStack.getAmount();
 
         int i = 0;
@@ -238,11 +240,13 @@ public class CrateHandler {
             Integer level = entry.getValue();
             if (i == 0) {
                 finalString = finalString + ":";
+            } else {
+                finalString = finalString + "|";
             }
             if (level > 1) {
-                finalString = finalString + "|" + enchantment.toString() + "-" + level;
+                finalString = finalString + enchantment.getName().toUpperCase() + "-" + level;
             } else {
-                finalString = finalString + "|" + enchantment.toString();
+                finalString = finalString + enchantment.getName().toUpperCase();
             }
             i++;
         }
