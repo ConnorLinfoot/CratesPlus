@@ -10,7 +10,7 @@
 # ------------------------------------------
 # Don't change the config version!
 
-Config Version: 2
+Config Version: 3
 
 # Different branches receive different updates, Spigot uses the latest update from Spigot. Nightly uses the latest build from my CI server which may include bugs and unstable builds.
 Update Branch: Spigot
@@ -18,44 +18,23 @@ Update Branch: Spigot
 # Checks if an update is available and notifies staff, uses Spigot
 Update Checks: true
 
-# If true the server will download and install an update when it becomes avaliable
+# If true the server will download and install an update when it becomes available, currently not setup
 Auto Update: true
 
-# ITEMNAME-DATA:AMOUNT:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
+# ITEM_NAME-DATA:AMOUNT:CUSTOM_NAME:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
 # Commands can be like COMMAND:give %name% 100 coins
+# Custom Name can be "NONE" which will use the default item name in Minecraft
 # Item name must be a Bukkit material, list here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/material/package-summary.html
 Crates:
-  Common:
+  Example:
     Items:
-    - IRON_SWORD:1:DAMAGE_ALL-3
-    - COOKED_BEEF:32:DAMAGE_ALL-100
+    - IRON_SWORD:1:NONE:DAMAGE_ALL-3
+    - COOKED_BEEF:32:SUPER BEEF:DAMAGE_ALL-100
     - WOOL-5
     Knockback: 0.5
     Broadcast: false
     Firework: false
     Color: GREEN
-  Rare:
-    Items:
-    - DIAMOND_SWORD:1:DAMAGE_ALL
-    - COMMAND:say %name% This is all you won... enjoy!
-    Knockback: 1.0
-    Broadcast: false
-    Firework: false
-    Color: GOLD
-  Ultra:
-    Items:
-    - DIAMOND_SWORD:1:DAMAGE_ALL-3
-    Knockback: 2.0
-    Broadcast: true
-    Firework: true
-    Color: DARK_PURPLE
-  Vote:
-    Items:
-    - GOLD_SWORD:1:DAMAGE_ALL-5
-    Knockback: 10.0
-    Broadcast: false
-    Firework: true
-    Color: YELLOW
 
 # Modify different options of the crate key
 Crate Keys:
@@ -64,17 +43,11 @@ Crate Keys:
   Enchantments:
   - DAMAGE_ALL
 
-# If true the plugin will use the interact event instead of the inventory open event
-Use Interact: false
-
-# If true knockback will not happen and a GUI will open with what items can be won
-Crate Previews: false
-
-# If true when the player claims a crate a GUI will open with the winning item in (not yet done)
-Crate Open GUI: false
-
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
+
+# If true chest will show more info under name hologram
+More Info Hologram: true
 
 # Below are all messages that can be edited in the plugin
 Messages:

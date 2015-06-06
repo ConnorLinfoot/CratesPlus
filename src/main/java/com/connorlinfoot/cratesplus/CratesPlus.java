@@ -1,6 +1,7 @@
 package com.connorlinfoot.cratesplus;
 
 import com.connorlinfoot.cratesplus.Commands.CrateCommand;
+import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.SettingsHandler;
 import com.connorlinfoot.cratesplus.Listeners.*;
 import com.connorlinfoot.cratesplus.Utils.PasteUtils;
@@ -16,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +36,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
         final ConsoleCommandSender console = server.getConsoleSender();
         if (getConfig().isSet("Crate Knockback") || (getConfig().isSet("Config Version") && getConfig().getInt("Config Version") < 2)) {
             String oldConfig = backupConfig();
-            convertConfig(console, oldConfig);
+            convertConfigV2(console, oldConfig);
+        }
+        if (getConfig().getInt("Config Version") == 2) {
+            String oldConfig = backupConfig();
+            convertConfigV3(console, oldConfig); // Yay more config converting :/
         }
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -55,11 +61,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
         Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
-        if (getConfig().getBoolean("Use Interact")) {
-            Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
-        } else {
-            Bukkit.getPluginManager().registerEvents(new ChestOpen(), this);
-        }
+        Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
 
         if (!getConfig().getBoolean("Update Checks")) {
             getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
@@ -79,6 +81,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
         console.sendMessage("");
         console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         console.sendMessage("");
+        if (getDescription().getVersion().contains("SNAPSHOT")) { // Added this because some people didn't really understand what a "snapshot" is...
+            console.sendMessage(ChatColor.RED + "Warning: You are running a snapshot build of CratesPlus");
+            console.sendMessage(ChatColor.RED + "We advise that you do NOT run this on a production server!");
+            console.sendMessage("");
+        }
 
         if (configBackup != null && Bukkit.getOnlinePlayers().size() > 0) {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -112,7 +119,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         return PasteUtils.paste(lines);
     }
 
-    private void convertConfig(ConsoleCommandSender console, String oldConfig) {
+    private void convertConfigV2(ConsoleCommandSender console, String oldConfig) {
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 2...");
 
         // Convert crate items
@@ -183,6 +190,42 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Set config version
         getConfig().set("Config Version", 2);
+
+        // Save config
+        saveConfig();
+
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+        if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+            configBackup = oldConfig;
+            console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+        }
+    }
+
+    private void convertConfigV3(ConsoleCommandSender console, String oldConfig) {
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 3...");
+
+        for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+            List<?> items = getConfig().getList("Crates." + crate + ".Items");
+            List<String> newItems = new ArrayList<String>();
+            for (Object object : items) {
+                String i = object.toString();
+                if (i.toUpperCase().contains("COMMAND:")) {
+                    newItems.add(i);
+                } else {
+                    String newi = CrateHandler.itemstackToString(CrateHandler.stringToItemstackOld(i));
+                    newItems.add(newi);
+                }
+            }
+            getConfig().set("Crates." + crate + ".Items", newItems);
+        }
+
+        // Remove old options
+        getConfig().set("Use Interact", null);
+        getConfig().set("Crate Previews", null);
+        getConfig().set("Crate Open GUI", null);
+
+        // Set config version
+        getConfig().set("Config Version", 3);
 
         // Save config
         saveConfig();

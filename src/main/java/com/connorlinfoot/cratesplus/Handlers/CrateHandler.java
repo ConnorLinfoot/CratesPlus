@@ -173,7 +173,8 @@ public class CrateHandler {
         player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType).getColor() + crateType + ChatColor.GREEN + " crate!");
     }
 
-    public static ItemStack stringToItemstack(String i, Player player) {
+    @Deprecated
+    public static ItemStack stringToItemstackOld(String i) {
         String[] args = i.split(":", -1);
         if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
             /** Commands */
@@ -182,7 +183,6 @@ public class CrateHandler {
             if (args.length == 3) {
                 title = args[2];
             }
-            command = command.replaceAll("%name%", player.getName());
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -223,6 +223,83 @@ public class CrateHandler {
         return null;
     }
 
+    public static ItemStack stringToItemstack(String i, Player player, boolean isWin) {
+        String[] args = i.split(":", -1);
+        if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
+            /** Commands */
+            String command = args[1];
+            String title = "Command: /" + command;
+            if (args.length == 3) {
+                title = args[2];
+            }
+            command = command.replaceAll("%name%", player.getName());
+            title = title.replaceAll("%name%", player.getName());
+            if (isWin)
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.RESET + title);
+            itemStack.setItemMeta(itemMeta);
+            return itemStack;
+        } else if (args.length == 1) {
+            /** Item without any amounts, custom name or enchantments */
+            String[] args1 = args[0].split("-");
+            ItemStack itemStack;
+            if (args1.length == 1) {
+                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
+            } else {
+                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
+            }
+            return itemStack;
+        } else if (args.length == 2) {
+            String[] args1 = args[0].split("-");
+            if (args1.length == 1) {
+                return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
+            } else {
+                return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
+            }
+        } else if (args.length == 3) {
+            if (args[2].equalsIgnoreCase("NONE")) {
+                String[] args1 = args[0].split("-");
+                if (args1.length == 1) {
+                    return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
+                } else {
+                    return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
+                }
+            } else {
+                ItemStack itemStack = new ItemStack(Material.getMaterial(args[0].toUpperCase()), Integer.parseInt(args[1]));
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
+                itemStack.setItemMeta(itemMeta);
+                return itemStack;
+            }
+        } else if (args.length == 4) {
+            String[] enchantments = args[3].split("\\|", -1);
+            ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
+            for (String e : enchantments) {
+                String[] args1 = e.split("-", -1);
+                if (args1.length == 1) {
+                    try {
+                        itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
+                    } catch (Exception ignored) {
+                    }
+                } else if (args1.length == 2) {
+                    try {
+                        itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+            if (!args[2].equalsIgnoreCase("NONE")) {
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
+                itemStack.setItemMeta(itemMeta);
+            }
+            return itemStack;
+        }
+        return null;
+    }
+
     public static String itemstackToString(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR)
             return null;
@@ -233,6 +310,12 @@ public class CrateHandler {
             finalString = finalString + "-" + itemStack.getData().getData();
         }
         finalString = finalString + ":" + itemStack.getAmount();
+
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName()) {
+            finalString = finalString + ":" + itemStack.getItemMeta().getDisplayName();
+        } else {
+            finalString = finalString + ":NONE";
+        }
 
         int i = 0;
         for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
@@ -255,4 +338,3 @@ public class CrateHandler {
     }
 
 }
-

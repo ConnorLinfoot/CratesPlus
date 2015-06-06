@@ -23,7 +23,7 @@ public class SettingsHandler {
         setupCratesInventory();
     }
 
-    private void setupSettingsInventory() {
+    public void setupSettingsInventory() {
         settings = Bukkit.createInventory(null, 9, "CratesPlus Settings");
 
         ItemStack itemStack;
@@ -81,7 +81,7 @@ public class SettingsHandler {
         settings.setItem(7, itemStack);
     }
 
-    private void setupCratesInventory() {
+    public void setupCratesInventory() {
         crates = Bukkit.createInventory(null, 54, "Crates");
 
         ItemStack itemStack;
@@ -134,7 +134,7 @@ public class SettingsHandler {
 
         for (Object item : items) {
             String i = item.toString();
-            itemStack = CrateHandler.stringToItemstack(i, player);
+            itemStack = CrateHandler.stringToItemstack(i, player, false);
             inventory.addItem(itemStack);
         }
 
@@ -198,7 +198,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-//        inventory.setItem(7, itemStack);
+        inventory.setItem(7, itemStack);
 
         Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
             @Override

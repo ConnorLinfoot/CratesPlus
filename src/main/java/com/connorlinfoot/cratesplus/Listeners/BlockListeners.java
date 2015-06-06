@@ -91,12 +91,32 @@ public class BlockListeners implements Listener {
             location.setY(location.getBlockY() - 1);
             location.setX(location.getBlockX() + 0.5);
             location.setZ(location.getBlockZ() + 0.5);
-            Entity entity = location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
-            ArmorStand armorStand = (ArmorStand) entity;
-            armorStand.setVisible(false);
-            armorStand.setGravity(false);
-            armorStand.setCustomNameVisible(true);
-            armorStand.setCustomName(crateType);
+
+            if (CratesPlus.getPlugin().getConfig().getBoolean("More Info Hologram")) {
+                ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.4, 0), EntityType.ARMOR_STAND);
+                armorStand.setVisible(false);
+                armorStand.setGravity(false);
+                armorStand.setCustomNameVisible(true);
+                armorStand.setCustomName(crateType);
+
+                ArmorStand armorStand2 = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
+                armorStand2.setVisible(false);
+                armorStand2.setGravity(false);
+                armorStand2.setCustomNameVisible(true);
+                armorStand2.setCustomName(ChatColor.GRAY + "Right-Click to Open!");
+
+                ArmorStand armorStand3 = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
+                armorStand3.setVisible(false);
+                armorStand3.setGravity(false);
+                armorStand3.setCustomNameVisible(true);
+                armorStand3.setCustomName(ChatColor.GRAY + "Left-Click to Preview!");
+            } else {
+                ArmorStand armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+                armorStand.setVisible(false);
+                armorStand.setGravity(false);
+                armorStand.setCustomNameVisible(true);
+                armorStand.setCustomName(crateType);
+            }
         }
     }
 
@@ -106,17 +126,21 @@ public class BlockListeners implements Listener {
             Chest chest = (Chest) event.getBlock().getState();
             if (chest.getInventory().getTitle() != null && chest.getInventory().getTitle().contains("Crate!")) {
                 Location location = chest.getLocation();
-                if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin")) {
-                    event.getPlayer().sendMessage(ChatColor.RED + "You do not have permission to remove this crate");
+
+                if (event.getPlayer().isSneaking() && (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
+                    event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You do not have permission to remove this crate");
+                    event.setCancelled(true);
+                    return;
+                } else if (!event.getPlayer().isSneaking()) {
+                    event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Sneak to break crates");
                     event.setCancelled(true);
                     return;
                 }
                 for (Entity entity : location.getWorld().getEntities()) {
                     if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
                     String name = chest.getInventory().getTitle().replace(" Crate!", "");
-                    if (name != null && name.equals(entity.getCustomName()) && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ() && entity.getLocation().getBlockY() + 1 == chest.getY()) {
+                    if (name != null && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ()) {
                         entity.remove();
-                        break;
                     }
                 }
             }

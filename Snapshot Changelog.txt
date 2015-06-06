@@ -1,10 +1,27 @@
+V3.0 Snapshot 4:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/72/artifact/target/CratesPlus-3.0-SNAPSHOT-4.jar
+ - Custom item names (View new config, it should auto update and give you a link for a backup)
+ - Removed "listener" debug message
+ - Fixed some issues with creating/deleting crates
+ - Added "warning" for when a version is a snapshot
+ - You must now "sneak" to break Crates
+ - Left clicking a Crate will ALWAYS show you the winnings available
+ - Right clicking a crate will ALWAYS attempt to use a key, Knockback will be used if no key is been held
+ - Added "More Info Hologram" to config for better hologram info
+ - Removed "non-gui" options from config
+ - Removed "interact" option from config, now always uses interact event
+ - Fixed bug with commands been ran even on previews
+ - Fixed bug with data not always been used correctly
+ - Fixed bug when closing winnings GUI
+
+
 V3.0 Snapshot 3:
- Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/70/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/70/artifact/target/CratesPlus-3.0-SNAPSHOT-3.jar
  - Improved crate winnings reload
  - Fixes for crate deletion and creation
 
 V3.0 Snapshot 2:
- Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/68/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/68/artifact/target/CratesPlus-3.0-SNAPSHOT-2.jar
  - Fixed an issue with crate winnings not updating (Temp fix, will be improved soon)
 
 V3.0 Snapshot 1:

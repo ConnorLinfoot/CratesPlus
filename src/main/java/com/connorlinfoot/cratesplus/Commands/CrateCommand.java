@@ -26,10 +26,8 @@ public class CrateCommand implements CommandExecutor {
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
             // Didn't really wanna add this, but so many requests so why the hell not
-
             CratesPlus.reloadPlugin();
-
-            sender.sendMessage(ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
             return true;
         }
 
@@ -45,14 +43,14 @@ public class CrateCommand implements CommandExecutor {
         if (args.length >= 1 && args[0].equalsIgnoreCase("create")) {
             // /crate crate <name>
             if (args.length < 2) {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate create <name>");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate create <name>");
                 return false;
             }
 
             String name = args[1];
             FileConfiguration config = CratesPlus.getPlugin().getConfig();
             if (config.isSet("Crates." + name)) {
-                sender.sendMessage(ChatColor.RED + name + " crate already exists");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + name + " crate already exists");
                 return false;
             }
 
@@ -67,22 +65,23 @@ public class CrateCommand implements CommandExecutor {
             CratesPlus.getPlugin().reloadConfig();
 
             CratesPlus.crates.put(name, new Crate(name));
+            CratesPlus.settingsHandler.setupCratesInventory();
 
-            sender.sendMessage(ChatColor.GREEN + name + " crate has been created");
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + name + " crate has been created");
             return true;
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("delete")) {
             // /crate delete <name>
             if (args.length < 2) {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate delete <name>");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate delete <name>");
                 return false;
             }
 
             String name = args[1];
             FileConfiguration config = CratesPlus.getPlugin().getConfig();
             if (!config.isSet("Crates." + name)) {
-                sender.sendMessage(ChatColor.RED + name + " crate doesn't exist");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + name + " crate doesn't exist");
                 return false;
             }
 
@@ -90,14 +89,15 @@ public class CrateCommand implements CommandExecutor {
             CratesPlus.getPlugin().saveConfig();
             CratesPlus.getPlugin().reloadConfig();
             CratesPlus.crates.remove(name);
+            CratesPlus.settingsHandler.setupCratesInventory();
 
-            sender.sendMessage(ChatColor.GREEN + name + " crate has been deleted");
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + name + " crate has been deleted");
             return true;
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {
             if (args.length < 2) {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate key <player> [type]");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate key <player> [type]");
                 return false;
             }
 
@@ -105,7 +105,7 @@ public class CrateCommand implements CommandExecutor {
             if (!args[1].equalsIgnoreCase("all")) {
                 player = Bukkit.getPlayer(args[1]);
                 if (player == null) {
-                    sender.sendMessage(ChatColor.RED + "The player " + args[1] + " was not found");
+                    sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "The player " + args[1] + " was not found");
                     return false;
                 }
             }
@@ -140,9 +140,9 @@ public class CrateCommand implements CommandExecutor {
             }
 
             if (player == null) {
-                sender.sendMessage(ChatColor.GREEN + "Given all players " + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Given all players " + ChatColor.RESET + ChatColor.GREEN + " a crate key");
             } else {
-                sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
             }
             return true;
         }
@@ -151,7 +151,7 @@ public class CrateCommand implements CommandExecutor {
             Player player;
             String crateType;
             if (args.length == 1) {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
                 return false;
             }
 
@@ -160,19 +160,19 @@ public class CrateCommand implements CommandExecutor {
             } else if (sender instanceof Player) {
                 player = (Player) sender;
             } else {
-                sender.sendMessage(ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate crate <type> [player]");
                 return false;
             }
 
             if (player == null) {
-                sender.sendMessage(ChatColor.RED + "The player " + args[1] + " was not found");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "The player " + args[1] + " was not found");
                 return false;
             }
 
             try {
                 crateType = args[1];
             } catch (IllegalArgumentException e) {
-                sender.sendMessage(ChatColor.RED + "Please specify a valid crate type");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Please specify a valid crate type");
                 return false;
             }
 
@@ -183,13 +183,16 @@ public class CrateCommand implements CommandExecutor {
 
             CrateHandler.giveCrate(player, crateType);
 
-            sender.sendMessage(ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate");
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate");
             return true;
         }
 
         // Help Messages
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "----- CratePlus Help -----");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate reload - Reload configuration for CratesPlus (Experimental)");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate settings - Edit settings of CratesPlus and crate winnings");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate create <name> - Create a new crate");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate delete <name> - Delete a crate");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> [type] - Give player a random crate key");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");
 
