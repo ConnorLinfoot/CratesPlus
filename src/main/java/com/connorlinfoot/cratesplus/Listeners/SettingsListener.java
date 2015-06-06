@@ -110,6 +110,8 @@ public class SettingsListener implements Listener {
                 CratesPlus.crates.remove(name.toLowerCase());
                 CratesPlus.settingsHandler.setupCratesInventory();
                 player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + name + " crate has been deleted");
+            } else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename Crate")) {
+                event.setCancelled(true);
             }
 
         }

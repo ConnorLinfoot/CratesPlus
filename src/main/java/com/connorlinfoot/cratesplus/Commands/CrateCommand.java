@@ -77,18 +77,25 @@ public class CrateCommand implements CommandExecutor {
 
             String oldName = args[1];
             String newName = args[2];
+
+            if (!CratesPlus.crates.containsKey(oldName.toLowerCase())) {
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + oldName + " crate was not found");
+                return false;
+            }
+            Crate crate = CratesPlus.crates.get(oldName.toLowerCase());
+
             FileConfiguration config = CratesPlus.getPlugin().getConfig();
             if (config.isSet("Crates." + newName)) {
                 sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + newName + " crate already exists");
                 return false;
             }
 
-            config.set("Crates." + newName + ".Items", config.getList("Crates." + oldName + ".Items"));
-            config.set("Crates." + newName + ".Knockback", config.getDouble("Crates." + oldName + ".Knockback"));
-            config.set("Crates." + newName + ".Broadcast", config.getBoolean("Crates." + oldName + ".Broadcast"));
-            config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + oldName + ".Firework"));
-            config.set("Crates." + newName + ".Color", config.getString("Crates." + oldName + ".Color"));
-            config.set("Crates." + oldName, null);
+            config.set("Crates." + newName + ".Items", config.getList("Crates." + crate.getName(false) + ".Items"));
+            config.set("Crates." + newName + ".Knockback", config.getDouble("Crates." + crate.getName(false) + ".Knockback"));
+            config.set("Crates." + newName + ".Broadcast", config.getBoolean("Crates." + crate.getName(false) + ".Broadcast"));
+            config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + crate.getName(false) + ".Firework"));
+            config.set("Crates." + newName + ".Color", config.getString("Crates." + crate.getName(false) + ".Color"));
+            config.set("Crates." + crate.getName(false), null);
             CratesPlus.getPlugin().saveConfig();
             CratesPlus.getPlugin().reloadConfig();
 

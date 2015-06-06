@@ -4,7 +4,6 @@ V3.0 Snapshot 6:
  - Added "/crate rename <old> <new>"
  - Cleaned up updater a little
 
-
 V3.0 Snapshot 5:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/73/artifact/target/CratesPlus-3.0-SNAPSHOT-5.jar
  - Removed auto updating from config (Don't really want this actually)
