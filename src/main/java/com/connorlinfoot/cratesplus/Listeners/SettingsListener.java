@@ -54,10 +54,18 @@ public class SettingsListener implements Listener {
                 return;
             }
 
-            if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crates")) {
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Edit Crates")) {
                 event.setCancelled(true);
                 player.closeInventory();
                 CratesPlus.settingsHandler.openCrates(player);
+                return;
+            }
+
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Reload Config")) {
+                event.setCancelled(true);
+                player.closeInventory();
+                CratesPlus.reloadPlugin();
+                player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
                 return;
             }
 

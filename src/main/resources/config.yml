@@ -33,7 +33,7 @@ Crates:
 # Modify different options of the crate key
 Crate Keys:
   Item: TRIPWIRE_HOOK
-  Name: "%type% Crate Key!"
+  Name: "%type% Crate Key"
   Enchantments:
   - DAMAGE_ALL
 

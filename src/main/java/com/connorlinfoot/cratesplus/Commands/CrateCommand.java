@@ -25,7 +25,6 @@ public class CrateCommand implements CommandExecutor {
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
-            // Didn't really wanna add this, but so many requests so why the hell not
             CratesPlus.reloadPlugin();
             sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
             return true;
@@ -41,7 +40,6 @@ public class CrateCommand implements CommandExecutor {
         }
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("create")) {
-            // /crate crate <name>
             if (args.length < 2) {
                 sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate create <name>");
                 return false;
@@ -71,8 +69,38 @@ public class CrateCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length >= 1 && args[0].equalsIgnoreCase("rename")) {
+            if (args.length < 3) {
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate rename <old name> <new name>");
+                return false;
+            }
+
+            String oldName = args[1];
+            String newName = args[2];
+            FileConfiguration config = CratesPlus.getPlugin().getConfig();
+            if (config.isSet("Crates." + newName)) {
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + newName + " crate already exists");
+                return false;
+            }
+
+            config.set("Crates." + newName + ".Items", config.getList("Crates." + oldName + ".Items"));
+            config.set("Crates." + newName + ".Knockback", config.getDouble("Crates." + oldName + ".Knockback"));
+            config.set("Crates." + newName + ".Broadcast", config.getBoolean("Crates." + oldName + ".Broadcast"));
+            config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + oldName + ".Firework"));
+            config.set("Crates." + newName + ".Color", config.getString("Crates." + oldName + ".Color"));
+            config.set("Crates." + oldName, null);
+            CratesPlus.getPlugin().saveConfig();
+            CratesPlus.getPlugin().reloadConfig();
+
+            CratesPlus.crates.remove(oldName.toLowerCase());
+            CratesPlus.crates.put(newName.toLowerCase(), new Crate(newName));
+            CratesPlus.settingsHandler.setupCratesInventory();
+
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + oldName + " has been renamed to " + newName);
+            return true;
+        }
+
         if (args.length >= 1 && args[0].equalsIgnoreCase("delete")) {
-            // /crate delete <name>
             if (args.length < 2) {
                 sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate delete <name>");
                 return false;
@@ -187,11 +215,17 @@ public class CrateCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length > 0 && !args[0].equalsIgnoreCase("help")) {
+            sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Unknown args");
+            return false;
+        }
+
         // Help Messages
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "----- CratePlus Help -----");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate reload - Reload configuration for CratesPlus (Experimental)");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate settings - Edit settings of CratesPlus and crate winnings");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate create <name> - Create a new crate");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate rename <old name> <new name> - Rename a new crate");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate delete <name> - Delete a crate");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> [type] - Give player a random crate key");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");

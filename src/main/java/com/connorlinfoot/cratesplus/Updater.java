@@ -21,10 +21,7 @@ public class Updater {
         NO_UPDATE,
         DISABLED,
         FAIL_SPIGOT,
-        FAIL_NIGHTLY,
-        NIGHTLY_UPDATE_AVAILABLE,
         SPIGOT_UPDATE_AVAILABLE,
-        MAJOR_NIGHTLY_UPDATE_AVAILABLE,
         MAJOR_SPIGOT_UPDATE_AVAILABLE
     }
 
@@ -43,27 +40,6 @@ public class Updater {
         String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
         WRITE_STRING = "key=" + API_KEY + "&resource=" + RESOURCE_ID;
         runSpigot();
-    }
-
-    private void runNightly() {
-        this.version = "0.0.0";
-        nightlyCheckUpdate();
-    }
-
-    private void nightlyCheckUpdate() {
-        Integer oldVersion = Integer.parseInt(this.oldVersion.replace(".", ""));
-        Integer currentVersion = Integer.parseInt(this.version.replace(".", ""));
-        if (oldVersion < currentVersion) {
-            String[] localParts = this.oldVersion.split("\\.");
-            String[] remoteParts = this.version.split("\\.");
-            if (Integer.parseInt(localParts[0]) < Integer.parseInt(remoteParts[0])) {
-                result = UpdateResult.MAJOR_NIGHTLY_UPDATE_AVAILABLE;
-            } else {
-                result = UpdateResult.NIGHTLY_UPDATE_AVAILABLE;
-            }
-        } else {
-            result = UpdateResult.NO_UPDATE;
-        }
     }
 
     private void runSpigot() {

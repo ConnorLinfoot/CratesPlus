@@ -150,8 +150,8 @@ public class CrateHandler {
         String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crate.getName(true));
         keyMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + crate.getName(true) + ChatColor.DARK_GRAY + "\" crate");
-        lore.add(ChatColor.DARK_GRAY + "to win an item!");
+        lore.add(ChatColor.GRAY + "Right-Click on a \"" + crate.getName(true) + ChatColor.GRAY + "\" crate");
+        lore.add(ChatColor.GRAY + "to win an item!");
         lore.add("");
         keyMeta.setLore(lore);
         key.setItemMeta(keyMeta);
@@ -169,7 +169,7 @@ public class CrateHandler {
         ItemMeta crateMeta = crateItem.getItemMeta();
         crateMeta.setDisplayName(crate.getName(true) + " Crate!");
         List<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.DARK_GRAY + "Place this crate somewhere!");
+        lore.add(ChatColor.GRAY + "Place this crate somewhere!");
         lore.add("");
         crateMeta.setLore(lore);
         crateItem.setItemMeta(crateMeta);

@@ -35,7 +35,7 @@ public class SettingsHandler {
 
         itemStack = new ItemStack(Material.CHEST);
         itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Edit Crates");
+        itemMeta.setDisplayName(ChatColor.GREEN + "Edit Crates");
         lore = new ArrayList<String>();
         lore.add("");
         itemMeta.setLore(lore);
@@ -43,42 +43,16 @@ public class SettingsHandler {
         settings.setItem(1, itemStack);
 
 
-        /** Key Settings */
+        /** Reload Config */
 
-        itemStack = new ItemStack(Material.TRIPWIRE_HOOK);
+        itemStack = new ItemStack(Material.BARRIER);
         itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.RED + "Edit Keys");
+        itemMeta.setDisplayName(ChatColor.GREEN + "Reload Config");
         lore = new ArrayList<String>();
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         settings.setItem(3, itemStack);
-
-
-        /** Update Branch */
-
-        itemStack = new ItemStack(Material.PAPER);
-        itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.RED + "Update Branch");
-        lore = new ArrayList<String>();
-        lore.add("");
-        lore.add(ChatColor.DARK_GRAY + "Current Setting: " + CratesPlus.getPlugin().getConfig().getString("Update Branch"));
-        lore.add("");
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        settings.setItem(5, itemStack);
-
-
-        /** Reload Config */
-
-        itemStack = new ItemStack(Material.BARRIER);
-        itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.RED + "Reload Config");
-        lore = new ArrayList<String>();
-        lore.add("");
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        settings.setItem(7, itemStack);
     }
 
     public void setupCratesInventory() {
@@ -164,17 +138,14 @@ public class SettingsHandler {
 
         itemStack = new ItemStack(Material.NAME_TAG);
         itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.WHITE + "Rename Crate");
+        itemMeta.setDisplayName(ChatColor.RED + "Rename Crate");
         lore = new ArrayList<String>();
         lore.add("");
-        lore.add(ChatColor.DARK_GRAY + "Use /crate rename " + crate.getName(false) + " <new name>");
+        lore.add(ChatColor.GRAY + "Use /crate rename " + crate.getName(false) + " <new name>");
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-//        inventory.setItem(1, itemStack);
-
-
-        /** Edit Crate Banter (Not sure what to put here?) */
+        inventory.setItem(1, itemStack);
 
 
         /** Edit Crate Winnings */
@@ -186,7 +157,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-        inventory.setItem(5, itemStack);
+        inventory.setItem(3, itemStack);
 
 
         /** Delete Crate */
@@ -198,7 +169,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-        inventory.setItem(7, itemStack);
+        inventory.setItem(5, itemStack);
 
         Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
             @Override
