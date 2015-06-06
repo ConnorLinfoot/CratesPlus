@@ -1,3 +1,11 @@
+V3.0 Snapshot 5:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/73/artifact/target/CratesPlus-3.0-SNAPSHOT-5.jar
+ - Removed auto updating from config (Don't really want this actually)
+ - Removed option for "dev" branch, always uses Spigot
+ - Won't check for updates if running a snapshot build
+ - Crate names are no longer case sensitive
+ - Fixed more issues with how item data was handled
+
 V3.0 Snapshot 4:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/72/artifact/target/CratesPlus-3.0-SNAPSHOT-4.jar
  - Custom item names (View new config, it should auto update and give you a link for a backup)

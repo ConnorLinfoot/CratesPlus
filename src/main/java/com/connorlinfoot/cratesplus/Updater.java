@@ -28,26 +28,21 @@ public class Updater {
         MAJOR_SPIGOT_UPDATE_AVAILABLE
     }
 
-    public Updater(JavaPlugin plugin, String branch) {
+    public Updater(JavaPlugin plugin) {
         String RESOURCE_ID = "5018";
         oldVersion = plugin.getDescription().getVersion();
-
-        if (branch.equalsIgnoreCase("spigot")) {
-            try {
-                String QUERY = "/api/general.php";
-                String HOST = "http://www.spigotmc.org";
-                connection = (HttpURLConnection) new URL(HOST + QUERY).openConnection();
-            } catch (IOException e) {
-                result = UpdateResult.FAIL_SPIGOT;
-                return;
-            }
-
-            String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
-            WRITE_STRING = "key=" + API_KEY + "&resource=" + RESOURCE_ID;
-            runSpigot();
-        } else if (branch.equalsIgnoreCase("nightly")) {
-            runNightly();
+        try {
+            String QUERY = "/api/general.php";
+            String HOST = "http://www.spigotmc.org";
+            connection = (HttpURLConnection) new URL(HOST + QUERY).openConnection();
+        } catch (IOException e) {
+            result = UpdateResult.FAIL_SPIGOT;
+            return;
         }
+
+        String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
+        WRITE_STRING = "key=" + API_KEY + "&resource=" + RESOURCE_ID;
+        runSpigot();
     }
 
     private void runNightly() {

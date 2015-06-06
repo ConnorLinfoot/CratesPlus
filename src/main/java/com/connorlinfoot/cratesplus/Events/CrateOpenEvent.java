@@ -24,7 +24,7 @@ public class CrateOpenEvent extends Event {
     public CrateOpenEvent(Player player, String crateType) {
         this.player = player;
         this.crateType = crateType;
-        this.crate = CratesPlus.crates.get(crateType);
+        this.crate = CratesPlus.crates.get(crateType.toLowerCase());
     }
 
     public void doEvent() {
@@ -41,7 +41,7 @@ public class CrateOpenEvent extends Event {
         }
 
         List<String> items = crate.getItems();
-        Inventory inventory = Bukkit.createInventory(null, 27, CratesPlus.crates.get(crateType).getColor() + crateType + " Win!");
+        Inventory inventory = Bukkit.createInventory(null, 27, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win!");
 
         Integer ii = 0;
         while (ii < 10) {

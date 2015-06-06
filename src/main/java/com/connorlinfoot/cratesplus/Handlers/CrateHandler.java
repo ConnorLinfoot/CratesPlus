@@ -1,5 +1,6 @@
 package com.connorlinfoot.cratesplus.Handlers;
 
+import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -123,6 +124,7 @@ public class CrateHandler {
             giveCrateKey(player);
             return;
         }
+        Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
 
         ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
         List<String> enchantments = CratesPlus.getPlugin().getConfig().getStringList("Crate Keys.Enchantments");
@@ -145,10 +147,10 @@ public class CrateHandler {
             }
         }
         ItemMeta keyMeta = key.getItemMeta();
-        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
+        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crate.getName(true));
         keyMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + CratesPlus.crates.get(crateType).getColor() + crateType + ChatColor.DARK_GRAY + "\" crate");
+        lore.add(ChatColor.DARK_GRAY + "Right-Click on a \"" + crate.getName(true) + ChatColor.DARK_GRAY + "\" crate");
         lore.add(ChatColor.DARK_GRAY + "to win an item!");
         lore.add("");
         keyMeta.setLore(lore);
@@ -161,16 +163,18 @@ public class CrateHandler {
         if (player == null || !player.isOnline()) return;
         // This is the chest crate for staff to be placed!
 
-        ItemStack crate = new ItemStack(Material.CHEST);
-        ItemMeta crateMeta = crate.getItemMeta();
-        crateMeta.setDisplayName(CratesPlus.crates.get(crateType).getColor() + crateType + " Crate!");
+        Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+
+        ItemStack crateItem = new ItemStack(Material.CHEST);
+        ItemMeta crateMeta = crateItem.getItemMeta();
+        crateMeta.setDisplayName(crate.getName(true) + " Crate!");
         List<String> lore = new ArrayList<String>();
         lore.add(ChatColor.DARK_GRAY + "Place this crate somewhere!");
         lore.add("");
         crateMeta.setLore(lore);
-        crate.setItemMeta(crateMeta);
-        player.getInventory().addItem(crate);
-        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType).getColor() + crateType + ChatColor.GREEN + " crate!");
+        crateItem.setItemMeta(crateMeta);
+        player.getInventory().addItem(crateItem);
+        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + ChatColor.GREEN + " crate!");
     }
 
     @Deprecated
@@ -267,7 +271,13 @@ public class CrateHandler {
                     return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
                 }
             } else {
-                ItemStack itemStack = new ItemStack(Material.getMaterial(args[0].toUpperCase()), Integer.parseInt(args[1]));
+                String[] args1 = args[0].split("-");
+                ItemStack itemStack;
+                if (args1.length == 1) {
+                    itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
+                } else {
+                    itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
+                }
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
                 itemStack.setItemMeta(itemMeta);
@@ -275,9 +285,15 @@ public class CrateHandler {
             }
         } else if (args.length == 4) {
             String[] enchantments = args[3].split("\\|", -1);
-            ItemStack itemStack = new ItemStack(Material.getMaterial(args[0]), Integer.parseInt(args[1]));
+            String[] args1 = args[0].split("-");
+            ItemStack itemStack;
+            if (args1.length == 1) {
+                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
+            } else {
+                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
+            }
             for (String e : enchantments) {
-                String[] args1 = e.split("-", -1);
+                args1 = e.split("-", -1);
                 if (args1.length == 1) {
                     try {
                         itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);

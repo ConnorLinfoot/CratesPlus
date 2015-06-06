@@ -119,7 +119,7 @@ public class SettingsHandler {
     }
 
     public void openCrateWinnings(final Player player, String crateName) {
-        Crate crate = CratesPlus.crates.get(crateName);
+        Crate crate = CratesPlus.crates.get(crateName.toLowerCase());
         if (crate == null) {
             return; // TODO Error handling here
         }
@@ -148,7 +148,7 @@ public class SettingsHandler {
     }
 
     public void openCrate(final Player player, String crateName) {
-        Crate crate = CratesPlus.crates.get(crateName);
+        Crate crate = CratesPlus.crates.get(crateName.toLowerCase());
         if (crate == null) {
             return; // TODO Error handling here
         }

@@ -27,7 +27,7 @@ public class SettingsListener implements Listener {
                 String itemString = CrateHandler.itemstackToString(itemStack);
                 if (itemString != null) items.add(itemString);
             }
-            Crate crate = CratesPlus.crates.get(crateName);
+            Crate crate = CratesPlus.crates.get(crateName.toLowerCase());
             if (crate == null) {
                 return;
             }
@@ -99,7 +99,7 @@ public class SettingsListener implements Listener {
                 CratesPlus.getPlugin().getConfig().set("Crates." + name, null);
                 CratesPlus.getPlugin().saveConfig();
                 CratesPlus.getPlugin().reloadConfig();
-                CratesPlus.crates.remove(name);
+                CratesPlus.crates.remove(name.toLowerCase());
                 CratesPlus.settingsHandler.setupCratesInventory();
                 player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + name + " crate has been deleted");
             }

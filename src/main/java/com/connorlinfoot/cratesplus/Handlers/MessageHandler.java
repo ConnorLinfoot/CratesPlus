@@ -20,7 +20,8 @@ public class MessageHandler {
         String displayName = player.getDisplayName();
         String uuid = player.getUniqueId().toString();
         String crate = "";
-        if (CratesPlus.crates.get(crateType) != null) crate = CratesPlus.crates.get(crateType).getColor() + crateType;
+        if (CratesPlus.crates.get(crateType.toLowerCase()) != null)
+            crate = CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType;
         return message.replaceAll("%name%", name).replaceAll("%displayname%", displayName).replaceAll("%uuid%", uuid).replaceAll("%crate%", crate);
     }
 

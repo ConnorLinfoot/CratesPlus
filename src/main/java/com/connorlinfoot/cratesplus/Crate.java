@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Crate {
     private String name;
+    private String slug;
     private ChatColor color;
     private Material block = Material.CHEST;
     private boolean firework = false;
@@ -17,6 +18,7 @@ public class Crate {
 
     public Crate(String name) {
         this.name = name;
+        this.slug = name.toLowerCase();
         this.color = ChatColor.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Color").toUpperCase());
         // TODO: Add custom blocks for crates
 //        this.block = Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Block").toUpperCase());

@@ -64,7 +64,7 @@ public class CrateCommand implements CommandExecutor {
             CratesPlus.getPlugin().saveConfig();
             CratesPlus.getPlugin().reloadConfig();
 
-            CratesPlus.crates.put(name, new Crate(name));
+            CratesPlus.crates.put(name.toLowerCase(), new Crate(name));
             CratesPlus.settingsHandler.setupCratesInventory();
 
             sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + name + " crate has been created");
@@ -88,7 +88,7 @@ public class CrateCommand implements CommandExecutor {
             config.set("Crates." + name, null);
             CratesPlus.getPlugin().saveConfig();
             CratesPlus.getPlugin().reloadConfig();
-            CratesPlus.crates.remove(name);
+            CratesPlus.crates.remove(name.toLowerCase());
             CratesPlus.settingsHandler.setupCratesInventory();
 
             sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + name + " crate has been deleted");
@@ -117,7 +117,7 @@ public class CrateCommand implements CommandExecutor {
 
             if (crateType != null) {
 
-                if (CratesPlus.crates.get(crateType) == null) {
+                if (CratesPlus.crates.get(crateType.toLowerCase()) == null) {
                     sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found, crates are case sensitive");
                     return false;
                 }
@@ -176,8 +176,8 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
-            if (CratesPlus.crates.get(crateType) == null) {
-                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found, crates are case sensitive");
+            if (CratesPlus.crates.get(crateType.toLowerCase()) == null) {
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found");
                 return false;
             }
 

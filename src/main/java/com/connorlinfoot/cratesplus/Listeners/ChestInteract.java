@@ -31,8 +31,9 @@ public class ChestInteract implements Listener {
             if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + crateType)) {
                 return;
             }
-            Crate crate = new Crate(crateType);
-            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", CratesPlus.crates.get(crateType).getColor() + crateType);
+            assert crateType != null;
+            Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crate.getColor() + crateType);
             if (event.getAction().toString().contains("LEFT")) {
                 if (event.getPlayer().isSneaking())
                     return;
