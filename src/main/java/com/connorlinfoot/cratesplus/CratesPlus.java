@@ -63,7 +63,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
 
-        if (!getConfig().getBoolean("Update Checks") && !getDescription().getVersion().contains("SNAPSHOT")) {
+        if (getConfig().getBoolean("Update Checks") && !getDescription().getVersion().contains("SNAPSHOT")) {
             getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
                 public void run() {
                     checkUpdate(console);

@@ -1,3 +1,7 @@
+V3.0.1:
+ Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28510
+ - Fixed updater not working correctly
+
 V3.0:
  Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28505
  - Added "/crate settings" - Allows in-game crate editing
