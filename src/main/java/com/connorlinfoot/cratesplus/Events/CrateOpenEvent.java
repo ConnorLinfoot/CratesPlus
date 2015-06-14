@@ -20,6 +20,7 @@ public class CrateOpenEvent extends Event {
     private String crateType;
     private Crate crate;
     private boolean canceled = false;
+    private int tries = 0;
 
     public CrateOpenEvent(Player player, String crateType) {
         this.player = player;
@@ -55,10 +56,25 @@ public class CrateOpenEvent extends Event {
             ii++;
         }
 
-        String i = items.get(CrateHandler.randInt(0, items.size() - 1));
-        ItemStack win = CrateHandler.stringToItemstack(i, player, true);
+        ItemStack win = getValidWin(items);
+        if (win == null) {
+            player.sendMessage(ChatColor.RED + "No valid win was found");
+            return;
+        }
         inventory.setItem(13, win);
         player.openInventory(inventory);
+    }
+
+    private ItemStack getValidWin(List<String> items) {
+        if (tries == 5)
+            return null;
+        String i = items.get(CrateHandler.randInt(0, items.size() - 1));
+        ItemStack win = CrateHandler.stringToItemstack(i, player, true);
+        if (win == null) {
+            win = getValidWin(items);
+            tries++;
+        }
+        return win;
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -41,7 +42,8 @@ public class CratePreviewEvent extends Event {
         }
         Inventory inventory = Bukkit.createInventory(null, size, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Possible Wins:");
         for (String i : items) {
-            inventory.addItem(CrateHandler.stringToItemstack(i, player, false));
+            ItemStack itemStack = CrateHandler.stringToItemstack(i, player, false);
+            inventory.addItem(itemStack);
         }
         player.openInventory(inventory);
     }

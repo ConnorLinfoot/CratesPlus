@@ -1,3 +1,14 @@
+Version 3.1 Snapshots
+-----------------------------------------------------------------------------------------------------------
+
+V3.1 Snapshot 1:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/85/artifact/target/CratesPlus-3.1-SNAPSHOT-1.jar
+ - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid items is found after 5 tries
+
+
+Version 3 Snapshots
+-----------------------------------------------------------------------------------------------------------
+
 V3.0 Snapshot 6:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/74/artifact/target/CratesPlus-3.0-SNAPSHOT-6.jar
  - Changed GUI's and reload GUI option works
