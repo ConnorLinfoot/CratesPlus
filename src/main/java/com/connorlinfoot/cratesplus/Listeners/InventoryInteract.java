@@ -15,6 +15,9 @@ public class InventoryInteract implements Listener {
         } else if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains(" Win!")) {
             if (event.getClickedInventory().getType() == InventoryType.CHEST && event.getSlot() != 13 || (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.EMPTY_MAP)) {
                 event.setCancelled(true);
+            } else if (event.getSlot() == 13 && event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.EMPTY_MAP) {
+                event.setCancelled(true);
+                event.getWhoClicked().closeInventory();
             }
         }
     }

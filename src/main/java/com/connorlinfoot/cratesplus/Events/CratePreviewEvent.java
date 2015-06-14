@@ -43,6 +43,8 @@ public class CratePreviewEvent extends Event {
         Inventory inventory = Bukkit.createInventory(null, size, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Possible Wins:");
         for (String i : items) {
             ItemStack itemStack = CrateHandler.stringToItemstack(i, player, false);
+            if (itemStack == null)
+                continue;
             inventory.addItem(itemStack);
         }
         player.openInventory(inventory);

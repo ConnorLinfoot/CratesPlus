@@ -1,6 +1,15 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 2:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/86/artifact/target/CratesPlus-3.1-SNAPSHOT-2.jar
+ - Added config options to be able to change the text shown on holograms (Support up to 4 lines, removed more-info hologram option since this has been added)
+ - Now gives the player the item won if they close the GUI without selecting the prize
+ - After clicking winning item GUI will auto-close
+ - Players can't open crate if inventory is full
+ - Improved invalid item handling (Don't think this even worked)
+
+
 V3.1 Snapshot 1:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/85/artifact/target/CratesPlus-3.1-SNAPSHOT-1.jar
  - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid items is found after 5 tries

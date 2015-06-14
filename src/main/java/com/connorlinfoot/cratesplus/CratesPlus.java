@@ -29,6 +29,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static String configBackup = null;
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
     public static SettingsHandler settingsHandler;
+    public static List<?> holograms;
 
     public void onEnable() {
         instance = this;
@@ -42,6 +43,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
             String oldConfig = backupConfig();
             convertConfigV3(console, oldConfig); // Yay more config converting :/
         }
+        if (getConfig().isSet("More Info Hologram")) {
+            getConfig().set("More Info Hologram", null);
+        }
         getConfig().options().copyDefaults(true);
         saveConfig();
 
@@ -53,6 +57,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
             crates.put(crate.toLowerCase(), new Crate(crate));
         }
 
+        // Crate Holograms
+        holograms = getConfig().getList("Hologram Text");
+
         // Register /crate command
         Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
 
@@ -60,6 +67,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryClose(), this);
         Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
 
@@ -284,10 +292,20 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
     public static void reloadPlugin() {
         CratesPlus.getPlugin().reloadConfig();
+
+        // Do Prefix
+        pluginPrefix = ChatColor.translateAlternateColorCodes('&', CratesPlus.getPlugin().getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
+
+        // Register Crates
         CratesPlus.crates.clear();
         for (String crate : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates").getKeys(false)) {
-            CratesPlus.crates.put(crate.toLowerCase(), new Crate(crate));
+            crates.put(crate.toLowerCase(), new Crate(crate));
         }
+
+        // Crate Holograms
+        holograms = CratesPlus.getPlugin().getConfig().getList("Hologram Text");
+
+        // Settings Handler
         settingsHandler = new SettingsHandler();
 
     }

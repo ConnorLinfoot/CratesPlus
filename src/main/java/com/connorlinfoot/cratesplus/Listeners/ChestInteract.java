@@ -44,6 +44,12 @@ public class ChestInteract implements Listener {
             } else {
                 if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                     event.setCancelled(true);
+
+                    if (player.getInventory().firstEmpty() == -1) {
+                        player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You can't open a Crate while your inventory is full");
+                        return;
+                    }
+
                     if (item.getAmount() > 1) {
                         item.setAmount(item.getAmount() - 1);
                     } else {

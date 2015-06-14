@@ -228,49 +228,64 @@ public class CrateHandler {
     }
 
     public static ItemStack stringToItemstack(String i, Player player, boolean isWin) {
-        String[] args = i.split(":", -1);
-        if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
-            /** Commands */
-            String command = args[1];
-            String title = "Command: /" + command;
-            if (args.length == 3) {
-                title = args[2];
-            }
-            command = command.replaceAll("%name%", player.getName());
-            title = title.replaceAll("%name%", player.getName());
-            if (isWin)
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-            ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(ChatColor.RESET + title);
-            itemStack.setItemMeta(itemMeta);
-            return itemStack;
-        } else if (args.length == 1) {
-            /** Item without any amounts, custom name or enchantments */
-            String[] args1 = args[0].split("-");
-            ItemStack itemStack;
-            if (args1.length == 1) {
-                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
-            } else {
-                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
-            }
-            return itemStack;
-        } else if (args.length == 2) {
-            String[] args1 = args[0].split("-");
-            if (args1.length == 1) {
-                return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
-            } else {
-                return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
-            }
-        } else if (args.length == 3) {
-            if (args[2].equalsIgnoreCase("NONE")) {
+        try {
+            String[] args = i.split(":", -1);
+            if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
+                /** Commands */
+                String command = args[1];
+                String title = "Command: /" + command;
+                if (args.length == 3) {
+                    title = args[2];
+                }
+                command = command.replaceAll("%name%", player.getName());
+                title = title.replaceAll("%name%", player.getName());
+                if (isWin)
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.RESET + title);
+                itemStack.setItemMeta(itemMeta);
+                return itemStack;
+            } else if (args.length == 1) {
+                /** Item without any amounts, custom name or enchantments */
+                String[] args1 = args[0].split("-");
+                ItemStack itemStack;
+                if (args1.length == 1) {
+                    itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()));
+                } else {
+                    itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), 1, Byte.parseByte(args1[1]));
+                }
+                return itemStack;
+            } else if (args.length == 2) {
                 String[] args1 = args[0].split("-");
                 if (args1.length == 1) {
                     return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
                 } else {
                     return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
                 }
-            } else {
+            } else if (args.length == 3) {
+                if (args[2].equalsIgnoreCase("NONE")) {
+                    String[] args1 = args[0].split("-");
+                    if (args1.length == 1) {
+                        return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
+                    } else {
+                        return new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
+                    }
+                } else {
+                    String[] args1 = args[0].split("-");
+                    ItemStack itemStack;
+                    if (args1.length == 1) {
+                        itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
+                    } else {
+                        itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
+                    }
+                    ItemMeta itemMeta = itemStack.getItemMeta();
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
+                    itemStack.setItemMeta(itemMeta);
+                    return itemStack;
+                }
+            } else if (args.length == 4) {
+                String[] enchantments = args[3].split("\\|", -1);
                 String[] args1 = args[0].split("-");
                 ItemStack itemStack;
                 if (args1.length == 1) {
@@ -278,42 +293,31 @@ public class CrateHandler {
                 } else {
                     itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
                 }
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
-                itemStack.setItemMeta(itemMeta);
-                return itemStack;
-            }
-        } else if (args.length == 4) {
-            String[] enchantments = args[3].split("\\|", -1);
-            String[] args1 = args[0].split("-");
-            ItemStack itemStack;
-            if (args1.length == 1) {
-                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]));
-            } else {
-                itemStack = new ItemStack(Material.getMaterial(args1[0].toUpperCase()), Integer.parseInt(args[1]), Byte.parseByte(args1[1]));
-            }
-            for (String e : enchantments) {
-                args1 = e.split("-", -1);
-                if (args1.length == 1) {
-                    try {
-                        itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
-                    } catch (Exception ignored) {
-                    }
-                } else if (args1.length == 2) {
-                    try {
-                        itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
-                    } catch (Exception ignored) {
+                for (String e : enchantments) {
+                    args1 = e.split("-", -1);
+                    if (args1.length == 1) {
+                        try {
+                            itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), 1);
+                        } catch (Exception ignored) {
+                        }
+                    } else if (args1.length == 2) {
+                        try {
+                            itemStack.addUnsafeEnchantment(Enchantment.getByName(args1[0]), Integer.parseInt(args1[1]));
+                        } catch (Exception ignored) {
+                        }
                     }
                 }
+                if (!args[2].equalsIgnoreCase("NONE")) {
+                    ItemMeta itemMeta = itemStack.getItemMeta();
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
+                    itemStack.setItemMeta(itemMeta);
+                }
+                return itemStack;
             }
-            if (!args[2].equalsIgnoreCase("NONE")) {
-                ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[2]));
-                itemStack.setItemMeta(itemMeta);
-            }
-            return itemStack;
+            return null;
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 
     public static String itemstackToString(ItemStack itemStack) {

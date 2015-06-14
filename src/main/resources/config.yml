@@ -40,8 +40,11 @@ Crate Keys:
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
 
-# If true chest will show more info under name hologram
-More Info Hologram: true
+# Up to 4 lines for the hologram, %crate% can be used to show the crate name
+Hologram Text:
+- "%crate%"
+- "Right-Click to Open!"
+- "Left-Click to Preview!"
 
 # Below are all messages that can be edited in the plugin
 Messages:
