@@ -231,19 +231,27 @@ public class CrateHandler {
         try {
             String[] args = i.split(":", -1);
             if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
-                /** Commands */
-                String command = args[1];
-                String title = "Command: /" + command;
-                if (args.length == 3) {
-                    title = args[2];
+                String name = "Command";
+                String commands;
+                if (args.length >= 3) {
+                    name = ChatColor.translateAlternateColorCodes('&', args[1]);
+                    commands = args[2];
+                } else {
+                    commands = args[1];
                 }
-                command = command.replaceAll("%name%", player.getName());
-                title = title.replaceAll("%name%", player.getName());
-                if (isWin)
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+
+                if (isWin) {
+                    /** Do Commands */
+                    String[] args1 = commands.split("|");
+                    for (String command : args1) {
+                        command = command.replaceAll("%name%", player.getName());
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                    }
+                }
+
                 ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
                 ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.RESET + title);
+                itemMeta.setDisplayName(ChatColor.RESET + name);
                 itemStack.setItemMeta(itemMeta);
                 return itemStack;
             } else if (args.length == 1) {
