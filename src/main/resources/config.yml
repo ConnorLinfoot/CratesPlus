@@ -17,7 +17,7 @@ Update Checks: true
 
 # ITEM_NAME-DATA:AMOUNT:CUSTOM_NAME:ENCHANTMENTS|SEPARATED|BY|PIPE|WITH|LEVELS|LIKE|THIS-3
 # Commands can be like COMMAND:CUSTOM_NAME:give %name% 100 coins|give %name% 100 diamond
-# Custom Name can be "NONE" which will use the default item name in Minecraft
+# Custom Name can be "NONE" which will use the default item name in Minecraft or just "Command" in the case of commands
 # Item name must be a Bukkit material, list here https://hub.spigotmc.org/javadocs/spigot/org/bukkit/material/package-summary.html
 Crates:
   Example:
@@ -34,8 +34,7 @@ Crates:
 Crate Keys:
   Item: TRIPWIRE_HOOK
   Name: "%type% Crate Key"
-  Enchantments:
-  - DAMAGE_ALL
+  Enchanted: true
 
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
@@ -45,6 +44,10 @@ Hologram Text:
 - "%crate%"
 - "Right-Click to Open!"
 - "Left-Click to Preview!"
+
+# Enable the BETA animation's for CratesPlus
+Enable GUI Beta Animation: false
+
 
 # Below are all messages that can be edited in the plugin
 Messages:

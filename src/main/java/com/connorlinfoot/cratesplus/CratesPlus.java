@@ -30,6 +30,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
     public static SettingsHandler settingsHandler;
     public static List<?> holograms;
+    public static boolean betaGUI = false;
 
     public void onEnable() {
         instance = this;
@@ -59,6 +60,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Crate Holograms
         holograms = getConfig().getList("Hologram Text");
+
+        // Enable GUI Beta Animation
+        betaGUI = getConfig().getBoolean("Enable GUI Beta Animation");
 
         // Register /crate command
         Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());

@@ -1,6 +1,12 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 4:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/89/artifact/target/CratesPlus-3.1-SNAPSHOT-4.jar
+ - Added "None" support to the commands name which will just default to "Command"
+ - Added "Enable GUI Beta Animation" to the config, have fun ;) Improvements will be coming
+ - Crate Keys now have a "Enchanted" option instead of "Enchantments" list
+
 V3.1 Snapshot 3:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/87/artifact/target/CratesPlus-3.1-SNAPSHOT-3.jar
  - Custom name support added to commands
@@ -12,7 +18,7 @@ V3.1 Snapshot 2:
  - Now gives the player the item won if they close the GUI without selecting the prize
  - After clicking winning item GUI will auto-close
  - Players can't open crate if inventory is full
- - Improved invalid item handling (Don't think this even worked)
+ - Improved invalid item handling (Don't think this even worked in snapshot 1)
 
 V3.1 Snapshot 1:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/85/artifact/target/CratesPlus-3.1-SNAPSHOT-1.jar

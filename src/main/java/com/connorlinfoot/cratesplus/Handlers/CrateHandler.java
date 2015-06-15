@@ -127,26 +127,11 @@ public class CrateHandler {
         Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
 
         ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
-        List<String> enchantments = CratesPlus.getPlugin().getConfig().getStringList("Crate Keys.Enchantments");
-        if (enchantments.size() > 0) {
-            for (String e : enchantments) {
-                String[] args = e.split("-");
-                if (args.length == 1) {
-                    try {
-                        key.addUnsafeEnchantment(Enchantment.getByName(e), 1);
-                    } catch (Exception ee) {
-                        ee.printStackTrace();
-                    }
-                } else {
-                    try {
-                        key.addUnsafeEnchantment(Enchantment.getByName(args[0]), Integer.parseInt(args[1]));
-                    } catch (Exception ee) {
-                        ee.printStackTrace();
-                    }
-                }
-            }
+        if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Keys.Enchanted")) {
+            key.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
         }
         ItemMeta keyMeta = key.getItemMeta();
+//        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crate.getName(true));
         keyMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
@@ -233,7 +218,7 @@ public class CrateHandler {
             if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
                 String name = "Command";
                 String commands;
-                if (args.length >= 3) {
+                if (args.length >= 3 && !args[1].equalsIgnoreCase("NONE")) {
                     name = ChatColor.translateAlternateColorCodes('&', args[1]);
                     commands = args[2];
                 } else {
@@ -242,8 +227,9 @@ public class CrateHandler {
 
                 if (isWin) {
                     /** Do Commands */
-                    String[] args1 = commands.split("|");
+                    String[] args1 = commands.split("\\|");
                     for (String command : args1) {
+                        player.sendMessage(command);
                         command = command.replaceAll("%name%", player.getName());
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                     }
@@ -251,6 +237,9 @@ public class CrateHandler {
 
                 ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
                 ItemMeta itemMeta = itemStack.getItemMeta();
+                List<String> lore = new ArrayList<String>();
+                lore.add(ChatColor.DARK_GRAY + "Crate Command");
+                itemMeta.setLore(lore);
                 itemMeta.setDisplayName(ChatColor.RESET + name);
                 itemStack.setItemMeta(itemMeta);
                 return itemStack;
