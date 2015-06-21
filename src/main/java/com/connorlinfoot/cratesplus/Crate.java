@@ -14,7 +14,8 @@ public class Crate {
     private boolean firework = false;
     private boolean broadcast = false;
     private double knockback = 0.0;
-    private List<String> items = new ArrayList<String>();
+    //    private List<String> items = new ArrayList<String>();
+    private List<Winning> winnings = new ArrayList<Winning>();
 
     public Crate(String name) {
         this.name = name;
@@ -25,7 +26,16 @@ public class Crate {
         this.firework = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Firework");
         this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");
         this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
-        this.items = CratesPlus.getPlugin().getConfig().getStringList("Crates." + name + ".Items");
+//        this.items = CratesPlus.getPlugin().getConfig().getStringList("Crates." + name + ".Items");
+
+        if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Winnings"))
+            return;
+        for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
+            String path = "Crates." + name + ".Winnings." + id;
+            Winning winning = new Winning(path);
+            if (winning.isValid())
+                winnings.add(winning);
+        }
     }
 
     public String getName() {
@@ -57,13 +67,27 @@ public class Crate {
         return this.knockback;
     }
 
-    public void reloadItems() {
+    public void reloadWinnings() {
         CratesPlus.getPlugin().reloadConfig();
-        this.items = CratesPlus.getPlugin().getConfig().getStringList("Crates." + name + ".Items");
+        winnings.clear();
+        for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
+            String path = "Crates." + name + ".Winnings." + id;
+            Winning winning = new Winning(path);
+            if (winning.isValid())
+                winnings.add(winning);
+        }
     }
 
-    public List<String> getItems() {
-        return this.items;
+    public List<Winning> getWinnings() {
+        return winnings;
+    }
+
+    public void clearWinnings() {
+        winnings.clear();
+    }
+
+    public void addWinning(Winning winning) {
+        winnings.add(winning);
     }
 
 }

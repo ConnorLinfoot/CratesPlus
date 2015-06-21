@@ -2,6 +2,7 @@ package com.connorlinfoot.cratesplus.Handlers;
 
 import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
+import com.connorlinfoot.cratesplus.Winning;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -100,16 +101,8 @@ public class SettingsHandler {
 
         final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " Crate Winnings");
 
-        ItemStack itemStack;
-        ItemMeta itemMeta;
-        List<String> lore;
-
-        List<?> items = CratesPlus.getPlugin().getConfig().getList("Crates." + crate.getName(false) + ".Items");
-
-        for (Object item : items) {
-            String i = item.toString();
-            itemStack = CrateHandler.stringToItemstack(i, player, false);
-            inventory.addItem(itemStack);
+        for (Winning winning : crate.getWinnings()) {
+            inventory.addItem(winning.getItemStack());
         }
 
         Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {

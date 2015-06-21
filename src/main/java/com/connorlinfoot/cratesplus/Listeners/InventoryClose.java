@@ -8,11 +8,11 @@ public class InventoryClose implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getInventory().getTitle() != null && !event.getInventory().getTitle().contains(" Wins") && event.getInventory().getTitle().contains(" Win")) {
+        if (event.getInventory().getTitle() != null && !event.getInventory().getTitle().contains(" Wins") && !event.getInventory().getTitle().contains("Edit ") && event.getInventory().getTitle().contains(" Win")) {
             if (event.getInventory().getItem(0).hasItemMeta() && event.getInventory().getItem(0).getItemMeta().hasDisplayName() && event.getInventory().getItem(0).getItemMeta().getDisplayName().contains("Winner")) {
-                if (event.getInventory().getItem(13).getItemMeta().hasLore() && event.getInventory().getItem(13).getItemMeta().getLore().toString().contains("Crate Command"))
+                if (event.getInventory().getItem(22).getItemMeta().hasLore() && event.getInventory().getItem(22).getItemMeta().getLore().toString().contains("Crate Command"))
                     return;
-                event.getPlayer().getInventory().addItem(event.getInventory().getItem(13));
+                event.getPlayer().getInventory().addItem(event.getInventory().getItem(22));
             }
         }
     }

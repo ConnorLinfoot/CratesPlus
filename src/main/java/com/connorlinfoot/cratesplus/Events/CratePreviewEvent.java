@@ -2,7 +2,7 @@ package com.connorlinfoot.cratesplus.Events;
 
 import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
+import com.connorlinfoot.cratesplus.Winning;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -25,7 +25,7 @@ public class CratePreviewEvent extends Event {
     }
 
     public void doEvent() {
-        List<String> items = crate.getItems();
+        List<Winning> items = crate.getWinnings();
         Integer size;
         if (items.size() <= 9) {
             size = 9;
@@ -41,8 +41,8 @@ public class CratePreviewEvent extends Event {
             size = 54;
         }
         Inventory inventory = Bukkit.createInventory(null, size, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Possible Wins:");
-        for (String i : items) {
-            ItemStack itemStack = CrateHandler.stringToItemstack(i, player, false);
+        for (Winning winning : items) {
+            ItemStack itemStack = winning.getItemStack();
             if (itemStack == null)
                 continue;
             inventory.addItem(itemStack);

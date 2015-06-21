@@ -1,6 +1,14 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 5:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/96/artifact/target/CratesPlus-3.1-SNAPSHOT-5.jar
+ - Updates to the Beta GUI, more coming soon
+ - All new config style (Again) Designed to make it easier and better for winnings including better command support - NOTE There is currently NO config converter, do NOT use this with an old config file!
+ - Commands will NOT work correctly in this version, I'm working on that for snapshot 6
+ - Added Metrics, this can be disabled in the config. I've added this so I can track stats, I may build a custom system in the future
+ - Beta GUI is now always used, the option in the config has been removed and no longer affects anything
+
 V3.1 Snapshot 4:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/89/artifact/target/CratesPlus-3.1-SNAPSHOT-4.jar
  - Added "None" support to the commands name which will just default to "Command"

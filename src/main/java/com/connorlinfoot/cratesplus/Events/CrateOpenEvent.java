@@ -4,9 +4,11 @@ import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
+import com.connorlinfoot.cratesplus.Winning;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -27,6 +29,7 @@ public class CrateOpenEvent extends Event {
     private BukkitTask task;
     private Integer timer = 0;
     private Integer currentItem = 0;
+    private Winning winning = null;
 
     public CrateOpenEvent(Player player, String crateType) {
         this.player = player;
@@ -46,46 +49,11 @@ public class CrateOpenEvent extends Event {
             Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateType));
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
         }
-
-        if (CratesPlus.betaGUI) {
-            doBetaGUI();
-        } else {
-            List<String> items = crate.getItems();
-
-            Inventory inventory = Bukkit.createInventory(null, 27, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win");
-
-            Integer ii = 0;
-            while (ii < 10) {
-                inventory.setItem(ii, new ItemStack(Material.STAINED_GLASS_PANE));
-                ii++;
-            }
-
-            ii = 17;
-            while (ii < 27) {
-                inventory.setItem(ii, new ItemStack(Material.STAINED_GLASS_PANE));
-                ii++;
-            }
-
-            ItemStack win = getValidWin(items);
-            if (win == null) {
-                player.sendMessage(ChatColor.RED + "No valid win was found");
-                return;
-            }
-            inventory.setItem(13, win);
-            player.openInventory(inventory);
-        }
+        doBetaGUI();
     }
 
-    private ItemStack getValidWin(List<String> items) {
-        if (tries == 5)
-            return null;
-        String i = items.get(CrateHandler.randInt(0, items.size() - 1));
-        ItemStack win = CrateHandler.stringToItemstack(i, player, true);
-        if (win == null) {
-            win = getValidWin(items);
-            tries++;
-        }
-        return win;
+    private Winning getValidWin(List<Winning> winnings) {
+        return winnings.get(CrateHandler.randInt(0, winnings.size() - 1));
     }
 
     @Override
@@ -120,7 +88,7 @@ public class CrateOpenEvent extends Event {
     private void doBetaGUI() {
         /** Time for some cool GUI's, hopefully */
 
-        winGUI = Bukkit.createInventory(null, 27, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win");
+        winGUI = Bukkit.createInventory(null, 45, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win");
         player.openInventory(winGUI);
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(CratesPlus.getPlugin(), new Runnable() {
             public void run() {
@@ -128,15 +96,18 @@ public class CrateOpenEvent extends Event {
                     player.openInventory(winGUI);
                 }
                 Integer i = 0;
-                while (i < 27) {
-                    if (i == 13) {
+                while (i < 45) {
+                    if (i == 22) {
                         i++;
-                        if (crate.getItems().size() == currentItem)
+                        if (crate.getWinnings().size() == currentItem)
                             currentItem = 0;
+                        Winning winning = crate.getWinnings().get(currentItem);
 
-                        ItemStack currentItemStack = CrateHandler.stringToItemstack(crate.getItems().get(currentItem), player, timer == 100);
+                        ItemStack currentItemStack = winning.getItemStack();
+                        if (timer == 100)
+                            winning.runWin();
                         if (currentItemStack != null) {
-                            winGUI.setItem(13, currentItemStack);
+                            winGUI.setItem(22, currentItemStack);
                         }
 
                         currentItem++;
@@ -147,6 +118,7 @@ public class CrateOpenEvent extends Event {
                     if (timer == 100) {
                         itemMeta.setDisplayName(ChatColor.RESET + "Winner!");
                     } else {
+                        player.playSound(player.getLocation(), Sound.NOTE_PIANO, (float) 0.2, 2);
                         itemMeta.setDisplayName(ChatColor.RESET + "Rolling...");
                     }
                     itemStack.setItemMeta(itemMeta);
@@ -159,7 +131,7 @@ public class CrateOpenEvent extends Event {
                 }
                 timer = timer + 2;
             }
-        }, 0L, 2L);
+        }, 0L, 3L);
 
 
     }

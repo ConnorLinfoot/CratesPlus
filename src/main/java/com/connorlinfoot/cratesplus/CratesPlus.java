@@ -44,11 +44,25 @@ public class CratesPlus extends JavaPlugin implements Listener {
             String oldConfig = backupConfig();
             convertConfigV3(console, oldConfig); // Yay more config converting :/
         }
+        if (getConfig().getInt("Config Version") == 3) {
+            String oldConfig = backupConfig();
+            convertConfigV4(console, oldConfig); // Yay even more config converting xD
+        }
         if (getConfig().isSet("More Info Hologram")) {
             getConfig().set("More Info Hologram", null);
         }
         getConfig().options().copyDefaults(true);
         saveConfig();
+
+        if (getConfig().getBoolean("Metrics")) {
+            try {
+                Metrics metrics = new Metrics(this);
+                metrics.start();
+            } catch (IOException e) {
+                // Failed to submit the stats :-(
+            }
+        }
+
 
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
@@ -238,6 +252,26 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Set config version
         getConfig().set("Config Version", 3);
+
+        // Save config
+        saveConfig();
+
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+        if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+            configBackup = oldConfig;
+            console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+        }
+    }
+
+    private void convertConfigV4(ConsoleCommandSender console, String oldConfig) {
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 4...");
+
+
+        // TODO
+
+
+        // Set config version
+        getConfig().set("Config Version", 4);
 
         // Save config
         saveConfig();

@@ -2,9 +2,10 @@ package com.connorlinfoot.cratesplus.Listeners;
 
 import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SettingsListener implements Listener {
 
@@ -22,20 +24,63 @@ public class SettingsListener implements Listener {
         if (!(event.getPlayer() instanceof Player)) return;
         if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Crate Winnings")) {
             String crateName = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate Winnings", ""));
-            List<String> items = new ArrayList<String>();
-            for (ItemStack itemStack : event.getInventory().getContents()) {
-                String itemString = CrateHandler.itemstackToString(itemStack);
-                if (itemString != null) items.add(itemString);
-            }
             Crate crate = CratesPlus.crates.get(crateName.toLowerCase());
             if (crate == null) {
                 return;
             }
-            CratesPlus.getPlugin().getConfig().set("Crates." + crate.getName(false) + ".Items", items);
+
+            CratesPlus.getPlugin().getConfig().set("Crates." + crateName + ".Winnings", null);
             CratesPlus.getPlugin().saveConfig();
-            crate.reloadItems();
+            for (ItemStack itemStack : event.getInventory().getContents()) {
+//                String itemString = CrateHandler.itemstackToString(itemStack);
+//                if (itemString != null) items.add(itemString);
+
+                if (itemStack == null)
+                    continue;
+                int id = getFreeID(crateName, 1);
+
+                String type = "ITEM";
+                String itemtype = itemStack.getType().toString().toUpperCase();
+                Byte itemData = itemStack.getData().getData();
+                String name = "NONE";
+                if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+                    name = itemStack.getItemMeta().getDisplayName();
+                Integer amount = itemStack.getAmount();
+                List<String> enchantments = new ArrayList<String>();
+                if (itemStack.getEnchantments() != null && !itemStack.getEnchantments().isEmpty()) {
+                    for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+                        Enchantment enchantment = entry.getKey();
+                        Integer level = entry.getValue();
+                        enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
+                    }
+                }
+
+                // Save to config and creating winning instance
+                FileConfiguration config = CratesPlus.getPlugin().getConfig();
+                String path = "Crates." + crateName + ".Winnings." + id;
+                config.set(path + ".Type", type);
+                config.set(path + ".Item Type", itemtype);
+                config.set(path + ".Item Data", itemData);
+                config.set(path + ".Name", name);
+                config.set(path + ".Amount", amount);
+                config.set(path + ".Enchantments", enchantments);
+//                CratesPlus.getPlugin().saveConfig();
+//                CratesPlus.getPlugin().reloadConfig();
+
+
+            }
+
+//            CratesPlus.getPlugin().getConfig().set("Crates." + crate.getName(false) + ".Items", items);
+            CratesPlus.getPlugin().saveConfig();
+            crate.reloadWinnings();
             ((Player) event.getPlayer()).sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Crate winnings updated");
         }
+    }
+
+    private static int getFreeID(String crate, int check) {
+        if (CratesPlus.getPlugin().getConfig().isSet("Crates." + crate + ".Winnings." + check))
+            return getFreeID(crate, check + 1);
+        return check;
     }
 
     @EventHandler
