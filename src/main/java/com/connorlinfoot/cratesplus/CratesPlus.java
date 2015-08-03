@@ -266,8 +266,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
     private void convertConfigV4(ConsoleCommandSender console, String oldConfig) {
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 4...");
 
-
-        // TODO
+        // TODO Convert old V3 config to V4
 
 
         // Set config version

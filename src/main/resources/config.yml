@@ -24,25 +24,37 @@ Crates:
     Firework: false
     Color: GREEN
     Winnings:
-      1:
+      '1':
         Type: ITEM
         Item Type: IRON_SWORD
         Item Data: 0
-        Name: Sword of Destiny
+        Name: '&6&lSword of Destiny'
         Amount: 1
         Enchantments:
         - DAMAGE_ALL-3
-      2:
+      '2':
+        Type: ITEM
+        Item Type: DIAMOND_SWORD
+        Name: NONE
+        Item Data: 0
+        Amount: 1
+        Enchantments:
+        - DAMAGE_ALL-5
+        - DURABILITY-3
+        - FIRE_ASPECT-2
+      '3':
         Type: COMMAND
         Item Type: MOB_SPAWNER
-        Command: /spawner give %name% spider
-        Name: Spider Spawner
-
-# OLD SHITE
-
-# Checks if an update is available and notifies staff, uses Spigot
-Update Checks: true
-
+        Commands:
+        - 'spawner give %name% spider'
+        - 'say %name% opened a crate'
+        Name: '&e&lSpider Spawner'
+        Item Data: 0
+        Amount: 1
+        Enchantments:
+        - DAMAGE_ALL-5
+        - DURABILITY-3
+        - FIRE_ASPECT-2
 
 # Modify different options of the crate key
 Crate Keys:

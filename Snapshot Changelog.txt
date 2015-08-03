@@ -1,6 +1,15 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 6:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/140/artifact/target/CratesPlus-3.1-SNAPSHOT-6.jar
+ - Commands now working, see default config for example
+ - Command item type's added, now set your command to any item and not just the default map
+ - Fixed bug when you had the same key in multiple inventory slots it would take all of them
+ - Fixed NONE showing up as item names
+ - "&" color code supported added to item names
+ - Fixed wins not been "random"
+
 V3.1 Snapshot 5:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/96/artifact/target/CratesPlus-3.1-SNAPSHOT-5.jar
  - Updates to the Beta GUI, more coming soon

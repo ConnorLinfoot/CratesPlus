@@ -1,17 +1,22 @@
 package com.connorlinfoot.cratesplus;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Winning {
     private boolean valid = false;
+    private boolean command = false;
     private ItemStack itemStack;
-    private List<String> commands;
+    private List<String> commands = new ArrayList<String>();
 
     public Winning(String path) {
         FileConfiguration config = CratesPlus.getPlugin().getConfig();
@@ -38,16 +43,33 @@ public class Winning {
                 amount = config.getInt(path + ".Amount");
             itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
         } else if (type.equalsIgnoreCase("command")) {
-            // TODO
+            command = true;
+            if (!config.isSet(path + ".Commands") || config.getStringList(path + ".Commands").size() == 0)
+                return;
+            commands = config.getStringList(path + ".Commands");
+
+            Material itemType = Material.PAPER;
+            if (config.isSet(path + ".Item Type"))
+                itemType = Material.getMaterial(config.getString(path + ".Item Type"));
+
+            if (itemType == null)
+                return;
+
+            Integer itemData = 0;
+            if (config.isSet(path + ".Item Data"))
+                itemData = config.getInt(path + ".Item Data");
+
+            Integer amount = 1;
+            if (config.isSet(path + ".Amount"))
+                amount = config.getInt(path + ".Amount");
+            itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
         } else {
             return;
         }
-        if (itemStack == null)
-            return;
 
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if (config.isSet(path + ".Name"))
-            itemMeta.setDisplayName(config.getString(path + ".Name"));
+        if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
+            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")));
         itemStack.setItemMeta(itemMeta);
 
         if (config.isSet(path + ".Enchantments")) {
@@ -64,7 +86,6 @@ public class Winning {
                 }
             }
         }
-
 
         // Done :D
         valid = true;
@@ -83,7 +104,17 @@ public class Winning {
         return itemStack;
     }
 
-    public void runWin() {
+    public void runWin(Player player) {
+        if (commands.size() > 0) {
+            for (String command : commands) {
+                command = command.replaceAll("%name%", player.getName());
+                command = command.replaceAll("%uuid%", player.getUniqueId().toString());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
+        }
     }
 
+    public boolean isCommand() {
+        return command;
+    }
 }

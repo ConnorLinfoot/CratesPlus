@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
+import java.util.Random;
 
 public class CrateOpenEvent extends Event {
     private Player player;
@@ -87,7 +88,10 @@ public class CrateOpenEvent extends Event {
 
     private void doBetaGUI() {
         /** Time for some cool GUI's, hopefully */
-
+        Random random = new Random();
+        int max = crate.getWinnings().size() - 1;
+        int min = 0;
+        currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
         winGUI = Bukkit.createInventory(null, 45, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win");
         player.openInventory(winGUI);
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(CratesPlus.getPlugin(), new Runnable() {
@@ -104,11 +108,14 @@ public class CrateOpenEvent extends Event {
                         Winning winning = crate.getWinnings().get(currentItem);
 
                         ItemStack currentItemStack = winning.getItemStack();
-                        if (timer == 100)
-                            winning.runWin();
-                        if (currentItemStack != null) {
-                            winGUI.setItem(22, currentItemStack);
+                        if (winning.isCommand()) {
+                            currentItemStack.getItemMeta().spigot().setUnbreakable(true); // Yeah... this is how we remember if it's a command or not xD
+                        } else {
+                            currentItemStack.getItemMeta().spigot().setUnbreakable(false);
                         }
+                        if (timer == 100)
+                            winning.runWin(player);
+                        winGUI.setItem(22, currentItemStack);
 
                         currentItem++;
                         continue;

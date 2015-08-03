@@ -53,7 +53,8 @@ public class ChestInteract implements Listener {
                     if (item.getAmount() > 1) {
                         item.setAmount(item.getAmount() - 1);
                     } else {
-                        player.getInventory().remove(item);
+                        player.setItemInHand(null);
+//                        player.getInventory().remove(item);
                     }
                     CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
                     if (!crateOpenEvent.isCanceled()) {
