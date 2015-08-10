@@ -2,6 +2,11 @@ Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
 V3.1 Snapshot 7:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/149/artifact/target/CratesPlus-3.1-SNAPSHOT-7.jar
+ - Fixed create command to work with the new config system
+ - Fixed rename command to work with the new config system
+
+V3.1 Snapshot 7:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/148/artifact/target/CratesPlus-3.1-SNAPSHOT-7.jar
  - Added percentage support considering it was asked for so much, percentages in a crate MUST add up to 100% for it to function correct
 

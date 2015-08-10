@@ -12,9 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CrateCommand implements CommandExecutor {
 
     @Override
@@ -52,9 +49,14 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
-            List<String> items = new ArrayList<String>();
-            items.add("IRON_SWORD:1:DAMAGE_ALL-3");
-            config.set("Crates." + name + ".Items", items);
+            // Setup example item
+            config.set("Crates." + name + ".Winnings.1.Type", "ITEM");
+            config.set("Crates." + name + ".Winnings.1.Item Type", "IRON_SWORD");
+            config.set("Crates." + name + ".Winnings.1.Item Data", 0);
+            config.set("Crates." + name + ".Winnings.1.Percentage", 0);
+            config.set("Crates." + name + ".Winnings.1.Name", "&6&lExample Sword");
+            config.set("Crates." + name + ".Winnings.1.Amount", 1);
+
             config.set("Crates." + name + ".Knockback", 0.0);
             config.set("Crates." + name + ".Broadcast", false);
             config.set("Crates." + name + ".Firework", false);
@@ -90,11 +92,33 @@ public class CrateCommand implements CommandExecutor {
                 return false;
             }
 
-            config.set("Crates." + newName + ".Items", config.getList("Crates." + crate.getName(false) + ".Items"));
+            for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + crate.getName(false) + ".Winnings").getKeys(false)) {
+                String path = "Crates." + crate.getName(false) + ".Winnings." + id;
+                String newPath = "Crates." + newName + ".Winnings." + id;
+
+                if (config.isSet(path + ".Type"))
+                    config.set(newPath + ".Type", config.getString(path + ".Type"));
+                if (config.isSet(path + ".Item Type"))
+                    config.set(newPath + ".Item Type", config.getString(path + ".Item Type"));
+                if (config.isSet(path + ".Item Data"))
+                    config.set(newPath + ".Item Data", config.getInt(path + ".Item Data"));
+                if (config.isSet(path + ".Percentage"))
+                    config.set(newPath + ".Percentage", config.getInt(path + ".Percentage"));
+                if (config.isSet(path + ".Name"))
+                    config.set(newPath + ".Name", config.getString(path + ".Name"));
+                if (config.isSet(path + ".Amount"))
+                    config.set(newPath + ".Amount", config.getInt(path + ".Amount"));
+                if (config.isSet(path + ".Enchantments"))
+                    config.set(newPath + ".Enchantments", config.getList(path + ".Enchantments"));
+                if (config.isSet(path + ".Commands"))
+                    config.set(newPath + ".Commands", config.getList(path + ".Commands"));
+            }
+
             config.set("Crates." + newName + ".Knockback", config.getDouble("Crates." + crate.getName(false) + ".Knockback"));
             config.set("Crates." + newName + ".Broadcast", config.getBoolean("Crates." + crate.getName(false) + ".Broadcast"));
             config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + crate.getName(false) + ".Firework"));
             config.set("Crates." + newName + ".Color", config.getString("Crates." + crate.getName(false) + ".Color"));
+
             config.set("Crates." + crate.getName(false), null);
             CratesPlus.getPlugin().saveConfig();
             CratesPlus.getPlugin().reloadConfig();
