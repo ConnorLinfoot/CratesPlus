@@ -15,13 +15,15 @@ public class Crate {
     private boolean broadcast = false;
     private double knockback = 0.0;
     //    private List<String> items = new ArrayList<String>();
-    private List<Winning> winnings = new ArrayList<Winning>();
+    private ArrayList<Winning> winnings = new ArrayList<Winning>();
+    private ArrayList<Integer> percentages = new ArrayList<Integer>();
+    private int totalPercentage = 0;
 
     public Crate(String name) {
         this.name = name;
         this.slug = name.toLowerCase();
         this.color = ChatColor.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Color").toUpperCase());
-        // TODO: Add custom blocks for crates
+        // TODO: Add custom blocks for crates (lol this still needs doing)
 //        this.block = Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Block").toUpperCase());
         this.firework = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Firework");
         this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");
@@ -31,10 +33,19 @@ public class Crate {
         if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Winnings"))
             return;
         for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
+            if (totalPercentage >= 100)
+                break;
             String path = "Crates." + name + ".Winnings." + id;
             Winning winning = new Winning(path);
-            if (winning.isValid())
+            if (winning.isValid() && totalPercentage + winning.getPercentage() <= 100) {
+                totalPercentage = totalPercentage + winning.getPercentage();
                 winnings.add(winning);
+                if (winning.getPercentage() > 0) {
+                    for (int i = 0; i < winning.getPercentage(); i++) {
+                        percentages.add(winnings.size() - 1);
+                    }
+                }
+            }
         }
     }
 
@@ -45,6 +56,10 @@ public class Crate {
     public String getName(boolean includecolor) {
         if (includecolor) return getColor() + this.name;
         return this.name;
+    }
+
+    public String getSlug() {
+        return slug;
     }
 
     public ChatColor getColor() {
@@ -90,4 +105,11 @@ public class Crate {
         winnings.add(winning);
     }
 
+    public int getTotalPercentage() {
+        return totalPercentage;
+    }
+
+    public ArrayList<Integer> getPercentages() {
+        return percentages;
+    }
 }

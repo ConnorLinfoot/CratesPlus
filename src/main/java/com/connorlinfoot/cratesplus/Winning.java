@@ -15,6 +15,7 @@ import java.util.List;
 public class Winning {
     private boolean valid = false;
     private boolean command = false;
+    private int percentage = 0;
     private ItemStack itemStack;
     private List<String> commands = new ArrayList<String>();
 
@@ -38,6 +39,9 @@ public class Winning {
             if (config.isSet(path + ".Item Data"))
                 itemData = config.getInt(path + ".Item Data");
 
+            if (config.isSet(path + ".Percentage"))
+                percentage = config.getInt(path + ".Percentage");
+
             Integer amount = 1;
             if (config.isSet(path + ".Amount"))
                 amount = config.getInt(path + ".Amount");
@@ -58,6 +62,9 @@ public class Winning {
             Integer itemData = 0;
             if (config.isSet(path + ".Item Data"))
                 itemData = config.getInt(path + ".Item Data");
+
+            if (config.isSet(path + ".Percentage"))
+                percentage = config.getInt(path + ".Percentage");
 
             Integer amount = 1;
             if (config.isSet(path + ".Amount"))
@@ -85,6 +92,17 @@ public class Winning {
                 } catch (Exception ignored) {
                 }
             }
+        }
+
+        if (percentage > 0) {
+            // Percentage or lore
+            itemMeta = itemStack.getItemMeta();
+            List<String> lore = new ArrayList<String>();
+            lore.add(ChatColor.LIGHT_PURPLE + "");
+            lore.add("" + ChatColor.LIGHT_PURPLE + percentage + "% Chance");
+            lore.add(ChatColor.LIGHT_PURPLE + "");
+            itemMeta.setLore(lore);
+            itemStack.setItemMeta(itemMeta);
         }
 
         // Done :D
@@ -116,5 +134,13 @@ public class Winning {
 
     public boolean isCommand() {
         return command;
+    }
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public List<String> getCommands() {
+        return commands;
     }
 }

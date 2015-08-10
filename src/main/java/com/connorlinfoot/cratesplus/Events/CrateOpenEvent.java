@@ -105,11 +105,21 @@ public class CrateOpenEvent extends Event {
                         i++;
                         if (crate.getWinnings().size() == currentItem)
                             currentItem = 0;
-                        Winning winning = crate.getWinnings().get(currentItem);
+                        Winning winning;
+                        if (timer == 100) {
+                            if (crate.getTotalPercentage() > 0) {
+                                int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
+                                winning = crate.getWinnings().get(id);
+                            } else {
+                                winning = crate.getWinnings().get(CrateHandler.randInt(0, crate.getWinnings().size() - 1));
+                            }
+                        } else {
+                            winning = crate.getWinnings().get(currentItem);
+                        }
 
                         ItemStack currentItemStack = winning.getItemStack();
                         if (winning.isCommand()) {
-                            currentItemStack.getItemMeta().spigot().setUnbreakable(true); // Yeah... this is how we remember if it's a command or not xD
+                            currentItemStack.getItemMeta().spigot().setUnbreakable(true); // Yeah... this is how we remember if it's a command or not xD TODO Improve this
                         } else {
                             currentItemStack.getItemMeta().spigot().setUnbreakable(false);
                         }

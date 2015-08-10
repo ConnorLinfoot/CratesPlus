@@ -1,6 +1,10 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 7:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/148/artifact/target/CratesPlus-3.1-SNAPSHOT-7.jar
+ - Added percentage support considering it was asked for so much, percentages in a crate MUST add up to 100% for it to function correct
+
 V3.1 Snapshot 6:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/140/artifact/target/CratesPlus-3.1-SNAPSHOT-6.jar
  - Commands now working, see default config for example
