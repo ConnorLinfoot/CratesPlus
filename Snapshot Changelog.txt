@@ -1,8 +1,8 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
-V3.1 Snapshot 7:
- Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/149/artifact/target/CratesPlus-3.1-SNAPSHOT-7.jar
+V3.1 Snapshot 8:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/149/artifact/target/CratesPlus-3.1-SNAPSHOT-8.jar
  - Fixed create command to work with the new config system
  - Fixed rename command to work with the new config system
 
