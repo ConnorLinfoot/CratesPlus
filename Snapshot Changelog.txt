@@ -1,6 +1,10 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 9:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/150/artifact/target/CratesPlus-3.1-SNAPSHOT-9.jar
+ - Added V3 -> V4 Config Converter (Pls test<3)
+
 V3.1 Snapshot 8:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/149/artifact/target/CratesPlus-3.1-SNAPSHOT-8.jar
  - Fixed create command to work with the new config system

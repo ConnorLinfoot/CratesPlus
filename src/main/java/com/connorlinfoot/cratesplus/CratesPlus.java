@@ -11,8 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CratesPlus extends JavaPlugin implements Listener {
     private static CratesPlus instance;
@@ -266,8 +269,71 @@ public class CratesPlus extends JavaPlugin implements Listener {
     private void convertConfigV4(ConsoleCommandSender console, String oldConfig) {
         console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 4...");
 
-        // TODO Convert old V3 config to V4
+        int count = 1;
+        for (String name : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+            List<?> items = getConfig().getList("Crates." + name + ".Items");
+            for (Object object : items) {
+                String i = object.toString();
+                if (i.toUpperCase().startsWith("COMMAND:")) {
+                    ItemStack itemStack = CrateHandler.stringToItemstackOld(i);
+                    if (itemStack == null)
+                        return;
 
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Type", "COMMAND");
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Item Type", itemStack.getType().toString());
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Item Data", itemStack.getData().getData());
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Amount", itemStack.getAmount());
+                    if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+                        getConfig().set("Crates." + name + ".Winnings." + count + ".Name", itemStack.getItemMeta().getDisplayName());
+
+                    ArrayList<String> enchantments = new ArrayList<String>();
+                    for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+                        Enchantment enchantment = entry.getKey();
+                        Integer level = entry.getValue();
+
+                        if (level > 1) {
+                            enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
+                        } else {
+                            enchantments.add(enchantment.getName().toUpperCase());
+                        }
+                    }
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Enchantments", enchantments);
+
+                    ArrayList<String> commands = new ArrayList<String>();
+                    commands.add(itemStack.getItemMeta().getDisplayName().replaceAll("Command: /", ""));
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Commands", commands);
+
+                    getConfig().set("Crates." + name + ".Items", null);
+                } else {
+                    ItemStack itemStack = CrateHandler.stringToItemstackOld(i);
+                    if (itemStack == null)
+                        return;
+
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Type", "ITEM");
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Item Type", itemStack.getType().toString());
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Item Data", itemStack.getData().getData());
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Amount", itemStack.getAmount());
+                    if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+                        getConfig().set("Crates." + name + ".Winnings." + count + ".Name", itemStack.getItemMeta().getDisplayName());
+
+                    ArrayList<String> enchantments = new ArrayList<String>();
+                    for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+                        Enchantment enchantment = entry.getKey();
+                        Integer level = entry.getValue();
+
+                        if (level > 1) {
+                            enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
+                        } else {
+                            enchantments.add(enchantment.getName().toUpperCase());
+                        }
+                    }
+                    getConfig().set("Crates." + name + ".Winnings." + count + ".Enchantments", enchantments);
+                    getConfig().set("Crates." + name + ".Items", null);
+
+                    count++;
+                }
+            }
+        }
 
         // Set config version
         getConfig().set("Config Version", 4);
