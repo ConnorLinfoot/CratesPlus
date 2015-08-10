@@ -177,7 +177,7 @@ public class CrateCommand implements CommandExecutor {
             if (crateType != null) {
 
                 if (CratesPlus.crates.get(crateType.toLowerCase()) == null) {
-                    sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found, crates are case sensitive");
+                    sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Crate not found");
                     return false;
                 }
 
@@ -199,7 +199,7 @@ public class CrateCommand implements CommandExecutor {
             }
 
             if (player == null) {
-                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Given all players " + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Given all players a crate key");
             } else {
                 sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
             }

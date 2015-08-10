@@ -14,7 +14,6 @@ public class Crate {
     private boolean firework = false;
     private boolean broadcast = false;
     private double knockback = 0.0;
-    //    private List<String> items = new ArrayList<String>();
     private ArrayList<Winning> winnings = new ArrayList<Winning>();
     private ArrayList<Integer> percentages = new ArrayList<Integer>();
     private int totalPercentage = 0;
@@ -23,12 +22,11 @@ public class Crate {
         this.name = name;
         this.slug = name.toLowerCase();
         this.color = ChatColor.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Color").toUpperCase());
-        // TODO: Add custom blocks for crates (lol this still needs doing)
+        // TODO: Add custom blocks for crates (lol this still needs doing... V4? Yeah V4.)
 //        this.block = Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Block").toUpperCase());
         this.firework = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Firework");
         this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");
         this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
-//        this.items = CratesPlus.getPlugin().getConfig().getStringList("Crates." + name + ".Items");
 
         if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Winnings"))
             return;

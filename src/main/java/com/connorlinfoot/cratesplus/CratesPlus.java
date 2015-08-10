@@ -33,7 +33,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
     public static SettingsHandler settingsHandler;
     public static List<?> holograms;
-    public static boolean betaGUI = false;
 
     public void onEnable() {
         instance = this;
@@ -51,9 +50,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
             String oldConfig = backupConfig();
             convertConfigV4(console, oldConfig); // Yay even more config converting xD
         }
-        if (getConfig().isSet("More Info Hologram")) {
-            getConfig().set("More Info Hologram", null);
-        }
+
+        cleanUpDeadConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
 
@@ -66,7 +64,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
             }
         }
 
-
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
 
@@ -77,9 +74,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Crate Holograms
         holograms = getConfig().getList("Hologram Text");
-
-        // Enable GUI Beta Animation
-        betaGUI = getConfig().getBoolean("Enable GUI Beta Animation");
 
         // Register /crate command
         Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
@@ -124,6 +118,13 @@ public class CratesPlus extends JavaPlugin implements Listener {
                 }
             }
         }
+    }
+
+    private void cleanUpDeadConfig() {
+        if (getConfig().isSet("More Info Hologram"))
+            getConfig().set("More Info Hologram", null);
+        if (getConfig().isSet("Enable GUI Beta Animation"))
+            getConfig().set("Enable GUI Beta Animation", null);
     }
 
     private String backupConfig() {
@@ -358,7 +359,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
         final Updater.UpdateResult result = updater.getResult();
         switch (result) {
             default:
-                break;
             case FAIL_SPIGOT:
                 updateAvailable = false;
                 updateMessage = pluginPrefix + "Failed to check for updates. Will try again later.";

@@ -32,9 +32,6 @@ public class SettingsListener implements Listener {
             CratesPlus.getPlugin().getConfig().set("Crates." + crateName + ".Winnings", null);
             CratesPlus.getPlugin().saveConfig();
             for (ItemStack itemStack : event.getInventory().getContents()) {
-//                String itemString = CrateHandler.itemstackToString(itemStack);
-//                if (itemString != null) items.add(itemString);
-
                 if (itemStack == null)
                     continue;
                 int id = getFreeID(crateName, 1);
@@ -64,16 +61,11 @@ public class SettingsListener implements Listener {
                 config.set(path + ".Name", name);
                 config.set(path + ".Amount", amount);
                 config.set(path + ".Enchantments", enchantments);
-//                CratesPlus.getPlugin().saveConfig();
-//                CratesPlus.getPlugin().reloadConfig();
-
-
             }
 
-//            CratesPlus.getPlugin().getConfig().set("Crates." + crate.getName(false) + ".Items", items);
             CratesPlus.getPlugin().saveConfig();
             crate.reloadWinnings();
-            ((Player) event.getPlayer()).sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Crate winnings updated");
+            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Crate winnings updated");
         }
     }
 

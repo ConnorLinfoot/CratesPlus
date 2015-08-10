@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -119,9 +120,14 @@ public class CrateOpenEvent extends Event {
 
                         ItemStack currentItemStack = winning.getItemStack();
                         if (winning.isCommand()) {
-                            currentItemStack.getItemMeta().spigot().setUnbreakable(true); // Yeah... this is how we remember if it's a command or not xD TODO Improve this
-                        } else {
-                            currentItemStack.getItemMeta().spigot().setUnbreakable(false);
+                            List<String> lore;
+                            if (currentItemStack.getItemMeta().hasLore())
+                                lore = currentItemStack.getItemMeta().getLore();
+                            else
+                                lore = new ArrayList<String>();
+                            lore.add(ChatColor.DARK_GRAY + "");
+                            lore.add(ChatColor.DARK_GRAY + "Crates Command");
+                            currentItemStack.getItemMeta().setLore(lore);
                         }
                         if (timer == 100)
                             winning.runWin(player);

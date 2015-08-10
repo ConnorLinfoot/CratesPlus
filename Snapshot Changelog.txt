@@ -1,6 +1,12 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 10:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/151/artifact/target/CratesPlus-3.1-SNAPSHOT-10.jar
+ - Better system for remembering commands that doesn't require the use of Spigot
+ - Cleaned up bits of code
+ - Final testing will happen tonight for V3.1, if successful expect very close full release
+
 V3.1 Snapshot 9:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/150/artifact/target/CratesPlus-3.1-SNAPSHOT-9.jar
  - Added V3 -> V4 Config Converter (Pls test<3)

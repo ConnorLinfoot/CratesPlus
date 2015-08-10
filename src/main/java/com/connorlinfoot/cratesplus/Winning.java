@@ -27,7 +27,7 @@ public class Winning {
         if (!config.isSet(path + ".Type"))
             return;
         String type = config.getString(path + ".Type");
-        ItemStack itemStack = null;
+        ItemStack itemStack;
         if (type.equalsIgnoreCase("item")) {
             if (!config.isSet(path + ".Item Type"))
                 return;
