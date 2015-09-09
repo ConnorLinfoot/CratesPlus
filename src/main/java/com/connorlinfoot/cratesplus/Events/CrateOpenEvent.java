@@ -95,6 +95,8 @@ public class CrateOpenEvent extends Event {
         currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
         winGUI = Bukkit.createInventory(null, 45, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win");
         player.openInventory(winGUI);
+        int maxTime = CratesPlus.crateGUITime;
+        final int maxTimeTicks = maxTime * 10;
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(CratesPlus.getPlugin(), new Runnable() {
             public void run() {
                 if (player.getOpenInventory().getTitle() == null || !player.getOpenInventory().getTitle().contains(" Win")) {
@@ -129,7 +131,7 @@ public class CrateOpenEvent extends Event {
                             lore.add(ChatColor.DARK_GRAY + "Crates Command");
                             currentItemStack.getItemMeta().setLore(lore);
                         }
-                        if (timer == 100)
+                        if (timer == maxTimeTicks)
                             winning.runWin(player);
                         winGUI.setItem(22, currentItemStack);
 
@@ -138,7 +140,7 @@ public class CrateOpenEvent extends Event {
                     }
                     ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) CrateHandler.randInt(0, 15));
                     ItemMeta itemMeta = itemStack.getItemMeta();
-                    if (timer == 100) {
+                    if (timer == maxTimeTicks) {
                         itemMeta.setDisplayName(ChatColor.RESET + "Winner!");
                     } else {
                         player.playSound(player.getLocation(), Sound.NOTE_PIANO, (float) 0.2, 2);
@@ -148,13 +150,13 @@ public class CrateOpenEvent extends Event {
                     winGUI.setItem(i, itemStack);
                     i++;
                 }
-                if (timer == 100) {
+                if (timer == maxTimeTicks) {
                     task.cancel();
                     return;
                 }
-                timer = timer + 2;
+                timer++;
             }
-        }, 0L, 3L);
+        }, 0L, 2L);
 
 
     }

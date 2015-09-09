@@ -33,6 +33,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
     public static SettingsHandler settingsHandler;
     public static List<?> holograms;
+    public static int crateGUITime = 10;
 
     public void onEnable() {
         instance = this;
@@ -66,6 +67,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
+
+        // Crate GUI Time
+        if (getConfig().isSet("GUI Time"))
+            crateGUITime = getConfig().getInt("GUI Time");
 
         // Register Crates
         for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
@@ -398,6 +403,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', CratesPlus.getPlugin().getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
+
+        // Crate GUI Time
+        if (CratesPlus.getPlugin().getConfig().isSet("GUI Time"))
+            crateGUITime = CratesPlus.getPlugin().getConfig().getInt("GUI Time");
 
         // Register Crates
         CratesPlus.crates.clear();

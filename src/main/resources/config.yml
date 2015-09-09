@@ -59,6 +59,10 @@ Crates:
         - DURABILITY-3
         - FIRE_ASPECT-2
 
+# Settings for the Crate opening GUI (Time is seconds)
+Use GUI: true
+GUI Time: 10
+
 # Modify different options of the crate key
 Crate Keys:
   Item: TRIPWIRE_HOOK

@@ -1,6 +1,12 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 11:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/182/artifact/target/CratesPlus-3.1-SNAPSHOT-11.jar
+ - Yes I know... It's been a while (Shh)
+ - Added options to disable GUI for winning and change time. (Disable GUI doesn't work yet)
+ - Probably 1 more snapshot before release this weekend!
+
 V3.1 Snapshot 10:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/151/artifact/target/CratesPlus-3.1-SNAPSHOT-10.jar
  - Better system for remembering commands that doesn't require the use of Spigot
