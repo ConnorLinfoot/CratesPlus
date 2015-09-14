@@ -1,6 +1,11 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 14:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/190/artifact/target/CratesPlus-3.1-SNAPSHOT-14.jar
+ - Added Lore support to Crates.
+ - Fixed a small bug which showed the wrong error when using /crate crate
+
 V3.1 Snapshot 13:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/189/artifact/target/CratesPlus-3.1-SNAPSHOT-13.jar
  - Removed Crates from Example config. You must now setup at least 1 crate before getting started.

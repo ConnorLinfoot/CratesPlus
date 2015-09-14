@@ -33,6 +33,8 @@ Crates:
         Amount: 1
         Enchantments:
         - DAMAGE_ALL-3
+        Lore:
+        - "Testing123"
       '2':
         Type: ITEM
         Item Type: DIAMOND_SWORD

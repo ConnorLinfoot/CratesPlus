@@ -224,7 +224,7 @@ public class CrateCommand implements CommandExecutor {
             }
 
             if (player == null) {
-                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "The player " + args[1] + " was not found");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "The player " + args[2] + " was not found");
                 return false;
             }
 

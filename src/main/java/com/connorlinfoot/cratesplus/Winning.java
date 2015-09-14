@@ -18,6 +18,7 @@ public class Winning {
     private int percentage = 0;
     private ItemStack itemStack;
     private List<String> commands = new ArrayList<String>();
+    private List<String> lore = new ArrayList<String>();
 
     public Winning(String path) {
         FileConfiguration config = CratesPlus.getPlugin().getConfig();
@@ -94,16 +95,24 @@ public class Winning {
             }
         }
 
+        if (config.isSet(path + ".Lore")) {
+            List<?> lines = config.getList(path + ".Lore");
+            for (Object object : lines) {
+                String line = (String) object;
+                this.lore.add(line);
+            }
+        }
+
+        itemMeta = itemStack.getItemMeta();
+        List<String> lore = this.lore;
         if (percentage > 0) {
-            // Percentage or lore
-            itemMeta = itemStack.getItemMeta();
-            List<String> lore = new ArrayList<String>();
+            // Percentage
             lore.add(ChatColor.LIGHT_PURPLE + "");
             lore.add("" + ChatColor.LIGHT_PURPLE + percentage + "% Chance");
             lore.add(ChatColor.LIGHT_PURPLE + "");
-            itemMeta.setLore(lore);
-            itemStack.setItemMeta(itemMeta);
         }
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
 
         // Done :D
         valid = true;

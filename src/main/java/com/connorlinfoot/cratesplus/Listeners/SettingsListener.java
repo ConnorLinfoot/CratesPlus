@@ -52,6 +52,11 @@ public class SettingsListener implements Listener {
                     }
                 }
 
+
+                List<String> lore = new ArrayList<String>();
+                if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())
+                    lore = itemStack.getItemMeta().getLore();
+
                 // Save to config and creating winning instance
                 FileConfiguration config = CratesPlus.getPlugin().getConfig();
                 String path = "Crates." + crateName + ".Winnings." + id;
@@ -61,6 +66,7 @@ public class SettingsListener implements Listener {
                 config.set(path + ".Name", name);
                 config.set(path + ".Amount", amount);
                 config.set(path + ".Enchantments", enchantments);
+                config.set(path + ".Lore", lore);
             }
 
             CratesPlus.getPlugin().saveConfig();
