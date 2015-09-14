@@ -1,6 +1,10 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 12:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/188/artifact/target/CratesPlus-3.1-SNAPSHOT-12.jar
+ - Disable GUI now works... We're close!
+
 V3.1 Snapshot 11:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/182/artifact/target/CratesPlus-3.1-SNAPSHOT-11.jar
  - Yes I know... It's been a while (Shh)

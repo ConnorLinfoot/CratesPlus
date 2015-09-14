@@ -17,9 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class CrateOpenEvent extends Event {
     private Player player;
@@ -51,7 +49,17 @@ public class CrateOpenEvent extends Event {
             Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateType));
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
         }
-        doBetaGUI();
+
+        if (CratesPlus.doGui) {
+            doBetaGUI();
+        } else {
+            int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
+            winning = crate.getWinnings().get(id);
+            HashMap<Integer, ItemStack> left = getPlayer().getInventory().addItem(winning.getItemStack());
+            for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+                getPlayer().getLocation().getWorld().dropItemNaturally(getPlayer().getLocation(), item.getValue());
+            }
+        }
     }
 
     private Winning getValidWin(List<Winning> winnings) {

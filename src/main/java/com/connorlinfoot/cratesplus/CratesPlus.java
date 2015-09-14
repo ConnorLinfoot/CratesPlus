@@ -33,6 +33,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
     public static SettingsHandler settingsHandler;
     public static List<?> holograms;
+    public static boolean doGui = true;
     public static int crateGUITime = 10;
 
     public void onEnable() {
@@ -67,6 +68,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Do Prefix
         pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
+
+        // Crate GUI
+        if (getConfig().isSet("Use GUI"))
+            doGui = getConfig().getBoolean("Use GUI");
 
         // Crate GUI Time
         if (getConfig().isSet("GUI Time"))
