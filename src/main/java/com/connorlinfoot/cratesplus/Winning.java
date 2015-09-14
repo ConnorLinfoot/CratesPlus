@@ -99,7 +99,7 @@ public class Winning {
             List<?> lines = config.getList(path + ".Lore");
             for (Object object : lines) {
                 String line = (String) object;
-                this.lore.add(line);
+                this.lore.add(ChatColor.translateAlternateColorCodes('&', line));
             }
         }
 

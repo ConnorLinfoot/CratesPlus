@@ -53,12 +53,19 @@ public class CrateOpenEvent extends Event {
         if (CratesPlus.doGui) {
             doBetaGUI();
         } else {
-            int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
-            winning = crate.getWinnings().get(id);
-            HashMap<Integer, ItemStack> left = getPlayer().getInventory().addItem(winning.getItemStack());
-            for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
-                getPlayer().getLocation().getWorld().dropItemNaturally(getPlayer().getLocation(), item.getValue());
+            if (crate.getTotalPercentage() > 0) {
+                int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
+                winning = crate.getWinnings().get(id);
+            } else {
+                winning = crate.getWinnings().get(CrateHandler.randInt(0, crate.getWinnings().size() - 1));
             }
+            if (!winning.isCommand()) {
+                HashMap<Integer, ItemStack> left = getPlayer().getInventory().addItem(winning.getItemStack());
+                for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+                    getPlayer().getLocation().getWorld().dropItemNaturally(getPlayer().getLocation(), item.getValue());
+                }
+            }
+            winning.runWin(getPlayer());
         }
     }
 

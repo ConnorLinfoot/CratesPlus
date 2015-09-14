@@ -1,6 +1,11 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 15:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/191/artifact/target/CratesPlus-3.1-SNAPSHOT-15.jar
+ - Lore's now support color codes
+ - Fixed an issue with non-gui not working when no percentages are being used and they also now run commands
+
 V3.1 Snapshot 14:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/190/artifact/target/CratesPlus-3.1-SNAPSHOT-14.jar
  - Added Lore support to Crates.
