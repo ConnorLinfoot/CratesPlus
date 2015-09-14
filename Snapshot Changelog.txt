@@ -1,6 +1,10 @@
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V3.1 Snapshot 13:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/189/artifact/target/CratesPlus-3.1-SNAPSHOT-13.jar
+ - Removed Crates from Example config. You must now setup at least 1 crate before getting started.
+
 V3.1 Snapshot 12:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/188/artifact/target/CratesPlus-3.1-SNAPSHOT-12.jar
  - Disable GUI now works... We're close!

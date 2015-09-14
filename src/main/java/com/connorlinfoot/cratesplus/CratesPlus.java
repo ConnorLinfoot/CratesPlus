@@ -78,8 +78,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
             crateGUITime = getConfig().getInt("GUI Time");
 
         // Register Crates
-        for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
-            crates.put(crate.toLowerCase(), new Crate(crate));
+        if (getConfig().isSet("Crates")) {
+            for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+                crates.put(crate.toLowerCase(), new Crate(crate));
+            }
         }
 
         // Crate Holograms
