@@ -1,3 +1,7 @@
+V3.1.1:
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/download?version=45143
+ - Fixed backup config not working
+
 V3.1:
  Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/download?version=45142
  - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid items is found after 5 tries
