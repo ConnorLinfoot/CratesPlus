@@ -1,9 +1,32 @@
+V3.1:
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/download?version=45142
+ - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid items is found after 5 tries
+ - Added config options to be able to change the text shown on holograms (Support up to 4 lines, removed more-info hologram option since this has been added)
+ - Players can't open crate if inventory is full
+ - All new config style (Again) Designed to make it easier and better for winnings including better command support
+ - Commands can now have a item other than paper and custom names
+ - Lore Support (Should work with most custom enchantments)
+ - GUI now has a nice little animation, along with config options to fully disable the GUI and change the time.
+ - Default config no longer contains any crates, see example config on Spigot page
+ - Added percentage support considering it was asked for so much, percentages in a crate MUST add up to 100% for it to function correctly
+ - Crate Keys now have a "Enchanted" option instead of "Enchantments" list
+ - Now gives the player the item won if they close the GUI without selecting the prize
+ - After clicking winning item GUI will auto-close
+
+V3.0.3:
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/download?version=37596
+ - Fixed a small bug that's annoyed me for a while where if the player had multiple of the same key in different slots it would take all the keys.
+
+V3.0.2:
+  Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/download?version=31200
+  - Added Metrics for tracking stats.
+
 V3.0.1:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28510
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28510
  - Fixed updater not working correctly
 
 V3.0:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28505
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28505
  - Added "/crate settings" - Allows in-game crate editing
  - Added "/crate create <name>"
  - Added "/crate delete <name>"
@@ -21,26 +44,26 @@ V3.0:
  - Fixed bug with data not always been used correctly
 
 V2.0.1:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20207
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20207
  - Fixed an issue with not been able to run "/crate key" without specifying a key type (Thanks to kyle1264x on Spigot for reporting this)
 
 V2.0:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20057
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20057
  - An all new config layout (Old versions will be converted to the new version on first run and a backup of the original will be given via a link)
  - Custom crates and a whole new Crate setup
  - Events, Developers can hook in if they wish to do stuff (CrateOpenEvent, CratePreviewEvent)
 
 V1.3.1:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20026
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20026
  - Fix for preview sizes not working correctly
 
 V1.3:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=18365
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=18365
  - You can now use the Interact event if the Inventory Open event doesn't work for you
  - You can now change the plugin prefix
 
 V1.2:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17899
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17899
  - Added Crate previews
  - Added a winning GUI
  - Can now use item data ID's for items such as wool, spawn eggs etc
@@ -48,12 +71,12 @@ V1.2:
  - Can now change settings of the key
 
 V1.1:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17519
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17519
  - Added update checker (Works with Spigot)
  - Minor changes to how the plugin gets the material from the config
  - Minor changes to the color function for the firework
  - Messages can now be changed in the config file
 
 V1.0:
- Download: http://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17486
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17486
  - Initial release
