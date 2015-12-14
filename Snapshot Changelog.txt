@@ -2,7 +2,7 @@ Version 4.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
 V4.0 Snapshot 1:
- Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/???/artifact/target/CratesPlus-4.0-SNAPSHOT-1.jar
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/284/artifact/target/CratesPlus-4.0-SNAPSHOT-1.jar
  - 5 hours of tiers added
  - Moved Crate Key settings under the individual crates, allows different keys per crates!
  - Fixed percentages not working if you changed the GUI time
