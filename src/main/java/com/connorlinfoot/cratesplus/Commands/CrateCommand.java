@@ -57,6 +57,11 @@ public class CrateCommand implements CommandExecutor {
             config.set("Crates." + name + ".Winnings.1.Name", "&6&lExample Sword");
             config.set("Crates." + name + ".Winnings.1.Amount", 1);
 
+            // Setup key with defaults
+            config.set("Crates." + name + ".Key.Item", "TRIPWIRE_HOOK");
+            config.set("Crates." + name + ".Key.Name", "%type% Crate Key");
+            config.set("Crates." + name + ".Key.Enchanted", true);
+
             config.set("Crates." + name + ".Knockback", 0.0);
             config.set("Crates." + name + ".Broadcast", false);
             config.set("Crates." + name + ".Firework", false);
@@ -156,8 +161,18 @@ public class CrateCommand implements CommandExecutor {
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("key")) {
             if (args.length < 2) {
-                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate key <player> [type]");
+                sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate key <player/all> [type] [amount]");
                 return false;
+            }
+
+            Integer amount = 1;
+            if (args.length > 3) {
+                try {
+                    amount = Integer.parseInt(args[3]);
+                } catch (Exception ignored) {
+                    sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Invalid amount");
+                    return false;
+                }
             }
 
             Player player = null;
@@ -258,7 +273,7 @@ public class CrateCommand implements CommandExecutor {
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate create <name> - Create a new crate");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate rename <old name> <new name> - Rename a new crate");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate delete <name> - Delete a crate");
-        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player> [type] - Give player a random crate key");
+        sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player/all> [type] [amount] - Give player a random crate key");
         sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");
 
         return true;

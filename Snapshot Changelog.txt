@@ -1,3 +1,22 @@
+Version 4.0 Snapshots
+-----------------------------------------------------------------------------------------------------------
+
+V4.0 Snapshot 1:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/???/artifact/target/CratesPlus-4.0-SNAPSHOT-1.jar
+ - 5 hours of tiers added
+ - Moved Crate Key settings under the individual crates, allows different keys per crates!
+ - Fixed percentages not working if you changed the GUI time
+ - Message now shows in console if percentages add up to more than 100%
+ - Having items with stacks larger than max stack size should no longer breaks inventories/have weird issues
+ - Lore no longer contains percentage after player has been given the item
+ - Commands no longer also give the player the item
+ - Changes to key command - You can now specify an amount of keys to give
+ - Should now work with CraftBukkit and not just Spigot...
+ - Minor config conversion added
+ - Minor code cleaning
+ - I would recommend not disabling the GUI as the non-gui win doesn't work correctly at the moment. May end up dropping it.
+
+
 Version 3.1 Snapshots
 -----------------------------------------------------------------------------------------------------------
 

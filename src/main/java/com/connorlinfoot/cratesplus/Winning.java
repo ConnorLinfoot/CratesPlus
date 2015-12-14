@@ -16,7 +16,8 @@ public class Winning {
     private boolean valid = false;
     private boolean command = false;
     private int percentage = 0;
-    private ItemStack itemStack;
+    private ItemStack previewItemStack;
+    private ItemStack winningItemStack;
     private List<String> commands = new ArrayList<String>();
     private List<String> lore = new ArrayList<String>();
 
@@ -74,11 +75,27 @@ public class Winning {
         } else {
             return;
         }
+        ItemStack winningItemStack = itemStack.clone();
+        ItemStack previewItemStack = itemStack.clone();
+        itemStack = null; ////////////////////////////////////////
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        boolean showAmountInTitle = false;
+        int orignalAmount = 0;
+        if (previewItemStack.getAmount() > previewItemStack.getMaxStackSize()) { // Stop multiple stacks for the same item!
+            orignalAmount = previewItemStack.getAmount();
+            showAmountInTitle = true;
+            previewItemStack.setAmount(previewItemStack.getMaxStackSize());
+        }
+
+        ItemMeta previewItemStackItemMeta = previewItemStack.getItemMeta();
+        String displayName = "";
         if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
-            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name")));
-        itemStack.setItemMeta(itemMeta);
+            displayName = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
+        if (showAmountInTitle)
+            displayName = displayName + " x" + orignalAmount;
+        if (!displayName.equals(""))
+            previewItemStackItemMeta.setDisplayName(displayName);
+        previewItemStack.setItemMeta(previewItemStackItemMeta);
 
         if (config.isSet(path + ".Enchantments")) {
             List<?> enchtantments = config.getList(path + ".Enchantments");
@@ -89,7 +106,7 @@ public class Winning {
                     Integer level = 1;
                     if (args.length > 1)
                         level = Integer.valueOf(args[1]);
-                    itemStack.addUnsafeEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
+                    previewItemStack.addUnsafeEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
                 } catch (Exception ignored) {
                 }
             }
@@ -103,7 +120,40 @@ public class Winning {
             }
         }
 
-        itemMeta = itemStack.getItemMeta();
+
+        ItemMeta winningItemStackItemMeta = winningItemStack.getItemMeta();
+        displayName = "";
+        if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
+            displayName = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
+        if (!displayName.equals(""))
+            winningItemStackItemMeta.setDisplayName(displayName);
+        winningItemStack.setItemMeta(winningItemStackItemMeta);
+
+        if (config.isSet(path + ".Enchantments")) {
+            List<?> enchtantments = config.getList(path + ".Enchantments");
+            for (Object object : enchtantments) {
+                String enchantment = (String) object;
+                String[] args = enchantment.split("-");
+                try {
+                    Integer level = 1;
+                    if (args.length > 1)
+                        level = Integer.valueOf(args[1]);
+                    winningItemStack.addUnsafeEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
+                } catch (Exception ignored) {
+                }
+            }
+        }
+
+        if (config.isSet(path + ".Lore")) {
+            List<?> lines = config.getList(path + ".Lore");
+            for (Object object : lines) {
+                String line = (String) object;
+                this.lore.add(ChatColor.translateAlternateColorCodes('&', line));
+            }
+        }
+
+
+        previewItemStackItemMeta = previewItemStack.getItemMeta();
         List<String> lore = this.lore;
         if (percentage > 0) {
             // Percentage
@@ -111,12 +161,13 @@ public class Winning {
             lore.add("" + ChatColor.LIGHT_PURPLE + percentage + "% Chance");
             lore.add(ChatColor.LIGHT_PURPLE + "");
         }
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        previewItemStackItemMeta.setLore(lore);
+        previewItemStack.setItemMeta(previewItemStackItemMeta);
 
         // Done :D
         valid = true;
-        this.itemStack = itemStack;
+        this.previewItemStack = previewItemStack;
+        this.winningItemStack = winningItemStack;
     }
 
     public boolean isValid() {
@@ -127,17 +178,23 @@ public class Winning {
         this.valid = valid;
     }
 
-    public ItemStack getItemStack() {
-        return itemStack;
+    public ItemStack getPreviewItemStack() {
+        return previewItemStack;
+    }
+
+    public ItemStack getWinningItemStack() {
+        return winningItemStack;
     }
 
     public void runWin(Player player) {
-        if (commands.size() > 0) {
+        if (isCommand() && commands.size() > 0) {
             for (String command : commands) {
                 command = command.replaceAll("%name%", player.getName());
                 command = command.replaceAll("%uuid%", player.getUniqueId().toString());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
+        } else if (!isCommand()) {
+            player.getInventory().addItem(getWinningItemStack());
         }
     }
 

@@ -14,14 +14,14 @@ import java.util.List;
 
 public class CratePreviewEvent extends Event {
     private Player player;
-    private String crateType;
+    private String crateName;
     private Crate crate;
     private boolean canceled = false;
 
-    public CratePreviewEvent(Player player, String crateType) {
+    public CratePreviewEvent(Player player, String crateName) {
         this.player = player;
-        this.crateType = crateType;
-        this.crate = CratesPlus.crates.get(crateType.toLowerCase());
+        this.crateName = crateName;
+        this.crate = CratesPlus.crates.get(crateName.toLowerCase());
     }
 
     public void doEvent() {
@@ -40,9 +40,9 @@ public class CratePreviewEvent extends Event {
         } else {
             size = 54;
         }
-        Inventory inventory = Bukkit.createInventory(null, size, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Possible Wins:");
+        Inventory inventory = Bukkit.createInventory(null, size, crate.getName(true) + " Possible Wins:");
         for (Winning winning : items) {
-            ItemStack itemStack = winning.getItemStack();
+            ItemStack itemStack = winning.getPreviewItemStack();
             if (itemStack == null)
                 continue;
             inventory.addItem(itemStack);
@@ -67,12 +67,12 @@ public class CratePreviewEvent extends Event {
         return this.player;
     }
 
-    public void setCrateType(String crateType) {
-        this.crateType = crateType;
+    public void setCrateName(String crateName) {
+        this.crateName = crateName;
     }
 
-    public String getCrateType() {
-        return this.crateType;
+    public String getCrateName() {
+        return this.crateName;
     }
 
 }

@@ -17,11 +17,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class CrateOpenEvent extends Event {
     private Player player;
-    private String crateType;
+    private String crateName;
     private Crate crate;
     private boolean canceled = false;
     private int tries = 0;
@@ -31,10 +34,10 @@ public class CrateOpenEvent extends Event {
     private Integer currentItem = 0;
     private Winning winning = null;
 
-    public CrateOpenEvent(Player player, String crateType) {
+    public CrateOpenEvent(Player player, String crateName) {
         this.player = player;
-        this.crateType = crateType;
-        this.crate = CratesPlus.crates.get(crateType.toLowerCase());
+        this.crateName = crateName;
+        this.crate = CratesPlus.crates.get(crateName.toLowerCase());
     }
 
     public void doEvent() {
@@ -46,7 +49,7 @@ public class CrateOpenEvent extends Event {
         /** Do broadcast */
         if (crate.isBroadcast()) {
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-            Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateType));
+            Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crateName));
             Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
         }
 
@@ -60,7 +63,7 @@ public class CrateOpenEvent extends Event {
                 winning = crate.getWinnings().get(CrateHandler.randInt(0, crate.getWinnings().size() - 1));
             }
             if (!winning.isCommand()) {
-                HashMap<Integer, ItemStack> left = getPlayer().getInventory().addItem(winning.getItemStack());
+                HashMap<Integer, ItemStack> left = getPlayer().getInventory().addItem(winning.getPreviewItemStack());
                 for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
                     getPlayer().getLocation().getWorld().dropItemNaturally(getPlayer().getLocation(), item.getValue());
                 }
@@ -90,12 +93,12 @@ public class CrateOpenEvent extends Event {
         return this.player;
     }
 
-    public void setCrateType(String crateType) {
-        this.crateType = crateType;
+    public void setCrateName(String crateName) {
+        this.crateName = crateName;
     }
 
-    public String getCrateType() {
-        return this.crateType;
+    public String getCrateName() {
+        return this.crateName;
     }
 
     public Crate getCrate() {
@@ -108,15 +111,14 @@ public class CrateOpenEvent extends Event {
         int max = crate.getWinnings().size() - 1;
         int min = 0;
         currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
-        winGUI = Bukkit.createInventory(null, 45, CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType + " Win");
+        winGUI = Bukkit.createInventory(null, 45, CratesPlus.crates.get(crateName.toLowerCase()).getColor() + crateName + " Win");
         player.openInventory(winGUI);
         int maxTime = CratesPlus.crateGUITime;
         final int maxTimeTicks = maxTime * 10;
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(CratesPlus.getPlugin(), new Runnable() {
             public void run() {
-                if (player.getOpenInventory().getTitle() == null || !player.getOpenInventory().getTitle().contains(" Win")) {
+                if (player.getOpenInventory().getTitle() == null || !player.getOpenInventory().getTitle().contains(" Win"))
                     player.openInventory(winGUI);
-                }
                 Integer i = 0;
                 while (i < 45) {
                     if (i == 22) {
@@ -124,7 +126,7 @@ public class CrateOpenEvent extends Event {
                         if (crate.getWinnings().size() == currentItem)
                             currentItem = 0;
                         Winning winning;
-                        if (timer == 100) {
+                        if (timer == maxTimeTicks) {
                             if (crate.getTotalPercentage() > 0) {
                                 int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
                                 winning = crate.getWinnings().get(id);
@@ -135,17 +137,7 @@ public class CrateOpenEvent extends Event {
                             winning = crate.getWinnings().get(currentItem);
                         }
 
-                        ItemStack currentItemStack = winning.getItemStack();
-                        if (winning.isCommand()) {
-                            List<String> lore;
-                            if (currentItemStack.getItemMeta().hasLore())
-                                lore = currentItemStack.getItemMeta().getLore();
-                            else
-                                lore = new ArrayList<String>();
-                            lore.add(ChatColor.DARK_GRAY + "");
-                            lore.add(ChatColor.DARK_GRAY + "Crates Command");
-                            currentItemStack.getItemMeta().setLore(lore);
-                        }
+                        ItemStack currentItemStack = winning.getPreviewItemStack();
                         if (timer == maxTimeTicks)
                             winning.runWin(player);
                         winGUI.setItem(22, currentItemStack);

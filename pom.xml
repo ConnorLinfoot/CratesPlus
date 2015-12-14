@@ -6,7 +6,7 @@
 
     <groupId>com.connorlinfoot</groupId>
     <artifactId>CratesPlus</artifactId>
-    <version>3.1.1</version>
+    <version>4.0-SNAPSHOT-1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,8 +29,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>

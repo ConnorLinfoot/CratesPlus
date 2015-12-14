@@ -33,7 +33,7 @@ public class ChestInteract implements Listener {
             }
             assert crateType != null;
             Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
-            String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crate.getColor() + crateType);
+            String title = crate.getKey().getName();
             if (event.getAction().toString().contains("LEFT")) {
                 if (event.getPlayer().isSneaking())
                     return;
@@ -42,7 +42,7 @@ public class ChestInteract implements Listener {
                 if (!cratePreviewEvent.isCanceled())
                     cratePreviewEvent.doEvent();
             } else {
-                if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
+                if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title)) {
                     event.setCancelled(true);
 
                     if (player.getInventory().firstEmpty() == -1) {
@@ -54,11 +54,10 @@ public class ChestInteract implements Listener {
                         item.setAmount(item.getAmount() - 1);
                     } else {
                         player.setItemInHand(null);
-//                        player.getInventory().remove(item);
                     }
+
                     CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
                     if (!crateOpenEvent.isCanceled()) {
-                        // Open chest sound TODO add close sound?
                         player.getLocation().getWorld().playSound(player.getLocation(), Sound.CHEST_OPEN, 10, 1);
                         crateOpenEvent.doEvent();
                     }

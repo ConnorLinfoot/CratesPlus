@@ -52,6 +52,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
             String oldConfig = backupConfig();
             convertConfigV4(console, oldConfig); // Yay even more config converting xD
         }
+        if (getConfig().getInt("Config Version") == 4) {
+            String oldConfig = backupConfig();
+            convertConfigV5(console, oldConfig); // Oh god...
+        }
 
         cleanUpDeadConfig();
         getConfig().options().copyDefaults(true);
@@ -350,6 +354,30 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         // Set config version
         getConfig().set("Config Version", 4);
+
+        // Save config
+        saveConfig();
+
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+        if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+            configBackup = oldConfig;
+            console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+        }
+    }
+
+    private void convertConfigV5(ConsoleCommandSender console, String oldConfig) {
+        console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 5...");
+
+        for (String name : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+            getConfig().set("Crates." + name + ".Key.Item", getConfig().getString("Crate Keys.Item"));
+            getConfig().set("Crates." + name + ".Key.Name", getConfig().getString("Crate Keys.Name"));
+            getConfig().set("Crates." + name + ".Key.Enchanted", getConfig().getBoolean("Crate Keys.Enchanted"));
+        }
+
+        getConfig().set("Crate Keys", null);
+
+        // Set config version
+        getConfig().set("Config Version", 5);
 
         // Save config
         saveConfig();

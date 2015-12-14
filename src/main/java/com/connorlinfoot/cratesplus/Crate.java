@@ -17,6 +17,7 @@ public class Crate {
     private ArrayList<Winning> winnings = new ArrayList<Winning>();
     private ArrayList<Integer> percentages = new ArrayList<Integer>();
     private int totalPercentage = 0;
+    private Key key;
 
     public Crate(String name) {
         this.name = name;
@@ -28,20 +29,27 @@ public class Crate {
         this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");
         this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
 
+        if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Item") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Name") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Enchanted"))
+            return;
+
+        this.key = new Key(Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Key.Item")), CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Key.Name").replaceAll("%type%", getName(true)), CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Key.Enchanted"));
+
         if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Winnings"))
             return;
+
         for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
-            if (totalPercentage >= 100)
-                break;
             String path = "Crates." + name + ".Winnings." + id;
             Winning winning = new Winning(path);
-            if (winning.isValid() && totalPercentage + winning.getPercentage() <= 100) {
-                totalPercentage = totalPercentage + winning.getPercentage();
-                winnings.add(winning);
-                if (winning.getPercentage() > 0) {
-                    for (int i = 0; i < winning.getPercentage(); i++) {
-                        percentages.add(winnings.size() - 1);
-                    }
+            if (totalPercentage + winning.getPercentage() > 100 || !winning.isValid()) {
+                if (totalPercentage + winning.getPercentage() > 100)
+                    System.out.println("Error: Your percentages must NOT add up to more than 100%!");
+                break;
+            }
+            totalPercentage = totalPercentage + winning.getPercentage();
+            winnings.add(winning);
+            if (winning.getPercentage() > 0) {
+                for (int i = 0; i < winning.getPercentage(); i++) {
+                    percentages.add(winnings.size() - 1);
                 }
             }
         }
@@ -109,5 +117,13 @@ public class Crate {
 
     public ArrayList<Integer> getPercentages() {
         return percentages;
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key key) {
+        this.key = key;
     }
 }

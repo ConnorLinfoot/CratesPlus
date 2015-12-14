@@ -1,7 +1,9 @@
 package com.connorlinfoot.cratesplus.Listeners;
 
+import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
 import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
+import com.connorlinfoot.cratesplus.Key;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
@@ -16,19 +18,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Map;
+
 public class BlockListeners implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
-        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", "");
-        if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
-            event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), ChatColor.stripColor(item.getItemMeta().getDisplayName().replaceAll(title, ""))));
-            event.setCancelled(true);
-            return;
+        String title;
+
+        for (Map.Entry<String, Crate> crate : CratesPlus.crates.entrySet()) {
+            Key key = crate.getValue().getKey();
+            title = key.getName();
+
+            if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
+                event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), ChatColor.stripColor(item.getItemMeta().getDisplayName().replaceAll(title, ""))));
+                event.setCancelled(true);
+                return;
+            }
         }
 
-        if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains("Crate!")) {
+        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("Crate!")) {
             final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
             // BlockMeta to be used for some stuff in the future!
             event.getBlock().setMetadata("CrateType", new MetadataValue() {

@@ -2,6 +2,7 @@ package com.connorlinfoot.cratesplus.Handlers;
 
 import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
+import com.connorlinfoot.cratesplus.Key;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -119,28 +120,35 @@ public class CrateHandler {
     }
 
     public static void giveCrateKey(Player player, String crateType) {
+        giveCrateKey(player, crateType, 1);
+    }
+
+    public static void giveCrateKey(Player player, String crateType, Integer amount) {
         if (player == null || !player.isOnline()) return;
         if (crateType == null) {
             giveCrateKey(player);
             return;
         }
         Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+        Key key = crate.getKey();
 
-        ItemStack key = new ItemStack(Material.getMaterial(CratesPlus.getPlugin().getConfig().getString("Crate Keys.Item").toUpperCase()));
+        ItemStack keyItem = new ItemStack(key.getMaterial());
         if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Keys.Enchanted")) {
-            key.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
+            keyItem.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
         }
-        ItemMeta keyMeta = key.getItemMeta();
+        ItemMeta keyItemMeta = keyItem.getItemMeta();
 //        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        String title = CratesPlus.getPlugin().getConfig().getString("Crate Keys.Name").replaceAll("%type%", crate.getName(true));
-        keyMeta.setDisplayName(title);
+        String title = key.getName().replaceAll("%type%", crate.getName(true));
+        keyItemMeta.setDisplayName(title);
         List<String> lore = new ArrayList<String>();
         lore.add(ChatColor.GRAY + "Right-Click on a \"" + crate.getName(true) + ChatColor.GRAY + "\" crate");
         lore.add(ChatColor.GRAY + "to win an item!");
         lore.add("");
-        keyMeta.setLore(lore);
-        key.setItemMeta(keyMeta);
-        player.getInventory().addItem(key);
+        keyItemMeta.setLore(lore);
+        keyItem.setItemMeta(keyItemMeta);
+        if (amount > 1)
+            keyItem.setAmount(amount);
+        player.getInventory().addItem(keyItem);
         player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crateType));
     }
 
