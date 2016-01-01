@@ -3,6 +3,7 @@ CratesPlus
 
 A free and great crates plugin for Minecraft.
 
+[![ghit.me](https://ghit.me/badge.svg?repo=connorlinfoot/CratesPlus)](https://ghit.me/repo/connorlinfoot/CratesPlus)
 
 ## Development Build
 [![Build Status](http://ci.connorlinfoot.com:8080/buildStatus/icon?job=CratesPlus)](http://ci.connorlinfoot.com:8080/job/CratesPlus/)
