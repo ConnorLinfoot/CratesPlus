@@ -114,6 +114,7 @@ public class BlockListeners implements Listener {
             switch (CratesPlus.holograms.size()) {
                 case 1:
                     line1 = (String) CratesPlus.holograms.get(0);
+                    line1 = ChatColor.translateAlternateColorCodes('&', line1);
                     line1 = line1.replaceAll("%crate%", crateType);
                     armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
                     armorStand.setVisible(false);
@@ -123,8 +124,10 @@ public class BlockListeners implements Listener {
                     break;
                 case 2:
                     line1 = (String) CratesPlus.holograms.get(0);
+                    line1 = ChatColor.translateAlternateColorCodes('&', line1);
                     line1 = line1.replaceAll("%crate%", crateType);
                     line2 = (String) CratesPlus.holograms.get(1);
+                    line2 = ChatColor.translateAlternateColorCodes('&', line2);
                     line2 = line2.replaceAll("%crate%", crateType);
 
                     armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.2, 0), EntityType.ARMOR_STAND);
@@ -141,10 +144,13 @@ public class BlockListeners implements Listener {
                     break;
                 case 3:
                     line1 = (String) CratesPlus.holograms.get(0);
+                    line1 = ChatColor.translateAlternateColorCodes('&', line1);
                     line1 = line1.replaceAll("%crate%", crateType);
                     line2 = (String) CratesPlus.holograms.get(1);
+                    line2 = ChatColor.translateAlternateColorCodes('&', line2);
                     line2 = line2.replaceAll("%crate%", crateType);
                     line3 = (String) CratesPlus.holograms.get(2);
+                    line3 = ChatColor.translateAlternateColorCodes('&', line3);
                     line3 = line3.replaceAll("%crate%", crateType);
 
                     armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.4, 0), EntityType.ARMOR_STAND);
@@ -167,12 +173,16 @@ public class BlockListeners implements Listener {
                     break;
                 default:
                     line1 = (String) CratesPlus.holograms.get(0);
+                    line1 = ChatColor.translateAlternateColorCodes('&', line1);
                     line1 = line1.replaceAll("%crate%", crateType);
                     line2 = (String) CratesPlus.holograms.get(1);
+                    line2 = ChatColor.translateAlternateColorCodes('&', line2);
                     line2 = line2.replaceAll("%crate%", crateType);
                     line3 = (String) CratesPlus.holograms.get(2);
+                    line3 = ChatColor.translateAlternateColorCodes('&', line3);
                     line3 = line3.replaceAll("%crate%", crateType);
                     line4 = (String) CratesPlus.holograms.get(3);
+                    line4 = ChatColor.translateAlternateColorCodes('&', line4);
                     line4 = line4.replaceAll("%crate%", crateType);
 
                     armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.6, 0), EntityType.ARMOR_STAND);

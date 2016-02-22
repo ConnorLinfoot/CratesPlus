@@ -30,10 +30,13 @@ public class Winning {
             return;
         String type = config.getString(path + ".Type");
         ItemStack itemStack;
-        if (type.equalsIgnoreCase("item")) {
-            if (!config.isSet(path + ".Item Type"))
-                return;
-            Material itemType = Material.getMaterial(config.getString(path + ".Item Type"));
+        if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("block")) {
+            Material itemType = null;
+            if (config.isSet(path + ".Item Type"))
+                itemType = Material.getMaterial(config.getString(path + ".Item Type"));
+            else if (config.isSet(path + ".Block Type"))
+                itemType = Material.getMaterial(config.getString(path + ".Block Type"));
+
             if (itemType == null)
                 return;
 
@@ -77,12 +80,11 @@ public class Winning {
         }
         ItemStack winningItemStack = itemStack.clone();
         ItemStack previewItemStack = itemStack.clone();
-        itemStack = null; ////////////////////////////////////////
 
         boolean showAmountInTitle = false;
-        int orignalAmount = 0;
+        int originalAmount = 0;
         if (previewItemStack.getAmount() > previewItemStack.getMaxStackSize()) { // Stop multiple stacks for the same item!
-            orignalAmount = previewItemStack.getAmount();
+            originalAmount = previewItemStack.getAmount();
             showAmountInTitle = true;
             previewItemStack.setAmount(previewItemStack.getMaxStackSize());
         }
@@ -92,7 +94,7 @@ public class Winning {
         if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
             displayName = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
         if (showAmountInTitle)
-            displayName = displayName + " x" + orignalAmount;
+            displayName = displayName + " x" + originalAmount;
         if (!displayName.equals(""))
             previewItemStackItemMeta.setDisplayName(displayName);
         previewItemStack.setItemMeta(previewItemStackItemMeta);

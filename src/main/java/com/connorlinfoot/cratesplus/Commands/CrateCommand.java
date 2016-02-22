@@ -198,10 +198,10 @@ public class CrateCommand implements CommandExecutor {
 
                 if (player == null) {
                     for (Player p : Bukkit.getOnlinePlayers()) {
-                        CrateHandler.giveCrateKey(p, crateType);
+                        CrateHandler.giveCrateKey(p, crateType, amount);
                     }
                 } else {
-                    CrateHandler.giveCrateKey(player, crateType);
+                    CrateHandler.giveCrateKey(player, crateType, amount);
                 }
             } else {
                 if (player == null) {
