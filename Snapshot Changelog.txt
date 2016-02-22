@@ -1,6 +1,11 @@
 Version 4.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 3:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/355/artifact/target/CratesPlus-4.0-SNAPSHOT-3.jar
+ - Added new %winning% placeholder
+ - Improved placeholders so they should be handled a bit nicer with messages and also holograms
+
 V4.0 Snapshot 2:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/354/artifact/target/CratesPlus-4.0-SNAPSHOT-2.jar
  - Added fallbacks for when type is BLOCK and Block Type is used

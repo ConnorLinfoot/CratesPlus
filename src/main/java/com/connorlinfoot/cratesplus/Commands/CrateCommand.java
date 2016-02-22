@@ -17,7 +17,7 @@ public class CrateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
         if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
-            sender.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, "Unknown"));
+            sender.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, null, null));
             return false;
         }
 

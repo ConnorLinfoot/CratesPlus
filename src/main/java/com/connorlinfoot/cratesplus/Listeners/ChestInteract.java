@@ -62,7 +62,7 @@ public class ChestInteract implements Listener {
                         crateOpenEvent.doEvent();
                     }
                 } else {
-                    player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crateType));
+                    player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crate, null));
                     if (crate.getKnockback() != 0) {
                         player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
                     }

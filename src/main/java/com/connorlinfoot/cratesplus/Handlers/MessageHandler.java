@@ -1,28 +1,44 @@
 package com.connorlinfoot.cratesplus.Handlers;
 
+import com.connorlinfoot.cratesplus.Crate;
 import com.connorlinfoot.cratesplus.CratesPlus;
+import com.connorlinfoot.cratesplus.Winning;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class MessageHandler {
 
+    @Deprecated
     public static String getMessage(CratesPlus cratesPlus, String messageName, Player player, String crateType) {
+        Bukkit.getLogger().warning("Use of deprecated method \"getMessage(CratesPlus cratesPlus, String messageName, Player player, String crateType)\"");
+        return null;
+    }
+
+    public static String getMessage(CratesPlus cratesPlus, String messageName, Player player, Crate crate, Winning winning) {
         if (!cratesPlus.getConfig().isSet("Messages." + messageName))
             return null;
         String message = cratesPlus.getConfig().getString("Messages." + messageName);
-        message = doPlaceholders(message, player, crateType);
+        message = doPlaceholders(message, player, crate, winning);
         message = ChatColor.translateAlternateColorCodes('&', message);
         return message;
     }
 
-    private static String doPlaceholders(String message, Player player, String crateType) {
-        String name = player.getName();
-        String displayName = player.getDisplayName();
-        String uuid = player.getUniqueId().toString();
-        String crate = "";
-        if (CratesPlus.crates.get(crateType.toLowerCase()) != null)
-            crate = CratesPlus.crates.get(crateType.toLowerCase()).getColor() + crateType;
-        return message.replaceAll("%name%", name).replaceAll("%displayname%", displayName).replaceAll("%uuid%", uuid).replaceAll("%crate%", crate);
+    @Deprecated
+    public static String doPlaceholders(String message, Player player, String crateType) {
+        Bukkit.getLogger().warning("Use of deprecated method \"doPlaceholders(String message, Player player, String crateType)\"");
+        return null;
+    }
+
+    public static String doPlaceholders(String message, Player player, Crate crate, Winning winning) {
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        if (player != null)
+            message = message.replaceAll("%name%", player.getName()).replaceAll("%displayname%", player.getDisplayName()).replaceAll("%uuid%", player.getUniqueId().toString());
+        if (crate != null)
+            message = message.replaceAll("%crate%", crate.getName(true) + ChatColor.RESET);
+        if (winning != null)
+            message = message.replaceAll("%prize%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET);
+        return message;
     }
 
 }

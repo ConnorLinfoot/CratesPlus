@@ -149,7 +149,7 @@ public class CrateHandler {
         if (amount > 1)
             keyItem.setAmount(amount);
         player.getInventory().addItem(keyItem);
-        player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crateType));
+        player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crate, null));
     }
 
     public static void giveCrate(Player player, String crateType) {

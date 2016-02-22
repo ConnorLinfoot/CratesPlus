@@ -7,6 +7,7 @@
 # - %displayname% - Replaces with the players display name, Example: "[Owner] Notch".
 # - %uuid% - Replaces with the players UUID.
 # - %crate% - The crate types name.
+# - %prize% - The name of the item won.
 # ------------------------------------------
 # Don't change the config version!
 
@@ -15,6 +16,7 @@ Config Version: 5
 # Checks if an update is available and notifies staff, uses Spigot
 Update Checks: true
 
+# Uploads anonymous data about your server, used for general statics
 Metrics: true
 
 Crates:
