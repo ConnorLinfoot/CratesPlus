@@ -102,7 +102,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
 
-        if (getConfig().getBoolean("Update Checks") && !getDescription().getVersion().contains("SNAPSHOT")) {
+        if (getConfig().getBoolean("Update Checks")) {
             getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
                 public void run() {
                     checkUpdate(console);
@@ -394,43 +394,87 @@ public class CratesPlus extends JavaPlugin implements Listener {
     }
 
     private void checkUpdate(final ConsoleCommandSender console) {
-        console.sendMessage(ChatColor.GREEN + "Checking for updates via Spigot...");
-        final Updater updater = new Updater(this);
-        final Updater.UpdateResult result = updater.getResult();
-        switch (result) {
+        String updateBranch = getConfig().getString("Update Branch");
+
+        switch (updateBranch.toLowerCase()) {
+            case "snapshot":
+                console.sendMessage(ChatColor.RED + "WARNING: Snapshot updates are not recommended on production servers");
+                console.sendMessage(ChatColor.GREEN + "Checking for updates via snapshot branch...");
+                final SnapshotUpdater snapshotUpdater = new SnapshotUpdater(this);
+                final SnapshotUpdater.UpdateResult snapShotResult = snapshotUpdater.getResult();
+                switch (snapShotResult) {
+                    default:
+                    case FAIL_HTTP:
+                        updateAvailable = false;
+                        updateMessage = pluginPrefix + "Failed to check for updates. Will try again later.";
+                        getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                            public void run() {
+                                checkUpdate(console);
+                            }
+                        }, 60 * (60 * 20L)); // Checks again an hour later
+                        break;
+                    case NO_UPDATE:
+                        updateAvailable = false;
+                        updateMessage = pluginPrefix + "No update was found, you are running the latest version. Will check again later.";
+                        getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                            public void run() {
+                                checkUpdate(console);
+                            }
+                        }, 60 * (60 * 20L)); // Checks again an hour later
+                        break;
+                    case DISABLED:
+                        updateAvailable = false;
+                        updateMessage = pluginPrefix + "You currently have update checks disabled";
+                        break;
+                    case SNAPSHOT_UPDATE_AVAILABLE:
+                        updateAvailable = true;
+                        updateMessage = pluginPrefix + "An snapshot update for CratesPlus is available, new version is " + snapshotUpdater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
+                        break;
+                }
+                break;
             default:
-            case FAIL_SPIGOT:
-                updateAvailable = false;
-                updateMessage = pluginPrefix + "Failed to check for updates. Will try again later.";
-                getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
-                    public void run() {
-                        checkUpdate(console);
-                    }
-                }, 60 * (60 * 20L)); // Checks again an hour later
-                break;
-            case NO_UPDATE:
-                updateAvailable = false;
-                updateMessage = pluginPrefix + "No update was found, you are running the latest version. Will check again later.";
-                getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
-                    public void run() {
-                        checkUpdate(console);
-                    }
-                }, 60 * (60 * 20L)); // Checks again an hour later
-                break;
-            case DISABLED:
-                updateAvailable = false;
-                updateMessage = pluginPrefix + "You currently have update checks disabled";
-                break;
-            case SPIGOT_UPDATE_AVAILABLE:
-                updateAvailable = true;
-                updateMessage = pluginPrefix + "An update for CratesPlus is available, new version is " + updater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
-                break;
-            case MAJOR_SPIGOT_UPDATE_AVAILABLE:
-                updateAvailable = true;
-                updateMessage = pluginPrefix + "A major update for CratesPlus is available, new version is " + updater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
+            case "spigot":
+                console.sendMessage(ChatColor.GREEN + "Checking for updates via Spigot...");
+                final SpigotUpdater spigotUpdater = new SpigotUpdater(this);
+                final SpigotUpdater.UpdateResult result = spigotUpdater.getResult();
+                switch (result) {
+                    default:
+                    case FAIL_SPIGOT:
+                        updateAvailable = false;
+                        updateMessage = pluginPrefix + "Failed to check for updates. Will try again later.";
+                        getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                            public void run() {
+                                checkUpdate(console);
+                            }
+                        }, 60 * (60 * 20L)); // Checks again an hour later
+                        break;
+                    case NO_UPDATE:
+                        updateAvailable = false;
+                        updateMessage = pluginPrefix + "No update was found, you are running the latest version. Will check again later.";
+                        getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+                            public void run() {
+                                checkUpdate(console);
+                            }
+                        }, 60 * (60 * 20L)); // Checks again an hour later
+                        break;
+                    case DISABLED:
+                        updateAvailable = false;
+                        updateMessage = pluginPrefix + "You currently have update checks disabled";
+                        break;
+                    case SPIGOT_UPDATE_AVAILABLE:
+                        updateAvailable = true;
+                        updateMessage = pluginPrefix + "An update for CratesPlus is available, new version is " + spigotUpdater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
+                        break;
+                    case MAJOR_SPIGOT_UPDATE_AVAILABLE:
+                        updateAvailable = true;
+                        updateMessage = pluginPrefix + "A major update for CratesPlus is available, new version is " + spigotUpdater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
+                        break;
+                }
                 break;
         }
-        console.sendMessage(updateMessage);
+        if (updateMessage != null)
+            console.sendMessage(updateMessage);
+
     }
 
     public static void reloadPlugin() {

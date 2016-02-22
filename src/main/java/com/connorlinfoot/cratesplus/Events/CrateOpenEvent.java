@@ -131,8 +131,15 @@ public class CrateOpenEvent extends Event {
                         }
 
                         ItemStack currentItemStack = winning.getPreviewItemStack();
-                        if (timer == maxTimeTicks)
+                        if (timer == maxTimeTicks) {
                             winning.runWin(player);
+                            /** Do broadcast */
+                            if (crate.isBroadcast()) {
+                                Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+                                Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
+                                Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+                            }
+                        }
                         winGUI.setItem(22, currentItemStack);
 
                         currentItem++;
@@ -142,13 +149,6 @@ public class CrateOpenEvent extends Event {
                     ItemMeta itemMeta = itemStack.getItemMeta();
                     if (timer == maxTimeTicks) {
                         itemMeta.setDisplayName(ChatColor.RESET + "Winner!");
-
-                        /** Do broadcast */
-                        if (crate.isBroadcast()) {
-                            Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-                            Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
-                            Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-                        }
                     } else {
                         player.playSound(player.getLocation(), Sound.NOTE_PIANO, (float) 0.2, 2);
                         itemMeta.setDisplayName(ChatColor.RESET + "Rolling...");

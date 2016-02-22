@@ -5,16 +5,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 
-public class Updater {
+public class SpigotUpdater {
     private String WRITE_STRING;
     private String version;
     private String oldVersion;
-    private Updater.UpdateResult result = Updater.UpdateResult.DISABLED;
+    private SpigotUpdater.UpdateResult result = SpigotUpdater.UpdateResult.DISABLED;
     private HttpURLConnection connection;
 
     public enum UpdateResult {
@@ -25,7 +23,7 @@ public class Updater {
         MAJOR_SPIGOT_UPDATE_AVAILABLE
     }
 
-    public Updater(JavaPlugin plugin) {
+    public SpigotUpdater(JavaPlugin plugin) {
         String RESOURCE_ID = "5018";
         oldVersion = plugin.getDescription().getVersion();
         try {
@@ -48,10 +46,6 @@ public class Updater {
             String REQUEST_METHOD = "POST";
             connection.setRequestMethod(REQUEST_METHOD);
             connection.getOutputStream().write(WRITE_STRING.getBytes("UTF-8"));
-        } catch (ProtocolException e1) {
-            result = UpdateResult.FAIL_SPIGOT;
-        } catch (UnsupportedEncodingException e) {
-            result = UpdateResult.FAIL_SPIGOT;
         } catch (IOException e) {
             result = UpdateResult.FAIL_SPIGOT;
         }

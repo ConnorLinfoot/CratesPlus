@@ -13,8 +13,9 @@
 
 Config Version: 5
 
-# Checks if an update is available and notifies staff, uses Spigot
+# Checks if an update is available and notifies staff
 Update Checks: true
+Update Branch: "spigot"
 
 # Uploads anonymous data about your server, used for general statics
 Metrics: true
