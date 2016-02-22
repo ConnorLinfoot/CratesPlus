@@ -2,7 +2,7 @@ Version 4.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
 V4.0 Snapshot 4:
- Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/357/artifact/target/CratesPlus-4.0.0-SNAPSHOT-4.jar
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/358/artifact/target/CratesPlus-4.0.0-SNAPSHOT-4.jar
  - Fixed crate broadcast running 44 times on win
  - Added snapshot branch for updates
 
