@@ -1,7 +1,7 @@
 package com.connorlinfoot.cratesplus.Utils;
 
-
-import com.connorlinfoot.cratesplus.Utils.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -29,7 +29,9 @@ public class PasteUtils {
 
             //Get Response
             BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            return "http://hastebin.com/" + new JSONObject(rd.readLine()).getString("key");
+            JSONParser jsonParser = new JSONParser();
+            JSONObject obj = (JSONObject) jsonParser.parse(rd.readLine());
+            return "http://hastebin.com/" + obj.get("key");
         } catch (Exception ex) {
             return null;
         } finally {

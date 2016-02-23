@@ -130,8 +130,6 @@ public class SettingsListener implements Listener {
                 CratesPlus.settingsHandler.openCrate(player, ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
             }
 
-        } else if (event.getInventory().getTitle().contains(" Crate Winnings")) {
-            return;
         } else if (event.getInventory().getTitle().contains("Edit ")) {
             if (itemStack == null || itemStack.getType() == Material.AIR || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
                 event.setCancelled(true);

@@ -1,5 +1,6 @@
-package com.connorlinfoot.cratesplus;
+package com.connorlinfoot.cratesplus.Utils;
 
+import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -38,7 +39,7 @@ public class SnapshotUpdater {
         try {
             JSONObject obj = (JSONObject) jsonParser.parse(data);
             if (obj.get("version") != null) {
-                String newestVersion = (String) obj.get("version") + "." + obj.get("snapshot");
+                String newestVersion = obj.get("version") + "." + obj.get("snapshot");
                 String currentVersion = CratesPlus.getPlugin().getDescription().getVersion().replaceAll("-SNAPSHOT-", "."); // Changes 4.0.0-SNAPSHOT-4 to 4.0.0.4
                 if (Integer.parseInt(newestVersion.replace(".", "")) > Integer.parseInt(currentVersion.replace(".", ""))) {
                     result = UpdateResult.SNAPSHOT_UPDATE_AVAILABLE;

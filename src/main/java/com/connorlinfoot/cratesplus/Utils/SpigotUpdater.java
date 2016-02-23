@@ -1,4 +1,4 @@
-package com.connorlinfoot.cratesplus;
+package com.connorlinfoot.cratesplus.Utils;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

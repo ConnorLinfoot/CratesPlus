@@ -5,6 +5,8 @@ import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
 import com.connorlinfoot.cratesplus.Handlers.SettingsHandler;
 import com.connorlinfoot.cratesplus.Listeners.*;
 import com.connorlinfoot.cratesplus.Utils.PasteUtils;
+import com.connorlinfoot.cratesplus.Utils.SnapshotUpdater;
+import com.connorlinfoot.cratesplus.Utils.SpigotUpdater;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.bukkit.Bukkit;
@@ -98,7 +100,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryClose(), this);
         Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
         Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
 

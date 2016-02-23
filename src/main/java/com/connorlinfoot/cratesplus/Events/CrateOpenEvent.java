@@ -27,7 +27,6 @@ public class CrateOpenEvent extends Event {
     private String crateName;
     private Crate crate;
     private boolean canceled = false;
-    private int tries = 0;
     private Inventory winGUI;
     private BukkitTask task;
     private Integer timer = 0;

@@ -9,12 +9,6 @@ import org.bukkit.entity.Player;
 
 public class MessageHandler {
 
-    @Deprecated
-    public static String getMessage(CratesPlus cratesPlus, String messageName, Player player, String crateType) {
-        Bukkit.getLogger().warning("Use of deprecated method \"getMessage(CratesPlus cratesPlus, String messageName, Player player, String crateType)\"");
-        return null;
-    }
-
     public static String getMessage(CratesPlus cratesPlus, String messageName, Player player, Crate crate, Winning winning) {
         if (!cratesPlus.getConfig().isSet("Messages." + messageName))
             return null;
@@ -22,12 +16,6 @@ public class MessageHandler {
         message = doPlaceholders(message, player, crate, winning);
         message = ChatColor.translateAlternateColorCodes('&', message);
         return message;
-    }
-
-    @Deprecated
-    public static String doPlaceholders(String message, Player player, String crateType) {
-        Bukkit.getLogger().warning("Use of deprecated method \"doPlaceholders(String message, Player player, String crateType)\"");
-        return null;
     }
 
     public static String doPlaceholders(String message, Player player, Crate crate, Winning winning) {

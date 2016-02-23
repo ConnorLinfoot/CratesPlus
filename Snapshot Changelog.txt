@@ -1,6 +1,13 @@
 Version 4.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 5:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/360/artifact/target/CratesPlus-4.0.0-SNAPSHOT-5.jar
+ - Removed old InventoryClose listener file
+ - Removed deprecated methods
+ - Cleaned up bits of code and utils
+ - Removed unnecessary util for handling json
+
 V4.0 Snapshot 4:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/358/artifact/target/CratesPlus-4.0.0-SNAPSHOT-4.jar
  - Fixed crate broadcast running 44 times on win
