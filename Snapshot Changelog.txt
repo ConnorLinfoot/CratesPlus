@@ -1,6 +1,13 @@
 Version 4.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 6:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/363/artifact/target/CratesPlus-4.0.0-SNAPSHOT-6.jar
+ - Updated snapshot updater link to new API
+ - Fixed lore being duplicated on save in GUI editor
+ - Fixed GUI editor not even working most of the time
+ - Started work on changing crate color by GUI, will be finished in next snapshot
+
 V4.0 Snapshot 5:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/360/artifact/target/CratesPlus-4.0.0-SNAPSHOT-5.jar
  - Removed old InventoryClose listener file

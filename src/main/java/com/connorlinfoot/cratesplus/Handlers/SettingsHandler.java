@@ -102,7 +102,7 @@ public class SettingsHandler {
         final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " Crate Winnings");
 
         for (Winning winning : crate.getWinnings()) {
-            inventory.addItem(winning.getPreviewItemStack());
+            inventory.addItem(winning.getWinningItemStack());
         }
 
         Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
@@ -153,6 +153,18 @@ public class SettingsHandler {
         inventory.setItem(3, itemStack);
 
 
+        /** Edit Crate Color */
+
+        itemStack = new ItemStack(Material.WOOL, 1, (short) 3);
+        itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.WHITE + "Edit Crate Color");
+        lore = new ArrayList<String>();
+        lore.add("");
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+//        inventory.setItem(5, itemStack);
+
+
         /** Delete Crate */
 
         itemStack = new ItemStack(Material.BARRIER);
@@ -162,7 +174,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-        inventory.setItem(5, itemStack);
+        inventory.setItem(7, itemStack);
 
         Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), new Runnable() {
             @Override
