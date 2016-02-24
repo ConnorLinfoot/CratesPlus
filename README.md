@@ -19,5 +19,8 @@ For full information, commands and features visit the [Spigot thread](https://ww
 ## Issues
 Please report any issues into the [GitHub issues](https://github.com/ConnorLinfoot/CratesPlus/issues). Do not post them on the Spigot thread. Issues must have information about your server; Please provide plugin list, /version output, and any other server configuration you may have changed.
 
+If you report an issue which has been fixed or does not contain the information above it will be closed without any notification.
+
+
 ## Changelog
 To see the full changelog for all publicly released versions checkout the [Spigot resource update page](https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/updates).
