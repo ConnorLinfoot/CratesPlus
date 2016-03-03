@@ -1,15 +1,12 @@
-package com.connorlinfoot.cratesplus.Listeners;
+package plus.crates.Listeners;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
-import com.connorlinfoot.cratesplus.Key;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -17,6 +14,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Handlers.MessageHandler;
+import plus.crates.Key;
 
 import java.util.Map;
 
@@ -24,12 +25,20 @@ public class BlockListeners implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        ItemStack item = event.getItemInHand();
         String title;
+        Player player = event.getPlayer();
+        ItemStack item = CratesPlus.version_util.getItemInPlayersHand(player);
+        ItemStack itemOff = CratesPlus.version_util.getItemInPlayersOffHand(player);
+
 
         for (Map.Entry<String, Crate> crate : CratesPlus.crates.entrySet()) {
             Key key = crate.getValue().getKey();
             title = key.getName();
+
+            assert itemOff != null;
+            if (itemOff.hasItemMeta() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().contains(title)) {
+                item = itemOff;
+            }
 
             if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
                 event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), crate.getValue(), null));
@@ -40,7 +49,7 @@ public class BlockListeners implements Listener {
 
         if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("Crate!")) {
             final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
-            Crate crate = CratesPlus.crates.get(ChatColor.stripColor(crateType));
+            Crate crate = CratesPlus.crates.get(ChatColor.stripColor(crateType).toLowerCase());
             // BlockMeta to be used for some stuff in the future!
             event.getBlock().setMetadata("CrateType", new MetadataValue() {
                 @Override

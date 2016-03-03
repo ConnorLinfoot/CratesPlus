@@ -1,4 +1,4 @@
-package com.connorlinfoot.cratesplus.Listeners;
+package plus.crates.Listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

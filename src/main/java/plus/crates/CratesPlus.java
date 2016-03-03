@@ -1,12 +1,5 @@
-package com.connorlinfoot.cratesplus;
+package plus.crates;
 
-import com.connorlinfoot.cratesplus.Commands.CrateCommand;
-import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
-import com.connorlinfoot.cratesplus.Handlers.SettingsHandler;
-import com.connorlinfoot.cratesplus.Listeners.*;
-import com.connorlinfoot.cratesplus.Utils.PasteUtils;
-import com.connorlinfoot.cratesplus.Utils.SnapshotUpdater;
-import com.connorlinfoot.cratesplus.Utils.SpigotUpdater;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.bukkit.Bukkit;
@@ -18,6 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import plus.crates.Commands.CrateCommand;
+import plus.crates.Handlers.CrateHandler;
+import plus.crates.Handlers.SettingsHandler;
+import plus.crates.Listeners.*;
+import plus.crates.Utils.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,10 +35,29 @@ public class CratesPlus extends JavaPlugin implements Listener {
     public static List<?> holograms;
     public static boolean doGui = true;
     public static int crateGUITime = 10;
+    public static MC_VERSION mc_version = MC_VERSION.OTHER;
+    public static Version_Util version_util;
+
+    public enum MC_VERSION {
+        MC_1_8, MC_1_9, OTHER
+    }
 
     public void onEnable() {
         instance = this;
         Server server = getServer();
+
+        if (server.getBukkitVersion().contains("1.9")) {
+            mc_version = MC_VERSION.MC_1_9;
+            version_util = new Version_1_9();
+        } else if (server.getBukkitVersion().contains("1.8")) {
+            mc_version = MC_VERSION.MC_1_8;
+            version_util = new Version_Util();
+        } else {
+            getLogger().severe("CratesPlus does NOT support \"" + server.getBukkitVersion() + "\" if you believe this is an error please let me know!");
+            setEnabled(false);
+            return;
+        }
+
         final ConsoleCommandSender console = server.getConsoleSender();
         if (getConfig().isSet("Crate Knockback") || (getConfig().isSet("Config Version") && getConfig().getInt("Config Version") < 2)) {
             String oldConfig = backupConfig();
@@ -113,18 +130,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
         settingsHandler = new SettingsHandler();
 
-        console.sendMessage("");
-        console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        console.sendMessage("");
-        console.sendMessage(ChatColor.AQUA + getDescription().getName());
-        console.sendMessage(ChatColor.AQUA + "Version " + getDescription().getVersion());
-        console.sendMessage("");
-        console.sendMessage(ChatColor.BLUE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        console.sendMessage("");
+        console.sendMessage(ChatColor.AQUA + getDescription().getName() + " Version " + getDescription().getVersion());
         if (getDescription().getVersion().contains("SNAPSHOT")) { // Added this because some people didn't really understand what a "snapshot" is...
             console.sendMessage(ChatColor.RED + "Warning: You are running a snapshot build of CratesPlus");
             console.sendMessage(ChatColor.RED + "We advise that you do NOT run this on a production server!");
-            console.sendMessage("");
         }
 
         if (configBackup != null && Bukkit.getOnlinePlayers().size() > 0) {
@@ -429,7 +438,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
                     break;
                 case SNAPSHOT_UPDATE_AVAILABLE:
                     updateAvailable = true;
-                    updateMessage = pluginPrefix + "An snapshot update for CratesPlus is available, new version is " + snapshotUpdater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
+                    updateMessage = pluginPrefix + "A snapshot update for CratesPlus is available, new version is " + snapshotUpdater.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
                     break;
             }
 

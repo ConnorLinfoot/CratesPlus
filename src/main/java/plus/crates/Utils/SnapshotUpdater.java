@@ -1,10 +1,10 @@
-package com.connorlinfoot.cratesplus.Utils;
+package plus.crates.Utils;
 
-import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import plus.crates.CratesPlus;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

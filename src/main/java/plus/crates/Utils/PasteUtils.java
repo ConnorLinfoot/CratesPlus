@@ -1,4 +1,4 @@
-package com.connorlinfoot.cratesplus.Utils;
+package plus.crates.Utils;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

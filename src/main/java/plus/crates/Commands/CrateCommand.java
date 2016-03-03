@@ -1,9 +1,5 @@
-package com.connorlinfoot.cratesplus.Commands;
+package plus.crates.Commands;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
-import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +7,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Handlers.CrateHandler;
+import plus.crates.Handlers.MessageHandler;
 
 public class CrateCommand implements CommandExecutor {
 

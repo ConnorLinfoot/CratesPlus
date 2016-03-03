@@ -1,4 +1,4 @@
-package com.connorlinfoot.cratesplus.Utils;
+package plus.crates.Utils;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,7 +25,7 @@ public class SpigotUpdater {
 
     public SpigotUpdater(JavaPlugin plugin) {
         String RESOURCE_ID = "5018";
-        oldVersion = plugin.getDescription().getVersion();
+        oldVersion = plugin.getDescription().getVersion().replaceAll("-SNAPSHOT-", ".");
         try {
             String QUERY = "/api/general.php";
             String HOST = "http://www.spigotmc.org";

@@ -1,7 +1,5 @@
-package com.connorlinfoot.cratesplus.Listeners;
+package plus.crates.Listeners;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,6 +13,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,9 +137,14 @@ public class SettingsListener implements Listener {
             event.setCancelled(true);
             if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.WOOL) {
                 player.closeInventory();
-                ChatColor color = ChatColor.valueOf(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase()));
+                ChatColor color = ChatColor.valueOf(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase().replaceAll(" ", "_")));
                 if (color != null) {
-
+                    String lastCrate = CratesPlus.settingsHandler.getLastCrateEditing().get(player.getUniqueId().toString());
+                    if (lastCrate == null)
+                        return;
+                    Crate crate = CratesPlus.crates.get(lastCrate.toLowerCase());
+                    crate.setColor(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase().replaceAll(" ", "_")));
+                    player.sendMessage(ChatColor.GREEN + "Updated color, you may need to replace the crate for colors to update in holograms");
                 }
             }
         } else if (event.getInventory().getTitle().contains("Edit ") && !event.getInventory().getTitle().contains("Winnings") && !event.getInventory().getTitle().contains("Color")) {
@@ -274,6 +279,9 @@ public class SettingsListener implements Listener {
                 glassMeta.setDisplayName(ChatColor.GOLD + "");
                 glass.setItemMeta(glassMeta);
                 inventory.setItem(17, glass);
+
+                String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
+                CratesPlus.settingsHandler.getLastCrateEditing().put(player.getUniqueId().toString(), name);
 
                 player.openInventory(inventory);
             }

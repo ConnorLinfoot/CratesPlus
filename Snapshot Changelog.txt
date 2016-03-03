@@ -1,6 +1,17 @@
 Version 4.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 7:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/372/artifact/target/CratesPlus-4.0.0-SNAPSHOT-7.jar
+ - Completed crate color selector
+ - Added preview option to crates
+ - Renamed package to plus.crates from com.connorlinfoot.cratesplus
+ - Fixed NumberFormatException when using Spigot update checker on snapshot builds
+ - Fixed issues with some placeholders not working correctly
+ - Added 1.9 compatibility (Keeping support for 1.8 too!)
+ - Added support for off hand when opening crates in 1.9
+ - Disabled block placing of key in off hand in 1.9
+
 V4.0 Snapshot 6:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/363/artifact/target/CratesPlus-4.0.0-SNAPSHOT-6.jar
  - Updated snapshot updater link to new API

@@ -1,10 +1,5 @@
-package com.connorlinfoot.cratesplus.Events;
+package plus.crates.Events;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Handlers.CrateHandler;
-import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
-import com.connorlinfoot.cratesplus.Winning;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,6 +11,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Handlers.CrateHandler;
+import plus.crates.Handlers.MessageHandler;
+import plus.crates.Winning;
 
 import java.util.HashMap;
 import java.util.List;
@@ -149,7 +149,17 @@ public class CrateOpenEvent extends Event {
                     if (timer == maxTimeTicks) {
                         itemMeta.setDisplayName(ChatColor.RESET + "Winner!");
                     } else {
-                        player.playSound(player.getLocation(), Sound.NOTE_PIANO, (float) 0.2, 2);
+                        Sound sound;
+                        try {
+                            sound = Sound.valueOf("NOTE_PIANO");
+                        } catch (Exception e) {
+                            try {
+                                sound = Sound.valueOf("BLOCK_NOTE_HARP");
+                            } catch (Exception ee) {
+                                return; // This should never happen!
+                            }
+                        }
+                        player.playSound(player.getLocation(), sound, (float) 0.2, 2);
                         itemMeta.setDisplayName(ChatColor.RESET + "Rolling...");
                     }
                     itemStack.setItemMeta(itemMeta);

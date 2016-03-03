@@ -1,10 +1,5 @@
-package com.connorlinfoot.cratesplus.Listeners;
+package plus.crates.Listeners;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Events.CrateOpenEvent;
-import com.connorlinfoot.cratesplus.Events.CratePreviewEvent;
-import com.connorlinfoot.cratesplus.Handlers.MessageHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,6 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Events.CrateOpenEvent;
+import plus.crates.Events.CratePreviewEvent;
+import plus.crates.Handlers.MessageHandler;
 
 public class ChestInteract implements Listener {
 
@@ -25,7 +25,9 @@ public class ChestInteract implements Listener {
             return;
         Chest chest = (Chest) event.getClickedBlock().getState();
         Inventory chestInventory = chest.getInventory();
-        ItemStack item = player.getItemInHand();
+        ItemStack item = CratesPlus.version_util.getItemInPlayersHand(player);
+        ItemStack itemOff = CratesPlus.version_util.getItemInPlayersOffHand(player);
+
         if (chestInventory.getTitle() != null && chestInventory.getTitle().contains(" Crate!")) {
             String crateType = ChatColor.stripColor(chestInventory.getTitle().replaceAll(" Crate!", ""));
             if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + crateType)) {
@@ -42,7 +44,13 @@ public class ChestInteract implements Listener {
                 if (!cratePreviewEvent.isCanceled())
                     cratePreviewEvent.doEvent();
             } else {
-                if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title)) {
+                boolean usingOffHand = false;
+                if (itemOff != null && itemOff.hasItemMeta() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
+                    item = itemOff;
+                    usingOffHand = true;
+                }
+
+                if (item != null && item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title)) {
                     event.setCancelled(true);
 
                     if (player.getInventory().firstEmpty() == -1) {
@@ -53,12 +61,26 @@ public class ChestInteract implements Listener {
                     if (item.getAmount() > 1) {
                         item.setAmount(item.getAmount() - 1);
                     } else {
-                        player.setItemInHand(null);
+                        if (usingOffHand) {
+                            CratesPlus.version_util.removeItemInOffHand(player);
+                        } else {
+                            player.setItemInHand(null);
+                        }
                     }
 
                     CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
                     if (!crateOpenEvent.isCanceled()) {
-                        player.getLocation().getWorld().playSound(player.getLocation(), Sound.CHEST_OPEN, 10, 1);
+                        Sound sound;
+                        try {
+                            sound = Sound.valueOf("CHEST_OPEN");
+                        } catch (Exception e) {
+                            try {
+                                sound = Sound.valueOf("BLOCK_CHEST_OPEN");
+                            } catch (Exception ee) {
+                                return; // This should never happen!
+                            }
+                        }
+                        player.getLocation().getWorld().playSound(player.getLocation(), sound, 10, 1);
                         crateOpenEvent.doEvent();
                     }
                 } else {

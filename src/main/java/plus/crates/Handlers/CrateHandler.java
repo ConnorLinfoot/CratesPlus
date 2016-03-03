@@ -1,8 +1,5 @@
-package com.connorlinfoot.cratesplus.Handlers;
+package plus.crates.Handlers;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Key;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -11,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Key;
 
 import java.util.*;
 

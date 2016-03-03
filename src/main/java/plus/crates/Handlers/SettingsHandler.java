@@ -1,8 +1,5 @@
-package com.connorlinfoot.cratesplus.Handlers;
+package plus.crates.Handlers;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Winning;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,14 +7,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Winning;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SettingsHandler {
     private Inventory settings;
     private Inventory crates;
+    private HashMap<String, String> lastCrateEditing = new HashMap<String, String>();
 
     public SettingsHandler() {
         setupSettingsInventory();
@@ -162,7 +164,7 @@ public class SettingsHandler {
         lore.add("");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
-//        inventory.setItem(5, itemStack);
+        inventory.setItem(5, itemStack);
 
 
         /** Delete Crate */
@@ -185,4 +187,7 @@ public class SettingsHandler {
 
     }
 
+    public HashMap<String, String> getLastCrateEditing() {
+        return lastCrateEditing;
+    }
 }

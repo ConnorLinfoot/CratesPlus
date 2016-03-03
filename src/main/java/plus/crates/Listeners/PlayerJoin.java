@@ -1,10 +1,10 @@
-package com.connorlinfoot.cratesplus.Listeners;
+package plus.crates.Listeners;
 
-import com.connorlinfoot.cratesplus.CratesPlus;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import plus.crates.CratesPlus;
 
 public class PlayerJoin implements Listener {
 

@@ -1,14 +1,14 @@
-package com.connorlinfoot.cratesplus.Events;
+package plus.crates.Events;
 
-import com.connorlinfoot.cratesplus.Crate;
-import com.connorlinfoot.cratesplus.CratesPlus;
-import com.connorlinfoot.cratesplus.Winning;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import plus.crates.Crate;
+import plus.crates.CratesPlus;
+import plus.crates.Winning;
 
 import java.util.List;
 
@@ -25,8 +25,10 @@ public class CratePreviewEvent extends Event {
     }
 
     public void doEvent() {
+        if (!crate.isPreview())
+            return; // Preview is disabled
         List<Winning> items = crate.getWinnings();
-        Integer size;
+        Integer size = 54;
         if (items.size() <= 9) {
             size = 9;
         } else if (items.size() <= 18) {
@@ -37,8 +39,6 @@ public class CratePreviewEvent extends Event {
             size = 36;
         } else if (items.size() <= 45) {
             size = 45;
-        } else {
-            size = 54;
         }
         Inventory inventory = Bukkit.createInventory(null, size, crate.getName(true) + " Possible Wins:");
         for (Winning winning : items) {

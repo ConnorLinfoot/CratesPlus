@@ -1,4 +1,4 @@
-package com.connorlinfoot.cratesplus;
+package plus.crates;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,6 +13,7 @@ public class Crate {
     private Material block = Material.CHEST;
     private boolean firework = false;
     private boolean broadcast = false;
+    private boolean preview = true;
     private double knockback = 0.0;
     private ArrayList<Winning> winnings = new ArrayList<Winning>();
     private ArrayList<Integer> percentages = new ArrayList<Integer>();
@@ -27,6 +28,8 @@ public class Crate {
 //        this.block = Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Block").toUpperCase());
         this.firework = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Firework");
         this.broadcast = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Broadcast");
+        if (CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Preview"))
+            this.preview = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Preview");
         this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
 
         if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Item") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Name") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Enchanted"))
@@ -84,6 +87,10 @@ public class Crate {
         return this.broadcast;
     }
 
+    public boolean isPreview() {
+        return preview;
+    }
+
     public double getKnockback() {
         return this.knockback;
     }
@@ -126,4 +133,13 @@ public class Crate {
     public void setKey(Key key) {
         this.key = key;
     }
+
+    public void setColor(String color) {
+        this.color = ChatColor.valueOf(color);
+        String path = "Crates." + name + ".Color";
+        CratesPlus.getPlugin().getConfig().set(path, color);
+        CratesPlus.getPlugin().saveConfig();
+        CratesPlus.reloadPlugin();
+    }
+
 }

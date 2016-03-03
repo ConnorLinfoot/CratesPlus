@@ -1,4 +1,4 @@
-package com.connorlinfoot.cratesplus;
+package plus.crates;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
