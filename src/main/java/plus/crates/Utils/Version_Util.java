@@ -5,16 +5,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class Version_Util {
 
-    public ItemStack getItemInPlayersHand(Player player) {
-        return player.getItemInHand();
-    }
+	public ItemStack getItemInPlayersHand(Player player) {
+		return player.getItemInHand();
+	}
 
-    public ItemStack getItemInPlayersOffHand(Player player) {
-        return null;
-    }
+	public ItemStack getItemInPlayersOffHand(Player player) {
+		return null;
+	}
 
-    public void removeItemInOffHand(Player player) {
+	public void removeItemInOffHand(Player player) {
 
-    }
+	}
 
 }

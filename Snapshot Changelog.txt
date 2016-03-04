@@ -1,5 +1,12 @@
-Version 4.0 Snapshots
+Version 4.0.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
+
+V4.0 Snapshot 8:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/374/artifact/target/CratesPlus-4.0.0-SNAPSHOT-8.jar
+ - Better handling of config for crates
+ - Changed codebase to use tabs instead of 4 spaces
+ - New Block option for crates should now work, give it a test. It shouldn't break already placed crates but we'll see!
+ - Added some stuff with tracking locations for future changes to holograms
 
 V4.0 Snapshot 7:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/372/artifact/target/CratesPlus-4.0.0-SNAPSHOT-7.jar
@@ -58,7 +65,7 @@ V4.0 Snapshot 1:
  - I would recommend not disabling the GUI as the non-gui win doesn't work correctly at the moment. May end up dropping it.
 
 
-Version 3.1 Snapshots
+Version 3.1.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
 V3.1 Snapshot 15:
@@ -145,7 +152,7 @@ V3.1 Snapshot 1:
  - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid items is found after 5 tries
 
 
-Version 3 Snapshots
+Version 3.0.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
 V3.0 Snapshot 6:

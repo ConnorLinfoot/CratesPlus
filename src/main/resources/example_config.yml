@@ -26,6 +26,7 @@ Crates:
     Broadcast: false
     Firework: false
     Color: GREEN
+    Preview: true
     Key:
       Item: TRIPWIRE_HOOK
       Name: '%type% Crate Key'
