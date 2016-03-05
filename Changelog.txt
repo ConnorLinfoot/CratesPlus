@@ -1,3 +1,7 @@
+V3.1.6:
+ Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-1-8-1-9-free.5018/download?version=72888
+ - Fixed CratesPlus not working correctly in CraftBukkit and players been able to take items as a result of this.
+
 V3.1.5:
  Download: https://www.spigotmc.org/resources/cratesplus-custom-crates-1-8-1-9-free.5018/download?version=71841
  - Fixed bug with it giving 2 items on win!

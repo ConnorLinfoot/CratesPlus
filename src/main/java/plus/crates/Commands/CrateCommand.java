@@ -65,6 +65,8 @@ public class CrateCommand implements CommandExecutor {
 			config.set("Crates." + name + ".Knockback", 0.0);
 			config.set("Crates." + name + ".Broadcast", false);
 			config.set("Crates." + name + ".Firework", false);
+			config.set("Crates." + name + ".Preview", true);
+			config.set("Crates." + name + ".Block", "CHEST");
 			config.set("Crates." + name + ".Color", "WHITE");
 			CratesPlus.getPlugin().saveConfig();
 			CratesPlus.getPlugin().reloadConfig();
@@ -120,9 +122,18 @@ public class CrateCommand implements CommandExecutor {
 			}
 
 			config.set("Crates." + newName + ".Knockback", config.getDouble("Crates." + crate.getName(false) + ".Knockback"));
-			config.set("Crates." + newName + ".Broadcast", config.getBoolean("Crates." + crate.getName(false) + ".Broadcast"));
-			config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + crate.getName(false) + ".Firework"));
-			config.set("Crates." + newName + ".Color", config.getString("Crates." + crate.getName(false) + ".Color"));
+			if (config.isSet("Crates." + crate.getName(false) + ".Block"))
+				config.set("Crates." + newName + ".Block", config.getString("Crates." + crate.getName(false) + ".Block"));
+			if (config.isSet("Crates." + crate.getName(false) + ".Color"))
+				config.set("Crates." + newName + ".Color", config.getString("Crates." + crate.getName(false) + ".Color"));
+			if (config.isSet("Crates." + crate.getName(false) + ".Knockback"))
+				config.set("Crates." + newName + ".Knockback", config.getDouble("Crates." + crate.getName(false) + ".Knockback"));
+			if (config.isSet("Crates." + crate.getName(false) + ".Broadcast"))
+				config.set("Crates." + newName + ".Broadcast", config.getBoolean("Crates." + crate.getName(false) + ".Broadcast"));
+			if (config.isSet("Crates." + crate.getName(false) + ".Firework"))
+				config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + crate.getName(false) + ".Firework"));
+			if (config.isSet("Crates." + crate.getName(false) + ".Preview"))
+				config.set("Crates." + newName + ".Preview", config.getBoolean("Crates." + crate.getName(false) + ".Preview"));
 
 			config.set("Crates." + crate.getName(false), null);
 			CratesPlus.getPlugin().saveConfig();
@@ -267,14 +278,14 @@ public class CrateCommand implements CommandExecutor {
 		}
 
 		// Help Messages
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "----- CratePlus Help -----");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate reload - Reload configuration for CratesPlus (Experimental)");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate settings - Edit settings of CratesPlus and crate winnings");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate create <name> - Create a new crate");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate rename <old name> <new name> - Rename a new crate");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate delete <name> - Delete a crate");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player/all> [type] [amount] - Give player a random crate key");
-		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] - Give player a crate to be placed");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "----- CratePlus v" + CratesPlus.getPlugin().getDescription().getVersion() + " Help -----");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate reload " + ChatColor.YELLOW + "- Reload configuration for CratesPlus (Experimental)");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate settings " + ChatColor.YELLOW + "- Edit settings of CratesPlus and crate winnings");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate create <name> " + ChatColor.YELLOW + "- Create a new crate");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate rename <old name> <new name> " + ChatColor.YELLOW + "- Rename a new crate");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate delete <name> " + ChatColor.YELLOW + "- Delete a crate");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate key <player/all> [type] [amount] " + ChatColor.YELLOW + "- Give player a random crate key");
+		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] " + ChatColor.YELLOW + "- Give player a crate to be placed");
 
 		return true;
 	}

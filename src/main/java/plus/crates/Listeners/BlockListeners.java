@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +22,28 @@ import plus.crates.Key;
 import java.util.Map;
 
 public class BlockListeners implements Listener {
+
+	@EventHandler(ignoreCancelled = true)
+	public void onItemDrop(PlayerDropItemEvent event) {
+		if (!CratesPlus.getPlugin().getConfig().getBoolean("Disable Key Dropping"))
+			return;
+		String title;
+		ItemStack item = event.getItemDrop().getItemStack();
+
+		for (Map.Entry<String, Crate> crate : CratesPlus.crates.entrySet()) {
+			Key key = crate.getValue().getKey();
+			if (key == null)
+				continue;
+			title = key.getName();
+
+			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
+				event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Drop", event.getPlayer(), crate.getValue(), null));
+				event.setCancelled(true);
+				return;
+			}
+		}
+
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
@@ -35,12 +58,11 @@ public class BlockListeners implements Listener {
 				continue;
 			title = key.getName();
 
-			assert itemOff != null;
-			if (itemOff.hasItemMeta() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().contains(title)) {
+			if (itemOff != null && itemOff.hasItemMeta() && itemOff.getItemMeta().hasDisplayName() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().contains(title)) {
 				item = itemOff;
 			}
 
-			if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().contains(title)) {
+			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
 				event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;

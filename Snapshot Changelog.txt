@@ -1,6 +1,15 @@
 Version 4.0.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 9:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/375/artifact/target/CratesPlus-4.0.0-SNAPSHOT-9.jar
+ - Added block to example config
+ - Hopefully fixed an issue with an NPE and 1.9 off hand support
+ - Added option to block keys been dropped
+ - Now shows plugin version when running /crate and made help commands nicer
+ - Updated "Create" command with new options
+ - Updated "Rename" command with new options and made some slight changes
+
 V4.0 Snapshot 8:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/374/artifact/target/CratesPlus-4.0.0-SNAPSHOT-8.jar
  - Better handling of config for crates

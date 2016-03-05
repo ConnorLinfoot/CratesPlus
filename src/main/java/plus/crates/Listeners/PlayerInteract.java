@@ -16,7 +16,11 @@ import plus.crates.Events.CrateOpenEvent;
 import plus.crates.Events.CratePreviewEvent;
 import plus.crates.Handlers.MessageHandler;
 
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
 public class PlayerInteract implements Listener {
+	HashMap<String, Long> lastOpended = new HashMap<String, Long>();
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
@@ -66,6 +70,8 @@ public class PlayerInteract implements Listener {
 					player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You can't open a Crate while your inventory is full");
 					return;
 				}
+
+				lastOpended.put(player.getUniqueId().toString(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())); // Store time in seconds of when the player opended the crate
 
 				if (item.getAmount() > 1) {
 					item.setAmount(item.getAmount() - 1);

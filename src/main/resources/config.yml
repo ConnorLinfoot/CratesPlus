@@ -29,6 +29,9 @@ GUI Time: 10
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
 
+# Disable players being allowed to drop keys to other players
+Disable Key Dropping: false
+
 # Up to 4 lines for the hologram, %crate% can be used to show the crate name
 Hologram Text:
 - "%crate%"
@@ -43,3 +46,4 @@ Messages:
   Key Given: "&aYou have been given a %crate% &acrate key"
   Broadcast: "&d%displayname% &dopened a %crate% &dcrate"
   Cant Place: "&cYou can not place crate keys"
+  Cant Drop: "&cYou can not drop crate keys"
