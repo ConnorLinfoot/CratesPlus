@@ -260,7 +260,8 @@ public class BlockListeners implements Listener {
 				entity.remove();
 			}
 		}
-		crate.removeLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
+		if (crate.getLocations().containsKey(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ()))
+			crate.removeLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
 	}
 
 }

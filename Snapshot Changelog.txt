@@ -1,6 +1,14 @@
 Version 4.0.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 10:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/378/artifact/target/CratesPlus-4.0.0-SNAPSHOT-10.jar
+ - Fixed NPE on block break
+ - Added "Item ID" which will attempt to get an item type by its ID
+ - Added "createbeta" argument which will use a sign to get the name for the crate, just a test concept
+ - Fixed issue where crate keys were not enchanted
+ - Removed bottom line from chance lore
+
 V4.0 Snapshot 9:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/375/artifact/target/CratesPlus-4.0.0-SNAPSHOT-9.jar
  - Added block to example config

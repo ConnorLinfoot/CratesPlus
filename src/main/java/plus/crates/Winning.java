@@ -33,9 +33,11 @@ public class Winning {
 		if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("block")) {
 			Material itemType = null;
 			if (config.isSet(path + ".Item Type"))
-				itemType = Material.getMaterial(config.getString(path + ".Item Type"));
+				itemType = Material.getMaterial(config.getString(path + ".Item Type").toUpperCase());
 			else if (config.isSet(path + ".Block Type"))
-				itemType = Material.getMaterial(config.getString(path + ".Block Type"));
+				itemType = Material.getMaterial(config.getString(path + ".Block Type").toUpperCase());
+			else if (config.isSet(path + ".Item ID"))
+				itemType = Material.getMaterial(config.getInt(path + ".Item ID"));
 
 			if (itemType == null)
 				return;
@@ -153,7 +155,6 @@ public class Winning {
 			// Percentage
 			lore.add(ChatColor.LIGHT_PURPLE + "");
 			lore.add("" + ChatColor.LIGHT_PURPLE + percentage + "% Chance");
-			lore.add(ChatColor.LIGHT_PURPLE + "");
 		}
 		previewItemStackItemMeta.setLore(lore);
 		previewItemStack.setItemMeta(previewItemStackItemMeta);

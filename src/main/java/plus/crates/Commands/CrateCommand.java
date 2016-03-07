@@ -11,6 +11,11 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Handlers.CrateHandler;
 import plus.crates.Handlers.MessageHandler;
+import plus.crates.Utils.ReflectionUtil;
+import plus.crates.Utils.SignInputHandler;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class CrateCommand implements CommandExecutor {
 
@@ -36,7 +41,27 @@ public class CrateCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (args.length >= 1 && args[0].equalsIgnoreCase("create")) {
+		if (args.length >= 1 && (args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("createbeta"))) {
+			if (args[0].equalsIgnoreCase("createbeta")) {
+				// Lets try and open a sign to do the name! :D
+				Player player = (Player) sender;
+				try {
+					Constructor signConstructor = getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(getNMSClass("BlockPosition"));
+					Object packet = signConstructor.newInstance(getBlockPosition(player));
+					SignInputHandler.injectNetty(player);
+					sendPacket(player, packet);
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+
+				return true;
+			}
 			if (args.length < 2) {
 				sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Correct Usage: /crate create <name>");
 				return false;
@@ -288,6 +313,32 @@ public class CrateCommand implements CommandExecutor {
 		sender.sendMessage(CratesPlus.pluginPrefix + ChatColor.AQUA + "/crate crate <type> [player] " + ChatColor.YELLOW + "- Give player a crate to be placed");
 
 		return true;
+	}
+
+	@Deprecated
+	public Class<?> getNMSClass(String name) {
+		return ReflectionUtil.getNMSClass(name);
+	}
+
+	public Object getBlockPosition(Player player) {
+		try {
+			Object handle = player.getClass().getMethod("getHandle").invoke(player);
+			Constructor constructor = getNMSClass("BlockPosition").getConstructor(getNMSClass("Entity"));
+			return constructor.newInstance(handle);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void sendPacket(Player player, Object packet) {
+		try {
+			Object handle = player.getClass().getMethod("getHandle").invoke(player);
+			Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

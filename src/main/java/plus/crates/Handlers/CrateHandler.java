@@ -133,9 +133,8 @@ public class CrateHandler {
 		Key key = crate.getKey();
 
 		ItemStack keyItem = new ItemStack(key.getMaterial());
-		if (CratesPlus.getPlugin().getConfig().getBoolean("Crate Keys.Enchanted")) {
-			keyItem.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
-		}
+		if (key.isEnchanted())
+			keyItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
 		ItemMeta keyItemMeta = keyItem.getItemMeta();
 //        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); // TODO; Make this work when Spigot is being used!!
 		String title = key.getName().replaceAll("%type%", crate.getName(true));
