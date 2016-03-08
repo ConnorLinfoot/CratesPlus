@@ -74,6 +74,7 @@ public class BlockListeners implements Listener {
 			final Crate crate = CratesPlus.crates.get(ChatColor.stripColor(crateType).toLowerCase());
 			Location location = event.getBlock().getLocation();
 			crate.addLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ(), location);
+			CratesPlus.addCrateBlockToConfig(crate, location);
 			// BlockMeta to be used for some stuff in the future!
 			event.getBlock().setMetadata("CrateType", new MetadataValue() {
 				@Override
@@ -239,6 +240,7 @@ public class BlockListeners implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
+		System.out.println(event.getBlock().getMetadata("CrateType"));
 		if (event.getBlock().getMetadata("CrateType") == null || event.getBlock().getMetadata("CrateType").isEmpty())
 			return;
 		String crateType = event.getBlock().getMetadata("CrateType").get(0).asString();

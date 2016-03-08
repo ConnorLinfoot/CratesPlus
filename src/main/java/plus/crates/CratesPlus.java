@@ -4,12 +4,17 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Commands.CrateCommand;
 import plus.crates.Handlers.CrateHandler;
@@ -37,6 +42,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	public static int crateGUITime = 10;
 	public static MC_VERSION mc_version = MC_VERSION.OTHER;
 	public static Version_Util version_util;
+	public static File dataFile;
+	public static YamlConfiguration dataConfig;
 
 	public enum MC_VERSION {
 		MC_1_8, MC_1_9, OTHER
@@ -79,6 +86,15 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		cleanUpDeadConfig();
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+
+		// Check data.yml exists, if not create it!
+		dataFile = new File(getDataFolder(), "data.yml");
+		dataConfig = YamlConfiguration.loadConfiguration(dataFile);
+		try {
+			dataConfig.save(dataFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		if (getConfig().getBoolean("Metrics")) {
 			try {
@@ -129,6 +145,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 
 		settingsHandler = new SettingsHandler();
+
+		reloadMetaData();
 
 		console.sendMessage(ChatColor.AQUA + getDescription().getName() + " Version " + getDescription().getVersion());
 		if (getDescription().getVersion().contains("SNAPSHOT")) { // Added this because some people didn't really understand what a "snapshot" is...
@@ -508,6 +526,90 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		// Settings Handler
 		settingsHandler = new SettingsHandler();
 
+	}
+
+	private void reloadMetaData() {
+		if (!dataConfig.isSet("Crate Locations"))
+			return;
+		for (String name : dataConfig.getConfigurationSection("Crate Locations").getKeys(false)) {
+			final Crate crate = crates.get(name.toLowerCase());
+			if (crate == null)
+				continue;
+			String path = "Crate Locations." + name;
+			String locationString = dataConfig.getString(path);
+			String[] strings = locationString.split("-");
+			if (strings.length < 4)
+				continue; // Somethings broke?
+			Location location = new Location(Bukkit.getWorld(strings[0]), Double.parseDouble(strings[1]), Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
+			Block block = location.getBlock();
+			if (block == null)
+				continue;
+			block.setMetadata("CrateType", new MetadataValue() {
+				@Override
+				public Object value() {
+					return crate.getName(false);
+				}
+
+				@Override
+				public int asInt() {
+					return 0;
+				}
+
+				@Override
+				public float asFloat() {
+					return 0;
+				}
+
+				@Override
+				public double asDouble() {
+					return 0;
+				}
+
+				@Override
+				public long asLong() {
+					return 0;
+				}
+
+				@Override
+				public short asShort() {
+					return 0;
+				}
+
+				@Override
+				public byte asByte() {
+					return 0;
+				}
+
+				@Override
+				public boolean asBoolean() {
+					return false;
+				}
+
+				@Override
+				public String asString() {
+					return value().toString();
+				}
+
+				@Override
+				public Plugin getOwningPlugin() {
+					return CratesPlus.getPlugin();
+				}
+
+				@Override
+				public void invalidate() {
+
+				}
+			});
+		}
+	}
+
+	public static void addCrateBlockToConfig(Crate crate, Location location) {
+		dataConfig.set("Crate Locations." + crate.getName(false), location.getWorld().getName() + "-" + location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
+		try {
+			dataConfig.save(dataFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

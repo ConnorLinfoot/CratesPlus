@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.Utils.EnchantmentUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +144,7 @@ public class Winning {
 					Integer level = 1;
 					if (args.length > 1)
 						level = Integer.valueOf(args[1]);
-					winningItemStack.addUnsafeEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
+					winningItemStack.addUnsafeEnchantment(EnchantmentUtil.getEnchantmentFromNiceName(enchantment), level);
 				} catch (Exception ignored) {
 				}
 			}
