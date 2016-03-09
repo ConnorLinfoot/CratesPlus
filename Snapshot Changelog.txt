@@ -1,11 +1,14 @@
 Version 4.0.0 Snapshots
 -----------------------------------------------------------------------------------------------------------
 
+V4.0 Snapshot 12:
+ Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/382/artifact/target/CratesPlus-4.0.0-SNAPSHOT-12.jar
+ - Hopefully fixed issue with data.yml and changed format (You will need to place crates again...)
+
 V4.0 Snapshot 11:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/382/artifact/target/CratesPlus-4.0.0-SNAPSHOT-11.jar
  - Fixed issue where block meta data wasn't being kept on restart, now stores all crate data in a data.yml file. (You will need to place crates again!)
  - Some custom work on getting enchantments from nicer names like "sharpness", will hopefully improve this more soon.
- -
 
 V4.0 Snapshot 10:
  Download: http://ci.connorlinfoot.com:8080/job/CratesPlus/378/artifact/target/CratesPlus-4.0.0-SNAPSHOT-10.jar

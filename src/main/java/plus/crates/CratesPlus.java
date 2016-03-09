@@ -24,10 +24,7 @@ import plus.crates.Utils.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CratesPlus extends JavaPlugin implements Listener {
 	private static CratesPlus instance;
@@ -82,7 +79,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			String oldConfig = backupConfig();
 			convertConfigV5(console, oldConfig); // Oh god...
 		}
-
 		cleanUpDeadConfig();
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -95,6 +91,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		updateDataFile();
 
 		if (getConfig().getBoolean("Metrics")) {
 			try {
@@ -536,75 +533,108 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			if (crate == null)
 				continue;
 			String path = "Crate Locations." + name;
-			String locationString = dataConfig.getString(path);
-			String[] strings = locationString.split("-");
-			if (strings.length < 4)
-				continue; // Somethings broke?
-			Location location = new Location(Bukkit.getWorld(strings[0]), Double.parseDouble(strings[1]), Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
-			Block block = location.getBlock();
-			if (block == null)
-				continue;
-			block.setMetadata("CrateType", new MetadataValue() {
-				@Override
-				public Object value() {
-					return crate.getName(false);
-				}
+			List<String> locations = dataConfig.getStringList(path);
 
-				@Override
-				public int asInt() {
-					return 0;
+			for (String location : locations) {
+				List<String> strings = Arrays.asList(location.split("-"));
+				if (strings.size() < 4)
+					continue; // Somethings broke?
+				if (strings.size() > 4) {
+					// Somethings broke? But we'll try and fix it!
+					for (int i = 0; i < strings.size(); i++) {
+						if (strings.get(i).isEmpty() || strings.get(i).equals("")) {
+							strings.remove(i);
+						}
+					}
 				}
+				Location locationObj = new Location(Bukkit.getWorld(strings.get(0)), Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
+				Block block = locationObj.getBlock();
+				if (block == null)
+					continue;
+				block.setMetadata("CrateType", new MetadataValue() {
+					@Override
+					public Object value() {
+						return crate.getName(false);
+					}
 
-				@Override
-				public float asFloat() {
-					return 0;
-				}
+					@Override
+					public int asInt() {
+						return 0;
+					}
 
-				@Override
-				public double asDouble() {
-					return 0;
-				}
+					@Override
+					public float asFloat() {
+						return 0;
+					}
 
-				@Override
-				public long asLong() {
-					return 0;
-				}
+					@Override
+					public double asDouble() {
+						return 0;
+					}
 
-				@Override
-				public short asShort() {
-					return 0;
-				}
+					@Override
+					public long asLong() {
+						return 0;
+					}
 
-				@Override
-				public byte asByte() {
-					return 0;
-				}
+					@Override
+					public short asShort() {
+						return 0;
+					}
 
-				@Override
-				public boolean asBoolean() {
-					return false;
-				}
+					@Override
+					public byte asByte() {
+						return 0;
+					}
 
-				@Override
-				public String asString() {
-					return value().toString();
-				}
+					@Override
+					public boolean asBoolean() {
+						return false;
+					}
 
-				@Override
-				public Plugin getOwningPlugin() {
-					return CratesPlus.getPlugin();
-				}
+					@Override
+					public String asString() {
+						return value().toString();
+					}
 
-				@Override
-				public void invalidate() {
+					@Override
+					public Plugin getOwningPlugin() {
+						return CratesPlus.getPlugin();
+					}
 
-				}
-			});
+					@Override
+					public void invalidate() {
+
+					}
+				});
+			}
+
+
+		}
+	}
+
+	private void updateDataFile() {
+		Bukkit.broadcastMessage("Checking data version");
+		if (!dataConfig.isSet("Data Version")) {
+			dataConfig.set("Data Version", 1);
+			Bukkit.broadcastMessage("Updated data version");
+			if (dataConfig.isSet("Crate Locations"))
+				dataConfig.set("Crate Locations", null);
+			try {
+				dataConfig.save(dataFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public static void addCrateBlockToConfig(Crate crate, Location location) {
-		dataConfig.set("Crate Locations." + crate.getName(false), location.getWorld().getName() + "-" + location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
+		List<String> locations = new ArrayList<String>();
+		if (dataConfig.isSet("Crate Locations." + crate.getName(false).toLowerCase())) {
+			locations = dataConfig.getStringList("Crate Locations." + crate.getName(false).toLowerCase());
+		}
+		locations.add(location.getWorld().getName() + "-" + location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
+		dataConfig.set("Crate Locations." + crate.getName(false).toLowerCase(), locations);
 		try {
 			dataConfig.save(dataFile);
 		} catch (IOException e) {
