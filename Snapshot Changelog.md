@@ -83,41 +83,41 @@
 
 ### Version 3.1.0 Snapshots
 ---
-**Snapshot 15** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/191/artifact/target/CratesPlus-3.1-SNAPSHOT-15.jar)
+**Snapshot 15** *(Sep 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/191/artifact/target/CratesPlus-3.1-SNAPSHOT-15.jar)
 - Lore's now support color codes
 - Fixed an issue with non-gui not working when no percentages are being used and they also now run commands
 
-**Snapshot 14** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/190/artifact/target/CratesPlus-3.1-SNAPSHOT-14.jar)
+**Snapshot 14** *(Sep 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/190/artifact/target/CratesPlus-3.1-SNAPSHOT-14.jar)
 - Added Lore support to Crates.
 - Fixed a small bug which showed the wrong error when using /crate crate
 
-**Snapshot 13** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/189/artifact/target/CratesPlus-3.1-SNAPSHOT-13.jar)
+**Snapshot 13** *(Sep 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/189/artifact/target/CratesPlus-3.1-SNAPSHOT-13.jar)
 - Removed Crates from Example config. You must now setup at least 1 crate before getting started.
 
-**Snapshot 12** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/188/artifact/target/CratesPlus-3.1-SNAPSHOT-12.jar)
+**Snapshot 12** *(Sep 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/188/artifact/target/CratesPlus-3.1-SNAPSHOT-12.jar)
 - Disable GUI now works... We're close!
 
-**Snapshot 11** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/182/artifact/target/CratesPlus-3.1-SNAPSHOT-11.jar)
+**Snapshot 11** *(Sep 9 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/182/artifact/target/CratesPlus-3.1-SNAPSHOT-11.jar)
 - Yes I know... It's been a while (Shh)
 - Added options to disable GUI for winning and change time. (Disable GUI doesn't work yet)
 - Probably 1 more snapshot before release this weekend!
 
-**Snapshot 10** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/151/artifact/target/CratesPlus-3.1-SNAPSHOT-10.jar)
+**Snapshot 10** *(Aug 10 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/151/artifact/target/CratesPlus-3.1-SNAPSHOT-10.jar)
 - Better system for remembering commands that doesn't require the use of Spigot
 - Cleaned up bits of code
 - Final testing will happen tonight for V3.1, if successful expect very close full release
 
-**Snapshot 9** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/150/artifact/target/CratesPlus-3.1-SNAPSHOT-9.jar)
+**Snapshot 9** *(Aug 10 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/150/artifact/target/CratesPlus-3.1-SNAPSHOT-9.jar)
 - Added V3 -> V4 Config Converter (Pls test<3)
 
-**Snapshot 8** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/149/artifact/target/CratesPlus-3.1-SNAPSHOT-8.jar)
+**Snapshot 8** *(Aug 10 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/149/artifact/target/CratesPlus-3.1-SNAPSHOT-8.jar)
 - Fixed create command to work with the new config system
 - Fixed rename command to work with the new config system
 
-**Snapshot 7** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/148/artifact/target/CratesPlus-3.1-SNAPSHOT-7.jar)
+**Snapshot 7** *(Aug 10 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/148/artifact/target/CratesPlus-3.1-SNAPSHOT-7.jar)
 - Added percentage support considering it was asked for so much, percentages in a crate MUST add up to 100% for it to function correct
 
-**Snapshot 6** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/140/artifact/target/CratesPlus-3.1-SNAPSHOT-6.jar)
+**Snapshot 6** *(Aug 3 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/140/artifact/target/CratesPlus-3.1-SNAPSHOT-6.jar)
 - Commands now working, see default config for example
 - Command item type's added, now set your command to any item and not just the default map
 - Fixed bug when you had the same key in multiple inventory slots it would take all of them
@@ -125,30 +125,30 @@
 - "&" color code supported added to item names
 - Fixed wins not been "random"
 
-**Snapshot 5** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/96/artifact/target/CratesPlus-3.1-SNAPSHOT-5.jar)
+**Snapshot 5** *(Jun 21 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/96/artifact/target/CratesPlus-3.1-SNAPSHOT-5.jar)
 - Updates to the Beta GUI, more coming soon
 - All new config style (Again) Designed to make it easier and better for winnings including better command support - NOTE There is currently NO config converter, do NOT use this with an old config file!
 - Commands will NOT work correctly in this version, I'm working on that for snapshot 6
 - Added Metrics, this can be disabled in the config. I've added this so I can track stats, I may build a custom system in the future
 - Beta GUI is now always used, the option in the config has been removed and no longer affects anything
 
-**Snapshot 4** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/89/artifact/target/CratesPlus-3.1-SNAPSHOT-4.jar)
+**Snapshot 4** *(Jun 16 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/89/artifact/target/CratesPlus-3.1-SNAPSHOT-4.jar)
 - Added "None" support to the commands name which will just default to "Command"
 - Added "Enable GUI Beta Animation" to the config, have fun ;) Improvements will be coming
 - Crate Keys now have a "Enchanted" option instead of "Enchantments" list
 
-**Snapshot 3** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/87/artifact/target/CratesPlus-3.1-SNAPSHOT-3.jar)
+**Snapshot 3** *(Jun 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/87/artifact/target/CratesPlus-3.1-SNAPSHOT-3.jar)
 - Custom name support added to commands
 - Multiple command support, separate commands by a pipe |
 
-**Snapshot 2** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/86/artifact/target/CratesPlus-3.1-SNAPSHOT-2.jar)
+**Snapshot 2** *(Jun 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/86/artifact/target/CratesPlus-3.1-SNAPSHOT-2.jar)
  - Added config options to be able to change the text shown on holograms (Support up to 4 lines, removed more-info hologram option since this has been added)
  - Now gives the player the item won if they close the GUI without selecting the prize
  - After clicking winning item GUI will auto-close
  - Players can't open crate if inventory is full
  - Improved invalid item handling (Don't think this even worked in snapshot 1)
 
-**Snapshot 1** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/85/artifact/target/CratesPlus-3.1-SNAPSHOT-1.jar)
+**Snapshot 1** *(Jun 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/85/artifact/target/CratesPlus-3.1-SNAPSHOT-1.jar)
 - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid item is found after 5 tries
 
 ### Version 3.0.0 Snapshots
