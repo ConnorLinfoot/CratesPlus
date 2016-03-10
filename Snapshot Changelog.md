@@ -5,21 +5,21 @@
 - Changelogs are now .md files (Little nicer to view)
 - Fixed issue with data.yml (For real this time! Stupid negative cords!)
 
-**Snapshot 12** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/382/artifact/target/CratesPlus-4.0.0-SNAPSHOT-12.jar)
+**Snapshot 12** *(Mar 9 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/382/artifact/target/CratesPlus-4.0.0-SNAPSHOT-12.jar)
 - Hopefully fixed issue with data.yml and changed format (You will need to place crates again...)
 
-**Snapshot 11** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/382/artifact/target/CratesPlus-4.0.0-SNAPSHOT-11.jar)
+**Snapshot 11** *(Mar 8 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/382/artifact/target/CratesPlus-4.0.0-SNAPSHOT-11.jar)
 - Fixed issue where block meta data wasn't being kept on restart, now stores all crate data in a data.yml file. (You will need to place crates again!)
 - Some custom work on getting enchantments from nicer names like "sharpness", will hopefully improve this more soon.
 
-**Snapshot 10** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/378/artifact/target/CratesPlus-4.0.0-SNAPSHOT-10.jar)
+**Snapshot 10** *(Mar 7 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/378/artifact/target/CratesPlus-4.0.0-SNAPSHOT-10.jar)
 - Fixed NPE on block break
 - Added "Item ID" which will attempt to get an item type by its ID
 - Added "createbeta" argument which will use a sign to get the name for the crate. Just a test concept, not done yet!
 - Fixed issue where crate keys were not enchanted
 - Removed bottom line from chance lore
 
-**Snapshot 9** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/375/artifact/target/CratesPlus-4.0.0-SNAPSHOT-9.jar)
+**Snapshot 9** *(Mar 5 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/375/artifact/target/CratesPlus-4.0.0-SNAPSHOT-9.jar)
 - Added block to example config
 - Hopefully fixed an issue with an NPE and 1.9 off hand support
 - Added option to block keys been dropped
@@ -27,13 +27,13 @@
 - Updated "Create" command with new options
 - Updated "Rename" command with new options and made some slight changes
 
-**Snapshot 8** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/374/artifact/target/CratesPlus-4.0.0-SNAPSHOT-8.jar)
+**Snapshot 8** *(Mar 4 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/374/artifact/target/CratesPlus-4.0.0-SNAPSHOT-8.jar)
 - Better handling of config for crates
 - Changed codebase to use tabs instead of 4 spaces
 - New Block option for crates should now work, give it a test. It shouldn't break already placed crates but we'll see!
 - Added some stuff with tracking locations for future changes to holograms
 
-**Snapshot 7** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/372/artifact/target/CratesPlus-4.0.0-SNAPSHOT-7.jar)
+**Snapshot 7** *(Mar 3 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/372/artifact/target/CratesPlus-4.0.0-SNAPSHOT-7.jar)
 - Completed crate color selector
 - Added preview option to crates
 - Renamed package to plus.crates from com.connorlinfoot.cratesplus
@@ -43,32 +43,32 @@
 - Added support for off hand when opening crates in 1.9
 - Disabled block placing of key in off hand in 1.9
 
-**Snapshot 6** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/363/artifact/target/CratesPlus-4.0.0-SNAPSHOT-6.jar)
+**Snapshot 6** *(Feb 24 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/363/artifact/target/CratesPlus-4.0.0-SNAPSHOT-6.jar)
 - Updated snapshot updater link to new API
 - Fixed lore being duplicated on save in GUI editor
 - Fixed GUI editor not even working most of the time
 - Started work on changing crate color by GUI, will be finished in next snapshot
 
-**Snapshot 5** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/360/artifact/target/CratesPlus-4.0.0-SNAPSHOT-5.jar)
+**Snapshot 5** *(Feb 23 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/360/artifact/target/CratesPlus-4.0.0-SNAPSHOT-5.jar)
 - Removed old InventoryClose listener file
 - Removed deprecated methods
 - Cleaned up bits of code and utils
 - Removed unnecessary util for handling json
 
-**Snapshot 4** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/358/artifact/target/CratesPlus-4.0.0-SNAPSHOT-4.jar)
+**Snapshot 4** *(Feb 22 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/358/artifact/target/CratesPlus-4.0.0-SNAPSHOT-4.jar)
 - Fixed crate broadcast running 44 times on win
 - Added snapshot branch for updates
 
-**Snapshot 3** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/355/artifact/target/CratesPlus-4.0-SNAPSHOT-3.jar)
+**Snapshot 3** *(Feb 22 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/355/artifact/target/CratesPlus-4.0-SNAPSHOT-3.jar)
 - Added new %winning% placeholder
 - Improved placeholders so they should be handled a bit nicer with messages and also holograms
 
-**Snapshot 2** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/354/artifact/target/CratesPlus-4.0-SNAPSHOT-2.jar)
+**Snapshot 2** *(Feb 22 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/354/artifact/target/CratesPlus-4.0-SNAPSHOT-2.jar)
 - Added fallbacks for when type is BLOCK and Block Type is used
 - Color code support for hologram's added
 - Fixed amount not working with /crate key
 
-**Snapshot 1** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/284/artifact/target/CratesPlus-4.0-SNAPSHOT-1.jar)
+**Snapshot 1** *(Dec 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/284/artifact/target/CratesPlus-4.0-SNAPSHOT-1.jar)
 - Moved Crate Key settings under the individual crates, allows different keys per crates!
 - Fixed percentages not working if you changed the GUI time
 - Message now shows in console if percentages add up to more than 100%
