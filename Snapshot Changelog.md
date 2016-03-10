@@ -153,19 +153,19 @@
 
 ### Version 3.0.0 Snapshots
 ---
-**Snapshot 6** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/74/artifact/target/CratesPlus-3.0-SNAPSHOT-6.jar)
+**Snapshot 6** *(Jun 7 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/74/artifact/target/CratesPlus-3.0-SNAPSHOT-6.jar)
 - Changed GUI's and reload GUI option works
 - Added "/crate rename <old> <new>"
 - Cleaned up updater a little
 
-**Snapshot 5** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/73/artifact/target/CratesPlus-3.0-SNAPSHOT-5.jar)
+**Snapshot 5** *(Jun 7 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/73/artifact/target/CratesPlus-3.0-SNAPSHOT-5.jar)
 - Removed auto updating from config (Don't really want this actually)
 - Removed option for "dev" branch, always uses Spigot
 - Won't check for updates if running a snapshot build
 - Crate names are no longer case sensitive
 - Fixed more issues with how item data was handled
 
-**Snapshot 4** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/72/artifact/target/CratesPlus-3.0-SNAPSHOT-4.jar)
+**Snapshot 4** *(Jun 6 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/72/artifact/target/CratesPlus-3.0-SNAPSHOT-4.jar)
 - Custom item names (View new config, it should auto update and give you a link for a backup)
 - Removed "listener" debug message
 - Fixed some issues with creating/deleting crates
@@ -180,14 +180,14 @@
 - Fixed bug with data not always been used correctly
 - Fixed bug when closing winnings GUI
 
-**Snapshot 3** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/70/artifact/target/CratesPlus-3.0-SNAPSHOT-3.jar)
+**Snapshot 3** *(Jun 5 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/70/artifact/target/CratesPlus-3.0-SNAPSHOT-3.jar)
 - Improved crate winnings reload
 - Fixes for crate deletion and creation
 
-**Snapshot 2** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/68/artifact/target/CratesPlus-3.0-SNAPSHOT-2.jar)
+**Snapshot 2** *(Jun 5 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/68/artifact/target/CratesPlus-3.0-SNAPSHOT-2.jar)
 - Fixed an issue with crate winnings not updating (Temp fix, will be improved soon)
 
-**Snapshot 1** *(?)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/67/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar)
+**Snapshot 1** *(Jun 5 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/67/artifact/target/CratesPlus-3.0-SNAPSHOT-1.jar)
 - Worked on updater, still got more work to do but it's more stable.
 - Added /crate settings - Allows in-game crate editing, some features will be added soon
 - Added /crate create <name>
