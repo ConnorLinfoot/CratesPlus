@@ -536,7 +536,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			List<String> locations = dataConfig.getStringList(path);
 
 			for (String location : locations) {
-				List<String> strings = Arrays.asList(location.split("-"));
+				List<String> strings = Arrays.asList(location.split("|"));
 				if (strings.size() < 4)
 					continue; // Somethings broke?
 				if (strings.size() > 4) {
@@ -614,10 +614,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	}
 
 	private void updateDataFile() {
-		Bukkit.broadcastMessage("Checking data version");
-		if (!dataConfig.isSet("Data Version")) {
-			dataConfig.set("Data Version", 1);
-			Bukkit.broadcastMessage("Updated data version");
+		if (!dataConfig.isSet("Data Version") || dataConfig.getInt("Data Version") == 1) {
+			dataConfig.set("Data Version", 2);
 			if (dataConfig.isSet("Crate Locations"))
 				dataConfig.set("Crate Locations", null);
 			try {
@@ -633,7 +631,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		if (dataConfig.isSet("Crate Locations." + crate.getName(false).toLowerCase())) {
 			locations = dataConfig.getStringList("Crate Locations." + crate.getName(false).toLowerCase());
 		}
-		locations.add(location.getWorld().getName() + "-" + location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
+		locations.add(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
 		dataConfig.set("Crate Locations." + crate.getName(false).toLowerCase(), locations);
 		try {
 			dataConfig.save(dataFile);

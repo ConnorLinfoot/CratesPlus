@@ -28,6 +28,7 @@ Crates:
     Color: GREEN
     Block: GLASS
     Preview: true
+    Permission: cratesplus.crate.example # Permissions can be anything, it will check that the player has the permission before opening
     Key:
       Item: TRIPWIRE_HOOK
       Name: '%type% Crate Key'
@@ -90,6 +91,7 @@ Hologram Text:
 Messages:
   Prefix: "&7[&bCratesPlus&7]"
   Command No Permission: "&cYou do not have the correct permission to run this command"
+  Crate No Permission: "&cYou do not have the correct permission to open this crate"
   Crate Open Without Key: "&cYou must be holding a %crate% &ckey to open this crate"
   Key Given: "&aYou have been given a %crate% &acrate key"
   Broadcast: "&d%displayname% &dopened a %crate% &dcrate"

@@ -16,7 +16,7 @@ import java.util.List;
 public class Winning {
 	private boolean valid = false;
 	private boolean command = false;
-	private int percentage = 0;
+	private double percentage = 0;
 	private ItemStack previewItemStack;
 	private ItemStack winningItemStack;
 	private List<String> commands = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class Winning {
 				itemData = config.getInt(path + ".Item Data");
 
 			if (config.isSet(path + ".Percentage"))
-				percentage = config.getInt(path + ".Percentage");
+				percentage = config.getDouble(path + ".Percentage");
 
 			Integer amount = 1;
 			if (config.isSet(path + ".Amount"))
@@ -72,7 +72,7 @@ public class Winning {
 				itemData = config.getInt(path + ".Item Data");
 
 			if (config.isSet(path + ".Percentage"))
-				percentage = config.getInt(path + ".Percentage");
+				percentage = config.getDouble(path + ".Percentage");
 
 			Integer amount = 1;
 			if (config.isSet(path + ".Amount"))
@@ -198,7 +198,7 @@ public class Winning {
 		return command;
 	}
 
-	public int getPercentage() {
+	public double getPercentage() {
 		return percentage;
 	}
 

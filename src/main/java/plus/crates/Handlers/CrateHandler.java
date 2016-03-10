@@ -15,10 +15,16 @@ import plus.crates.Key;
 import java.util.*;
 
 public class CrateHandler {
+	private static Random rand = new Random();
 
 	public static int randInt(int min, int max) {
-		Random rand = new Random();
 		return rand.nextInt((max - min) + 1) + min;
+	}
+
+	public static double randDouble(double min, double max) {
+		double range = max - min;
+		double scaled = rand.nextDouble() * range;
+		return scaled + min; // == (rand.nextDouble() * (max-min)) + min;
 	}
 
 	private static Color getColor(int i) {

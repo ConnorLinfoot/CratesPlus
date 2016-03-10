@@ -20,9 +20,10 @@ public class Crate {
 	private double knockback = 0.0;
 	private ArrayList<Winning> winnings = new ArrayList<Winning>();
 	private ArrayList<Integer> percentages = new ArrayList<Integer>();
-	private int totalPercentage = 0;
+	private double totalPercentage = 0;
 	private Key key;
 	private HashMap<String, Location> locations = new HashMap<String, Location>();
+	private String permission = null;
 
 	public Crate(String name) {
 		this.name = name;
@@ -40,6 +41,8 @@ public class Crate {
 			this.preview = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Preview");
 		if (CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Knockback"))
 			this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
+		if (CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Permission"))
+			this.permission = CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Permission");
 
 		if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Item") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Name") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Enchanted"))
 			return;
@@ -127,7 +130,7 @@ public class Crate {
 		winnings.add(winning);
 	}
 
-	public int getTotalPercentage() {
+	public double getTotalPercentage() {
 		return totalPercentage;
 	}
 
@@ -165,6 +168,10 @@ public class Crate {
 
 	public Location removeLocation(String key) {
 		return locations.remove(key);
+	}
+
+	public String getPermission() {
+		return permission;
 	}
 
 }

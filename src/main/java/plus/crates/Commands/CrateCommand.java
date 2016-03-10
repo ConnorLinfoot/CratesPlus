@@ -135,7 +135,7 @@ public class CrateCommand implements CommandExecutor {
 				if (config.isSet(path + ".Item Data"))
 					config.set(newPath + ".Item Data", config.getInt(path + ".Item Data"));
 				if (config.isSet(path + ".Percentage"))
-					config.set(newPath + ".Percentage", config.getInt(path + ".Percentage"));
+					config.set(newPath + ".Percentage", config.getDouble(path + ".Percentage"));
 				if (config.isSet(path + ".Name"))
 					config.set(newPath + ".Name", config.getString(path + ".Name"));
 				if (config.isSet(path + ".Amount"))
