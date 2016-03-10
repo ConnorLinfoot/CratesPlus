@@ -536,7 +536,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			List<String> locations = dataConfig.getStringList(path);
 
 			for (String location : locations) {
-				List<String> strings = Arrays.asList(location.split("|"));
+				List<String> strings = Arrays.asList(location.split("\\|"));
 				if (strings.size() < 4)
 					continue; // Somethings broke?
 				if (strings.size() > 4) {
