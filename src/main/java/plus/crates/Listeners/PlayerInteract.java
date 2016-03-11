@@ -48,11 +48,11 @@ public class PlayerInteract implements Listener {
 			return;
 		}
 
-		Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
 
 		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
 			event.setCancelled(true);
-			player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate No Permission", player, crate, null));
+			player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate No Permission", player, crate, null));
 			return;
 		}
 		String title = crate.getKey().getName();
@@ -74,7 +74,7 @@ public class PlayerInteract implements Listener {
 				event.setCancelled(true);
 
 				if (player.getInventory().firstEmpty() == -1) {
-					player.sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You can't open a Crate while your inventory is full");
+					player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a Crate while your inventory is full");
 					return;
 				}
 
@@ -106,7 +106,7 @@ public class PlayerInteract implements Listener {
 					crateOpenEvent.doEvent();
 				}
 			} else {
-				player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crate, null));
+				player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crate, null));
 				if (crate.getKnockback() != 0) {
 					player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
 				}

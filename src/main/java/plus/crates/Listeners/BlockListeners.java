@@ -30,14 +30,14 @@ public class BlockListeners implements Listener {
 		String title;
 		ItemStack item = event.getItemDrop().getItemStack();
 
-		for (Map.Entry<String, Crate> crate : CratesPlus.crates.entrySet()) {
+		for (Map.Entry<String, Crate> crate : CratesPlus.getCrates().entrySet()) {
 			Key key = crate.getValue().getKey();
 			if (key == null)
 				continue;
 			title = key.getName();
 
 			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-				event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Drop", event.getPlayer(), crate.getValue(), null));
+				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Drop", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;
 			}
@@ -52,7 +52,7 @@ public class BlockListeners implements Listener {
 		ItemStack item = CratesPlus.version_util.getItemInPlayersHand(player);
 		ItemStack itemOff = CratesPlus.version_util.getItemInPlayersOffHand(player);
 
-		for (Map.Entry<String, Crate> crate : CratesPlus.crates.entrySet()) {
+		for (Map.Entry<String, Crate> crate : CratesPlus.getCrates().entrySet()) {
 			Key key = crate.getValue().getKey();
 			if (key == null)
 				continue;
@@ -63,7 +63,7 @@ public class BlockListeners implements Listener {
 			}
 
 			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-				event.getPlayer().sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), crate.getValue(), null));
+				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;
 			}
@@ -71,10 +71,10 @@ public class BlockListeners implements Listener {
 
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("Crate!")) {
 			final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
-			final Crate crate = CratesPlus.crates.get(ChatColor.stripColor(crateType).toLowerCase());
+			final Crate crate = CratesPlus.getCrates().get(ChatColor.stripColor(crateType).toLowerCase());
 			Location location = event.getBlock().getLocation();
 			crate.addLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ(), location);
-			CratesPlus.addCrateBlockToConfig(crate, location);
+			crate.addToConfig(location);
 			// BlockMeta to be used for some stuff in the future!
 			event.getBlock().setMetadata("CrateType", new MetadataValue() {
 				@Override
@@ -243,15 +243,15 @@ public class BlockListeners implements Listener {
 		if (event.getBlock().getMetadata("CrateType") == null || event.getBlock().getMetadata("CrateType").isEmpty())
 			return;
 		String crateType = event.getBlock().getMetadata("CrateType").get(0).asString();
-		Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
 		Location location = event.getBlock().getLocation();
 
 		if (event.getPlayer().isSneaking() && (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
-			event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "You do not have permission to remove this crate");
+			event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You do not have permission to remove this crate");
 			event.setCancelled(true);
 			return;
 		} else if (!event.getPlayer().isSneaking()) {
-			event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.RED + "Sneak to break crates");
+			event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Sneak to break crates");
 			event.setCancelled(true);
 			return;
 		}
@@ -261,8 +261,7 @@ public class BlockListeners implements Listener {
 				entity.remove();
 			}
 		}
-		if (crate.getLocations().containsKey(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ()))
-			crate.removeLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ());
+		crate.removeFromConfig(location);
 	}
 
 }

@@ -1,5 +1,12 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 15** *(Mar 11 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/391/artifact/target/CratesPlus-4.0.0-SNAPSHOT-15.jar)
+- Disabled "createtest" command, will be adding this most likely in v4.1/5.0.
+- Decimal support completed, should now take into account decimals when doing winnings.
+- Fixed bug of it giving multiple items on win without a GUI enabled.
+- Minor clean ups on new code for data.yml, removing a crate now also removes it from the data.yml.
+- Other clean up on code around in places too.
+
 **Snapshot 14** *(Mar 10 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/389/artifact/target/CratesPlus-4.0.0-SNAPSHOT-14.jar)
 - Fixed issue with data.yml (For real REAL this time! Stupid regex!)
 

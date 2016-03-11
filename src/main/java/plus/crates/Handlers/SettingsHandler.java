@@ -65,7 +65,7 @@ public class SettingsHandler {
 		ItemMeta itemMeta;
 		List<String> lore;
 
-		for (Map.Entry<String, Crate> entry : CratesPlus.crates.entrySet()) {
+		for (Map.Entry<String, Crate> entry : CratesPlus.getCrates().entrySet()) {
 			String name = entry.getKey();
 			Crate crate = entry.getValue();
 
@@ -96,7 +96,7 @@ public class SettingsHandler {
 	}
 
 	public void openCrateWinnings(final Player player, String crateName) {
-		Crate crate = CratesPlus.crates.get(crateName.toLowerCase());
+		Crate crate = CratesPlus.getCrates().get(crateName.toLowerCase());
 		if (crate == null) {
 			return; // TODO Error handling here
 		}
@@ -117,7 +117,7 @@ public class SettingsHandler {
 	}
 
 	public void openCrate(final Player player, String crateName) {
-		Crate crate = CratesPlus.crates.get(crateName.toLowerCase());
+		Crate crate = CratesPlus.getCrates().get(crateName.toLowerCase());
 		if (crate == null) {
 			return; // TODO Error handling here
 		}

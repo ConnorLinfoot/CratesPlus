@@ -28,16 +28,16 @@ import java.util.*;
 
 public class CratesPlus extends JavaPlugin implements Listener {
 	private static CratesPlus instance;
-	public static HashMap<String, Crate> crates = new HashMap<String, Crate>();
+	private static HashMap<String, Crate> crates = new HashMap<String, Crate>();
+	private static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
+	private static SettingsHandler settingsHandler;
+	private static MC_VERSION mc_version = MC_VERSION.OTHER;
 	public static boolean updateAvailable = false;
 	public static String updateMessage = "";
 	public static String configBackup = null;
-	public static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
-	public static SettingsHandler settingsHandler;
 	public static List<?> holograms;
 	public static boolean doGui = true;
 	public static int crateGUITime = 10;
-	public static MC_VERSION mc_version = MC_VERSION.OTHER;
 	public static Version_Util version_util;
 	public static File dataFile;
 	public static YamlConfiguration dataConfig;
@@ -626,18 +626,20 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 	}
 
-	public static void addCrateBlockToConfig(Crate crate, Location location) {
-		List<String> locations = new ArrayList<String>();
-		if (dataConfig.isSet("Crate Locations." + crate.getName(false).toLowerCase())) {
-			locations = dataConfig.getStringList("Crate Locations." + crate.getName(false).toLowerCase());
-		}
-		locations.add(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
-		dataConfig.set("Crate Locations." + crate.getName(false).toLowerCase(), locations);
-		try {
-			dataConfig.save(dataFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public static HashMap<String, Crate> getCrates() {
+		return crates;
+	}
+
+	public static SettingsHandler getSettingsHandler() {
+		return settingsHandler;
+	}
+
+	public static MC_VERSION getMc_version() {
+		return mc_version;
+	}
+
+	public static String getPluginPrefix() {
+		return pluginPrefix;
 	}
 
 }

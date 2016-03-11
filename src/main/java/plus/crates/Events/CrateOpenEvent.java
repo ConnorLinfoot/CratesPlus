@@ -17,9 +17,8 @@ import plus.crates.Handlers.CrateHandler;
 import plus.crates.Handlers.MessageHandler;
 import plus.crates.Winning;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class CrateOpenEvent extends Event {
@@ -36,7 +35,7 @@ public class CrateOpenEvent extends Event {
 	public CrateOpenEvent(Player player, String crateName) {
 		this.player = player;
 		this.crateName = crateName;
-		this.crate = CratesPlus.crates.get(crateName.toLowerCase());
+		this.crate = CratesPlus.getCrates().get(crateName.toLowerCase());
 	}
 
 	public void doEvent() {
@@ -46,19 +45,29 @@ public class CrateOpenEvent extends Event {
 		}
 
 		if (CratesPlus.doGui) {
-			doBetaGUI();
+			doBasicGUI();
 		} else {
 			if (crate.getTotalPercentage() > 0) {
-				int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
-				winning = crate.getWinnings().get(id);
+				double maxPercentage = 0.0D;
+				for (Winning winning1 : crate.getWinnings()) {
+					if (winning1.getPercentage() > maxPercentage)
+						maxPercentage = winning1.getPercentage();
+				}
+
+				double randDouble = CrateHandler.randDouble(0, maxPercentage);
+				ArrayList<Winning> winnings = new ArrayList<Winning>();
+				for (Winning winning1 : crate.getWinnings()) {
+					if (randDouble < winning1.getPercentage())
+						winnings.add(winning1);
+				}
+
+				if (winnings.size() > 1) {
+					winning = winnings.get(CrateHandler.randInt(0, winnings.size() - 1));
+				} else {
+					winning = winnings.get(0);
+				}
 			} else {
 				winning = crate.getWinnings().get(CrateHandler.randInt(0, crate.getWinnings().size() - 1));
-			}
-			if (!winning.isCommand()) {
-				HashMap<Integer, ItemStack> left = getPlayer().getInventory().addItem(winning.getPreviewItemStack());
-				for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
-					getPlayer().getLocation().getWorld().dropItemNaturally(getPlayer().getLocation(), item.getValue());
-				}
 			}
 			winning.runWin(getPlayer());
 		}
@@ -97,13 +106,13 @@ public class CrateOpenEvent extends Event {
 		return this.crate;
 	}
 
-	private void doBetaGUI() {
+	private void doBasicGUI() {
 		/** Time for some cool GUI's, hopefully */
 		Random random = new Random();
 		int max = crate.getWinnings().size() - 1;
 		int min = 0;
 		currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
-		winGUI = Bukkit.createInventory(null, 45, CratesPlus.crates.get(crateName.toLowerCase()).getColor() + crateName + " Win");
+		winGUI = Bukkit.createInventory(null, 45, CratesPlus.getCrates().get(crateName.toLowerCase()).getColor() + crateName + " Win");
 		player.openInventory(winGUI);
 		int maxTime = CratesPlus.crateGUITime;
 		final int maxTimeTicks = maxTime * 10;
@@ -120,8 +129,25 @@ public class CrateOpenEvent extends Event {
 						Winning winning;
 						if (timer == maxTimeTicks) {
 							if (crate.getTotalPercentage() > 0) {
-								int id = crate.getPercentages().get(CrateHandler.randInt(0, crate.getPercentages().size() - 1));
-								winning = crate.getWinnings().get(id);
+
+								double maxPercentage = 0.0D;
+								for (Winning winning1 : crate.getWinnings()) {
+									if (winning1.getPercentage() > maxPercentage)
+										maxPercentage = winning1.getPercentage();
+								}
+
+								double randDouble = CrateHandler.randDouble(0, maxPercentage);
+								ArrayList<Winning> winnings = new ArrayList<Winning>();
+								for (Winning winning1 : crate.getWinnings()) {
+									if (randDouble < winning1.getPercentage())
+										winnings.add(winning1);
+								}
+
+								if (winnings.size() > 1) {
+									winning = winnings.get(CrateHandler.randInt(0, winnings.size() - 1));
+								} else {
+									winning = winnings.get(0);
+								}
 							} else {
 								winning = crate.getWinnings().get(CrateHandler.randInt(0, crate.getWinnings().size() - 1));
 							}
@@ -135,7 +161,7 @@ public class CrateOpenEvent extends Event {
 							/** Do broadcast */
 							if (crate.isBroadcast()) {
 								Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-								Bukkit.broadcastMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
+								Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
 								Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
 							}
 						}

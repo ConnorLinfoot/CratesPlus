@@ -135,7 +135,7 @@ public class CrateHandler {
 			giveCrateKey(player);
 			return;
 		}
-		Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
 		Key key = crate.getKey();
 
 		ItemStack keyItem = new ItemStack(key.getMaterial());
@@ -154,12 +154,12 @@ public class CrateHandler {
 		if (amount > 1)
 			keyItem.setAmount(amount);
 		player.getInventory().addItem(keyItem);
-		player.sendMessage(CratesPlus.pluginPrefix + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crate, null));
+		player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crate, null));
 	}
 
 	@Deprecated
 	public static void giveCrate(Player player, String crateType) {
-		Crate crate = CratesPlus.crates.get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
 		if (crate == null)
 			return;
 		giveCrate(player, crate);
@@ -177,7 +177,7 @@ public class CrateHandler {
 		crateMeta.setLore(lore);
 		crateItem.setItemMeta(crateMeta);
 		player.getInventory().addItem(crateItem);
-		player.sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "You have been given a " + crate.getName(true) + ChatColor.GREEN + " crate!");
+		player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.GREEN + "You have been given a " + crate.getName(true) + ChatColor.GREEN + " crate!");
 	}
 
 	@Deprecated

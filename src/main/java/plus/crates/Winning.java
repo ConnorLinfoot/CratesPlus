@@ -11,7 +11,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.Utils.EnchantmentUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Winning {
 	private boolean valid = false;
@@ -190,7 +192,10 @@ public class Winning {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 			}
 		} else if (!isCommand()) {
-			player.getInventory().addItem(getWinningItemStack());
+			HashMap<Integer, ItemStack> left = player.getInventory().addItem(this.getWinningItemStack());
+			for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+				player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
+			}
 		}
 	}
 

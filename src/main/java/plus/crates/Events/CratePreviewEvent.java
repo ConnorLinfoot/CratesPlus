@@ -21,7 +21,7 @@ public class CratePreviewEvent extends Event {
 	public CratePreviewEvent(Player player, String crateName) {
 		this.player = player;
 		this.crateName = crateName;
-		this.crate = CratesPlus.crates.get(crateName.toLowerCase());
+		this.crate = CratesPlus.getCrates().get(crateName.toLowerCase());
 	}
 
 	public void doEvent() {

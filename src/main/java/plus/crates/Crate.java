@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,6 +173,33 @@ public class Crate {
 
 	public String getPermission() {
 		return permission;
+	}
+
+	public void addToConfig(Location location) {
+		List<String> locations = new ArrayList<String>();
+		if (CratesPlus.dataConfig.isSet("Crate Locations." + this.getName(false).toLowerCase()))
+			locations = CratesPlus.dataConfig.getStringList("Crate Locations." + this.getName(false).toLowerCase());
+		locations.add(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
+		CratesPlus.dataConfig.set("Crate Locations." + this.getName(false).toLowerCase(), locations);
+		try {
+			CratesPlus.dataConfig.save(CratesPlus.dataFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeFromConfig(Location location) {
+		List<String> locations = new ArrayList<String>();
+		if (CratesPlus.dataConfig.isSet("Crate Locations." + this.getName(false).toLowerCase()))
+			locations = CratesPlus.dataConfig.getStringList("Crate Locations." + this.getName(false).toLowerCase());
+		if (locations.contains(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ()))
+			locations.remove(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
+		CratesPlus.dataConfig.set("Crate Locations." + this.getName(false).toLowerCase(), locations);
+		try {
+			CratesPlus.dataConfig.save(CratesPlus.dataFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

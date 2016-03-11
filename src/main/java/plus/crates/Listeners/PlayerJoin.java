@@ -14,7 +14,7 @@ public class PlayerJoin implements Listener {
 			event.getPlayer().sendMessage(CratesPlus.updateMessage);
 		}
 		if (CratesPlus.configBackup != null && event.getPlayer().hasPermission("cratesplus.admin")) {
-			event.getPlayer().sendMessage(CratesPlus.pluginPrefix + ChatColor.GREEN + "Your config has been updated. Your old config was backed up to " + CratesPlus.configBackup);
+			event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.GREEN + "Your config has been updated. Your old config was backed up to " + CratesPlus.configBackup);
 			CratesPlus.configBackup = null;
 		}
 	}
