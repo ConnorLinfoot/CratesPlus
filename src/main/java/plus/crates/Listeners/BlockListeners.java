@@ -2,7 +2,6 @@ package plus.crates.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -132,109 +131,9 @@ public class BlockListeners implements Listener {
 
 				}
 			});
-			location.setY(location.getBlockY() - 1);
-			location.setX(location.getBlockX() + 0.5);
-			location.setZ(location.getBlockZ() + 0.5);
 
-			// Do holograms
-			if (CratesPlus.holograms == null || CratesPlus.holograms.isEmpty())
-				return;
-
-			String line1;
-			String line2;
-			String line3;
-			String line4;
-			ArmorStand armorStand;
-			switch (CratesPlus.holograms.size()) {
-				case 1:
-					line1 = (String) CratesPlus.holograms.get(0);
-					line1 = MessageHandler.doPlaceholders(line1, null, crate, null);
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line1);
-					break;
-				case 2:
-					line1 = (String) CratesPlus.holograms.get(0);
-					line1 = MessageHandler.doPlaceholders(line1, null, crate, null);
-					line2 = (String) CratesPlus.holograms.get(1);
-					line2 = line2.replaceAll("%crate%", crateType);
-					line2 = MessageHandler.doPlaceholders(line2, null, crate, null);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line1);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line2);
-					break;
-				case 3:
-					line1 = (String) CratesPlus.holograms.get(0);
-					line1 = MessageHandler.doPlaceholders(line1, null, crate, null);
-					line2 = (String) CratesPlus.holograms.get(1);
-					line2 = MessageHandler.doPlaceholders(line2, null, crate, null);
-					line3 = (String) CratesPlus.holograms.get(2);
-					line3 = MessageHandler.doPlaceholders(line3, null, crate, null);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.4, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line1);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line2);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line3);
-					break;
-				default:
-					line1 = (String) CratesPlus.holograms.get(0);
-					line1 = MessageHandler.doPlaceholders(line1, null, crate, null);
-					line2 = (String) CratesPlus.holograms.get(1);
-					line2 = MessageHandler.doPlaceholders(line2, null, crate, null);
-					line3 = (String) CratesPlus.holograms.get(2);
-					line3 = MessageHandler.doPlaceholders(line3, null, crate, null);
-					line4 = (String) CratesPlus.holograms.get(3);
-					line4 = MessageHandler.doPlaceholders(line4, null, crate, null);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, 0.6, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line1);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line2);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line3);
-
-					armorStand = (ArmorStand) location.getWorld().spawnEntity(location.add(0, -0.2, 0), EntityType.ARMOR_STAND);
-					armorStand.setVisible(false);
-					armorStand.setGravity(false);
-					armorStand.setCustomNameVisible(true);
-					armorStand.setCustomName(line4);
-					break;
-			}
+			Location location1 = location.getBlock().getLocation().add(0.5, 0.5, 0.5);
+			crate.loadHolograms(location.getBlock().getLocation(), location1);
 		}
 	}
 
@@ -262,6 +161,7 @@ public class BlockListeners implements Listener {
 			}
 		}
 		crate.removeFromConfig(location);
+		crate.removeHolograms(location.getBlock().getLocation());
 	}
 
 }

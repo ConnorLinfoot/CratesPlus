@@ -35,7 +35,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	public static boolean updateAvailable = false;
 	public static String updateMessage = "";
 	public static String configBackup = null;
-	public static List<?> holograms;
+	public static List<String> holograms;
 	public static boolean doGui = true;
 	public static int crateGUITime = 10;
 	public static Version_Util version_util;
@@ -121,7 +121,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 
 		// Crate Holograms
-		holograms = getConfig().getList("Hologram Text");
+		holograms = getConfig().getStringList("Hologram Text");
 
 		// Register /crate command
 		Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
@@ -157,6 +157,16 @@ public class CratesPlus extends JavaPlugin implements Listener {
 					player.sendMessage(pluginPrefix + ChatColor.GREEN + "Your config has been updated. Your old config was backed up to " + configBackup);
 					configBackup = null;
 				}
+			}
+		}
+	}
+
+	public void onDisable() {
+		for (Map.Entry<String, Crate> crate : crates.entrySet()) {
+			HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
+			if (!holograms.isEmpty()) {
+				for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())
+					hologram.getValue().destroyAll();
 			}
 		}
 	}
@@ -518,7 +528,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 
 		// Crate Holograms
-		holograms = CratesPlus.getPlugin().getConfig().getList("Hologram Text");
+		holograms = CratesPlus.getPlugin().getConfig().getStringList("Hologram Text");
 
 		// Settings Handler
 		settingsHandler = new SettingsHandler();
@@ -551,6 +561,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				Block block = locationObj.getBlock();
 				if (block == null)
 					continue;
+				Location location1 = locationObj.getBlock().getLocation().add(0.5, 0.5, 0.5);
+				crate.loadHolograms(locationObj.getBlock().getLocation(), location1);
 				block.setMetadata("CrateType", new MetadataValue() {
 					@Override
 					public Object value() {

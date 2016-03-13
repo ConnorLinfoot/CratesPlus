@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import plus.crates.Handlers.MessageHandler;
+import plus.crates.Utils.Hologram;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class Crate {
 	private Key key;
 	private HashMap<String, Location> locations = new HashMap<String, Location>();
 	private String permission = null;
+	private HashMap<Location, Hologram> holograms = new HashMap<Location, Hologram>();
 
 	public Crate(String name) {
 		this.name = name;
@@ -199,6 +202,30 @@ public class Crate {
 			CratesPlus.dataConfig.save(CratesPlus.dataFile);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void loadHolograms(Location blockLocation, Location location) {
+		// Do holograms
+		if (CratesPlus.holograms == null || CratesPlus.holograms.isEmpty())
+			return;
+
+		ArrayList<String> list = new ArrayList<String>();
+		for (String string : CratesPlus.holograms)
+			list.add(MessageHandler.doPlaceholders(string, null, this, null));
+		Hologram hologram = new Hologram(location, list);
+		holograms.put(blockLocation, hologram);
+		hologram.displayAll();
+	}
+
+	public HashMap<Location, Hologram> getHolograms() {
+		return holograms;
+	}
+
+	public void removeHolograms(Location location) {
+		if (holograms.containsKey(location)) {
+			holograms.get(location).destroyAll();
+			holograms.remove(location);
 		}
 	}
 

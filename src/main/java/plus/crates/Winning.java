@@ -142,13 +142,14 @@ public class Winning {
 			for (Object object : enchtantments) {
 				String enchantment = (String) object;
 				String[] args = enchantment.split("-");
-				try {
-					Integer level = 1;
-					if (args.length > 1)
-						level = Integer.valueOf(args[1]);
-					winningItemStack.addUnsafeEnchantment(EnchantmentUtil.getEnchantmentFromNiceName(enchantment), level);
-				} catch (Exception ignored) {
-				}
+				Integer level = 1;
+				if (args.length > 1)
+					level = Integer.valueOf(args[1]);
+				Enchantment enchantment1 = EnchantmentUtil.getEnchantmentFromNiceName(args[0].toUpperCase());
+				if (enchantment1 == null)
+					Bukkit.getLogger().warning("Invalid enchantment \"" + args[0].toUpperCase() + "\" found for item \"" + ChatColor.stripColor(displayName) + "\"");
+				else
+					winningItemStack.addUnsafeEnchantment(enchantment1, level);
 			}
 		}
 
@@ -170,10 +171,6 @@ public class Winning {
 
 	public boolean isValid() {
 		return valid;
-	}
-
-	public void setValid(boolean valid) {
-		this.valid = valid;
 	}
 
 	public ItemStack getPreviewItemStack() {

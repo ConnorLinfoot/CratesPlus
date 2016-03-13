@@ -2,6 +2,7 @@ package plus.crates.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Handlers.CrateHandler;
 import plus.crates.Handlers.MessageHandler;
+import plus.crates.Utils.Hologram;
 import plus.crates.Utils.ReflectionUtil;
 import plus.crates.Utils.SignInputHandler;
 
@@ -103,7 +105,10 @@ public class CrateCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (args.length >= 1 && args[0].equalsIgnoreCase("rename")) {
+		if (args.length >= 1 && args[0].equalsIgnoreCase("h")) {
+			Hologram hologram = new Hologram(new Location(Bukkit.getWorld("world"), Double.parseDouble(args[1]), Double.parseDouble(args[2]), Double.parseDouble(args[3])), "Test #1", "Test #2", "Test #3");
+			hologram.displayAll();
+		} else if (args.length >= 1 && args[0].equalsIgnoreCase("rename")) {
 			if (args.length < 3) {
 				sender.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Correct Usage: /crate rename <old name> <new name>");
 				return false;

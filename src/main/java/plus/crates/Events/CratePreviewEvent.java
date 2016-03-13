@@ -40,12 +40,14 @@ public class CratePreviewEvent extends Event {
 		} else if (items.size() <= 45) {
 			size = 45;
 		}
+		int i = 0;
 		Inventory inventory = Bukkit.createInventory(null, size, crate.getName(true) + " Possible Wins:");
 		for (Winning winning : items) {
 			ItemStack itemStack = winning.getPreviewItemStack();
 			if (itemStack == null)
 				continue;
-			inventory.addItem(itemStack);
+			inventory.setItem(i, itemStack);
+			i++;
 		}
 		player.openInventory(inventory);
 	}

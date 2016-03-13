@@ -1,5 +1,12 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 16** *(Mar 13 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/395/artifact/target/CratesPlus-4.0.0-SNAPSHOT-16.jar)
+- Added "cooldown" option to stop players spamming crates.
+- Items should no longer accidentally stack in preview screen.
+- Fixed enchantments being broken with levels
+- Better handling of invalid enchantments, will no longer completely break and will show a warning in console
+- Holograms now use packets! Please report any bugs if you find any with this.
+
 **Snapshot 15** *(Mar 11 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/391/artifact/target/CratesPlus-4.0.0-SNAPSHOT-15.jar)
 - Disabled "createtest" command, will be adding this most likely in v4.1/5.0.
 - Decimal support completed, should now take into account decimals when doing winnings.
