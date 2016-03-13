@@ -17,6 +17,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Commands.CrateCommand;
+import plus.crates.Events.HologramListeners;
 import plus.crates.Handlers.CrateHandler;
 import plus.crates.Handlers.SettingsHandler;
 import plus.crates.Listeners.*;
@@ -132,6 +133,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
 		Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteract(), this);
+		Bukkit.getPluginManager().registerEvents(new HologramListeners(), this);
 
 		if (getConfig().getBoolean("Update Checks")) {
 			getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {

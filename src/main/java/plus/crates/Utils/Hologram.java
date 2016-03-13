@@ -125,6 +125,7 @@ public class Hologram {
 	 * @return true, if the action was successful, else false
 	 */
 	public boolean display(Player p) {
+		destroy(p); // In case it already exists
 		for (Object aSpawnCache : spawnCache) {
 			this.sendPacket(p, aSpawnCache);
 		}

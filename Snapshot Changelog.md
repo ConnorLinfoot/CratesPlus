@@ -1,5 +1,8 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 17** *(Mar 13 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/395/artifact/target/CratesPlus-4.0.0-SNAPSHOT-17.jar)
+- Improvements to holograms
+
 **Snapshot 16** *(Mar 13 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/395/artifact/target/CratesPlus-4.0.0-SNAPSHOT-16.jar)
 - Items should no longer accidentally stack in preview screen.
 - Fixed enchantments being broken with levels
