@@ -1,4 +1,4 @@
-package plus.crates.Events;
+package plus.crates.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,7 +30,7 @@ public class HologramListeners implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		loadHolograms(event.getPlayer(), event.getPlayer().getLocation());
+		loadHolograms(event.getPlayer(), event.getPlayer().getLocation(), 40L);
 	}
 
 	@EventHandler
@@ -49,6 +49,10 @@ public class HologramListeners implements Listener {
 	}
 
 	private void loadHolograms(final Player player, Location location) {
+		loadHolograms(player, location, 0L);
+	}
+
+	private void loadHolograms(final Player player, Location location, long delay) {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
@@ -61,7 +65,7 @@ public class HologramListeners implements Listener {
 				}
 			}
 		};
-		Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), runnable, 20L); // Delay this because if it's too quick the packets don't always get sent? May improve this later on!
+		Bukkit.getScheduler().runTaskLater(CratesPlus.getPlugin(), runnable, delay); // Delay this because if it's too quick the packets don't always get sent? May improve this later on!
 	}
 
 }
