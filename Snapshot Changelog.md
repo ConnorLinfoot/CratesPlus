@@ -1,5 +1,9 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 19** *(Mar 15 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/402/artifact/target/CratesPlus-4.0.0-SNAPSHOT-19.jar)
+- Fixed broadcasts not running on non-GUI win.
+- Made firework run after winning done.
+
 **Snapshot 18** *(Mar 14 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/400/artifact/target/CratesPlus-4.0.0-SNAPSHOT-18.jar)
 - Increased Hologram delay to hopefully fix issues of it now showing on join
 - Block meta data now gets removed on crate destroy

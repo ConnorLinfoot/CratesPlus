@@ -39,11 +39,6 @@ public class CrateOpenEvent extends Event {
 	}
 
 	public void doEvent() {
-		/** Spawn firework */
-		if (crate.isFirework()) {
-			CrateHandler.spawnFirework(player.getLocation());
-		}
-
 		if (CratesPlus.doGui) {
 			doBasicGUI();
 		} else {
@@ -70,6 +65,18 @@ public class CrateOpenEvent extends Event {
 				winning = crate.getWinnings().get(CrateHandler.randInt(0, crate.getWinnings().size() - 1));
 			}
 			winning.runWin(getPlayer());
+
+			/** Do broadcast */
+			if (crate.isBroadcast()) {
+				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+				Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
+				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+			}
+
+			/** Spawn firework */
+			if (crate.isFirework()) {
+				CrateHandler.spawnFirework(player.getLocation());
+			}
 		}
 	}
 
@@ -163,6 +170,11 @@ public class CrateOpenEvent extends Event {
 								Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
 								Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
 								Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+							}
+
+							/** Spawn firework */
+							if (crate.isFirework()) {
+								CrateHandler.spawnFirework(player.getLocation());
 							}
 						}
 						winGUI.setItem(22, currentItemStack);
