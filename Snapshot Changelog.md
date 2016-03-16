@@ -1,5 +1,9 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 20** *(Mar 16 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/404/artifact/target/CratesPlus-4.0.0-SNAPSHOT-20.jar)
+- Finished implementation of cooldown between opening crates
+- Started implementation of a config handler (Just to make things easier for myself in the future)
+
 **Snapshot 19** *(Mar 15 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/402/artifact/target/CratesPlus-4.0.0-SNAPSHOT-19.jar)
 - Fixed broadcasts not running on non-GUI win.
 - Made firework run after winning done.

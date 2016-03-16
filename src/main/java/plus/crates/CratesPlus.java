@@ -17,6 +17,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Commands.CrateCommand;
+import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Handlers.CrateHandler;
 import plus.crates.Handlers.SettingsHandler;
 import plus.crates.Listeners.*;
@@ -41,6 +42,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	public static Version_Util version_util;
 	public static File dataFile;
 	public static YamlConfiguration dataConfig;
+	private static ConfigHandler configHandler;
 
 	public enum MC_VERSION {
 		MC_1_8, MC_1_9, OTHER
@@ -82,6 +84,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		cleanUpDeadConfig();
 		getConfig().options().copyDefaults(true);
 		saveConfig();
+
+		configHandler = new ConfigHandler(getConfig());
 
 		// Check data.yml exists, if not create it!
 		dataFile = new File(getDataFolder(), "data.yml");
@@ -653,6 +657,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 	public static String getPluginPrefix() {
 		return pluginPrefix;
+	}
+
+	public static ConfigHandler getConfigHandler() {
+		return configHandler;
 	}
 
 }

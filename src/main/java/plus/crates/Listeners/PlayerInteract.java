@@ -78,7 +78,14 @@ public class PlayerInteract implements Listener {
 					return;
 				}
 
-				lastOpended.put(player.getUniqueId().toString(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())); // Store time in seconds of when the player opended the crate
+				if (CratesPlus.getConfigHandler().getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + CratesPlus.getConfigHandler().getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
+					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + CratesPlus.getConfigHandler().getCooldown();
+					long remaining = whenCooldownEnds - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+					player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
+					return;
+				}
+
+				lastOpended.put(player.getUniqueId().toString(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())); // Store time in seconds of when the player opened the crate
 
 				if (item.getAmount() > 1) {
 					item.setAmount(item.getAmount() - 1);

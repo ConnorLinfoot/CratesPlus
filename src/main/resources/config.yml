@@ -25,6 +25,7 @@ Crates:
 # Settings for the Crate opening GUI (Time is seconds)
 Use GUI: true
 GUI Time: 10
+Cooldown: 5
 
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
