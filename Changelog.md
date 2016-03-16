@@ -1,5 +1,28 @@
 **4.0.0** *(Mar 18 2016)* - [Download](????????????????????????????????????????????????????????????????????????????????????????????????)
-- TODO LMAO
+- Feature: Keys now work per crate and not on a global level
+- Feature: Added new %winning% placeholder
+- Feature: Added color selector to in-game editor
+- Feature: Added preview option to crates
+- Feature: Crates can now have a block type
+- Feature: Option to disable keys from being dropped
+- Feature: Percentages now support decimals
+- Feature: New cooldown option to stop spamming of crates (Mostly with no GUI)
+- Feature: Added per crate option to have a required permission
+- Improvement: Improved 1.9 support such as off-hand block checking/opening
+- Improvement: Improved how enchantments are added, now supports working like "sharpness"
+- Improvement: Better handling of invalid enchantments, will no longer completely break and will show a warning in console
+- Improvement: Holograms now use packets
+- Improvement: Message now shows in console if percentages add to more than 100%
+- Improvement: Lore's no longer contain the percentage once the winning item is given
+- Improvement: Added fallback for when type is BLOCK and Block Type is used
+- Improvement: You can now specify an amount of keys to give with the key command
+- Improvement: Color code support for hologram's added
+- Improvement: Broadcast and Firework now run after crate has actually opened
+- Improvement: Removed unnecessary util for handling json
+- Bug: Fixed percentages not working if you changed the GUI time
+- Bug: Having items with stacks larger than max stack size should no longer cause issues/break
+- Bug: Commands no longer also give the player the item
+- Also changed the package from "com.connorlinfoot.cratesplus" to "plus.crates" so anyone using the events will need to update their imports
 
 **3.1.7** *(Mar 5 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=73107)
 - Fixed lore duplication bug when editing crates
