@@ -135,7 +135,7 @@ public class CrateHandler {
 			giveCrateKey(player);
 			return;
 		}
-		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		Key key = crate.getKey();
 
 		ItemStack keyItem = new ItemStack(key.getMaterial());
@@ -159,7 +159,7 @@ public class CrateHandler {
 
 	@Deprecated
 	public static void giveCrate(Player player, String crateType) {
-		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		if (crate == null)
 			return;
 		giveCrate(player, crate);

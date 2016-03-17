@@ -23,6 +23,12 @@ public class EnchantmentUtil {
 			enchantment = Enchantment.DIG_SPEED;
 		else if (name.toLowerCase().equals("protection"))
 			enchantment = Enchantment.PROTECTION_ENVIRONMENTAL;
+		else if (name.toLowerCase().equals("power"))
+			enchantment = Enchantment.ARROW_DAMAGE;
+		else if (name.toLowerCase().equals("punch"))
+			enchantment = Enchantment.ARROW_KNOCKBACK;
+		else if (name.toLowerCase().equals("infinite"))
+			enchantment = Enchantment.ARROW_INFINITE;
 
 		return enchantment;
 	}

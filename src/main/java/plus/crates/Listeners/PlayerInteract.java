@@ -48,7 +48,7 @@ public class PlayerInteract implements Listener {
 			return;
 		}
 
-		Crate crate = CratesPlus.getCrates().get(crateType.toLowerCase());
+		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 
 		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
 			event.setCancelled(true);

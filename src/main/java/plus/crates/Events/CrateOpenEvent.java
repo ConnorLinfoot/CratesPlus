@@ -35,11 +35,11 @@ public class CrateOpenEvent extends Event {
 	public CrateOpenEvent(Player player, String crateName) {
 		this.player = player;
 		this.crateName = crateName;
-		this.crate = CratesPlus.getCrates().get(crateName.toLowerCase());
+		this.crate = CratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 	}
 
 	public void doEvent() {
-		if (CratesPlus.doGui) {
+		if (CratesPlus.getConfigHandler().isDoGui()) {
 			doBasicGUI();
 		} else {
 			if (crate.getTotalPercentage() > 0) {
@@ -119,9 +119,9 @@ public class CrateOpenEvent extends Event {
 		int max = crate.getWinnings().size() - 1;
 		int min = 0;
 		currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
-		winGUI = Bukkit.createInventory(null, 45, CratesPlus.getCrates().get(crateName.toLowerCase()).getColor() + crateName + " Win");
+		winGUI = Bukkit.createInventory(null, 45, CratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase()).getColor() + crateName + " Win");
 		player.openInventory(winGUI);
-		int maxTime = CratesPlus.crateGUITime;
+		int maxTime = CratesPlus.getConfigHandler().getCrateGUITime();
 		final int maxTimeTicks = maxTime * 10;
 		task = Bukkit.getScheduler().runTaskTimerAsynchronously(CratesPlus.getPlugin(), new Runnable() {
 			public void run() {

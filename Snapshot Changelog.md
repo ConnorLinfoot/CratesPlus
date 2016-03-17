@@ -1,5 +1,10 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 21** *(Mar 17 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/zzzzzzzzzzzzzzzzzzzzz/artifact/target/CratesPlus-4.0.0-SNAPSHOT-21.jar)
+- Moved most configuration related stuff into the ConfigHandler
+- Added "Ignore Version" option to skip version warnings if running a server which is not recognised as 1.8/1.9
+- Added more enchantment nice names
+
 **Snapshot 20** *(Mar 16 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/404/artifact/target/CratesPlus-4.0.0-SNAPSHOT-20.jar)
 - Finished implementation of cooldown between opening crates
 - Started implementation of a config handler (Just to make things easier for myself in the future)

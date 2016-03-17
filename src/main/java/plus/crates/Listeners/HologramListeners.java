@@ -56,7 +56,7 @@ public class HologramListeners implements Listener {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				for (Map.Entry<String, Crate> crate : CratesPlus.getCrates().entrySet()) {
+				for (Map.Entry<String, Crate> crate : CratesPlus.getConfigHandler().getCrates().entrySet()) {
 					HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
 					if (!holograms.isEmpty()) {
 						for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())

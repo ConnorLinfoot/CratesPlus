@@ -23,4 +23,4 @@ If you report an issue which has been fixed or does not contain the information 
 
 
 ## Changelog
-To see the full changelog for all publicly released versions checkout the [Spigot resource update page](https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/updates).
+To see the full changelog for all publicly released versions checkout the [Changelog File](https://github.com/ConnorLinfoot/CratesPlus/blob/master/Changelog.md).

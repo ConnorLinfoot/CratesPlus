@@ -207,11 +207,11 @@ public class Crate {
 
 	public void loadHolograms(Location blockLocation, Location location) {
 		// Do holograms
-		if (CratesPlus.holograms == null || CratesPlus.holograms.isEmpty())
+		if (CratesPlus.getConfigHandler().getHolograms() == null || CratesPlus.getConfigHandler().getHolograms().isEmpty())
 			return;
 
 		ArrayList<String> list = new ArrayList<String>();
-		for (String string : CratesPlus.holograms)
+		for (String string : CratesPlus.getConfigHandler().getHolograms())
 			list.add(MessageHandler.doPlaceholders(string, null, this, null));
 		Hologram hologram = new Hologram(location, list);
 		holograms.put(blockLocation, hologram);

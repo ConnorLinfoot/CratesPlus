@@ -29,16 +29,12 @@ import java.util.*;
 
 public class CratesPlus extends JavaPlugin implements Listener {
 	private static CratesPlus instance;
-	private static HashMap<String, Crate> crates = new HashMap<String, Crate>();
 	private static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
 	private static SettingsHandler settingsHandler;
 	private static MC_VERSION mc_version = MC_VERSION.OTHER;
 	public static boolean updateAvailable = false;
 	public static String updateMessage = "";
 	public static String configBackup = null;
-	public static List<String> holograms;
-	public static boolean doGui = true;
-	public static int crateGUITime = 10;
 	public static Version_Util version_util;
 	public static File dataFile;
 	public static YamlConfiguration dataConfig;
@@ -60,8 +56,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			version_util = new Version_Util();
 		} else {
 			getLogger().severe("CratesPlus does NOT support \"" + server.getBukkitVersion() + "\" if you believe this is an error please let me know!");
-			setEnabled(false);
-			return;
+			if (!getConfig().isSet("Ignore Version") || !getConfig().getBoolean("Ignore Version")) { // People should only ignore this in the case of an error, doing an ignore on a unsupported version could break something
+				setEnabled(false);
+				return;
+			}
+			version_util = new Version_Util(); // Use the 1.8 util? Probably has a lower chance of breaking
 		}
 
 		final ConsoleCommandSender console = server.getConsoleSender();
@@ -109,24 +108,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		// Do Prefix
 		pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
 
-		// Crate GUI
-		if (getConfig().isSet("Use GUI"))
-			doGui = getConfig().getBoolean("Use GUI");
-
-		// Crate GUI Time
-		if (getConfig().isSet("GUI Time"))
-			crateGUITime = getConfig().getInt("GUI Time");
-
-		// Register Crates
-		if (getConfig().isSet("Crates")) {
-			for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
-				crates.put(crate.toLowerCase(), new Crate(crate));
-			}
-		}
-
-		// Crate Holograms
-		holograms = getConfig().getStringList("Hologram Text");
-
 		// Register /crate command
 		Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
 
@@ -148,7 +129,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		settingsHandler = new SettingsHandler();
 
-		reloadMetaData();
+		loadMetaData();
 
 		console.sendMessage(ChatColor.AQUA + getDescription().getName() + " Version " + getDescription().getVersion());
 		if (getDescription().getVersion().contains("SNAPSHOT")) { // Added this because some people didn't really understand what a "snapshot" is...
@@ -167,7 +148,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	}
 
 	public void onDisable() {
-		for (Map.Entry<String, Crate> crate : crates.entrySet()) {
+		for (Map.Entry<String, Crate> crate : configHandler.getCrates().entrySet()) {
 			HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
 			if (!holograms.isEmpty()) {
 				for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())
@@ -522,29 +503,19 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		// Do Prefix
 		pluginPrefix = ChatColor.translateAlternateColorCodes('&', CratesPlus.getPlugin().getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
 
-		// Crate GUI Time
-		if (CratesPlus.getPlugin().getConfig().isSet("GUI Time"))
-			crateGUITime = CratesPlus.getPlugin().getConfig().getInt("GUI Time");
-
-		// Register Crates
-		CratesPlus.crates.clear();
-		for (String crate : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates").getKeys(false)) {
-			crates.put(crate.toLowerCase(), new Crate(crate));
-		}
-
-		// Crate Holograms
-		holograms = CratesPlus.getPlugin().getConfig().getStringList("Hologram Text");
+		// Reload Configuration
+		configHandler = new ConfigHandler(CratesPlus.getPlugin().getConfig());
 
 		// Settings Handler
 		settingsHandler = new SettingsHandler();
 
 	}
 
-	private void reloadMetaData() {
+	private void loadMetaData() {
 		if (!dataConfig.isSet("Crate Locations"))
 			return;
 		for (String name : dataConfig.getConfigurationSection("Crate Locations").getKeys(false)) {
-			final Crate crate = crates.get(name.toLowerCase());
+			final Crate crate = configHandler.getCrate(name.toLowerCase());
 			if (crate == null)
 				continue;
 			String path = "Crate Locations." + name;
@@ -641,10 +612,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static HashMap<String, Crate> getCrates() {
-		return crates;
 	}
 
 	public static SettingsHandler getSettingsHandler() {
