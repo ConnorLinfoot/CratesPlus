@@ -25,6 +25,8 @@ public class MessageHandler {
 			message = message.replaceAll("%crate%", crate.getName(true) + ChatColor.RESET);
 		if (winning != null)
 			message = message.replaceAll("%prize%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET);
+		if (winning != null)
+			message = message.replaceAll("%winning%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET);
 		return message;
 	}
 

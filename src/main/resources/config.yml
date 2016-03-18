@@ -33,7 +33,7 @@ Crate Protection: false
 # Disable players being allowed to drop keys to other players
 Disable Key Dropping: false
 
-# Up to 4 lines for the hologram, %crate% can be used to show the crate name
+# %crate% can be used to show the crate name
 Hologram Text:
 - "%crate%"
 - "Right-Click to Open!"

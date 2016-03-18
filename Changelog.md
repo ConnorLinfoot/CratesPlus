@@ -1,6 +1,6 @@
-**4.0.0** *(Mar 18 2016)* - Coming Soon
+**4.0.0** *(Mar 18 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-1-8-1-9-free.5018/download?version=76292)
 - Feature: Keys now work per crate and not on a global level
-- Feature: Added new %winning% placeholder
+- Feature: Added new %winning%/%prize% placeholder
 - Feature: Added color selector to in-game editor
 - Feature: Added preview option to crates
 - Feature: Crates can now have a block type
