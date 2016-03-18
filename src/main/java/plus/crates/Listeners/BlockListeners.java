@@ -2,6 +2,7 @@ package plus.crates.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -139,8 +140,10 @@ public class BlockListeners implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.getBlock().getMetadata("CrateType") == null || event.getBlock().getMetadata("CrateType").isEmpty())
+		if (event.getBlock().getMetadata("CrateType") == null || event.getBlock().getMetadata("CrateType").isEmpty()) {
+			onBlockBreakLegacy(event);
 			return;
+		}
 		String crateType = event.getBlock().getMetadata("CrateType").get(0).asString();
 		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		Location location = event.getBlock().getLocation();
@@ -154,15 +157,35 @@ public class BlockListeners implements Listener {
 			event.setCancelled(true);
 			return;
 		}
-		for (Entity entity : location.getWorld().getEntities()) {
-			if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
-			if (entity.getLocation().getBlockX() == event.getBlock().getX() && entity.getLocation().getBlockZ() == event.getBlock().getZ()) {
-				entity.remove();
-			}
-		}
 		location.getBlock().removeMetadata("CrateType", CratesPlus.getPlugin());
 		crate.removeFromConfig(location);
 		crate.removeHolograms(location.getBlock().getLocation());
+	}
+
+	public void onBlockBreakLegacy(BlockBreakEvent event) { // This is to support legacy breaks
+		if (event.getBlock().getState() instanceof Chest) {
+			Chest chest = (Chest) event.getBlock().getState();
+			if (chest.getInventory().getTitle() != null && chest.getInventory().getTitle().contains("Crate!")) {
+				Location location = chest.getLocation();
+
+				if (event.getPlayer().isSneaking() && (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
+					event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You do not have permission to remove this crate");
+					event.setCancelled(true);
+					return;
+				} else if (!event.getPlayer().isSneaking()) {
+					event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Sneak to break crates");
+					event.setCancelled(true);
+					return;
+				}
+				for (Entity entity : location.getWorld().getEntities()) {
+					if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
+					String name = chest.getInventory().getTitle().replace(" Crate!", "");
+					if (name != null && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ()) {
+						entity.remove();
+					}
+				}
+			}
+		}
 	}
 
 }

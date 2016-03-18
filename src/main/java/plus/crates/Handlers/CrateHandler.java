@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,6 +17,8 @@ import java.util.*;
 
 public class CrateHandler {
 	private static Random rand = new Random();
+	private static HashMap<UUID, Inventory> openings = new HashMap<UUID, Inventory>();
+	private static HashMap<UUID, HashMap<String, Integer>> pendingKeys = new HashMap<UUID, HashMap<String, Integer>>();
 
 	public static int randInt(int min, int max) {
 		return rand.nextInt((max - min) + 1) + min;
@@ -137,22 +140,19 @@ public class CrateHandler {
 		}
 		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		Key key = crate.getKey();
-
-		ItemStack keyItem = new ItemStack(key.getMaterial());
-		if (key.isEnchanted())
-			keyItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-		ItemMeta keyItemMeta = keyItem.getItemMeta();
-//        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); // TODO; Make this work when Spigot is being used!!
-		String title = key.getName().replaceAll("%type%", crate.getName(true));
-		keyItemMeta.setDisplayName(title);
-		List<String> lore = new ArrayList<String>();
-		lore.add(ChatColor.GRAY + "Right-Click on a \"" + crate.getName(true) + ChatColor.GRAY + "\" crate");
-		lore.add(ChatColor.GRAY + "to win an item!");
-		lore.add("");
-		keyItemMeta.setLore(lore);
-		keyItem.setItemMeta(keyItemMeta);
-		if (amount > 1)
-			keyItem.setAmount(amount);
+		//if (player.getInventory().firstEmpty() == -1) {
+		//	// Add key to claim
+		//	HashMap<String, Integer> keys = new HashMap<String, Integer>();
+		//	if( CrateHandler.hasPendingKeys(player.getUniqueId()))
+		//		keys = CrateHandler.getPendingKey(player.getUniqueId());
+		//	if( keys.containsKey(crateType) )
+		//		amount = amount + keys.get(crateType);
+		//	keys.put(crateType, amount);
+		//	CrateHandler.pendingKeys.put(player.getUniqueId(), keys);
+		//	player.sendMessage(ChatColor.GREEN + "Do /crate claim");
+		//	return;
+		//}
+		ItemStack keyItem = key.getKeyItem(amount);
 		player.getInventory().addItem(keyItem);
 		player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crate, null));
 	}
@@ -370,6 +370,43 @@ public class CrateHandler {
 		}
 
 		return finalString;
+	}
+
+	public static HashMap<UUID, Inventory> getOpenings() {
+		return openings;
+	}
+
+	public static boolean hasOpening(UUID uuid) {
+		return getOpening(uuid) != null;
+	}
+
+	public static Inventory getOpening(UUID uuid) {
+		if (openings.containsKey(uuid))
+			return openings.get(uuid);
+		return null;
+	}
+
+	public static void addOpening(UUID uuid, Inventory inventory) {
+		openings.put(uuid, inventory);
+	}
+
+	public static void removeOpening(UUID uuid) {
+		if (hasOpening(uuid))
+			openings.remove(uuid);
+	}
+
+	public static HashMap<UUID, HashMap<String, Integer>> getPendingKeys() {
+		return pendingKeys;
+	}
+
+	public static HashMap<String, Integer> getPendingKey(UUID uuid) {
+		if (!hasPendingKeys(uuid))
+			return null;
+		return pendingKeys.get(uuid);
+	}
+
+	public static boolean hasPendingKeys(UUID uuid) {
+		return pendingKeys.containsKey(uuid);
 	}
 
 }

@@ -14,6 +14,7 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Events.CrateOpenEvent;
 import plus.crates.Events.CratePreviewEvent;
+import plus.crates.Handlers.CrateHandler;
 import plus.crates.Handlers.MessageHandler;
 
 import java.util.HashMap;
@@ -68,6 +69,12 @@ public class PlayerInteract implements Listener {
 			if (itemOff != null && itemOff.hasItemMeta() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
 				item = itemOff;
 				usingOffHand = true;
+			}
+
+			if (CrateHandler.hasOpening(player.getUniqueId())) {
+				player.openInventory(CrateHandler.getOpening(player.getUniqueId()));
+				event.setCancelled(true);
+				return;
 			}
 
 			if (item != null && item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title)) {

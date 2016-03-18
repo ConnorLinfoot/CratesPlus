@@ -1,5 +1,9 @@
 ### Version 4.0.0 Snapshots
 ---
+**Snapshot 23** *(Mar 18 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/410/artifact/target/CratesPlus-4.0.0-SNAPSHOT-23.jar)
+- Players are no longer forced to keep the GUI open
+- Wins are no longer processed asynchronously to fix bugs/warnings
+
 **Snapshot 22** *(Mar 18 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/409/artifact/target/CratesPlus-4.0.0-SNAPSHOT-22.jar)
 - Fixed issue of GUI "crashing" if firework was enabled
 

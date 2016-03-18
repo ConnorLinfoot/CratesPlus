@@ -41,7 +41,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private static ConfigHandler configHandler;
 
 	public enum MC_VERSION {
-		MC_1_8, MC_1_9, OTHER
+		MC_1_7, MC_1_8, MC_1_9, OTHER
 	}
 
 	public void onEnable() {
@@ -54,13 +54,17 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} else if (server.getBukkitVersion().contains("1.8")) {
 			mc_version = MC_VERSION.MC_1_8;
 			version_util = new Version_Util();
+//		} else if (server.getBukkitVersion().contains("1.7")) { // TODO, 1.7 Support...
+//			getLogger().warning("CratesPlus not NOT fully support 1.7, if you have issues please report them but I may not look into it!");
+//			mc_version = MC_VERSION.MC_1_7;
+//			version_util = new Version_Util();
 		} else {
 			getLogger().severe("CratesPlus does NOT support \"" + server.getBukkitVersion() + "\" if you believe this is an error please let me know!");
 			if (!getConfig().isSet("Ignore Version") || !getConfig().getBoolean("Ignore Version")) { // People should only ignore this in the case of an error, doing an ignore on a unsupported version could break something
 				setEnabled(false);
 				return;
 			}
-			version_util = new Version_Util(); // Use the 1.8 util? Probably has a lower chance of breaking
+			version_util = new Version_Util(); // Use the 1.7/1.8 util? Probably has a lower chance of breaking
 		}
 
 		final ConsoleCommandSender console = server.getConsoleSender();

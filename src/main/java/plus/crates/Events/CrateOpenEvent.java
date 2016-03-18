@@ -114,26 +114,28 @@ public class CrateOpenEvent extends Event {
 	}
 
 	private void doBasicGUI() {
-		/** Time for some cool GUI's, hopefully */
 		Random random = new Random();
 		int max = crate.getWinnings().size() - 1;
 		int min = 0;
 		currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
 		winGUI = Bukkit.createInventory(null, 45, CratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase()).getColor() + crateName + " Win");
+		CrateHandler.addOpening(player.getUniqueId(), winGUI);
 		player.openInventory(winGUI);
 		int maxTime = CratesPlus.getConfigHandler().getCrateGUITime();
 		final int maxTimeTicks = maxTime * 10;
 		task = Bukkit.getScheduler().runTaskTimerAsynchronously(CratesPlus.getPlugin(), new Runnable() {
 			public void run() {
-				if (player.getOpenInventory().getTitle() == null || !player.getOpenInventory().getTitle().contains(" Win"))
-					player.openInventory(winGUI);
+				if (!player.isOnline()) { // TODO, Try and handle DC for players?
+					task.cancel();
+					return;
+				}
 				Integer i = 0;
 				while (i < 45) {
 					if (i == 22) {
 						i++;
 						if (crate.getWinnings().size() == currentItem)
 							currentItem = 0;
-						Winning winning;
+						final Winning winning;
 						if (timer == maxTimeTicks) {
 							if (crate.getTotalPercentage() > 0) {
 
@@ -162,25 +164,26 @@ public class CrateOpenEvent extends Event {
 							winning = crate.getWinnings().get(currentItem);
 						}
 
-						ItemStack currentItemStack = winning.getPreviewItemStack();
+						final ItemStack currentItemStack = winning.getPreviewItemStack();
 						if (timer == maxTimeTicks) {
-							winning.runWin(player);
-							/** Do broadcast */
-							if (crate.isBroadcast()) {
-								Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-								Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
-								Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-							}
 
-							/** Spawn firework */
-							if (crate.isFirework()) {
-								Bukkit.getScheduler().runTask(CratesPlus.getPlugin(), new Runnable() {
-									@Override
-									public void run() {
+							Bukkit.getScheduler().runTask(CratesPlus.getPlugin(), new Runnable() {
+								@Override
+								public void run() {
+									winning.runWin(player);
+									/** Do broadcast */
+									if (crate.isBroadcast()) {
+										Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+										Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
+										Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+									}
+
+									/** Spawn firework */
+									if (crate.isFirework()) {
 										CrateHandler.spawnFirework(player.getLocation());
 									}
-								});
-							}
+								}
+							});
 						}
 						winGUI.setItem(22, currentItemStack);
 
@@ -202,7 +205,14 @@ public class CrateOpenEvent extends Event {
 								return; // This should never happen!
 							}
 						}
-						player.playSound(player.getLocation(), sound, (float) 0.2, 2);
+						final Sound finalSound = sound;
+						Bukkit.getScheduler().runTask(CratesPlus.getPlugin(), new Runnable() {
+							@Override
+							public void run() {
+								if (player.getOpenInventory().getTitle() != null && player.getOpenInventory().getTitle().contains(" Win"))
+									player.playSound(player.getLocation(), finalSound, (float) 0.2, 2);
+							}
+						});
 						itemMeta.setDisplayName(ChatColor.RESET + "Rolling...");
 					}
 					itemStack.setItemMeta(itemMeta);
@@ -210,6 +220,7 @@ public class CrateOpenEvent extends Event {
 					i++;
 				}
 				if (timer == maxTimeTicks) {
+					CrateHandler.removeOpening(player.getUniqueId());
 					task.cancel();
 					return;
 				}

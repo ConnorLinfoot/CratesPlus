@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Handlers.CrateHandler;
@@ -18,15 +20,31 @@ import plus.crates.Utils.SignInputHandler;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 public class CrateCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
+
 		if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
+			//if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("claim"))) {
+			//	// Assume player and show "claim" GUI
+			//	doClaim((Player) sender);
+			//	return true;
+			//}
 			sender.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Command No Permission", (Player) sender, null, null));
 			return false;
 		}
+
+		//if (args.length >= 1 && args[0].equalsIgnoreCase("claim")) {
+		//	if (!(sender instanceof Player)) {
+		//		sender.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "This command must be ran as a player");
+		//		return false;
+		//	}
+		//	doClaim((Player) sender);
+		//	return true;
+		//}
 
 		if (args.length >= 1 && args[0].equalsIgnoreCase("reload")) {
 			CratesPlus.reloadPlugin();
@@ -318,6 +336,39 @@ public class CrateCommand implements CommandExecutor {
 		sender.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate crate <type> [player] " + ChatColor.YELLOW + "- Give player a crate to be placed");
 
 		return true;
+	}
+
+	private void doClaim(Player player) {
+		if (!CrateHandler.hasPendingKeys(player.getUniqueId())) {
+			// TODO Send message
+			return;
+		}
+		Integer size = CrateHandler.getPendingKey(player.getUniqueId()).size();
+		if (size < 9)
+			size = 9;
+		else if (size <= 18)
+			size = 18;
+		else if (size <= 27)
+			size = 27;
+		else if (size <= 36)
+			size = 36;
+		else if (size <= 45)
+			size = 45;
+		else
+			size = 54;
+		Inventory inventory = Bukkit.createInventory(null, size, "Claim Crate Keys");
+		Integer i = 0;
+		for (Map.Entry<String, Integer> map : CrateHandler.getPendingKey(player.getUniqueId()).entrySet()) {
+			String crateName = map.getKey();
+			Integer amount = map.getValue();
+			Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
+			if (crate == null)
+				return; // Crate must have been removed?
+			ItemStack keyItem = crate.getKey().getKeyItem(amount);
+			inventory.setItem(i, keyItem);
+			i++;
+		}
+		player.openInventory(inventory);
 	}
 
 	@Deprecated

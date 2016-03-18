@@ -6,7 +6,7 @@
 
     <groupId>com.connorlinfoot</groupId>
     <artifactId>CratesPlus</artifactId>
-    <version>4.0.0-SNAPSHOT-22</version>
+    <version>4.0.0-SNAPSHOT-23</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

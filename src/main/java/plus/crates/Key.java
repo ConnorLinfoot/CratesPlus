@@ -1,13 +1,22 @@
 package plus.crates;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Key {
+	private String crateName;
 	private Material material;
 	private String name;
 	private boolean enchanted;
 
-	public Key(Material material, String name, boolean enchanted) {
+	public Key(String crateName, Material material, String name, boolean enchanted) {
+		this.crateName = crateName;
 		if (material == null)
 			material = Material.TRIPWIRE_HOOK;
 		this.material = material;
@@ -38,4 +47,32 @@ public class Key {
 	public void setEnchanted(boolean enchanted) {
 		this.enchanted = enchanted;
 	}
+
+	public ItemStack getKeyItem(Integer amount) {
+		ItemStack keyItem = new ItemStack(getMaterial());
+		if (isEnchanted())
+			keyItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+		ItemMeta keyItemMeta = keyItem.getItemMeta();
+//        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); // TODO; Make this work when Spigot is being used!!
+		String title = getName().replaceAll("%type%", getCrate().getName(true));
+		keyItemMeta.setDisplayName(title);
+		List<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.GRAY + "Right-Click on a \"" + getCrate().getName(true) + ChatColor.GRAY + "\" crate");
+		lore.add(ChatColor.GRAY + "to win an item!");
+		lore.add("");
+		keyItemMeta.setLore(lore);
+		keyItem.setItemMeta(keyItemMeta);
+		if (amount > 1)
+			keyItem.setAmount(amount);
+		return keyItem;
+	}
+
+	public String getCrateName() {
+		return crateName;
+	}
+
+	public Crate getCrate() {
+		return CratesPlus.getConfigHandler().getCrate(getCrateName().toLowerCase());
+	}
+
 }

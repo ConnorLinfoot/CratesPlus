@@ -51,7 +51,7 @@ public class Crate {
 		if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Item") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Name") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Enchanted"))
 			return;
 
-		this.key = new Key(Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Key.Item")), CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Key.Name").replaceAll("%type%", getName(true)), CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Key.Enchanted"));
+		this.key = new Key(name, Material.valueOf(CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Key.Item")), CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Key.Name").replaceAll("%type%", getName(true)), CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Key.Enchanted"));
 
 		if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Winnings"))
 			return;
