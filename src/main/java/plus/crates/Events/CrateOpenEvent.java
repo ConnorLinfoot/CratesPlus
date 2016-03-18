@@ -174,7 +174,12 @@ public class CrateOpenEvent extends Event {
 
 							/** Spawn firework */
 							if (crate.isFirework()) {
-								CrateHandler.spawnFirework(player.getLocation());
+								Bukkit.getScheduler().runTask(CratesPlus.getPlugin(), new Runnable() {
+									@Override
+									public void run() {
+										CrateHandler.spawnFirework(player.getLocation());
+									}
+								});
 							}
 						}
 						winGUI.setItem(22, currentItemStack);

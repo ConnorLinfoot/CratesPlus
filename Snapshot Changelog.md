@@ -1,6 +1,9 @@
 ### Version 4.0.0 Snapshots
 ---
-**Snapshot 21** *(Mar 17 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/zzzzzzzzzzzzzzzzzzzzz/artifact/target/CratesPlus-4.0.0-SNAPSHOT-21.jar)
+**Snapshot 22** *(Mar 18 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/409/artifact/target/CratesPlus-4.0.0-SNAPSHOT-22.jar)
+- Fixed issue of GUI "crashing" if firework was enabled
+
+**Snapshot 21** *(Mar 17 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/408/artifact/target/CratesPlus-4.0.0-SNAPSHOT-21.jar)
 - Moved most configuration related stuff into the ConfigHandler
 - Added "Ignore Version" option to skip version warnings if running a server which is not recognised as 1.8/1.9
 - Added more enchantment nice names
