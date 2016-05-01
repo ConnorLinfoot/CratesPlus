@@ -45,10 +45,6 @@ public class ConfigHandler {
 		this.cooldown = cooldown;
 	}
 
-	public HashMap<String, Crate> getCrates() {
-		return crates;
-	}
-
 	public void setCrates(HashMap<String, Crate> crates) {
 		this.crates = crates;
 	}
@@ -61,6 +57,10 @@ public class ConfigHandler {
 		if (this.crates.containsKey(name))
 			return this.crates.get(name);
 		return null;
+	}
+
+	public HashMap<String, Crate> getCrates() {
+		return this.crates;
 	}
 
 	public List<String> getHolograms() {
