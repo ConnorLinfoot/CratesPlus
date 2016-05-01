@@ -84,6 +84,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			String oldConfig = backupConfig();
 			convertConfigV5(console, oldConfig); // Oh god...
 		}
+		if (getConfig().getInt("Config Version") == 5) {
+			String oldConfig = backupConfig();
+			convertConfigV6(console, oldConfig); // Let me add another one xD ~Xorinzor
+		}
 		cleanUpDeadConfig();
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -403,6 +407,28 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		// Set config version
 		getConfig().set("Config Version", 5);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
+	}
+	
+	private void convertConfigV6(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 6...");
+
+		if (getConfig().isSet("Hologram Text")) {
+			List<String> oldHologramList = getConfig().getStringList("Hologram Text");
+			getConfig().set("Default Hologram Text", oldHologramList);
+			getConfig().set("Hologram Text", null);
+		}
+
+		// Set config version
+		getConfig().set("Config Version", 6);
 
 		// Save config
 		saveConfig();

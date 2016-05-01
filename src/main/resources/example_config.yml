@@ -1,5 +1,5 @@
 # [][][][][][][][][][][][][][][][][][][][][]
-#  CratesPlus V${project.version} Config
+#  CratesPlus V4.1.0 Config
 # [][][][][][][][][][][][][][][][][][][][][]
 # ------------------------------------------
 # There are many placeholders that can now be used withing the config file for commands and messages, place holders are as followed:
@@ -11,7 +11,7 @@
 # ------------------------------------------
 # Don't change the config version!
 
-Config Version: 5
+Config Version: 6
 
 # Checks if an update is available and notifies staff
 Update Checks: true
@@ -70,6 +70,21 @@ Crates:
         - DAMAGE_ALL-5
         - DURABILITY-3
         - FIRE_ASPECT-2
+  AnotherExample:
+    Knockback: 0.5
+    Broadcast: false
+    Firework: false
+    Color: GREEN
+    Block: GLASS
+    Preview: true
+    Permission: cratesplus.crate.example # Permissions can be anything, it will check that the player has the permission before opening
+    Key:
+      Item: TRIPWIRE_HOOK
+      Name: '%type% Crate Key'
+      Enchanted: true
+    Hologram Text:
+     - 'This crate will have'
+     - 'Its own hologram text!'
 
 # Settings for the Crate opening GUI (Time is seconds)
 Use GUI: true
@@ -83,7 +98,8 @@ Crate Protection: false
 Disable Key Dropping: false
 
 # %crate% can be used to show the crate name
-Hologram Text:
+# If a crate has no specific hologram text set, this will be shown
+Default Hologram Text:
 - "%crate%"
 - "Right-Click to Open!"
 - "Left-Click to Preview!"

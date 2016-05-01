@@ -9,7 +9,8 @@ import java.util.List;
 public class ConfigHandler {
 	private int cooldown = 5;
 	private HashMap<String, Crate> crates = new HashMap<String, Crate>();
-	public List<String> holograms;
+	private List<String> defaultHologramText;
+	private HashMap<String, List<String>> holograms = new HashMap<String, List<String>>();
 	public boolean doGui = true;
 	public int crateGUITime = 10;
 
@@ -34,7 +35,12 @@ public class ConfigHandler {
 			crateGUITime = config.getInt("GUI Time");
 
 		// Crate Holograms
-		holograms = config.getStringList("Hologram Text");
+		defaultHologramText = config.getStringList("Default Hologram Text");
+		
+		for (String crate : crates.keySet()) {
+			List<String> crateSpecificHologram = config.getStringList("Crates."+crate+".Hologram Text");
+			addHologram(crate.toLowerCase(), (config.isSet("Crates."+crate+".Hologram Text")) ? crateSpecificHologram : defaultHologramText);
+		}
 	}
 
 	public int getCooldown() {
@@ -63,12 +69,16 @@ public class ConfigHandler {
 		return this.crates;
 	}
 
-	public List<String> getHolograms() {
-		return holograms;
+	public HashMap<String, List<String>> getHolograms() {
+		return this.holograms;
+	}
+	
+	public List<String> getHologramsForCrate(String crateType) {
+		return this.holograms.get(crateType.toLowerCase());
 	}
 
-	public void setHolograms(List<String> holograms) {
-		this.holograms = holograms;
+	public void addHologram(String name, List<String> hologramLines) {
+		this.holograms.put(name, hologramLines);
 	}
 
 	public boolean isDoGui() {

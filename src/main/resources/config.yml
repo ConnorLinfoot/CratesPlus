@@ -1,5 +1,5 @@
 # [][][][][][][][][][][][][][][][][][][][][]
-#  CratesPlus V${project.version} Config
+#  CratesPlus V4.1.0 Config
 # [][][][][][][][][][][][][][][][][][][][][]
 # ------------------------------------------
 # There are many placeholders that can now be used withing the config file for commands and messages, place holders are as followed:
@@ -11,7 +11,7 @@
 # ------------------------------------------
 # Don't change the config version!
 
-Config Version: 5
+Config Version: 6
 
 # Checks if an update is available and notifies staff
 Update Checks: true
@@ -34,7 +34,7 @@ Crate Protection: false
 Disable Key Dropping: false
 
 # %crate% can be used to show the crate name
-Hologram Text:
+Default Hologram Text:
 - "%crate%"
 - "Right-Click to Open!"
 - "Left-Click to Preview!"
