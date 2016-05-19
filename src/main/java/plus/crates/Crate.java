@@ -211,7 +211,7 @@ public class Crate {
 			return;
 
 		ArrayList<String> list = new ArrayList<String>();
-		for (String string : CratesPlus.getConfigHandler().getHolograms())
+		for (String string : CratesPlus.getConfigHandler().getHologramsForCrate(this.slug))
 			list.add(MessageHandler.doPlaceholders(string, null, this, null));
 		Hologram hologram = new Hologram(location, list);
 		holograms.put(blockLocation, hologram);
