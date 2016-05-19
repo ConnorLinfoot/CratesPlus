@@ -139,7 +139,23 @@ public class CrateHandler {
 			return;
 		}
 		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+
+		//If the crate does not exist, tell the user
+		//This also prevents nullpointerexceptions beeing thrown
+		if(crate == null) {
+			player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
+			return;
+		}
+
 		Key key = crate.getKey();
+		
+		//Show error message about the config file missing a Crates.<crateType>.Key field
+		if(key == null) {
+			player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate type: '" + crateType + "'");
+			player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Make sure your config file is correct");
+			return;
+		}
+		
 		//if (player.getInventory().firstEmpty() == -1) {
 		//	// Add key to claim
 		//	HashMap<String, Integer> keys = new HashMap<String, Integer>();
