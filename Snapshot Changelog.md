@@ -1,3 +1,9 @@
+### Version 4.1.0 Snapshots
+---
+**Snapshot 1** *(May 19 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/478/artifact/target/CratesPlus-4.1.0-SNAPSHOT-1.jar)
+- Per crate holograms, thanks to [xorinzor](https://github.com/xorinzor).
+- Better error messages with invalid configuration, thanks to [xorinzor](https://github.com/xorinzor).
+
 ### Version 4.0.0 Snapshots
 ---
 **Snapshot 23** *(Mar 18 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/410/artifact/target/CratesPlus-4.0.0-SNAPSHOT-23.jar)
