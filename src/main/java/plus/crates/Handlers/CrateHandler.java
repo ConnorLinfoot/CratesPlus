@@ -17,8 +17,8 @@ import java.util.*;
 
 public class CrateHandler {
 	private static Random rand = new Random();
-	private static HashMap<UUID, Inventory> openings = new HashMap<UUID, Inventory>();
-	private static HashMap<UUID, HashMap<String, Integer>> pendingKeys = new HashMap<UUID, HashMap<String, Integer>>();
+	private static HashMap<UUID, Inventory> openings = new HashMap<>();
+	private static HashMap<UUID, HashMap<String, Integer>> pendingKeys = new HashMap<>();
 
 	public static int randInt(int min, int max) {
 		return rand.nextInt((max - min) + 1) + min;
@@ -170,7 +170,7 @@ public class CrateHandler {
 		//}
 		ItemStack keyItem = key.getKeyItem(amount);
 		player.getInventory().addItem(keyItem);
-		player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Key Given", player, crate, null));
+		player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Key Given", player, crate, null));
 	}
 
 	@Deprecated

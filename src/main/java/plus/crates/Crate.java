@@ -20,14 +20,15 @@ public class Crate {
 	private boolean firework = false;
 	private boolean broadcast = false;
 	private boolean preview = true;
+	private boolean hidePercentages = false;
 	private double knockback = 0.0;
-	private ArrayList<Winning> winnings = new ArrayList<Winning>();
-	private ArrayList<Integer> percentages = new ArrayList<Integer>();
+	private ArrayList<Winning> winnings = new ArrayList<>();
+	private ArrayList<Integer> percentages = new ArrayList<>();
 	private double totalPercentage = 0;
 	private Key key;
-	private HashMap<String, Location> locations = new HashMap<String, Location>();
+	private HashMap<String, Location> locations = new HashMap<>();
 	private String permission = null;
-	private HashMap<Location, Hologram> holograms = new HashMap<Location, Hologram>();
+	private HashMap<Location, Hologram> holograms = new HashMap<>();
 
 	public Crate(String name) {
 		this.name = name;
@@ -47,6 +48,8 @@ public class Crate {
 			this.knockback = CratesPlus.getPlugin().getConfig().getDouble("Crates." + name + ".Knockback");
 		if (CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Permission"))
 			this.permission = CratesPlus.getPlugin().getConfig().getString("Crates." + name + ".Permission");
+		if (CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".percentages"))
+			this.hidePercentages = CratesPlus.getPlugin().getConfig().getBoolean("Crates." + name + ".Hide Percentages");
 
 		if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Item") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Name") || !CratesPlus.getPlugin().getConfig().isSet("Crates." + name + ".Key.Enchanted"))
 			return;
@@ -58,7 +61,7 @@ public class Crate {
 
 		for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
 			String path = "Crates." + name + ".Winnings." + id;
-			Winning winning = new Winning(path);
+			Winning winning = new Winning(this, path);
 			if (totalPercentage + winning.getPercentage() > 100 || !winning.isValid()) {
 				if (totalPercentage + winning.getPercentage() > 100)
 					Bukkit.getLogger().warning("Your percentages must NOT add up to more than 100%");
@@ -107,6 +110,10 @@ public class Crate {
 		return preview;
 	}
 
+	public boolean isHidePercentages() {
+		return hidePercentages;
+	}
+
 	public double getKnockback() {
 		return this.knockback;
 	}
@@ -116,7 +123,7 @@ public class Crate {
 		winnings.clear();
 		for (String id : CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
 			String path = "Crates." + name + ".Winnings." + id;
-			Winning winning = new Winning(path);
+			Winning winning = new Winning(this, path);
 			if (winning.isValid())
 				winnings.add(winning);
 		}
@@ -179,7 +186,7 @@ public class Crate {
 	}
 
 	public void addToConfig(Location location) {
-		List<String> locations = new ArrayList<String>();
+		List<String> locations = new ArrayList<>();
 		if (CratesPlus.dataConfig.isSet("Crate Locations." + this.getName(false).toLowerCase()))
 			locations = CratesPlus.dataConfig.getStringList("Crate Locations." + this.getName(false).toLowerCase());
 		locations.add(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
@@ -192,7 +199,7 @@ public class Crate {
 	}
 
 	public void removeFromConfig(Location location) {
-		List<String> locations = new ArrayList<String>();
+		List<String> locations = new ArrayList<>();
 		if (CratesPlus.dataConfig.isSet("Crate Locations." + this.getName(false).toLowerCase()))
 			locations = CratesPlus.dataConfig.getStringList("Crate Locations." + this.getName(false).toLowerCase());
 		if (locations.contains(location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ()))
@@ -210,7 +217,7 @@ public class Crate {
 		if (CratesPlus.getConfigHandler().getHolograms() == null || CratesPlus.getConfigHandler().getHolograms().isEmpty())
 			return;
 
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (String string : CratesPlus.getConfigHandler().getHologramsForCrate(this.slug))
 			list.add(MessageHandler.doPlaceholders(string, null, this, null));
 		Hologram hologram = new Hologram(location, list);

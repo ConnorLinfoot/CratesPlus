@@ -1,5 +1,12 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 2** *(May 22 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/481/artifact/target/CratesPlus-4.1.0-SNAPSHOT-2.jar)
+- Disable percentages per crate.
+- New messages.yml for all messages, current messages should be copied if they exist.
+- New message "Chance Message" used for displaying the chance of a winning.
+- Now requires Java 7, according to MC Stats nobody is using Java 6. Which is a good thing!
+- Removed an old test command (/crates h)
+
 **Snapshot 1** *(May 19 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/478/artifact/target/CratesPlus-4.1.0-SNAPSHOT-1.jar)
 - Per crate holograms, thanks to [xorinzor](https://github.com/xorinzor).
 - Better error messages with invalid configuration, thanks to [xorinzor](https://github.com/xorinzor).

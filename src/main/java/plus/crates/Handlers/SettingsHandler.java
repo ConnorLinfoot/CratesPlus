@@ -19,7 +19,7 @@ import java.util.Map;
 public class SettingsHandler {
 	private Inventory settings;
 	private Inventory crates;
-	private HashMap<String, String> lastCrateEditing = new HashMap<String, String>();
+	private HashMap<String, String> lastCrateEditing = new HashMap<>();
 
 	public SettingsHandler() {
 		setupSettingsInventory();

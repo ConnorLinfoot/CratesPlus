@@ -1,5 +1,6 @@
 package plus.crates;
 
+import com.google.common.io.ByteStreams;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.bukkit.Bukkit;
@@ -23,8 +24,7 @@ import plus.crates.Handlers.SettingsHandler;
 import plus.crates.Listeners.*;
 import plus.crates.Utils.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class CratesPlus extends JavaPlugin implements Listener {
@@ -37,7 +37,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	public static String configBackup = null;
 	public static Version_Util version_util;
 	public static File dataFile;
+	public static File messagesFile;
 	public static YamlConfiguration dataConfig;
+	public static YamlConfiguration messagesConfig;
 	private static ConfigHandler configHandler;
 
 	public enum MC_VERSION {
@@ -104,6 +106,28 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 		updateDataFile();
 
+		// Load new messages.yml
+		messagesFile = new File(getDataFolder(), "messages.yml");
+		if (!messagesFile.exists()) {
+			try {
+				messagesFile.createNewFile();
+				InputStream inputStream = getResource("messages.yml");
+				OutputStream outputStream = new FileOutputStream(messagesFile);
+				ByteStreams.copy(inputStream, outputStream);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+		try {
+			messagesConfig.save(messagesFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		processNewMessagesFile();
+
 		if (getConfig().getBoolean("Metrics")) {
 			try {
 				Metrics metrics = new Metrics(this);
@@ -151,6 +175,20 @@ public class CratesPlus extends JavaPlugin implements Listener {
 					player.sendMessage(pluginPrefix + ChatColor.GREEN + "Your config has been updated. Your old config was backed up to " + configBackup);
 					configBackup = null;
 				}
+			}
+		}
+	}
+
+	private void processNewMessagesFile() {
+		if (getConfig().isSet("Messages")) {
+			for (String path : getConfig().getConfigurationSection("Messages").getKeys(false)) {
+				messagesConfig.set(path, getConfig().getString("Messages." + path));
+			}
+			try {
+				messagesConfig.save(messagesFile);
+				getConfig().set("Messages", null);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -417,7 +455,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
 		}
 	}
-	
+
 	private void convertConfigV6(ConsoleCommandSender console, String oldConfig) {
 		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 6...");
 
@@ -531,7 +569,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		CratesPlus.getPlugin().reloadConfig();
 
 		// Do Prefix
-		pluginPrefix = ChatColor.translateAlternateColorCodes('&', CratesPlus.getPlugin().getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
+		pluginPrefix = ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("Prefix")) + " " + ChatColor.RESET;
 
 		// Reload Configuration
 		configHandler = new ConfigHandler(CratesPlus.getPlugin().getConfig());

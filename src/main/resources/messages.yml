@@ -1,0 +1,20 @@
+# [][][][][][][][][][][][][][][][][][][][][]
+#  CratesPlus V${project.version} Messages
+# [][][][][][][][][][][][][][][][][][][][][]
+# ------------------------------------------
+# There are many placeholders that can now be used withing the config and messages file, placeholders are as followed:
+# - %name% - Replaces with the players name, Example: "Notch".
+# - %displayname% - Replaces with the players display name, Example: "[Owner] Notch".
+# - %uuid% - Replaces with the players UUID.
+# - %crate% - The crate types name.
+# - %prize% - The name of the winning.
+# - %percentage% - Percentage of the winning, useful for "Chance Message".
+
+Prefix: "&7[&bCratesPlus&7]"
+Command No Permission: "&cYou do not have the correct permission to run this command"
+Crate Open Without Key: "&cYou must be holding a %crate% &ckey to open this crate"
+Key Given: "&aYou have been given a %crate% &acrate key"
+Broadcast: "&d%displayname% &dopened a %crate% &dcrate"
+Cant Place: "&cYou can not place crate keys"
+Cant Drop: "&cYou can not drop crate keys"
+Chance Message: "&d%percentage%% Chance"

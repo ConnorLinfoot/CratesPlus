@@ -37,7 +37,7 @@ public class BlockListeners implements Listener {
 			title = key.getName();
 
 			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Drop", event.getPlayer(), crate.getValue(), null));
+				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Cant Drop", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;
 			}
@@ -63,7 +63,7 @@ public class BlockListeners implements Listener {
 			}
 
 			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Cant Place", event.getPlayer(), crate.getValue(), null));
+				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Cant Place", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;
 			}

@@ -8,10 +8,10 @@ import plus.crates.Winning;
 
 public class MessageHandler {
 
-	public static String getMessage(CratesPlus cratesPlus, String messageName, Player player, Crate crate, Winning winning) {
-		if (!cratesPlus.getConfig().isSet("Messages." + messageName))
+	public static String getMessage(String messageName, Player player, Crate crate, Winning winning) {
+		if (!CratesPlus.messagesConfig.isSet(messageName))
 			return null;
-		String message = cratesPlus.getConfig().getString("Messages." + messageName);
+		String message = CratesPlus.messagesConfig.getString(messageName);
 		message = doPlaceholders(message, player, crate, winning);
 		message = ChatColor.translateAlternateColorCodes('&', message);
 		return message;
@@ -26,7 +26,7 @@ public class MessageHandler {
 		if (winning != null)
 			message = message.replaceAll("%prize%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET);
 		if (winning != null)
-			message = message.replaceAll("%winning%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET);
+			message = message.replaceAll("%winning%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET).replaceAll("%percentage%", String.valueOf(winning.getPercentage()));
 		return message;
 	}
 

@@ -53,7 +53,7 @@ public class PlayerInteract implements Listener {
 
 		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
 			event.setCancelled(true);
-			player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate No Permission", player, crate, null));
+			player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Crate No Permission", player, crate, null));
 			return;
 		}
 		String title = crate.getKey().getName();
@@ -120,7 +120,7 @@ public class PlayerInteract implements Listener {
 					crateOpenEvent.doEvent();
 				}
 			} else {
-				player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Crate Open Without Key", player, crate, null));
+				player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Crate Open Without Key", player, crate, null));
 				if (crate.getKnockback() != 0) {
 					player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
 				}

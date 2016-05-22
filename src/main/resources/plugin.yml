@@ -1,5 +1,5 @@
 name: CratesPlus
-description: A free and great crates plugin for Minecraft
+description: ${project.description}
 main: plus.crates.CratesPlus
 version: ${project.version}
 commands:

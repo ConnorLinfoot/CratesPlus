@@ -56,7 +56,7 @@ public class Key {
 //        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); // TODO; Make this work when Spigot is being used!!
 		String title = getName().replaceAll("%type%", getCrate().getName(true));
 		keyItemMeta.setDisplayName(title);
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 		lore.add(ChatColor.GRAY + "Right-Click on a \"" + getCrate().getName(true) + ChatColor.GRAY + "\" crate");
 		lore.add(ChatColor.GRAY + "to win an item!");
 		lore.add("");

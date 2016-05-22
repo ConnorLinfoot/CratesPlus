@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ConfigHandler {
 	private int cooldown = 5;
-	private HashMap<String, Crate> crates = new HashMap<String, Crate>();
+	private HashMap<String, Crate> crates = new HashMap<>();
 	private List<String> defaultHologramText;
-	private HashMap<String, List<String>> holograms = new HashMap<String, List<String>>();
+	private HashMap<String, List<String>> holograms = new HashMap<>();
 	public boolean doGui = true;
 	public int crateGUITime = 10;
 

@@ -6,7 +6,8 @@
 
     <groupId>com.connorlinfoot</groupId>
     <artifactId>CratesPlus</artifactId>
-    <version>4.1.0-SNAPSHOT-1</version>
+    <description>A free and great crates plugin for Minecraft</description>
+    <version>4.1.0-SNAPSHOT-2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,8 +30,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>

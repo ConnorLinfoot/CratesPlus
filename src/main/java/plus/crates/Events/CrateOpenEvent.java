@@ -69,7 +69,7 @@ public class CrateOpenEvent extends Event {
 			/** Do broadcast */
 			if (crate.isBroadcast()) {
 				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-				Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
+				Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Broadcast", player, crate, winning));
 				Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
 			}
 
@@ -174,7 +174,7 @@ public class CrateOpenEvent extends Event {
 									/** Do broadcast */
 									if (crate.isBroadcast()) {
 										Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-										Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage(CratesPlus.getPlugin(), "Broadcast", player, crate, winning));
+										Bukkit.broadcastMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Broadcast", player, crate, winning));
 										Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
 									}
 

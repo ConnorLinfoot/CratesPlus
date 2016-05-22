@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.Handlers.MessageHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
 import java.util.ArrayList;
@@ -16,15 +17,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Winning {
+	private Crate crate;
 	private boolean valid = false;
 	private boolean command = false;
 	private double percentage = 0;
 	private ItemStack previewItemStack;
 	private ItemStack winningItemStack;
-	private List<String> commands = new ArrayList<String>();
-	private List<String> lore = new ArrayList<String>();
+	private List<String> commands = new ArrayList<>();
+	private List<String> lore = new ArrayList<>();
 
-	public Winning(String path) {
+	public Winning(Crate crate, String path) {
+		this.crate = crate;
 		FileConfiguration config = CratesPlus.getPlugin().getConfig();
 		if (!config.isSet(path))
 			return;
@@ -154,11 +157,11 @@ public class Winning {
 		}
 
 		previewItemStackItemMeta = previewItemStack.getItemMeta();
-		List<String> lore = new ArrayList<String>(this.lore);
-		if (percentage > 0) {
+		List<String> lore = new ArrayList<>(this.lore);
+		if (percentage > 0 && !crate.isHidePercentages()) {
 			// Percentage
 			lore.add(ChatColor.LIGHT_PURPLE + "");
-			lore.add("" + ChatColor.LIGHT_PURPLE + percentage + "% Chance");
+			lore.add(MessageHandler.getMessage("Chance Message", null, crate, this));
 		}
 		previewItemStackItemMeta.setLore(lore);
 		previewItemStack.setItemMeta(previewItemStackItemMeta);
