@@ -2,6 +2,7 @@ name: CratesPlus
 description: ${project.description}
 main: plus.crates.CratesPlus
 version: ${project.version}
+softdepend: [HolographicDisplays]
 commands:
   crate:
     description: Main CratesPlus command

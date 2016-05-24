@@ -13,15 +13,17 @@ import plus.crates.Winning;
 import java.util.List;
 
 public class CratePreviewEvent extends Event {
+	private CratesPlus cratesPlus;
 	private Player player;
 	private String crateName;
 	private Crate crate;
 	private boolean canceled = false;
 
-	public CratePreviewEvent(Player player, String crateName) {
+	public CratePreviewEvent(Player player, String crateName, CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
 		this.player = player;
 		this.crateName = crateName;
-		this.crate = CratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
+		this.crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 	}
 
 	public void doEvent() {

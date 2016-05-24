@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Key {
+	private CratesPlus cratesPlus;
 	private String crateName;
 	private Material material;
 	private String name;
 	private boolean enchanted;
 
-	public Key(String crateName, Material material, String name, boolean enchanted) {
+	public Key(String crateName, Material material, String name, boolean enchanted, CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
 		this.crateName = crateName;
 		if (material == null)
 			material = Material.TRIPWIRE_HOOK;
@@ -72,7 +74,7 @@ public class Key {
 	}
 
 	public Crate getCrate() {
-		return CratesPlus.getConfigHandler().getCrate(getCrateName().toLowerCase());
+		return cratesPlus.getConfigHandler().getCrate(getCrateName().toLowerCase());
 	}
 
 }

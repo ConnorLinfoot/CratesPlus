@@ -21,19 +21,24 @@ import java.util.List;
 import java.util.Map;
 
 public class SettingsListener implements Listener {
+	private CratesPlus cratesPlus;
+
+	public SettingsListener(CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
+	}
 
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
 		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Crate Winnings")) {
 			String crateName = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate Winnings", ""));
-			Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
+			Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 			if (crate == null) {
 				return;
 			}
 
-			CratesPlus.getPlugin().getConfig().set("Crates." + crateName + ".Winnings", null);
-			CratesPlus.getPlugin().saveConfig();
+			cratesPlus.getConfig().set("Crates." + crateName + ".Winnings", null);
+			cratesPlus.saveConfig();
 			for (ItemStack itemStack : event.getInventory().getContents()) {
 				if (itemStack == null)
 					continue;
@@ -61,7 +66,7 @@ public class SettingsListener implements Listener {
 					lore = itemStack.getItemMeta().getLore();
 
 				// Save to config and creating winning instance
-				FileConfiguration config = CratesPlus.getPlugin().getConfig();
+				FileConfiguration config = cratesPlus.getConfig();
 				String path = "Crates." + crateName + ".Winnings." + id;
 				config.set(path + ".Type", type);
 				config.set(path + ".Item Type", itemtype);
@@ -72,14 +77,14 @@ public class SettingsListener implements Listener {
 				config.set(path + ".Lore", lore);
 			}
 
-			CratesPlus.getPlugin().saveConfig();
+			cratesPlus.saveConfig();
 			crate.reloadWinnings();
-			event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.GREEN + "Crate winnings updated");
+			event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Crate winnings updated");
 		}
 	}
 
-	private static int getFreeID(String crate, int check) {
-		if (CratesPlus.getPlugin().getConfig().isSet("Crates." + crate + ".Winnings." + check))
+	private int getFreeID(String crate, int check) {
+		if (cratesPlus.getConfig().isSet("Crates." + crate + ".Winnings." + check))
 			return getFreeID(crate, check + 1);
 		return check;
 	}
@@ -103,15 +108,15 @@ public class SettingsListener implements Listener {
 			if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Edit Crates")) {
 				event.setCancelled(true);
 				player.closeInventory();
-				CratesPlus.getSettingsHandler().openCrates(player);
+				cratesPlus.getSettingsHandler().openCrates(player);
 				return;
 			}
 
 			if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Reload Config")) {
 				event.setCancelled(true);
 				player.closeInventory();
-				CratesPlus.reloadPlugin();
-				player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
+				cratesPlus.reloadPlugin();
+				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
 				return;
 			}
 
@@ -130,7 +135,7 @@ public class SettingsListener implements Listener {
 
 			if (event.getCurrentItem().getType() == Material.CHEST) {
 				player.closeInventory();
-				CratesPlus.getSettingsHandler().openCrate(player, ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
+				cratesPlus.getSettingsHandler().openCrate(player, ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
 			}
 
 		} else if (event.getInventory().getTitle().contains("Edit Crate Color")) {
@@ -139,10 +144,10 @@ public class SettingsListener implements Listener {
 				player.closeInventory();
 				ChatColor color = ChatColor.valueOf(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase().replaceAll(" ", "_")));
 				if (color != null) {
-					String lastCrate = CratesPlus.getSettingsHandler().getLastCrateEditing().get(player.getUniqueId().toString());
+					String lastCrate = cratesPlus.getSettingsHandler().getLastCrateEditing().get(player.getUniqueId().toString());
 					if (lastCrate == null)
 						return;
-					Crate crate = CratesPlus.getConfigHandler().getCrates().get(lastCrate.toLowerCase());
+					Crate crate = cratesPlus.getConfigHandler().getCrates().get(lastCrate.toLowerCase());
 					crate.setColor(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase().replaceAll(" ", "_")));
 					player.sendMessage(ChatColor.GREEN + "Updated color, you may need to replace the crate for colors to update in holograms");
 				}
@@ -156,16 +161,16 @@ public class SettingsListener implements Listener {
 			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Winnings")) {
 				event.setCancelled(true);
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
-				CratesPlus.getSettingsHandler().openCrateWinnings(player, name);
+				cratesPlus.getSettingsHandler().openCrateWinnings(player, name);
 			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Delete")) {
 				event.setCancelled(true);
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
-				CratesPlus.getPlugin().getConfig().set("Crates." + name, null);
-				CratesPlus.getPlugin().saveConfig();
-				CratesPlus.getPlugin().reloadConfig();
-				CratesPlus.getConfigHandler().getCrates().remove(name.toLowerCase());
-				CratesPlus.getSettingsHandler().setupCratesInventory();
-				player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.GREEN + name + " crate has been deleted");
+				cratesPlus.getConfig().set("Crates." + name, null);
+				cratesPlus.saveConfig();
+				cratesPlus.reloadConfig();
+				cratesPlus.getConfigHandler().getCrates().remove(name.toLowerCase());
+				cratesPlus.getSettingsHandler().setupCratesInventory();
+				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + name + " crate has been deleted");
 			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename Crate")) {
 				event.setCancelled(true);
 			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Color")) {
@@ -281,7 +286,7 @@ public class SettingsListener implements Listener {
 				inventory.setItem(17, glass);
 
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
-				CratesPlus.getSettingsHandler().getLastCrateEditing().put(player.getUniqueId().toString(), name);
+				cratesPlus.getSettingsHandler().getLastCrateEditing().put(player.getUniqueId().toString(), name);
 
 				player.openInventory(inventory);
 			}

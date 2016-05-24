@@ -1,6 +1,5 @@
 package plus.crates.Utils;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -13,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class SnapshotUpdater {
+	private CratesPlus cratesPlus;
 	private SnapshotUpdater.UpdateResult result = SnapshotUpdater.UpdateResult.DISABLED;
 	private String version;
 
@@ -23,7 +23,8 @@ public class SnapshotUpdater {
 		SNAPSHOT_UPDATE_AVAILABLE
 	}
 
-	public SnapshotUpdater(JavaPlugin plugin) {
+	public SnapshotUpdater(CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
 		doCheck();
 	}
 
@@ -40,7 +41,7 @@ public class SnapshotUpdater {
 			JSONObject obj = (JSONObject) jsonParser.parse(data);
 			if (obj.get("version") != null) {
 				String newestVersion = obj.get("version") + "." + obj.get("snapshot");
-				String currentVersion = CratesPlus.getPlugin().getDescription().getVersion().replaceAll("-SNAPSHOT-", "."); // Changes 4.0.0-SNAPSHOT-4 to 4.0.0.4
+				String currentVersion = cratesPlus.getDescription().getVersion().replaceAll("-SNAPSHOT-", "."); // Changes 4.0.0-SNAPSHOT-4 to 4.0.0.4
 				if (Integer.parseInt(newestVersion.replace(".", "")) > Integer.parseInt(currentVersion.replace(".", ""))) {
 					result = UpdateResult.SNAPSHOT_UPDATE_AVAILABLE;
 					version = obj.get("version") + "-SNAPSHOT-" + obj.get("snapshot");

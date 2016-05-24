@@ -1,5 +1,12 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 3** *(May 24 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/490/artifact/target/CratesPlus-4.1.0-SNAPSHOT-3.jar)
+- Added support for Holographic displays if found instead of the built in hologram handler. Please test this and report bugs.
+- Thanks to the above the plugin *should* now work with 1.7.
+- Major code changes to how opening crates are handled. This shouldn't change the experience at the moment but will allow other plugins to handle the opening of crates in the near future.
+- Removed a lot of unnecessary static variables and methods.
+- Fixed NPE on plugin load.
+
 **Snapshot 2** *(May 22 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/485/artifact/target/CratesPlus-4.1.0-SNAPSHOT-2.jar)
 - Disable percentages per crate.
 - New messages.yml for all messages, current messages should be copied if they exist.

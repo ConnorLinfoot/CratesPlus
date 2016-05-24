@@ -16,21 +16,26 @@ import plus.crates.Key;
 import java.util.*;
 
 public class CrateHandler {
-	private static Random rand = new Random();
-	private static HashMap<UUID, Inventory> openings = new HashMap<>();
-	private static HashMap<UUID, HashMap<String, Integer>> pendingKeys = new HashMap<>();
+	private CratesPlus cratesPlus;
+	private Random rand = new Random();
+	private HashMap<UUID, Inventory> openings = new HashMap<>();
+	private HashMap<UUID, HashMap<String, Integer>> pendingKeys = new HashMap<>();
 
-	public static int randInt(int min, int max) {
+	public CrateHandler(CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
+	}
+
+	public int randInt(int min, int max) {
 		return rand.nextInt((max - min) + 1) + min;
 	}
 
-	public static double randDouble(double min, double max) {
+	public double randDouble(double min, double max) {
 		double range = max - min;
 		double scaled = rand.nextDouble() * range;
 		return scaled + min; // == (rand.nextDouble() * (max-min)) + min;
 	}
 
-	private static Color getColor(int i) {
+	private Color getColor(int i) {
 		Color c;
 		switch (i) {
 			case 1:
@@ -91,7 +96,7 @@ public class CrateHandler {
 		return c;
 	}
 
-	public static void spawnFirework(Location location) {
+	public void spawnFirework(Location location) {
 		Firework fw = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
 		FireworkMeta fwm = fw.getFireworkMeta();
 		Random r = new Random();
@@ -113,8 +118,8 @@ public class CrateHandler {
 		fw.setFireworkMeta(fwm);
 	}
 
-	public static void giveCrateKey(Player player) {
-		Set<String> crates = CratesPlus.getPlugin().getConfig().getConfigurationSection("Crates").getKeys(false);
+	public void giveCrateKey(Player player) {
+		Set<String> crates = cratesPlus.getConfig().getConfigurationSection("Crates").getKeys(false);
 		Integer random = randInt(0, crates.size() - 1);
 		String crateType = "";
 		Integer i = 0;
@@ -128,22 +133,22 @@ public class CrateHandler {
 		giveCrateKey(player, crateType);
 	}
 
-	public static void giveCrateKey(Player player, String crateType) {
+	public void giveCrateKey(Player player, String crateType) {
 		giveCrateKey(player, crateType, 1);
 	}
 
-	public static void giveCrateKey(Player player, String crateType, Integer amount) {
+	public void giveCrateKey(Player player, String crateType, Integer amount) {
 		if (player == null || !player.isOnline()) return;
 		if (crateType == null) {
 			giveCrateKey(player);
 			return;
 		}
-		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 
 		//If the crate does not exist, tell the user
 		//This also prevents nullpointerexceptions beeing thrown
 		if(crate == null) {
-			player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
+			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
 			return;
 		}
 
@@ -151,8 +156,8 @@ public class CrateHandler {
 		
 		//Show error message about the config file missing a Crates.<crateType>.Key field
 		if(key == null) {
-			player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate type: '" + crateType + "'");
-			player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Make sure your config file is correct");
+			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate type: '" + crateType + "'");
+			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Make sure your config file is correct");
 			return;
 		}
 		
@@ -170,18 +175,18 @@ public class CrateHandler {
 		//}
 		ItemStack keyItem = key.getKeyItem(amount);
 		player.getInventory().addItem(keyItem);
-		player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Key Given", player, crate, null));
+		player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Key Given", player, crate, null));
 	}
 
 	@Deprecated
-	public static void giveCrate(Player player, String crateType) {
-		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+	public void giveCrate(Player player, String crateType) {
+		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		if (crate == null)
 			return;
 		giveCrate(player, crate);
 	}
 
-	public static void giveCrate(Player player, Crate crate) {
+	public void giveCrate(Player player, Crate crate) {
 		if (player == null || !player.isOnline() || crate == null) return;
 
 		ItemStack crateItem = new ItemStack(crate.getBlock());
@@ -193,11 +198,11 @@ public class CrateHandler {
 		crateMeta.setLore(lore);
 		crateItem.setItemMeta(crateMeta);
 		player.getInventory().addItem(crateItem);
-		player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.GREEN + "You have been given a " + crate.getName(true) + ChatColor.GREEN + " crate!");
+		player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "You have been given a " + crate.getName(true) + ChatColor.GREEN + " crate!");
 	}
 
 	@Deprecated
-	public static ItemStack stringToItemstackOld(String i) {
+	public ItemStack stringToItemstackOld(String i) {
 		String[] args = i.split(":", -1);
 		if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
 			/** Commands */
@@ -246,7 +251,7 @@ public class CrateHandler {
 		return null;
 	}
 
-	public static ItemStack stringToItemstack(String i, Player player, boolean isWin) {
+	public ItemStack stringToItemstack(String i, Player player, boolean isWin) {
 		try {
 			String[] args = i.split(":", -1);
 			if (args.length >= 2 && args[0].equalsIgnoreCase("command")) {
@@ -351,7 +356,7 @@ public class CrateHandler {
 		}
 	}
 
-	public static String itemstackToString(ItemStack itemStack) {
+	public String itemstackToString(ItemStack itemStack) {
 		if (itemStack == null || itemStack.getType() == Material.AIR)
 			return null;
 
@@ -388,40 +393,40 @@ public class CrateHandler {
 		return finalString;
 	}
 
-	public static HashMap<UUID, Inventory> getOpenings() {
+	public HashMap<UUID, Inventory> getOpenings() {
 		return openings;
 	}
 
-	public static boolean hasOpening(UUID uuid) {
+	public boolean hasOpening(UUID uuid) {
 		return getOpening(uuid) != null;
 	}
 
-	public static Inventory getOpening(UUID uuid) {
+	public Inventory getOpening(UUID uuid) {
 		if (openings.containsKey(uuid))
 			return openings.get(uuid);
 		return null;
 	}
 
-	public static void addOpening(UUID uuid, Inventory inventory) {
+	public void addOpening(UUID uuid, Inventory inventory) {
 		openings.put(uuid, inventory);
 	}
 
-	public static void removeOpening(UUID uuid) {
+	public void removeOpening(UUID uuid) {
 		if (hasOpening(uuid))
 			openings.remove(uuid);
 	}
 
-	public static HashMap<UUID, HashMap<String, Integer>> getPendingKeys() {
+	public HashMap<UUID, HashMap<String, Integer>> getPendingKeys() {
 		return pendingKeys;
 	}
 
-	public static HashMap<String, Integer> getPendingKey(UUID uuid) {
+	public HashMap<String, Integer> getPendingKey(UUID uuid) {
 		if (!hasPendingKeys(uuid))
 			return null;
 		return pendingKeys.get(uuid);
 	}
 
-	public static boolean hasPendingKeys(UUID uuid) {
+	public boolean hasPendingKeys(UUID uuid) {
 		return pendingKeys.containsKey(uuid);
 	}
 

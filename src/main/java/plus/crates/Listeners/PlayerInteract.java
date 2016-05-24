@@ -14,22 +14,25 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Events.CrateOpenEvent;
 import plus.crates.Events.CratePreviewEvent;
-import plus.crates.Handlers.CrateHandler;
-import plus.crates.Handlers.MessageHandler;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerInteract implements Listener {
-	HashMap<String, Long> lastOpended = new HashMap<String, Long>();
+	private CratesPlus cratesPlus;
+	private HashMap<String, Long> lastOpended = new HashMap<String, Long>();
+
+	public PlayerInteract(CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR)
 			return;
-		ItemStack item = CratesPlus.version_util.getItemInPlayersHand(player);
-		ItemStack itemOff = CratesPlus.version_util.getItemInPlayersOffHand(player);
+		ItemStack item = cratesPlus.getVersion_util().getItemInPlayersHand(player);
+		ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
 
 		String crateType;
 		if (event.getClickedBlock().getMetadata("CrateType") == null || event.getClickedBlock().getMetadata("CrateType").isEmpty()) {
@@ -45,15 +48,15 @@ public class PlayerInteract implements Listener {
 			crateType = event.getClickedBlock().getMetadata("CrateType").get(0).asString();
 		}
 
-		if (!CratesPlus.getPlugin().getConfig().isSet("Crates." + crateType)) {
+		if (!cratesPlus.getConfig().isSet("Crates." + crateType)) {
 			return;
 		}
 
-		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 
 		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
 			event.setCancelled(true);
-			player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Crate No Permission", player, crate, null));
+			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate No Permission", player, crate, null));
 			return;
 		}
 		String title = crate.getKey().getName();
@@ -61,7 +64,7 @@ public class PlayerInteract implements Listener {
 			if (event.getPlayer().isSneaking())
 				return;
 			/** Do preview */
-			CratePreviewEvent cratePreviewEvent = new CratePreviewEvent(player, crateType);
+			CratePreviewEvent cratePreviewEvent = new CratePreviewEvent(player, crateType, cratesPlus);
 			if (!cratePreviewEvent.isCanceled())
 				cratePreviewEvent.doEvent();
 		} else {
@@ -71,8 +74,8 @@ public class PlayerInteract implements Listener {
 				usingOffHand = true;
 			}
 
-			if (CrateHandler.hasOpening(player.getUniqueId())) {
-				player.openInventory(CrateHandler.getOpening(player.getUniqueId()));
+			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) {
+				player.openInventory(cratesPlus.getCrateHandler().getOpening(player.getUniqueId()));
 				event.setCancelled(true);
 				return;
 			}
@@ -81,14 +84,14 @@ public class PlayerInteract implements Listener {
 				event.setCancelled(true);
 
 				if (player.getInventory().firstEmpty() == -1) {
-					player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a Crate while your inventory is full");
+					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a Crate while your inventory is full");
 					return;
 				}
 
-				if (CratesPlus.getConfigHandler().getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + CratesPlus.getConfigHandler().getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
-					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + CratesPlus.getConfigHandler().getCooldown();
+				if (cratesPlus.getConfigHandler().getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
+					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getCooldown();
 					long remaining = whenCooldownEnds - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-					player.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
+					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
 					return;
 				}
 
@@ -98,13 +101,13 @@ public class PlayerInteract implements Listener {
 					item.setAmount(item.getAmount() - 1);
 				} else {
 					if (usingOffHand) {
-						CratesPlus.version_util.removeItemInOffHand(player);
+						cratesPlus.getVersion_util().removeItemInOffHand(player);
 					} else {
 						player.setItemInHand(null);
 					}
 				}
 
-				CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType);
+				CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType, event.getClickedBlock().getLocation(), cratesPlus);
 				if (!crateOpenEvent.isCanceled()) {
 					Sound sound;
 					try {
@@ -120,7 +123,7 @@ public class PlayerInteract implements Listener {
 					crateOpenEvent.doEvent();
 				}
 			} else {
-				player.sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Crate Open Without Key", player, crate, null));
+				player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate Open Without Key", player, crate, null));
 				if (crate.getKnockback() != 0) {
 					player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
 				}

@@ -2,6 +2,7 @@ package plus.crates.Handlers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import plus.crates.Crate;
+import plus.crates.CratesPlus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ public class ConfigHandler {
 	public boolean doGui = true;
 	public int crateGUITime = 10;
 
-	public ConfigHandler(FileConfiguration config) {
+	public ConfigHandler(FileConfiguration config, CratesPlus cratesPlus) {
 		// Load configuration
 		if (config.isSet("Cooldown"))
 			setCooldown(config.getInt("Cooldown"));
@@ -22,7 +23,7 @@ public class ConfigHandler {
 		// Register Crates
 		if (config.isSet("Crates")) {
 			for (String crate : config.getConfigurationSection("Crates").getKeys(false)) {
-				addCrate(crate.toLowerCase(), new Crate(crate));
+				addCrate(crate.toLowerCase(), new Crate(crate, cratesPlus));
 			}
 		}
 

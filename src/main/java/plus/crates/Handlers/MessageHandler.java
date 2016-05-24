@@ -7,17 +7,22 @@ import plus.crates.CratesPlus;
 import plus.crates.Winning;
 
 public class MessageHandler {
+	private CratesPlus cratesPlus;
 
-	public static String getMessage(String messageName, Player player, Crate crate, Winning winning) {
-		if (!CratesPlus.messagesConfig.isSet(messageName))
+	public MessageHandler(CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
+	}
+
+	public String getMessage(String messageName, Player player, Crate crate, Winning winning) {
+		if (!cratesPlus.getMessagesConfig().isSet(messageName))
 			return null;
-		String message = CratesPlus.messagesConfig.getString(messageName);
+		String message = cratesPlus.getMessagesConfig().getString(messageName);
 		message = doPlaceholders(message, player, crate, winning);
 		message = ChatColor.translateAlternateColorCodes('&', message);
 		return message;
 	}
 
-	public static String doPlaceholders(String message, Player player, Crate crate, Winning winning) {
+	public String doPlaceholders(String message, Player player, Crate crate, Winning winning) {
 		message = ChatColor.translateAlternateColorCodes('&', message);
 		if (player != null)
 			message = message.replaceAll("%name%", player.getName()).replaceAll("%displayname%", player.getDisplayName()).replaceAll("%uuid%", player.getUniqueId().toString());

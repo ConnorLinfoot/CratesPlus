@@ -8,7 +8,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import plus.crates.Handlers.MessageHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Winning {
+	private CratesPlus cratesPlus;
 	private Crate crate;
 	private boolean valid = false;
 	private boolean command = false;
@@ -26,9 +26,10 @@ public class Winning {
 	private List<String> commands = new ArrayList<>();
 	private List<String> lore = new ArrayList<>();
 
-	public Winning(Crate crate, String path) {
+	public Winning(Crate crate, String path, CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
 		this.crate = crate;
-		FileConfiguration config = CratesPlus.getPlugin().getConfig();
+		FileConfiguration config = cratesPlus.getConfig();
 		if (!config.isSet(path))
 			return;
 
@@ -161,7 +162,7 @@ public class Winning {
 		if (percentage > 0 && !crate.isHidePercentages()) {
 			// Percentage
 			lore.add(ChatColor.LIGHT_PURPLE + "");
-			lore.add(MessageHandler.getMessage("Chance Message", null, crate, this));
+			lore.add(cratesPlus.getMessageHandler().getMessage("Chance Message", null, crate, this));
 		}
 		previewItemStackItemMeta.setLore(lore);
 		previewItemStack.setItemMeta(previewItemStackItemMeta);
@@ -184,19 +185,37 @@ public class Winning {
 		return winningItemStack;
 	}
 
-	public void runWin(Player player) {
-		if (isCommand() && commands.size() > 0) {
-			for (String command : commands) {
-				command = command.replaceAll("%name%", player.getName());
-				command = command.replaceAll("%uuid%", player.getUniqueId().toString());
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+	public void runWin(final Player player) {
+		final Winning winning = this;
+		Bukkit.getScheduler().runTask(cratesPlus, new Runnable() {
+			@Override
+			public void run() {
+				if (isCommand() && getCommands().size() > 0) {
+					for (String command : getCommands()) {
+						command = command.replaceAll("%name%", player.getName());
+						command = command.replaceAll("%uuid%", player.getUniqueId().toString());
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+					}
+				} else if (!isCommand()) {
+					HashMap<Integer, ItemStack> left = player.getInventory().addItem(winning.getWinningItemStack());
+					for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+						player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
+					}
+				}
+
+				/** Do broadcast */
+				if (crate.isBroadcast()) {
+					Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+					Bukkit.broadcastMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Broadcast", player, crate, winning));
+					Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+				}
+
+				/** Spawn firework */
+				if (crate.isFirework()) {
+					cratesPlus.getCrateHandler().spawnFirework(player.getLocation());
+				}
 			}
-		} else if (!isCommand()) {
-			HashMap<Integer, ItemStack> left = player.getInventory().addItem(this.getWinningItemStack());
-			for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
-				player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
-			}
-		}
+		});
 	}
 
 	public boolean isCommand() {

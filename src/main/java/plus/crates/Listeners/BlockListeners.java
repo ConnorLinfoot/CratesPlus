@@ -16,28 +16,32 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
-import plus.crates.Handlers.MessageHandler;
 import plus.crates.Key;
 
 import java.util.Map;
 
 public class BlockListeners implements Listener {
+	private CratesPlus cratesPlus;
+
+	public BlockListeners(CratesPlus cratesPlus) {
+		this.cratesPlus = cratesPlus;
+	}
 
 	@EventHandler(ignoreCancelled = true)
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if (!CratesPlus.getPlugin().getConfig().getBoolean("Disable Key Dropping"))
+		if (!cratesPlus.getConfig().getBoolean("Disable Key Dropping"))
 			return;
 		String title;
 		ItemStack item = event.getItemDrop().getItemStack();
 
-		for (Map.Entry<String, Crate> crate : CratesPlus.getConfigHandler().getCrates().entrySet()) {
+		for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
 			Key key = crate.getValue().getKey();
 			if (key == null)
 				continue;
 			title = key.getName();
 
 			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Cant Drop", event.getPlayer(), crate.getValue(), null));
+				event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Cant Drop", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;
 			}
@@ -49,10 +53,10 @@ public class BlockListeners implements Listener {
 	public void onBlockPlace(BlockPlaceEvent event) {
 		String title;
 		Player player = event.getPlayer();
-		ItemStack item = CratesPlus.version_util.getItemInPlayersHand(player);
-		ItemStack itemOff = CratesPlus.version_util.getItemInPlayersOffHand(player);
+		ItemStack item = cratesPlus.getVersion_util().getItemInPlayersHand(player);
+		ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
 
-		for (Map.Entry<String, Crate> crate : CratesPlus.getConfigHandler().getCrates().entrySet()) {
+		for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
 			Key key = crate.getValue().getKey();
 			if (key == null)
 				continue;
@@ -63,7 +67,7 @@ public class BlockListeners implements Listener {
 			}
 
 			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-				event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + MessageHandler.getMessage("Cant Place", event.getPlayer(), crate.getValue(), null));
+				event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Cant Place", event.getPlayer(), crate.getValue(), null));
 				event.setCancelled(true);
 				return;
 			}
@@ -71,7 +75,7 @@ public class BlockListeners implements Listener {
 
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("Crate!")) {
 			final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
-			final Crate crate = CratesPlus.getConfigHandler().getCrates().get(ChatColor.stripColor(crateType).toLowerCase());
+			final Crate crate = cratesPlus.getConfigHandler().getCrates().get(ChatColor.stripColor(crateType).toLowerCase());
 			Location location = event.getBlock().getLocation();
 			crate.addLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ(), location);
 			crate.addToConfig(location);
@@ -124,7 +128,7 @@ public class BlockListeners implements Listener {
 
 				@Override
 				public Plugin getOwningPlugin() {
-					return CratesPlus.getPlugin();
+					return cratesPlus;
 				}
 
 				@Override
@@ -134,7 +138,7 @@ public class BlockListeners implements Listener {
 			});
 
 			Location location1 = location.getBlock().getLocation().add(0.5, 0.5, 0.5);
-			crate.loadHolograms(location.getBlock().getLocation(), location1);
+			crate.loadHolograms(location1);
 		}
 	}
 
@@ -145,19 +149,19 @@ public class BlockListeners implements Listener {
 			return;
 		}
 		String crateType = event.getBlock().getMetadata("CrateType").get(0).asString();
-		Crate crate = CratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		Location location = event.getBlock().getLocation();
 
-		if (event.getPlayer().isSneaking() && (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
-			event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You do not have permission to remove this crate");
+		if (event.getPlayer().isSneaking() && (cratesPlus.getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
+			event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You do not have permission to remove this crate");
 			event.setCancelled(true);
 			return;
 		} else if (!event.getPlayer().isSneaking()) {
-			event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Sneak to break crates");
+			event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Sneak to break crates");
 			event.setCancelled(true);
 			return;
 		}
-		location.getBlock().removeMetadata("CrateType", CratesPlus.getPlugin());
+		location.getBlock().removeMetadata("CrateType", cratesPlus);
 		crate.removeFromConfig(location);
 		crate.removeHolograms(location.getBlock().getLocation());
 	}
@@ -168,12 +172,12 @@ public class BlockListeners implements Listener {
 			if (chest.getInventory().getTitle() != null && chest.getInventory().getTitle().contains("Crate!")) {
 				Location location = chest.getLocation();
 
-				if (event.getPlayer().isSneaking() && (CratesPlus.getPlugin().getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
-					event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "You do not have permission to remove this crate");
+				if (event.getPlayer().isSneaking() && (cratesPlus.getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
+					event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You do not have permission to remove this crate");
 					event.setCancelled(true);
 					return;
 				} else if (!event.getPlayer().isSneaking()) {
-					event.getPlayer().sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "Sneak to break crates");
+					event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Sneak to break crates");
 					event.setCancelled(true);
 					return;
 				}

@@ -18,9 +18,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Commands.CrateCommand;
-import plus.crates.Handlers.ConfigHandler;
-import plus.crates.Handlers.CrateHandler;
-import plus.crates.Handlers.SettingsHandler;
+import plus.crates.Handlers.*;
 import plus.crates.Listeners.*;
 import plus.crates.Utils.*;
 
@@ -28,45 +26,48 @@ import java.io.*;
 import java.util.*;
 
 public class CratesPlus extends JavaPlugin implements Listener {
-	private static CratesPlus instance;
-	private static String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
-	private static SettingsHandler settingsHandler;
-	private static MC_VERSION mc_version = MC_VERSION.OTHER;
-	public static boolean updateAvailable = false;
-	public static String updateMessage = "";
-	public static String configBackup = null;
-	public static Version_Util version_util;
-	public static File dataFile;
-	public static File messagesFile;
-	public static YamlConfiguration dataConfig;
-	public static YamlConfiguration messagesConfig;
-	private static ConfigHandler configHandler;
+	private String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
+	private String updateMessage = "";
+	private String configBackup = null;
+	private boolean updateAvailable = false;
+	private boolean useHolographicDisplays = false;
+	private File dataFile;
+	private File messagesFile;
+	private YamlConfiguration dataConfig;
+	private YamlConfiguration messagesConfig;
+	private ConfigHandler configHandler;
+	private CrateHandler crateHandler = new CrateHandler(this);
+	private MessageHandler messageHandler = new MessageHandler(this);
+	private SettingsHandler settingsHandler;
+	private MC_VERSION mc_version = MC_VERSION.OTHER;
+	private Version_Util version_util;
+	private static OpenHandler openHandler;
 
 	public enum MC_VERSION {
 		MC_1_7, MC_1_8, MC_1_9, OTHER
 	}
 
 	public void onEnable() {
-		instance = this;
 		Server server = getServer();
 
 		if (server.getBukkitVersion().contains("1.9")) {
 			mc_version = MC_VERSION.MC_1_9;
-			version_util = new Version_1_9();
-		} else if (server.getBukkitVersion().contains("1.8")) {
-			mc_version = MC_VERSION.MC_1_8;
-			version_util = new Version_Util();
-//		} else if (server.getBukkitVersion().contains("1.7")) { // TODO, 1.7 Support...
-//			getLogger().warning("CratesPlus not NOT fully support 1.7, if you have issues please report them but I may not look into it!");
-//			mc_version = MC_VERSION.MC_1_7;
-//			version_util = new Version_Util();
+			version_util = new Version_1_9(this);
+		} else if (server.getBukkitVersion().contains("1.8") || server.getBukkitVersion().contains("1.7")) {
+			if (server.getBukkitVersion().contains("1.7")) {
+				mc_version = MC_VERSION.MC_1_7;
+				getLogger().warning("CratesPlus does NOT fully support 1.7, if you have issues please report them but I may not look into it!");
+			} else {
+				mc_version = MC_VERSION.MC_1_8;
+			}
+			version_util = new Version_Util(this);
 		} else {
 			getLogger().severe("CratesPlus does NOT support \"" + server.getBukkitVersion() + "\" if you believe this is an error please let me know!");
 			if (!getConfig().isSet("Ignore Version") || !getConfig().getBoolean("Ignore Version")) { // People should only ignore this in the case of an error, doing an ignore on a unsupported version could break something
 				setEnabled(false);
 				return;
 			}
-			version_util = new Version_Util(); // Use the 1.7/1.8 util? Probably has a lower chance of breaking
+			version_util = new Version_Util(this); // Use the 1.7/1.8 util? Probably has a lower chance of breaking
 		}
 
 		final ConsoleCommandSender console = server.getConsoleSender();
@@ -94,7 +95,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
-		configHandler = new ConfigHandler(getConfig());
+		useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+
+		configHandler = new ConfigHandler(getConfig(), this);
 
 		// Check data.yml exists, if not create it!
 		dataFile = new File(getDataFolder(), "data.yml");
@@ -114,8 +117,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				InputStream inputStream = getResource("messages.yml");
 				OutputStream outputStream = new FileOutputStream(messagesFile);
 				ByteStreams.copy(inputStream, outputStream);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -138,28 +139,22 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 
 		// Do Prefix
-		pluginPrefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.Prefix")) + " " + ChatColor.RESET;
+		pluginPrefix = ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("Prefix")) + " " + ChatColor.RESET;
 
 		// Register /crate command
-		Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand());
+		Bukkit.getPluginCommand("crate").setExecutor(new CrateCommand(this));
 
 		// Register Events
-		Bukkit.getPluginManager().registerEvents(new BlockListeners(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
+		Bukkit.getPluginManager().registerEvents(new BlockListeners(this), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
 		Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
-		Bukkit.getPluginManager().registerEvents(new SettingsListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerInteract(), this);
-		Bukkit.getPluginManager().registerEvents(new HologramListeners(), this);
+		Bukkit.getPluginManager().registerEvents(new SettingsListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteract(this), this);
+		Bukkit.getPluginManager().registerEvents(new HologramListeners(this), this);
 
-		if (getConfig().getBoolean("Update Checks")) {
-			getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
-				public void run() {
-					checkUpdate(console);
-				}
-			}, 10L);
-		}
+		openHandler = new OpenHandler(this);
 
-		settingsHandler = new SettingsHandler();
+		settingsHandler = new SettingsHandler(this);
 
 		loadMetaData();
 
@@ -169,6 +164,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			console.sendMessage(ChatColor.RED + "We advise that you do NOT run this on a production server!");
 		}
 
+		if (useHolographicDisplays) {
+			console.sendMessage(ChatColor.GREEN + "HolographicDisplays was found, hooking in!");
+		}
+
 		if (configBackup != null && Bukkit.getOnlinePlayers().size() > 0) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				if (player.hasPermission("cratesplus.admin")) {
@@ -176,6 +175,14 @@ public class CratesPlus extends JavaPlugin implements Listener {
 					configBackup = null;
 				}
 			}
+		}
+
+		if (getConfig().getBoolean("Update Checks")) {
+			getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+				public void run() {
+					checkUpdate(console);
+				}
+			}, 10L);
 		}
 	}
 
@@ -211,7 +218,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	}
 
 	private String backupConfig() {
-		File file = new File("plugins/CratesPlus/config.yml");
+		File file = new File(getDataFolder(), "config.yml");
 		if (!file.exists())
 			return null;
 		LineIterator it;
@@ -319,13 +326,13 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
 			List<?> items = getConfig().getList("Crates." + crate + ".Items");
-			List<String> newItems = new ArrayList<String>();
+			List<String> newItems = new ArrayList<>();
 			for (Object object : items) {
 				String i = object.toString();
 				if (i.toUpperCase().contains("COMMAND:")) {
 					newItems.add(i);
 				} else {
-					String newi = CrateHandler.itemstackToString(CrateHandler.stringToItemstackOld(i));
+					String newi = getCrateHandler().itemstackToString(getCrateHandler().stringToItemstackOld(i));
 					newItems.add(newi);
 				}
 			}
@@ -359,7 +366,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			for (Object object : items) {
 				String i = object.toString();
 				if (i.toUpperCase().startsWith("COMMAND:")) {
-					ItemStack itemStack = CrateHandler.stringToItemstackOld(i);
+					ItemStack itemStack = getCrateHandler().stringToItemstackOld(i);
 					if (itemStack == null)
 						return;
 
@@ -389,7 +396,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 					getConfig().set("Crates." + name + ".Items", null);
 				} else {
-					ItemStack itemStack = CrateHandler.stringToItemstackOld(i);
+					ItemStack itemStack = getCrateHandler().stringToItemstackOld(i);
 					if (itemStack == null)
 						return;
 
@@ -478,10 +485,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 	}
 
-	public static CratesPlus getPlugin() {
-		return instance;
-	}
-
 	private void checkUpdate(final ConsoleCommandSender console) {
 		String updateBranch = getConfig().getString("Update Branch");
 
@@ -565,17 +568,17 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 	}
 
-	public static void reloadPlugin() {
-		CratesPlus.getPlugin().reloadConfig();
+	public void reloadPlugin() {
+		reloadConfig();
 
 		// Do Prefix
 		pluginPrefix = ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("Prefix")) + " " + ChatColor.RESET;
 
 		// Reload Configuration
-		configHandler = new ConfigHandler(CratesPlus.getPlugin().getConfig());
+		configHandler = new ConfigHandler(getConfig(), this);
 
 		// Settings Handler
-		settingsHandler = new SettingsHandler();
+		settingsHandler = new SettingsHandler(this);
 
 	}
 
@@ -606,7 +609,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				if (block == null)
 					continue;
 				Location location1 = locationObj.getBlock().getLocation().add(0.5, 0.5, 0.5);
-				crate.loadHolograms(locationObj.getBlock().getLocation(), location1);
+				crate.loadHolograms(location1);
+				final CratesPlus cratesPlus = this;
 				block.setMetadata("CrateType", new MetadataValue() {
 					@Override
 					public Object value() {
@@ -655,7 +659,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 					@Override
 					public Plugin getOwningPlugin() {
-						return CratesPlus.getPlugin();
+						return cratesPlus;
 					}
 
 					@Override
@@ -682,20 +686,72 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 	}
 
-	public static SettingsHandler getSettingsHandler() {
+	public SettingsHandler getSettingsHandler() {
 		return settingsHandler;
 	}
 
-	public static MC_VERSION getMc_version() {
+	public MC_VERSION getMc_version() {
 		return mc_version;
 	}
 
-	public static String getPluginPrefix() {
+	public String getPluginPrefix() {
 		return pluginPrefix;
 	}
 
-	public static ConfigHandler getConfigHandler() {
+	public ConfigHandler getConfigHandler() {
 		return configHandler;
+	}
+
+	public boolean useHolographicDisplays() {
+		return useHolographicDisplays;
+	}
+
+	public YamlConfiguration getDataConfig() {
+		return dataConfig;
+	}
+
+	public File getDataFile() {
+		return dataFile;
+	}
+
+	public String getUpdateMessage() {
+		return updateMessage;
+	}
+
+	public String getConfigBackup() {
+		return configBackup;
+	}
+
+	public void setConfigBackup(String configBackup) {
+		this.configBackup = configBackup;
+	}
+
+	public Version_Util getVersion_util() {
+		return version_util;
+	}
+
+	public File getMessagesFile() {
+		return messagesFile;
+	}
+
+	public YamlConfiguration getMessagesConfig() {
+		return messagesConfig;
+	}
+
+	public boolean isUpdateAvailable() {
+		return updateAvailable;
+	}
+
+	public MessageHandler getMessageHandler() {
+		return messageHandler;
+	}
+
+	public CrateHandler getCrateHandler() {
+		return crateHandler;
+	}
+
+	public static OpenHandler getOpenHandler() {
+		return openHandler;
 	}
 
 }
