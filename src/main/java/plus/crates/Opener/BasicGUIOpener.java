@@ -26,13 +26,17 @@ public class BasicGUIOpener extends Opener {
 	}
 
 	@Override
-	public void doTask() {
+	public void doSetup() {
+
+	}
+
+	@Override
+	public void doOpen() {
 		Random random = new Random();
 		int max = crate.getWinnings().size() - 1;
 		int min = 0;
 		currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
 		winGUI = Bukkit.createInventory(null, 45, crate.getColor() + crate.getName() + " Win");
-		cratesPlus.getCrateHandler().addOpening(player.getUniqueId(), winGUI);
 		player.openInventory(winGUI);
 		int maxTime = cratesPlus.getConfigHandler().getCrateGUITime();
 		final int maxTimeTicks = maxTime * 10;
@@ -94,13 +98,18 @@ public class BasicGUIOpener extends Opener {
 					i++;
 				}
 				if (timer == maxTimeTicks) {
-					cratesPlus.getCrateHandler().removeOpening(player.getUniqueId());
+					finish();
 					task.cancel();
 					return;
 				}
 				timer++;
 			}
 		}, 0L, 2L);
+	}
+
+	@Override
+	public void doReopen() {
+		getPlayer().openInventory(winGUI);
 	}
 
 }

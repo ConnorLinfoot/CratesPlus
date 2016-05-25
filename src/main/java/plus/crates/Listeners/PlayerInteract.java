@@ -74,8 +74,9 @@ public class PlayerInteract implements Listener {
 				usingOffHand = true;
 			}
 
+			// TODO Make changes so this can work with the opener API
 			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) {
-				player.openInventory(cratesPlus.getCrateHandler().getOpening(player.getUniqueId()));
+				cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen();
 				event.setCancelled(true);
 				return;
 			}

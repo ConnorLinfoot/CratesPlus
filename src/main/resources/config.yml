@@ -23,9 +23,13 @@ Metrics: true
 
 Crates:
 
-# Settings for the Crate opening GUI (Time is seconds)
-Use GUI: true
+# Opener which is used by default
+Default Opener: BasicGUI
+
+# Crate GUI time if using "BasicGUI" opener.
 GUI Time: 10
+
+# Cooldown between opening crates
 Cooldown: 5
 
 # If true it will stop players without the admin perm breaking crates

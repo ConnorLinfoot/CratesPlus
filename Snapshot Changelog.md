@@ -1,5 +1,12 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 4** *(May 25 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/492/artifact/target/CratesPlus-4.1.0-SNAPSHOT-4.jar)
+- "Use GUI" config option has been removed for the new "Default Opener" option
+- Crates can now have an "Opener" per crate in their config.
+- Openers can now access their own configuration file for storing options.
+- Removed methods for crateName in CrateOpenEvent and CratePreviewEvent.
+- Other changes to the Opener API that'll break Openers built for snapshot 3. For instance, openings must now run the finish method once they've done with their opening.
+
 **Snapshot 3** *(May 24 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/490/artifact/target/CratesPlus-4.1.0-SNAPSHOT-3.jar)
 - Added support for Holographic displays if found instead of the built in hologram handler. Please test this and report bugs.
 - Thanks to the above the plugin *should* now work with 1.7.

@@ -5,20 +5,20 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Key;
+import plus.crates.Opener.Opener;
 
 import java.util.*;
 
 public class CrateHandler {
 	private CratesPlus cratesPlus;
 	private Random rand = new Random();
-	private HashMap<UUID, Inventory> openings = new HashMap<>();
+	private HashMap<UUID, Opener> openings = new HashMap<>();
 	private HashMap<UUID, HashMap<String, Integer>> pendingKeys = new HashMap<>();
 
 	public CrateHandler(CratesPlus cratesPlus) {
@@ -147,20 +147,20 @@ public class CrateHandler {
 
 		//If the crate does not exist, tell the user
 		//This also prevents nullpointerexceptions beeing thrown
-		if(crate == null) {
+		if (crate == null) {
 			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
 			return;
 		}
 
 		Key key = crate.getKey();
-		
+
 		//Show error message about the config file missing a Crates.<crateType>.Key field
-		if(key == null) {
+		if (key == null) {
 			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate type: '" + crateType + "'");
 			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Make sure your config file is correct");
 			return;
 		}
-		
+
 		//if (player.getInventory().firstEmpty() == -1) {
 		//	// Add key to claim
 		//	HashMap<String, Integer> keys = new HashMap<String, Integer>();
@@ -393,7 +393,7 @@ public class CrateHandler {
 		return finalString;
 	}
 
-	public HashMap<UUID, Inventory> getOpenings() {
+	public HashMap<UUID, Opener> getOpenings() {
 		return openings;
 	}
 
@@ -401,14 +401,14 @@ public class CrateHandler {
 		return getOpening(uuid) != null;
 	}
 
-	public Inventory getOpening(UUID uuid) {
+	public Opener getOpening(UUID uuid) {
 		if (openings.containsKey(uuid))
 			return openings.get(uuid);
 		return null;
 	}
 
-	public void addOpening(UUID uuid, Inventory inventory) {
-		openings.put(uuid, inventory);
+	public void addOpening(UUID uuid, Opener opener) {
+		openings.put(uuid, opener);
 	}
 
 	public void removeOpening(UUID uuid) {

@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
+import plus.crates.Opener.Opener;
 import plus.crates.Utils.ReflectionUtil;
 import plus.crates.Utils.SignInputHandler;
 
@@ -50,22 +51,28 @@ public class CrateCommand implements CommandExecutor {
 		if (args.length >= 1) {
 			switch (args[0].toLowerCase()) {
 				default:
+					sender.sendMessage(ChatColor.RED + "Unknown arg");
 					break;
 				case "opener":
 					if (args.length > 1) {
 						if (CratesPlus.getOpenHandler().openerExist(args[1])) {
-							CratesPlus.getOpenHandler().setEnabledOpener(args[1]);
+							CratesPlus.getOpenHandler().setDefaultOpener(args[1]);
 							sender.sendMessage(ChatColor.GREEN + "Set opener to " + args[1]);
 						} else {
 							sender.sendMessage(ChatColor.RED + "No opener is registered with that name");
 						}
 					} else {
-						// TODO Show list of registered openers here!
+						sender.sendMessage(ChatColor.GOLD + "Registered CratesPlus Openers:");
+						sender.sendMessage(ChatColor.AQUA + "Name" + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Plugin");
+						sender.sendMessage(ChatColor.AQUA + "");
+						for (Map.Entry<String, Opener> map : CratesPlus.getOpenHandler().getRegistered().entrySet()) {
+							sender.sendMessage(ChatColor.AQUA + map.getKey() + ChatColor.GRAY + " | " + ChatColor.YELLOW + map.getValue().getPlugin().getDescription().getName());
+						}
 					}
 					break;
 				case "reload":
 					cratesPlus.reloadPlugin();
-					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully tested and may not work correctly");
+					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully supported and may not work correctly");
 					break;
 				case "settings":
 					if (!(sender instanceof Player)) {

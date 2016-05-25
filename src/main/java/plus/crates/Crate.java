@@ -29,6 +29,7 @@ public class Crate {
 	private HashMap<String, Location> locations = new HashMap<>();
 	private String permission = null;
 	private HashMap<Location, Hologram> holograms = new HashMap<>();
+	private String opener = null;
 
 	public Crate(String name, CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
@@ -49,8 +50,10 @@ public class Crate {
 			this.knockback = cratesPlus.getConfig().getDouble("Crates." + name + ".Knockback");
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Permission"))
 			this.permission = cratesPlus.getConfig().getString("Crates." + name + ".Permission");
-		if (cratesPlus.getConfig().isSet("Crates." + name + ".percentages"))
+		if (cratesPlus.getConfig().isSet("Crates." + name + ".Hide Percentages"))
 			this.hidePercentages = cratesPlus.getConfig().getBoolean("Crates." + name + ".Hide Percentages");
+		if (cratesPlus.getConfig().isSet("Crates." + name + ".Opener"))
+			this.opener = cratesPlus.getConfig().getString("Crates." + name + ".Opener");
 
 		if (!cratesPlus.getConfig().isSet("Crates." + name + ".Key") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Item") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Name") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Enchanted"))
 			return;
@@ -237,6 +240,10 @@ public class Crate {
 			holograms.get(location).destroyAll();
 			holograms.remove(location);
 		}
+	}
+
+	public String getOpener() {
+		return opener;
 	}
 
 }

@@ -9,8 +9,19 @@ public class NoGUIOpener extends Opener {
 	}
 
 	@Override
-	public void doTask() {
+	public void doSetup() {
+
+	}
+
+	@Override
+	public void doOpen() {
 		getWinning().runWin(getPlayer());
+		finish();
+	}
+
+	@Override
+	public void doReopen() {
+
 	}
 
 }

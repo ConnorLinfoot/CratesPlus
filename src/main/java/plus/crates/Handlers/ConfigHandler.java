@@ -12,8 +12,8 @@ public class ConfigHandler {
 	private HashMap<String, Crate> crates = new HashMap<>();
 	private List<String> defaultHologramText;
 	private HashMap<String, List<String>> holograms = new HashMap<>();
-	public boolean doGui = true;
-	public int crateGUITime = 10;
+	private String defaultOpener = "NoGUI";
+	private int crateGUITime = 10;
 
 	public ConfigHandler(FileConfiguration config, CratesPlus cratesPlus) {
 		// Load configuration
@@ -28,19 +28,26 @@ public class ConfigHandler {
 		}
 
 		// Crate GUI
-		if (config.isSet("Use GUI"))
-			doGui = config.getBoolean("Use GUI");
+		if (config.isSet("Use GUI")) {
+			config.set("Default Opener", "BasicGUI");
+			config.set("Use GUI", null);
+			cratesPlus.saveConfig();
+		}
 
-		// Crate GUI Time
+		// Default Opener
+		if (config.isSet("Default Opener"))
+			defaultOpener = config.getString("Default Opener");
+
+		// Crate GUI Time // TODO Move into BasicGUI opener config instead
 		if (config.isSet("GUI Time"))
 			crateGUITime = config.getInt("GUI Time");
 
 		// Crate Holograms
 		defaultHologramText = config.getStringList("Default Hologram Text");
-		
+
 		for (String crate : crates.keySet()) {
-			List<String> crateSpecificHologram = config.getStringList("Crates."+crate+".Hologram Text");
-			addHologram(crate.toLowerCase(), (config.isSet("Crates."+crate+".Hologram Text")) ? crateSpecificHologram : defaultHologramText);
+			List<String> crateSpecificHologram = config.getStringList("Crates." + crate + ".Hologram Text");
+			addHologram(crate.toLowerCase(), (config.isSet("Crates." + crate + ".Hologram Text")) ? crateSpecificHologram : defaultHologramText);
 		}
 	}
 
@@ -73,7 +80,7 @@ public class ConfigHandler {
 	public HashMap<String, List<String>> getHolograms() {
 		return this.holograms;
 	}
-	
+
 	public List<String> getHologramsForCrate(String crateType) {
 		return this.holograms.get(crateType.toLowerCase());
 	}
@@ -82,20 +89,12 @@ public class ConfigHandler {
 		this.holograms.put(name, hologramLines);
 	}
 
-	public boolean isDoGui() {
-		return doGui;
-	}
-
-	public void setDoGui(boolean doGui) {
-		this.doGui = doGui;
-	}
-
 	public int getCrateGUITime() {
 		return crateGUITime;
 	}
 
-	public void setCrateGUITime(int crateGUITime) {
-		this.crateGUITime = crateGUITime;
+	public String getDefaultOpener() {
+		return defaultOpener;
 	}
 
 }

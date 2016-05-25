@@ -15,14 +15,12 @@ import java.util.List;
 public class CratePreviewEvent extends Event {
 	private CratesPlus cratesPlus;
 	private Player player;
-	private String crateName;
 	private Crate crate;
 	private boolean canceled = false;
 
 	public CratePreviewEvent(Player player, String crateName, CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
 		this.player = player;
-		this.crateName = crateName;
 		this.crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 	}
 
@@ -71,12 +69,8 @@ public class CratePreviewEvent extends Event {
 		return this.player;
 	}
 
-	public void setCrateName(String crateName) {
-		this.crateName = crateName;
-	}
-
-	public String getCrateName() {
-		return this.crateName;
+	public CratesPlus getCratesPlus() {
+		return cratesPlus;
 	}
 
 }

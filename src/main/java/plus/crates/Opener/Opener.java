@@ -2,12 +2,16 @@ package plus.crates.Opener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Winning;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Opener {
@@ -17,6 +21,7 @@ public abstract class Opener {
 	protected Crate crate;
 	protected Location blockLocation;
 	protected boolean async = false;
+	protected boolean running = false;
 
 	public Opener(Plugin plugin, String name) {
 		this(plugin, name, false);
@@ -32,10 +37,12 @@ public abstract class Opener {
 		this.player = player;
 		this.crate = crate;
 		this.blockLocation = blockLocation;
+		this.running = true;
+		CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().addOpening(player.getUniqueId(), this);
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				doTask();
+				doOpen();
 			}
 		};
 		if (isAsync()) {
@@ -45,6 +52,10 @@ public abstract class Opener {
 			// Run as a non async task
 			Bukkit.getScheduler().runTask(plugin, runnable);
 		}
+	}
+
+	public Plugin getPlugin() {
+		return plugin;
 	}
 
 	public String getName() {
@@ -100,6 +111,48 @@ public abstract class Opener {
 		return winning;
 	}
 
-	protected abstract void doTask();
+	public File getOpenerConfigFile() {
+		File openersDir = new File(CratesPlus.getOpenHandler().getCratesPlus().getDataFolder(), "openers");
+		if (!openersDir.exists())
+			if (!openersDir.mkdirs())
+				return null;
+		File configurationFile = new File(openersDir, getName() + ".yml");
+		if (!configurationFile.exists())
+			try {
+				if (!configurationFile.createNewFile())
+					return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		return configurationFile;
+	}
+
+	public FileConfiguration getOpenerConfig() {
+		File file = getOpenerConfigFile();
+		if (file == null)
+			return null;
+		return YamlConfiguration.loadConfiguration(file);
+	}
+
+	protected void finish() {
+		Bukkit.getScheduler().runTask(getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().removeOpening(player.getUniqueId());
+				setRunning(false);
+			}
+		});
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
+
+	public abstract void doSetup();
+
+	protected abstract void doOpen();
+
+	public abstract void doReopen();
 
 }
