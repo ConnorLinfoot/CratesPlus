@@ -1,5 +1,8 @@
 package plus.crates.Opener;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import plus.crates.Crate;
 import plus.crates.CratesPlus;
 
 public class NoGUIOpener extends Opener {
@@ -14,13 +17,13 @@ public class NoGUIOpener extends Opener {
 	}
 
 	@Override
-	public void doOpen() {
-		getWinning().runWin(getPlayer());
-		finish();
+	public void doOpen(Player player, Crate crate, Location location) {
+		getWinning(crate).runWin(player);
+		finish(player);
 	}
 
 	@Override
-	public void doReopen() {
+	public void doReopen(Player player, Crate crate, Location location) {
 
 	}
 

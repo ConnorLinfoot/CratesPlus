@@ -17,9 +17,6 @@ import java.util.ArrayList;
 public abstract class Opener {
 	protected Plugin plugin;
 	protected String name;
-	protected Player player;
-	protected Crate crate;
-	protected Location blockLocation;
 	protected boolean async = false;
 	protected boolean running = false;
 
@@ -33,16 +30,13 @@ public abstract class Opener {
 		this.async = async;
 	}
 
-	public void startOpening(Player player, Crate crate, Location blockLocation) {
-		this.player = player;
-		this.crate = crate;
-		this.blockLocation = blockLocation;
+	public void startOpening(final Player player, final Crate crate, final Location blockLocation) {
 		this.running = true;
 		CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().addOpening(player.getUniqueId(), this);
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				doOpen();
+				doOpen(player, crate, blockLocation);
 			}
 		};
 		if (isAsync()) {
@@ -62,18 +56,6 @@ public abstract class Opener {
 		return name;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public Crate getCrate() {
-		return crate;
-	}
-
-	public Location getBlockLocation() {
-		return blockLocation;
-	}
-
 	/**
 	 * @return boolean - Whether or not the task should run asynchronously
 	 */
@@ -84,7 +66,7 @@ public abstract class Opener {
 	/**
 	 * @return Winning - A random Winning object that you can then award to a player.
 	 */
-	public Winning getWinning() {
+	public Winning getWinning(Crate crate) {
 		Winning winning;
 		if (crate.getTotalPercentage() > 0) {
 			double maxPercentage = 0.0D;
@@ -135,7 +117,7 @@ public abstract class Opener {
 		return YamlConfiguration.loadConfiguration(file);
 	}
 
-	protected void finish() {
+	protected void finish(final Player player) {
 		Bukkit.getScheduler().runTask(getPlugin(), new Runnable() {
 			@Override
 			public void run() {
@@ -151,8 +133,8 @@ public abstract class Opener {
 
 	public abstract void doSetup();
 
-	protected abstract void doOpen();
+	protected abstract void doOpen(Player player, Crate crate, Location blockLocation);
 
-	public abstract void doReopen();
+	public abstract void doReopen(Player player, Crate crate, Location blockLocation);
 
 }

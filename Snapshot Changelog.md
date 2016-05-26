@@ -1,5 +1,10 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 5** *(May 26 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/494/artifact/target/CratesPlus-4.1.0-SNAPSHOT-5.jar)
+- "GUI Time" is no longer used and handled by the "BasicGUI" openers config.
+- Added "Cooldown" option per crate and renamed "Cooldown" to "Default Cooldown"
+- More major changes to the Opener API that'll once again break previous versions.
+
 **Snapshot 4** *(May 25 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/492/artifact/target/CratesPlus-4.1.0-SNAPSHOT-4.jar)
 - "Use GUI" config option has been removed for the new "Default Opener" option
 - Crates can now have an "Opener" per crate in their config.

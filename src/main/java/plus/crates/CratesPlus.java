@@ -239,252 +239,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		return PasteUtils.paste(lines);
 	}
 
-	private void convertConfigV2(ConsoleCommandSender console, String oldConfig) {
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 2...");
-
-		// Convert crate items
-		if (getConfig().isSet("Crate Items.Common")) {
-			List<String> oldCommonItems = getConfig().getStringList("Crate Items.Common");
-			getConfig().set("Crates.Common.Items", oldCommonItems);
-		}
-		if (getConfig().isSet("Crate Items.Rare")) {
-			List<String> oldRareItems = getConfig().getStringList("Crate Items.Rare");
-			getConfig().set("Crates.Rare.Items", oldRareItems);
-		}
-		if (getConfig().isSet("Crate Items.Ultra")) {
-			List<String> oldUltraItems = getConfig().getStringList("Crate Items.Ultra");
-			getConfig().set("Crates.Ultra.Items", oldUltraItems);
-		}
-
-		// Convert knockback settings
-		if (getConfig().isSet("Crate Knockback.Common")) {
-			double oldCommonKnockback = getConfig().getDouble("Crate Knockback.Common");
-			getConfig().set("Crates.Common.Knockback", oldCommonKnockback);
-		}
-		if (getConfig().isSet("Crate Knockback.Rare")) {
-			double oldRareKnockback = getConfig().getDouble("Crate Knockback.Rare");
-			getConfig().set("Crates.Rare.Knockback", oldRareKnockback);
-		}
-		if (getConfig().isSet("Crate Knockback.Ultra")) {
-			double oldUltraKnockback = getConfig().getDouble("Crate Knockback.Ultra");
-			getConfig().set("Crates.Ultra.Knockback", oldUltraKnockback);
-		}
-
-		// Convert broadcast settings
-		if (getConfig().isSet("Broadcast On Crate Open.Common")) {
-			boolean oldCommonBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Common");
-			getConfig().set("Crates.Common.Broadcast", oldCommonBroadcast);
-		}
-		if (getConfig().isSet("Broadcast On Crate Open.Rare")) {
-			boolean oldRareBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Rare");
-			getConfig().set("Crates.Rare.Broadcast", oldRareBroadcast);
-		}
-		if (getConfig().isSet("Broadcast On Crate Open.Ultra")) {
-			boolean oldUltraBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Ultra");
-			getConfig().set("Crates.Ultra.Broadcast", oldUltraBroadcast);
-		}
-
-		// Convert firework settings
-		if (getConfig().isSet("Firework On Crate Open.Common")) {
-			boolean oldCommonFirework = getConfig().getBoolean("Firework On Crate Open.Common");
-			getConfig().set("Crates.Common.Firework", oldCommonFirework);
-		}
-		if (getConfig().isSet("Firework On Crate Open.Rare")) {
-			boolean oldRareFirework = getConfig().getBoolean("Firework On Crate Open.Rare");
-			getConfig().set("Crates.Rare.Firework", oldRareFirework);
-		}
-		if (getConfig().isSet("Firework On Crate Open.Ultra")) {
-			boolean oldUltraFirework = getConfig().getBoolean("Firework On Crate Open.Ultra");
-			getConfig().set("Crates.Ultra.Firework", oldUltraFirework);
-		}
-
-		// Clear all old config
-		if (getConfig().isSet("Crate Items"))
-			getConfig().set("Crate Items", null);
-		if (getConfig().isSet("Crate Knockback"))
-			getConfig().set("Crate Knockback", null);
-		if (getConfig().isSet("Broadcast On Crate Open"))
-			getConfig().set("Broadcast On Crate Open", null);
-		if (getConfig().isSet("Firework On Crate Open"))
-			getConfig().set("Firework On Crate Open", null);
-
-		// Set config version
-		getConfig().set("Config Version", 2);
-
-		// Save config
-		saveConfig();
-
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
-		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
-			configBackup = oldConfig;
-			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
-		}
-	}
-
-	private void convertConfigV3(ConsoleCommandSender console, String oldConfig) {
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 3...");
-
-		for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
-			List<?> items = getConfig().getList("Crates." + crate + ".Items");
-			List<String> newItems = new ArrayList<>();
-			for (Object object : items) {
-				String i = object.toString();
-				if (i.toUpperCase().contains("COMMAND:")) {
-					newItems.add(i);
-				} else {
-					String newi = getCrateHandler().itemstackToString(getCrateHandler().stringToItemstackOld(i));
-					newItems.add(newi);
-				}
-			}
-			getConfig().set("Crates." + crate + ".Items", newItems);
-		}
-
-		// Remove old options
-		getConfig().set("Use Interact", null);
-		getConfig().set("Crate Previews", null);
-		getConfig().set("Crate Open GUI", null);
-
-		// Set config version
-		getConfig().set("Config Version", 3);
-
-		// Save config
-		saveConfig();
-
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
-		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
-			configBackup = oldConfig;
-			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
-		}
-	}
-
-	private void convertConfigV4(ConsoleCommandSender console, String oldConfig) {
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 4...");
-
-		int count = 1;
-		for (String name : getConfig().getConfigurationSection("Crates").getKeys(false)) {
-			List<?> items = getConfig().getList("Crates." + name + ".Items");
-			for (Object object : items) {
-				String i = object.toString();
-				if (i.toUpperCase().startsWith("COMMAND:")) {
-					ItemStack itemStack = getCrateHandler().stringToItemstackOld(i);
-					if (itemStack == null)
-						return;
-
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Type", "COMMAND");
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Type", itemStack.getType().toString());
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Data", itemStack.getData().getData());
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Amount", itemStack.getAmount());
-					if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
-						getConfig().set("Crates." + name + ".Winnings." + count + ".Name", itemStack.getItemMeta().getDisplayName());
-
-					ArrayList<String> enchantments = new ArrayList<String>();
-					for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
-						Enchantment enchantment = entry.getKey();
-						Integer level = entry.getValue();
-
-						if (level > 1) {
-							enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
-						} else {
-							enchantments.add(enchantment.getName().toUpperCase());
-						}
-					}
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Enchantments", enchantments);
-
-					ArrayList<String> commands = new ArrayList<String>();
-					commands.add(itemStack.getItemMeta().getDisplayName().replaceAll("Command: /", ""));
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Commands", commands);
-
-					getConfig().set("Crates." + name + ".Items", null);
-				} else {
-					ItemStack itemStack = getCrateHandler().stringToItemstackOld(i);
-					if (itemStack == null)
-						return;
-
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Type", "ITEM");
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Type", itemStack.getType().toString());
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Data", itemStack.getData().getData());
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Amount", itemStack.getAmount());
-					if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
-						getConfig().set("Crates." + name + ".Winnings." + count + ".Name", itemStack.getItemMeta().getDisplayName());
-
-					ArrayList<String> enchantments = new ArrayList<String>();
-					for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
-						Enchantment enchantment = entry.getKey();
-						Integer level = entry.getValue();
-
-						if (level > 1) {
-							enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
-						} else {
-							enchantments.add(enchantment.getName().toUpperCase());
-						}
-					}
-					getConfig().set("Crates." + name + ".Winnings." + count + ".Enchantments", enchantments);
-					getConfig().set("Crates." + name + ".Items", null);
-
-					count++;
-				}
-			}
-		}
-
-		// Set config version
-		getConfig().set("Config Version", 4);
-
-		// Save config
-		saveConfig();
-
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
-		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
-			configBackup = oldConfig;
-			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
-		}
-	}
-
-	private void convertConfigV5(ConsoleCommandSender console, String oldConfig) {
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 5...");
-
-		for (String name : getConfig().getConfigurationSection("Crates").getKeys(false)) {
-			getConfig().set("Crates." + name + ".Key.Item", getConfig().getString("Crate Keys.Item"));
-			getConfig().set("Crates." + name + ".Key.Name", getConfig().getString("Crate Keys.Name"));
-			getConfig().set("Crates." + name + ".Key.Enchanted", getConfig().getBoolean("Crate Keys.Enchanted"));
-		}
-
-		getConfig().set("Crate Keys", null);
-
-		// Set config version
-		getConfig().set("Config Version", 5);
-
-		// Save config
-		saveConfig();
-
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
-		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
-			configBackup = oldConfig;
-			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
-		}
-	}
-
-	private void convertConfigV6(ConsoleCommandSender console, String oldConfig) {
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 6...");
-
-		if (getConfig().isSet("Hologram Text")) {
-			List<String> oldHologramList = getConfig().getStringList("Hologram Text");
-			getConfig().set("Default Hologram Text", oldHologramList);
-			getConfig().set("Hologram Text", null);
-		}
-
-		// Set config version
-		getConfig().set("Config Version", 6);
-
-		// Save config
-		saveConfig();
-
-		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
-		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
-			configBackup = oldConfig;
-			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
-		}
-	}
-
 	private void checkUpdate(final ConsoleCommandSender console) {
 		String updateBranch = getConfig().getString("Update Branch");
 
@@ -752,6 +506,252 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 	public static OpenHandler getOpenHandler() {
 		return openHandler;
+	}
+
+	private void convertConfigV2(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 2...");
+
+		// Convert crate items
+		if (getConfig().isSet("Crate Items.Common")) {
+			List<String> oldCommonItems = getConfig().getStringList("Crate Items.Common");
+			getConfig().set("Crates.Common.Items", oldCommonItems);
+		}
+		if (getConfig().isSet("Crate Items.Rare")) {
+			List<String> oldRareItems = getConfig().getStringList("Crate Items.Rare");
+			getConfig().set("Crates.Rare.Items", oldRareItems);
+		}
+		if (getConfig().isSet("Crate Items.Ultra")) {
+			List<String> oldUltraItems = getConfig().getStringList("Crate Items.Ultra");
+			getConfig().set("Crates.Ultra.Items", oldUltraItems);
+		}
+
+		// Convert knockback settings
+		if (getConfig().isSet("Crate Knockback.Common")) {
+			double oldCommonKnockback = getConfig().getDouble("Crate Knockback.Common");
+			getConfig().set("Crates.Common.Knockback", oldCommonKnockback);
+		}
+		if (getConfig().isSet("Crate Knockback.Rare")) {
+			double oldRareKnockback = getConfig().getDouble("Crate Knockback.Rare");
+			getConfig().set("Crates.Rare.Knockback", oldRareKnockback);
+		}
+		if (getConfig().isSet("Crate Knockback.Ultra")) {
+			double oldUltraKnockback = getConfig().getDouble("Crate Knockback.Ultra");
+			getConfig().set("Crates.Ultra.Knockback", oldUltraKnockback);
+		}
+
+		// Convert broadcast settings
+		if (getConfig().isSet("Broadcast On Crate Open.Common")) {
+			boolean oldCommonBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Common");
+			getConfig().set("Crates.Common.Broadcast", oldCommonBroadcast);
+		}
+		if (getConfig().isSet("Broadcast On Crate Open.Rare")) {
+			boolean oldRareBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Rare");
+			getConfig().set("Crates.Rare.Broadcast", oldRareBroadcast);
+		}
+		if (getConfig().isSet("Broadcast On Crate Open.Ultra")) {
+			boolean oldUltraBroadcast = getConfig().getBoolean("Broadcast On Crate Open.Ultra");
+			getConfig().set("Crates.Ultra.Broadcast", oldUltraBroadcast);
+		}
+
+		// Convert firework settings
+		if (getConfig().isSet("Firework On Crate Open.Common")) {
+			boolean oldCommonFirework = getConfig().getBoolean("Firework On Crate Open.Common");
+			getConfig().set("Crates.Common.Firework", oldCommonFirework);
+		}
+		if (getConfig().isSet("Firework On Crate Open.Rare")) {
+			boolean oldRareFirework = getConfig().getBoolean("Firework On Crate Open.Rare");
+			getConfig().set("Crates.Rare.Firework", oldRareFirework);
+		}
+		if (getConfig().isSet("Firework On Crate Open.Ultra")) {
+			boolean oldUltraFirework = getConfig().getBoolean("Firework On Crate Open.Ultra");
+			getConfig().set("Crates.Ultra.Firework", oldUltraFirework);
+		}
+
+		// Clear all old config
+		if (getConfig().isSet("Crate Items"))
+			getConfig().set("Crate Items", null);
+		if (getConfig().isSet("Crate Knockback"))
+			getConfig().set("Crate Knockback", null);
+		if (getConfig().isSet("Broadcast On Crate Open"))
+			getConfig().set("Broadcast On Crate Open", null);
+		if (getConfig().isSet("Firework On Crate Open"))
+			getConfig().set("Firework On Crate Open", null);
+
+		// Set config version
+		getConfig().set("Config Version", 2);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
+	}
+
+	private void convertConfigV3(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 3...");
+
+		for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+			List<?> items = getConfig().getList("Crates." + crate + ".Items");
+			List<String> newItems = new ArrayList<>();
+			for (Object object : items) {
+				String i = object.toString();
+				if (i.toUpperCase().contains("COMMAND:")) {
+					newItems.add(i);
+				} else {
+					String newi = getCrateHandler().itemstackToString(getCrateHandler().stringToItemstackOld(i));
+					newItems.add(newi);
+				}
+			}
+			getConfig().set("Crates." + crate + ".Items", newItems);
+		}
+
+		// Remove old options
+		getConfig().set("Use Interact", null);
+		getConfig().set("Crate Previews", null);
+		getConfig().set("Crate Open GUI", null);
+
+		// Set config version
+		getConfig().set("Config Version", 3);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
+	}
+
+	private void convertConfigV4(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 4...");
+
+		int count = 1;
+		for (String name : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+			List<?> items = getConfig().getList("Crates." + name + ".Items");
+			for (Object object : items) {
+				String i = object.toString();
+				if (i.toUpperCase().startsWith("COMMAND:")) {
+					ItemStack itemStack = getCrateHandler().stringToItemstackOld(i);
+					if (itemStack == null)
+						return;
+
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Type", "COMMAND");
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Type", itemStack.getType().toString());
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Data", itemStack.getData().getData());
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Amount", itemStack.getAmount());
+					if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+						getConfig().set("Crates." + name + ".Winnings." + count + ".Name", itemStack.getItemMeta().getDisplayName());
+
+					ArrayList<String> enchantments = new ArrayList<String>();
+					for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+						Enchantment enchantment = entry.getKey();
+						Integer level = entry.getValue();
+
+						if (level > 1) {
+							enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
+						} else {
+							enchantments.add(enchantment.getName().toUpperCase());
+						}
+					}
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Enchantments", enchantments);
+
+					ArrayList<String> commands = new ArrayList<String>();
+					commands.add(itemStack.getItemMeta().getDisplayName().replaceAll("Command: /", ""));
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Commands", commands);
+
+					getConfig().set("Crates." + name + ".Items", null);
+				} else {
+					ItemStack itemStack = getCrateHandler().stringToItemstackOld(i);
+					if (itemStack == null)
+						return;
+
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Type", "ITEM");
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Type", itemStack.getType().toString());
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Item Data", itemStack.getData().getData());
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Amount", itemStack.getAmount());
+					if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
+						getConfig().set("Crates." + name + ".Winnings." + count + ".Name", itemStack.getItemMeta().getDisplayName());
+
+					ArrayList<String> enchantments = new ArrayList<String>();
+					for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
+						Enchantment enchantment = entry.getKey();
+						Integer level = entry.getValue();
+
+						if (level > 1) {
+							enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
+						} else {
+							enchantments.add(enchantment.getName().toUpperCase());
+						}
+					}
+					getConfig().set("Crates." + name + ".Winnings." + count + ".Enchantments", enchantments);
+					getConfig().set("Crates." + name + ".Items", null);
+
+					count++;
+				}
+			}
+		}
+
+		// Set config version
+		getConfig().set("Config Version", 4);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
+	}
+
+	private void convertConfigV5(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 5...");
+
+		for (String name : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+			getConfig().set("Crates." + name + ".Key.Item", getConfig().getString("Crate Keys.Item"));
+			getConfig().set("Crates." + name + ".Key.Name", getConfig().getString("Crate Keys.Name"));
+			getConfig().set("Crates." + name + ".Key.Enchanted", getConfig().getBoolean("Crate Keys.Enchanted"));
+		}
+
+		getConfig().set("Crate Keys", null);
+
+		// Set config version
+		getConfig().set("Config Version", 5);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
+	}
+
+	private void convertConfigV6(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 6...");
+
+		if (getConfig().isSet("Hologram Text")) {
+			List<String> oldHologramList = getConfig().getStringList("Hologram Text");
+			getConfig().set("Default Hologram Text", oldHologramList);
+			getConfig().set("Hologram Text", null);
+		}
+
+		// Set config version
+		getConfig().set("Config Version", 6);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
 	}
 
 }

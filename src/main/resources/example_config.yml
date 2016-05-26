@@ -29,6 +29,7 @@ Crates:
     Color: GREEN
     Block: GLASS
     Preview: true
+    Cooldown: 2
     Hide Percentages: true
     Permission: cratesplus.crate.example # Permissions can be anything, it will check that the player has the permission before opening
     Key:
@@ -90,9 +91,6 @@ Crates:
 
 # Opener which is used by default
 Default Opener: BasicGUI
-
-# Crate GUI time if using "BasicGUI" opener.
-GUI Time: 10
 
 # Cooldown between opening crates
 Cooldown: 5

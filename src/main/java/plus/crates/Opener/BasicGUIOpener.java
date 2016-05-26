@@ -1,24 +1,26 @@
 package plus.crates.Opener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scheduler.BukkitRunnable;
+import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Winning;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 public class BasicGUIOpener extends Opener {
 	private CratesPlus cratesPlus;
-	private Inventory winGUI;
-	private BukkitTask task;
-	private Integer timer = 0;
-	private Integer currentItem = 0;
+	private HashMap<UUID, Integer> tasks = new HashMap<>();
+	private HashMap<UUID, Inventory> guis = new HashMap<>();
+	private int length = 10;
 
 	public BasicGUIOpener(CratesPlus cratesPlus) {
 		super(cratesPlus, "BasicGUI");
@@ -27,50 +29,63 @@ public class BasicGUIOpener extends Opener {
 
 	@Override
 	public void doSetup() {
-
+		FileConfiguration config = getOpenerConfig();
+		if (!config.isSet("Length")) {
+			config.set("Length", cratesPlus.getConfigHandler().getCrateGUITime());
+			try {
+				config.save(getOpenerConfigFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		length = config.getInt("Length");
 	}
 
 	@Override
-	public void doOpen() {
+	protected void doOpen(final Player player, final Crate crate, Location blockLocation) {
+		final Inventory winGUI;
+		final Integer[] timer = {0};
+		final Integer[] currentItem = new Integer[1];
+
 		Random random = new Random();
 		int max = crate.getWinnings().size() - 1;
 		int min = 0;
-		currentItem = random.nextInt((max - min) + 1) + min; // Oh look, it's actually a random win now... xD
+		currentItem[0] = random.nextInt((max - min) + 1) + min;
 		winGUI = Bukkit.createInventory(null, 45, crate.getColor() + crate.getName() + " Win");
+		guis.put(player.getUniqueId(), winGUI);
 		player.openInventory(winGUI);
-		int maxTime = cratesPlus.getConfigHandler().getCrateGUITime();
-		final int maxTimeTicks = maxTime * 10;
-		task = Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, new Runnable() {
+		final int maxTimeTicks = length * 10;
+		tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, new BukkitRunnable() {
 			public void run() {
 				if (!player.isOnline()) { // TODO, Try and handle DC for players?
-					task.cancel();
+					Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
 					return;
 				}
 				Integer i = 0;
 				while (i < 45) {
 					if (i == 22) {
 						i++;
-						if (crate.getWinnings().size() == currentItem)
-							currentItem = 0;
+						if (crate.getWinnings().size() == currentItem[0])
+							currentItem[0] = 0;
 						final Winning winning;
-						if (timer == maxTimeTicks) {
-							winning = getWinning();
+						if (timer[0] == maxTimeTicks) {
+							winning = getWinning(crate);
 						} else {
-							winning = crate.getWinnings().get(currentItem);
+							winning = crate.getWinnings().get(currentItem[0]);
 						}
 
 						final ItemStack currentItemStack = winning.getPreviewItemStack();
-						if (timer == maxTimeTicks) {
+						if (timer[0] == maxTimeTicks) {
 							winning.runWin(player);
 						}
 						winGUI.setItem(22, currentItemStack);
 
-						currentItem++;
+						currentItem[0]++;
 						continue;
 					}
 					ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) cratesPlus.getCrateHandler().randInt(0, 15));
 					ItemMeta itemMeta = itemStack.getItemMeta();
-					if (timer == maxTimeTicks) {
+					if (timer[0] == maxTimeTicks) {
 						itemMeta.setDisplayName(ChatColor.RESET + "Winner!");
 					} else {
 						Sound sound;
@@ -97,19 +112,19 @@ public class BasicGUIOpener extends Opener {
 					winGUI.setItem(i, itemStack);
 					i++;
 				}
-				if (timer == maxTimeTicks) {
-					finish();
-					task.cancel();
+				if (timer[0] == maxTimeTicks) {
+					finish(player);
+					Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
 					return;
 				}
-				timer++;
+				timer[0]++;
 			}
-		}, 0L, 2L);
+		}, 0L, 2L).getTaskId());
 	}
 
 	@Override
-	public void doReopen() {
-		getPlayer().openInventory(winGUI);
+	public void doReopen(Player player, Crate crate, Location location) {
+		player.openInventory(guis.get(player.getUniqueId()));
 	}
 
 }

@@ -30,8 +30,12 @@ public class OpenHandler {
 	}
 
 	public void registerOpener(Opener opener) {
-		registered.put(opener.getName(), opener);
-		opener.doSetup();
+		try {
+			opener.doSetup();
+			registered.put(opener.getName(), opener);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Opener getOpener(Crate crate) {

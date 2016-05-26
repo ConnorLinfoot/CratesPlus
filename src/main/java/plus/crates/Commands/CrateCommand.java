@@ -83,7 +83,7 @@ public class CrateCommand implements CommandExecutor {
 					break;
 				case "create":
 				case "createbeta":
-					if (args[0].equalsIgnoreCase("createbeta") && false) { // TODO Bring back in 4.1/4.2/5.0/whenever
+					if (args[0].equalsIgnoreCase("createbeta") && false) { // TODO Bring back in 4.2 ;)
 						// Lets try and open a sign to do the name! :D
 						Player player = (Player) sender;
 						try {

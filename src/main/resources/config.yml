@@ -26,9 +26,6 @@ Crates:
 # Opener which is used by default
 Default Opener: BasicGUI
 
-# Crate GUI time if using "BasicGUI" opener.
-GUI Time: 10
-
 # Cooldown between opening crates
 Cooldown: 5
 

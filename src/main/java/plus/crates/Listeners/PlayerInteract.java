@@ -74,9 +74,8 @@ public class PlayerInteract implements Listener {
 				usingOffHand = true;
 			}
 
-			// TODO Make changes so this can work with the opener API
 			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) {
-				cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen();
+				cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen(player, crate, event.getClickedBlock().getLocation());
 				event.setCancelled(true);
 				return;
 			}
@@ -89,8 +88,8 @@ public class PlayerInteract implements Listener {
 					return;
 				}
 
-				if (cratesPlus.getConfigHandler().getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
-					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getCooldown();
+				if (cratesPlus.getConfigHandler().getDefaultCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getDefaultCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
+					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getDefaultCooldown();
 					long remaining = whenCooldownEnds - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
 					return;

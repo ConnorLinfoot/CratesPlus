@@ -30,6 +30,7 @@ public class Crate {
 	private String permission = null;
 	private HashMap<Location, Hologram> holograms = new HashMap<>();
 	private String opener = null;
+	private Integer cooldown = null;
 
 	public Crate(String name, CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
@@ -244,6 +245,12 @@ public class Crate {
 
 	public String getOpener() {
 		return opener;
+	}
+
+	public Integer getCooldown() {
+		if (cooldown == null || cooldown < 0)
+			return cratesPlus.getConfigHandler().getDefaultCooldown();
+		return cooldown;
 	}
 
 }
