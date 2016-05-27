@@ -1,3 +1,17 @@
+**4.1.0** *(May 28 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-8-1-9.5018/download?version=91898)
+- Feature: Openers! An easy way for any developer to create a custom way of opening crates!
+- Feature: Holograms can now be per crate.
+- Feature: Holograms will now try to use the Individual Holograms plugin or HolographicDisplays plugin. The built in handler still works but will be removed in the future.
+- Feature: Because of the hologram changes mentioned above this plugin now supports CraftBukkit/Spigot 1.7.
+- Improvement: "Disable Key Dropping" has been renamed to "Disable Key Swapping" and now stops keys being dropped (including on death) and from putting the keys in a chest/other inventory.
+- Improvement: Messages are now in their own file - messages.yml.
+- Improvement: New "Chance Message" in messages.yml to customize chance message.
+- Improvement: Hide percentages all together per crate with "Hide Percentages"
+- Improvement: Better error messages when there is invalid configuration.
+- Bug: Fixed decimal percentages being worked out correctly.
+- Bug: Fixed stacks bigger than max stack sized being reset to max size after being won once.
+- From this version CratesPlus now requires at least Java 7.
+
 **4.0.0** *(Mar 18 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-1-8-1-9-free.5018/download?version=76292)
 - Feature: Keys now work per crate and not on a global level
 - Feature: Added new %winning%/%prize% placeholder
