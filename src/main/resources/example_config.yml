@@ -98,8 +98,8 @@ Cooldown: 5
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false
 
-# Disable players being allowed to drop keys to other players
-Disable Key Dropping: false
+# Disable players being allowed to drop keys to other players, putting them in a chest, or even drop them on death
+Disable Key Swapping: false
 
 # %crate% can be used to show the crate name
 # If a crate has no specific hologram text set, this will be shown

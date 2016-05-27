@@ -7,7 +7,7 @@
     <groupId>com.connorlinfoot</groupId>
     <artifactId>CratesPlus</artifactId>
     <description>A free and great crates plugin for Minecraft</description>
-    <version>4.1.0-SNAPSHOT-6</version>
+    <version>4.1.0-SNAPSHOT-7</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -54,11 +54,6 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>4.0.34.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.9-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.bukkit</groupId>

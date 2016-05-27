@@ -22,10 +22,8 @@ public class OpenHandler {
 	}
 
 	private void registerDefaults() {
-		BasicGUIOpener basicGUIOpener = new BasicGUIOpener(cratesPlus);
-		NoGUIOpener noGUIOpener = new NoGUIOpener(cratesPlus);
-		registerOpener(basicGUIOpener);
-		registerOpener(noGUIOpener);
+		registerOpener(new BasicGUIOpener(cratesPlus));
+		registerOpener(new NoGUIOpener(cratesPlus));
 		defaultOpener = cratesPlus.getConfigHandler().getDefaultOpener();
 	}
 
@@ -44,7 +42,7 @@ public class OpenHandler {
 
 	public Opener getOpener(Crate crate) {
 		if (registered.containsKey(crate.getOpener()))
-			return registered.get(crate.getName());
+			return registered.get(crate.getOpener());
 		return getDefaultOpener();
 	}
 

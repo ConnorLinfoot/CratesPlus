@@ -10,6 +10,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
@@ -18,6 +22,7 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Key;
 
+import java.util.List;
 import java.util.Map;
 
 public class BlockListeners implements Listener {
@@ -29,7 +34,7 @@ public class BlockListeners implements Listener {
 
 	@EventHandler(ignoreCancelled = true)
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if (!cratesPlus.getConfig().getBoolean("Disable Key Dropping"))
+		if (!cratesPlus.getConfigHandler().isDisableKeySwapping())
 			return;
 		String title;
 		ItemStack item = event.getItemDrop().getItemStack();
@@ -47,6 +52,97 @@ public class BlockListeners implements Listener {
 			}
 		}
 
+	}
+
+	// meh idc where I put my listeners ;)
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		if (!cratesPlus.getConfigHandler().isDisableKeySwapping())
+			return;
+		String title;
+		List<ItemStack> items = event.getDrops();
+		for (ItemStack item : items) {
+
+			for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
+				Key key = crate.getValue().getKey();
+				if (key == null)
+					continue;
+				title = key.getName();
+
+				if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
+					// send message?
+					event.getDrops().remove(item);
+					return;
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryMove(InventoryMoveItemEvent event) {
+		if (!cratesPlus.getConfigHandler().isDisableKeySwapping())
+			return;
+		String title;
+		ItemStack item = event.getItem();
+
+		for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
+			Key key = crate.getValue().getKey();
+			if (key == null)
+				continue;
+			title = key.getName();
+
+			if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
+				// Send message?
+				event.setCancelled(true);
+				return;
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryPickup(InventoryPickupItemEvent event) {
+		if (!cratesPlus.getConfigHandler().isDisableKeySwapping())
+			return;
+		if (event.getItem().getItemStack() != null) {
+			String title;
+			ItemStack item = event.getItem().getItemStack();
+
+			for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
+				Key key = crate.getValue().getKey();
+				if (key == null)
+					continue;
+				title = key.getName();
+
+				if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
+					// Send message?
+					event.setCancelled(true);
+					return;
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (!cratesPlus.getConfigHandler().isDisableKeySwapping())
+			return;
+		if (!event.getInventory().getType().toString().contains("PLAYER") && event.getCurrentItem() != null) {
+			String title;
+			ItemStack item = event.getCurrentItem();
+
+			for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
+				Key key = crate.getValue().getKey();
+				if (key == null)
+					continue;
+				title = key.getName();
+
+				if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
+					// Send message?
+					event.setCancelled(true);
+					return;
+				}
+			}
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true)

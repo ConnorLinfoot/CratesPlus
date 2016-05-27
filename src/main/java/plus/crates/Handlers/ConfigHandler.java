@@ -14,6 +14,7 @@ public class ConfigHandler {
 	private List<String> defaultHologramText;
 	private HashMap<String, List<String>> holograms = new HashMap<>();
 	private HashMap<String, Crate> crates = new HashMap<>();
+	private boolean disableKeySwapping = false;
 
 	public ConfigHandler(FileConfiguration config, CratesPlus cratesPlus) {
 		// Load configuration
@@ -22,6 +23,15 @@ public class ConfigHandler {
 			config.set("Cooldown", null);
 			cratesPlus.saveConfig();
 		}
+
+		if (config.isSet("Disable Key Dropping")) {
+			config.set("Disable Key Swapping", config.getBoolean("Disable Key Dropping"));
+			config.set("Disable Key Dropping", null);
+			cratesPlus.saveConfig();
+		}
+
+		if (config.isSet("Disable Key Swapping"))
+			disableKeySwapping = config.getBoolean("Disable Key Swapping");
 
 		if (config.isSet("Default Cooldown"))
 			setDefaultCooldown(config.getInt("Default Cooldown"));
@@ -104,6 +114,10 @@ public class ConfigHandler {
 
 	public String getDefaultOpener() {
 		return defaultOpener;
+	}
+
+	public boolean isDisableKeySwapping() {
+		return disableKeySwapping;
 	}
 
 }

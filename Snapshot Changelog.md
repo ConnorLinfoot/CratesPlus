@@ -1,5 +1,10 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 7** *(May 27 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/497/artifact/target/CratesPlus-4.1.0-SNAPSHOT-7.jar)
+- Fixed NPE when trying to use per crate openers.
+- "Disable Key Dropping" has been renamed to "Disable Key Swapping" and now blocks putting the keys in a chest and removes the item on death.
+- Removed Spigot from dependencies so that I can't accidentally add Spigot only features.
+
 **Snapshot 6** *(May 27 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/496/artifact/target/CratesPlus-4.1.0-SNAPSHOT-6.jar)
 - Improvements to the crate command for openers to match recent changes.
 - Added warning if multiple openers are registered with the same name.
