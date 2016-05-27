@@ -51,18 +51,37 @@ public class CrateCommand implements CommandExecutor {
 		if (args.length >= 1) {
 			switch (args[0].toLowerCase()) {
 				default:
-					sender.sendMessage(ChatColor.RED + "Unknown arg");
+					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Unknown arg");
 					break;
 				case "opener":
+				case "openers":
 					if (args.length > 1) {
-						if (CratesPlus.getOpenHandler().openerExist(args[1])) {
-							CratesPlus.getOpenHandler().setDefaultOpener(args[1]);
-							sender.sendMessage(ChatColor.GREEN + "Set opener to " + args[1]);
+						if (args.length < 3) {
+							sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Correct usage: /" + string + " " + args[0] + " <crate> <opener>");
 						} else {
-							sender.sendMessage(ChatColor.RED + "No opener is registered with that name");
+							if (args[1].equalsIgnoreCase("default")) {
+								if (CratesPlus.getOpenHandler().openerExist(args[2])) {
+									CratesPlus.getOpenHandler().setDefaultOpener(args[2]);
+									sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Set default opener to " + args[2]);
+								} else {
+									sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "No opener is registered with that name");
+								}
+							} else {
+								if (CratesPlus.getOpenHandler().openerExist(args[2])) {
+									if (cratesPlus.getConfigHandler().getCrate(args[1]) == null) {
+										sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "No crate exists with that name");
+									} else {
+										cratesPlus.getConfigHandler().getCrate(args[1]).setOpener(args[2]);
+										sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Set opener to " + args[2]);
+									}
+								} else {
+									sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "No opener is registered with that name");
+								}
+							}
 						}
+
 					} else {
-						sender.sendMessage(ChatColor.GOLD + "Registered CratesPlus Openers:");
+						sender.sendMessage(ChatColor.GOLD + "Registered Openers:");
 						sender.sendMessage(ChatColor.AQUA + "Name" + ChatColor.GRAY + " | " + ChatColor.YELLOW + "Plugin");
 						sender.sendMessage(ChatColor.AQUA + "");
 						for (Map.Entry<String, Opener> map : CratesPlus.getOpenHandler().getRegistered().entrySet()) {

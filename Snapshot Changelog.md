@@ -1,5 +1,13 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 6** *(May 27 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/496/artifact/target/CratesPlus-4.1.0-SNAPSHOT-6.jar)
+- Improvements to the crate command for openers to match recent changes.
+- Added warning if multiple openers are registered with the same name.
+- Added support for [Individual Holograms](https://www.spigotmc.org/resources/individual-holograms.8514/) as a hologram handler.
+- Added warning about deprecating holograms from the built in handler as I want to leave this to other plugins.
+- Fixed issue of stacks that were bigger than max stack size not being rewarded correctly after first time.
+- Improved how winnings are selected (I think) changed the way it selects them to be fully based on weight.
+
 **Snapshot 5** *(May 26 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/494/artifact/target/CratesPlus-4.1.0-SNAPSHOT-5.jar)
 - "GUI Time" is no longer used and handled by the "BasicGUI" openers config.
 - Added "Cooldown" option per crate and renamed "Cooldown" to "Default Cooldown"
@@ -20,7 +28,7 @@
 - Fixed NPE on plugin load.
 
 **Snapshot 2** *(May 22 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/485/artifact/target/CratesPlus-4.1.0-SNAPSHOT-2.jar)
-- Disable percentages per crate.
+- Disable percentages from showing per crate.
 - New messages.yml for all messages, current messages should be copied if they exist.
 - New message "Chance Message" used for displaying the chance of a winning.
 - Now requires Java 7, according to MC Stats nobody is using Java 6. Which is a good thing!

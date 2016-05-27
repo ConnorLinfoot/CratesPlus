@@ -163,6 +163,7 @@ public class BlockListeners implements Listener {
 		}
 		location.getBlock().removeMetadata("CrateType", cratesPlus);
 		crate.removeFromConfig(location);
+
 		crate.removeHolograms(location.getBlock().getLocation());
 	}
 

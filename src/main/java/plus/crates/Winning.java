@@ -156,6 +156,7 @@ public class Winning {
 					winningItemStack.addUnsafeEnchantment(enchantment1, level);
 			}
 		}
+		this.winningItemStack = winningItemStack;
 
 		previewItemStackItemMeta = previewItemStack.getItemMeta();
 		List<String> lore = new ArrayList<>(this.lore);
@@ -170,7 +171,6 @@ public class Winning {
 		// Done :D
 		valid = true;
 		this.previewItemStack = previewItemStack;
-		this.winningItemStack = winningItemStack;
 	}
 
 	public boolean isValid() {
@@ -178,11 +178,11 @@ public class Winning {
 	}
 
 	public ItemStack getPreviewItemStack() {
-		return previewItemStack;
+		return previewItemStack.clone(); // Clone it so it can't be changed
 	}
 
 	public ItemStack getWinningItemStack() {
-		return winningItemStack;
+		return winningItemStack.clone(); // Clone it so it can't be changed and because Bukkit resets the stack size? Check issue #198 on this bug.
 	}
 
 	public void runWin(final Player player) {

@@ -30,6 +30,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private String updateMessage = "";
 	private String configBackup = null;
 	private boolean updateAvailable = false;
+	private boolean useIndividualHolograms = false;
 	private boolean useHolographicDisplays = false;
 	private File dataFile;
 	private File messagesFile;
@@ -95,9 +96,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 
+		useIndividualHolograms = Bukkit.getPluginManager().isPluginEnabled("IndividualHolograms");
 		useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
-
-		configHandler = new ConfigHandler(getConfig(), this);
 
 		// Check data.yml exists, if not create it!
 		dataFile = new File(getDataFolder(), "data.yml");
@@ -127,7 +127,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		processNewMessagesFile();
+		configHandler = new ConfigHandler(getConfig(), this);
 
 		if (getConfig().getBoolean("Metrics")) {
 			try {
@@ -164,8 +166,12 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			console.sendMessage(ChatColor.RED + "We advise that you do NOT run this on a production server!");
 		}
 
-		if (useHolographicDisplays) {
+		if (useIndividualHolograms) {
+			console.sendMessage(ChatColor.GREEN + "Individual Holograms was found, hooking in!");
+		} else if (useHolographicDisplays) {
 			console.sendMessage(ChatColor.GREEN + "HolographicDisplays was found, hooking in!");
+		} else {
+			console.sendMessage(ChatColor.RED + "You are using the build in handler for holograms. This will be removed in a future update! It is recommended to install Individual Holograms or HolographicDisplays which CratesPlus will then use to handle holograms.");
 		}
 
 		if (configBackup != null && Bukkit.getOnlinePlayers().size() > 0) {
@@ -454,6 +460,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 	public ConfigHandler getConfigHandler() {
 		return configHandler;
+	}
+
+	public boolean useIndividualHolograms() {
+		return useIndividualHolograms;
 	}
 
 	public boolean useHolographicDisplays() {

@@ -30,6 +30,10 @@ public class OpenHandler {
 	}
 
 	public void registerOpener(Opener opener) {
+		if (registered.containsKey(opener.getName())) {
+			getCratesPlus().getLogger().warning("An opener with the name \"" + opener.getName() + "\" already exists and will not be registered");
+			return;
+		}
 		try {
 			opener.doSetup();
 			registered.put(opener.getName(), opener);
@@ -52,6 +56,8 @@ public class OpenHandler {
 
 	public void setDefaultOpener(String defaultOpener) {
 		this.defaultOpener = defaultOpener;
+		cratesPlus.getConfig().set("Default Opener", defaultOpener);
+		cratesPlus.saveConfig();
 	}
 
 	public CratesPlus getCratesPlus() {

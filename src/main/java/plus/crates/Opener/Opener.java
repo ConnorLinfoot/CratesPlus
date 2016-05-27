@@ -6,13 +6,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Winning;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Opener {
 	protected Plugin plugin;
@@ -56,37 +57,31 @@ public abstract class Opener {
 		return name;
 	}
 
-	/**
-	 * @return boolean - Whether or not the task should run asynchronously
-	 */
 	public boolean isAsync() {
 		return async;
 	}
 
-	/**
-	 * @return Winning - A random Winning object that you can then award to a player.
-	 */
 	public Winning getWinning(Crate crate) {
 		Winning winning;
 		if (crate.getTotalPercentage() > 0) {
-			double maxPercentage = 0.0D;
-			for (Winning winning1 : crate.getWinnings()) {
-				if (winning1.getPercentage() > maxPercentage)
-					maxPercentage = winning1.getPercentage();
+			List<Winning> winnings = crate.getWinnings();
+			// Compute the total weight of all items together
+			double totalWeight = 0.0d;
+			for (Winning winning1 : winnings) {
+				totalWeight += winning1.getPercentage();
 			}
 
-			double randDouble = CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randDouble(0, maxPercentage);
-			ArrayList<Winning> winnings = new ArrayList<>();
-			for (Winning winning1 : crate.getWinnings()) {
-				if (randDouble < winning1.getPercentage())
-					winnings.add(winning1);
+			// Now choose a random item
+			int randomIndex = -1;
+			double random = Math.random() * totalWeight;
+			for (int i = 0; i < winnings.size(); ++i) {
+				random -= winnings.get(i).getPercentage();
+				if (random <= 0.0d) {
+					randomIndex = i;
+					break;
+				}
 			}
-
-			if (winnings.size() > 1) {
-				winning = winnings.get(CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randInt(0, winnings.size() - 1));
-			} else {
-				winning = winnings.get(0);
-			}
+			winning = winnings.get(randomIndex);
 		} else {
 			winning = crate.getWinnings().get(CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randInt(0, crate.getWinnings().size() - 1));
 		}
@@ -94,7 +89,7 @@ public abstract class Opener {
 	}
 
 	public File getOpenerConfigFile() {
-		File openersDir = new File(CratesPlus.getOpenHandler().getCratesPlus().getDataFolder(), "openers");
+		File openersDir = new File(JavaPlugin.getPlugin(CratesPlus.class).getDataFolder(), "openers");
 		if (!openersDir.exists())
 			if (!openersDir.mkdirs())
 				return null;
@@ -133,7 +128,7 @@ public abstract class Opener {
 
 	public abstract void doSetup();
 
-	protected abstract void doOpen(Player player, Crate crate, Location blockLocation);
+	public abstract void doOpen(Player player, Crate crate, Location blockLocation);
 
 	public abstract void doReopen(Player player, Crate crate, Location blockLocation);
 

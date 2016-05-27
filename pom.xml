@@ -7,7 +7,7 @@
     <groupId>com.connorlinfoot</groupId>
     <artifactId>CratesPlus</artifactId>
     <description>A free and great crates plugin for Minecraft</description>
-    <version>4.1.0-SNAPSHOT-5</version>
+    <version>4.1.0-SNAPSHOT-6</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -71,6 +71,13 @@
             <version>2.1.7</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/HolographicDisplaysAPI.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.micrlink</groupId>
+            <artifactId>IndividualHolograms</artifactId>
+            <version>1.8.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/IndividualHolograms.jar</systemPath>
         </dependency>
     </dependencies>
 

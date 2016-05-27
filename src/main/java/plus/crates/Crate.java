@@ -237,6 +237,7 @@ public class Crate {
 	}
 
 	public void removeHolograms(Location location) {
+		cratesPlus.getVersion_util().removeHologram(location);
 		if (holograms.containsKey(location)) {
 			holograms.get(location).destroyAll();
 			holograms.remove(location);
@@ -251,6 +252,12 @@ public class Crate {
 		if (cooldown == null || cooldown < 0)
 			return cratesPlus.getConfigHandler().getDefaultCooldown();
 		return cooldown;
+	}
+
+	public void setOpener(String opener) {
+		this.opener = opener;
+		cratesPlus.getConfig().set("Crates." + getName(false) + ".Opener", opener);
+		cratesPlus.saveConfig();
 	}
 
 }

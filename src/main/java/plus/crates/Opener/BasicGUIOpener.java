@@ -42,7 +42,7 @@ public class BasicGUIOpener extends Opener {
 	}
 
 	@Override
-	protected void doOpen(final Player player, final Crate crate, Location blockLocation) {
+	public void doOpen(final Player player, final Crate crate, Location blockLocation) {
 		final Inventory winGUI;
 		final Integer[] timer = {0};
 		final Integer[] currentItem = new Integer[1];
