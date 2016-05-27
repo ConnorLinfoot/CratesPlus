@@ -1,5 +1,9 @@
 ### Version 4.1.0 Snapshots
 ---
+**Snapshot 8** *(May 27 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/498/artifact/target/CratesPlus-4.1.0-SNAPSHOT-8.jar)
+- Fixed holograms from HolographicDisplays being too low and not removing.
+- Fixed holograms being too high with individual holograms and not removing.
+
 **Snapshot 7** *(May 27 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/497/artifact/target/CratesPlus-4.1.0-SNAPSHOT-7.jar)
 - Fixed NPE when trying to use per crate openers.
 - "Disable Key Dropping" has been renamed to "Disable Key Swapping" and now blocks putting the keys in a chest and removes the item on death.

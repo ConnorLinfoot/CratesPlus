@@ -171,7 +171,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} else if (useHolographicDisplays) {
 			console.sendMessage(ChatColor.GREEN + "HolographicDisplays was found, hooking in!");
 		} else {
-			console.sendMessage(ChatColor.RED + "You are using the build in handler for holograms. This will be removed in a future update! It is recommended to install Individual Holograms or HolographicDisplays which CratesPlus will then use to handle holograms.");
+			console.sendMessage(ChatColor.RED + "You are using the built in handler for holograms. This will be removed in a future update! It is recommended to install Individual Holograms or HolographicDisplays which CratesPlus will then use to handle holograms.");
 		}
 
 		if (configBackup != null && Bukkit.getOnlinePlayers().size() > 0) {

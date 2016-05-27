@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Version_Util {
-	private HashMap<Location, com.gmail.filoghost.holographicdisplays.api.Hologram> holograms = new HashMap<>();
+	private HashMap<String, com.gmail.filoghost.holographicdisplays.api.Hologram> holograms = new HashMap<>();
 	private CratesPlus cratesPlus;
 
 	public Version_Util(CratesPlus cratesPlus) {
@@ -33,13 +33,13 @@ public class Version_Util {
 
 	public void createHologram(Location location, ArrayList<String> lines, Crate crate) {
 		if (cratesPlus.useIndividualHolograms()) {
-			IndividualHolograms.get().getHologramManager().createNewHologram("" + location.getWorld() + "|" + location.getX() + "|" + location.getY() + "|" + location.getZ(), location, lines);
+			IndividualHolograms.get().getHologramManager().createNewHologram("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ(), location.clone().add(0, -1, 0), lines);
 		} else if (cratesPlus.useHolographicDisplays()) {
-			com.gmail.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(cratesPlus, location);
+			com.gmail.filoghost.holographicdisplays.api.Hologram hologram = HologramsAPI.createHologram(cratesPlus, location.clone().add(0, 1.25, 0));
 			for (String line : lines) {
 				hologram.appendTextLine(line);
 			}
-			holograms.put(location, hologram);
+			holograms.put("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ(), hologram);
 		} else {
 			if (cratesPlus.getMc_version() == CratesPlus.MC_VERSION.MC_1_7) {
 				// Warning that 1.7 needs holographic displays for holograms
@@ -53,11 +53,11 @@ public class Version_Util {
 
 	public void removeHologram(Location location) {
 		if (cratesPlus.useIndividualHolograms()) {
-			IndividualHolograms.get().getHologramManager().removeHologram("" + location.getWorld() + "|" + location.getX() + "|" + location.getY() + "|" + location.getZ());
+			IndividualHolograms.get().getHologramManager().removeHologram("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
 		} else if (cratesPlus.useHolographicDisplays()) {
-			if (holograms.containsKey(location)) {
-				holograms.get(location).delete();
-				holograms.remove(location);
+			if (holograms.containsKey("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ())) {
+				holograms.get("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ()).delete();
+				holograms.remove("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
 			}
 		}
 	}
