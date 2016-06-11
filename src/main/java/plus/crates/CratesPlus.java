@@ -45,13 +45,16 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private static OpenHandler openHandler;
 
 	public enum MC_VERSION {
-		MC_1_7, MC_1_8, MC_1_9, OTHER
+		MC_1_7, MC_1_8, MC_1_9, MC_1_10, OTHER
 	}
 
 	public void onEnable() {
 		Server server = getServer();
 
-		if (server.getBukkitVersion().contains("1.9")) {
+		if (server.getBukkitVersion().contains("1.10")) {
+			mc_version = MC_VERSION.MC_1_10;
+			version_util = new Version_1_9(this);
+		} else if (server.getBukkitVersion().contains("1.9")) {
 			mc_version = MC_VERSION.MC_1_9;
 			version_util = new Version_1_9(this);
 		} else if (server.getBukkitVersion().contains("1.8") || server.getBukkitVersion().contains("1.7")) {
