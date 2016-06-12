@@ -13,6 +13,9 @@ ___A list of your plugins___
 ### Actions to reproduce (if known):
 ___This may include a build schematic, a video, or detailed instructions to help reconstruct the issue___
 
+### Bukkit/Spigot Version:
+___This can be found by running `/version` on your server.___
+
 ### CratesPlus Version:
 ___This can be found by running `/version CratesPlus` on your server.___
 
