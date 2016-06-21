@@ -12,7 +12,6 @@
 - Added "debug" arg for generating a report on your server and config to help with errors/issues.
 - Made some changes to the example config file.
 - Will now tell you when it can't find a message instead of just saying "null".
-- A little message will show when the dev of CratesPlus joins your server ;) I'll be reviewing servers and adding them to a list in the future.
 - Removed the chest open sound and added it only into the NoGUI opener as others shouldn't need it nor be forced to use it.
 
 ### Version 4.1 Snapshots
