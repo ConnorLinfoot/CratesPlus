@@ -1,4 +1,4 @@
-**4.1.0** *(May 27 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-8-1-9.5018/download?version=91898)
+**4.1** *(May 27 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-8-1-9.5018/download?version=91898)
 - Feature: Openers! An easy way for any developer to create a custom way of opening crates!
 - Feature: Holograms can now be per crate.
 - Feature: Holograms will now try to use the Individual Holograms plugin or HolographicDisplays plugin. The built in handler still works but will be removed in the future.
@@ -12,7 +12,7 @@
 - Bug: Fixed stacks bigger than max stack sized being reset to max size after being won once.
 - From this version CratesPlus now requires at least Java 7.
 
-**4.0.0** *(Mar 18 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-1-8-1-9-free.5018/download?version=76292)
+**4.0** *(Mar 18 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-1-8-1-9-free.5018/download?version=76292)
 - Feature: Keys now work per crate and not on a global level
 - Feature: Added new %winning%/%prize% placeholder
 - Feature: Added color selector to in-game editor
@@ -63,7 +63,7 @@
 **3.1.1** *(Sep 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=45143)
 - Bug: Fixed backup config not working
 
-**3.1.0** *(Sep 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=45142)
+**3.1** *(Sep 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=45142)
 - Feature: Added config options to be able to change the text shown on holograms (Support up to 4 lines, removed more-info hologram option since this has been added)
 - Feature: GUI now has a nice little animation, along with config options to fully disable the GUI and change the time.
 - Feature: Added percentage support considering it was asked for so much, percentages in a crate MUST add up to 100% for it to function correctly
@@ -86,7 +86,7 @@
 **3.0.1** *(Jun 7 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28510)
 - Bug: Fixed updater not working correctly
 
-**3.0.0** *(Jun 7 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28505)
+**3.0** *(Jun 7 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=28505)
 - Feature: Added "/crate settings" - Allows in-game crate editing
 - Feature: Added "/crate create <name>"
 - Feature: Added "/crate delete <name>"
@@ -106,7 +106,7 @@
 **2.0.1** *(Apr 8 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20207)
 - Bug: Fixed an issue with not been able to run "/crate key" without specifying a key type (Thanks to kyle1264x on Spigot for reporting this)
 
-**2.0.0** *(Apr 7 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20057)
+**2.0** *(Apr 7 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20057)
 - Feature: Custom crates and a whole new Crate setup
 - Feature: Events, Developers can hook in if they wish to do stuff (CrateOpenEvent, CratePreviewEvent)
 - Improvement: An all new config layout (Old versions will be converted to the new version on first run and a backup of the original will be given via a link)
@@ -114,22 +114,22 @@
 **1.3.1** *(Apr 7 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=20026)
 - Bug: Fix for preview sizes not working correctly
 
-**1.3.0** *(Mar 25 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=18365)
+**1.3** *(Mar 25 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=18365)
 - Improvement: You can now use the Interact event if the Inventory Open event doesn't work for you
 - Improvement: You can now change the plugin prefix
 
-**1.2.0** *(Mar 21 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17899)
+**1.2** *(Mar 21 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17899)
 - Feature: Added Crate previews
 - Feature: Added a winning GUI
 - Feature: Can now change settings of the key
 - Improvement: Can now use item data ID's for items such as wool, spawn eggs etc
 - Improvement: Added it so you can now specify a crate key type with the command
 
-**1.1.0** *(Mar 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17519)
+**1.1** *(Mar 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17519)
 - Feature: Added update checker (Works with Spigot)
 - Feature: Messages can now be changed in the config file
 - Improvement: Minor changes to how the plugin gets the material from the config
 - Improvement: Minor changes to the color function for the firework
 
-**1.0.0** *(Mar 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17486)
+**1.0** *(Mar 18 2015)* - [Download](https://www.spigotmc.org/resources/cratesplus-custom-crates-free-1-8-x.5018/download?version=17486)
 - Initial release!

@@ -15,13 +15,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
+import plus.crates.Events.PlayerInputEvent;
+import plus.crates.Utils.ReflectionUtil;
+import plus.crates.Utils.SignInputHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public class SettingsListener implements Listener {
 	private CratesPlus cratesPlus;
+	private HashMap<UUID, String> renaming = new HashMap<>();
 
 	public SettingsListener(CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
@@ -172,6 +176,17 @@ public class SettingsListener implements Listener {
 				cratesPlus.getSettingsHandler().setupCratesInventory();
 				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + name + " crate has been deleted");
 			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename Crate")) {
+				// Let's handle renaming using sign packets ;D
+				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
+				renaming.put(player.getUniqueId(), name);
+				try {
+					Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
+					Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));
+					SignInputHandler.injectNetty(player);
+					ReflectionUtil.sendPacket(player, packet);
+				} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+					e.printStackTrace();
+				}
 				event.setCancelled(true);
 			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Color")) {
 				event.setCancelled(true);
@@ -293,6 +308,20 @@ public class SettingsListener implements Listener {
 
 		}
 
+	}
+
+	@EventHandler
+	public void onPlayerInput(PlayerInputEvent event) {
+		if (renaming.containsKey(event.getPlayer().getUniqueId())) {
+			String name = renaming.get(event.getPlayer().getUniqueId());
+			renaming.remove(event.getPlayer().getUniqueId());
+			String newName = "";
+			for (String line : event.getLines()) {
+				newName += line;
+			}
+			Bukkit.dispatchCommand(event.getPlayer(), "crate rename " + name + " " + newName);
+			cratesPlus.getSettingsHandler().openCrate(event.getPlayer(), newName);
+		}
 	}
 
 }

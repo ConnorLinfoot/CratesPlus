@@ -22,12 +22,12 @@ Update Branch: "spigot"
 Metrics: true
 
 Crates:
-  Example:
+  Vote:
     Knockback: 0.5
     Broadcast: false
     Firework: false
     Color: GREEN
-    Block: GLASS
+    Block: ENDER_CHEST
     Preview: true
     Cooldown: 2
     Hide Percentages: true
@@ -73,14 +73,14 @@ Crates:
         - DAMAGE_ALL-5
         - DURABILITY-3
         - FIRE_ASPECT-2
-  AnotherExample:
+  VIP:
     Knockback: 0.5
     Broadcast: false
     Firework: false
     Color: GREEN
-    Block: GLASS
+    Block: CHEST
     Preview: true
-    Permission: cratesplus.crate.example # Permissions can be anything, it will check that the player has the permission before opening
+    Permission: cratesplus.crate.vip # Permissions can be anything, it will check that the player has the permission before opening
     Key:
       Item: TRIPWIRE_HOOK
       Name: '%type% Crate Key'
@@ -92,8 +92,8 @@ Crates:
 # Opener which is used by default
 Default Opener: BasicGUI
 
-# Cooldown between opening crates
-Cooldown: 5
+# Default cooldown between opening crates
+Default Cooldown: 5
 
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false

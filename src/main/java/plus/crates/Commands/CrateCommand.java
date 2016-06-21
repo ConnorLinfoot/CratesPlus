@@ -9,14 +9,20 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.Opener;
-import plus.crates.Utils.ReflectionUtil;
-import plus.crates.Utils.SignInputHandler;
+import plus.crates.Utils.PasteUtils;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 
 public class CrateCommand implements CommandExecutor {
@@ -27,7 +33,7 @@ public class CrateCommand implements CommandExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
+	public boolean onCommand(final CommandSender sender, Command command, String string, String[] args) {
 
 		if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
 			//if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("claim"))) {
@@ -52,6 +58,44 @@ public class CrateCommand implements CommandExecutor {
 			switch (args[0].toLowerCase()) {
 				default:
 					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Unknown arg");
+					break;
+				case "debug":
+					sender.sendMessage(ChatColor.AQUA + "Gathering debug data...");
+
+					Bukkit.getScheduler().runTaskAsynchronously(cratesPlus, new Runnable() {
+						@Override
+						public void run() {
+							sender.sendMessage(ChatColor.AQUA + "Uploading config.yml...");
+							String configLink = cratesPlus.uploadConfig();
+							sender.sendMessage(ChatColor.AQUA + "Completed uploading config.yml");
+
+							sender.sendMessage(ChatColor.AQUA + "Uploading data.yml...");
+							String dataLink = cratesPlus.uploadData();
+							sender.sendMessage(ChatColor.AQUA + "Completed uploading data.yml");
+
+							sender.sendMessage(ChatColor.AQUA + "Uploading messages.yml...");
+							String messagesLink = cratesPlus.uploadMessages();
+							sender.sendMessage(ChatColor.AQUA + "Completed uploading messages.yml");
+
+							sender.sendMessage(ChatColor.AQUA + "Generating plugin list...");
+							String plugins = "";
+							for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+								plugins += plugin.getName() + " - Version: " + plugin.getDescription().getVersion() + "\n";
+							}
+							sender.sendMessage(ChatColor.AQUA + "Completed plugin list");
+
+							sender.sendMessage(ChatColor.AQUA + "Uploading plugin list...");
+							String pluginsLink = PasteUtils.paste(plugins);
+							sender.sendMessage(ChatColor.AQUA + "Completed uploading plugin list");
+
+							sender.sendMessage(ChatColor.AQUA + "Uploading data to MC Debug...");
+							String finalLink = uploadDebugData(configLink, dataLink, messagesLink, pluginsLink);
+//							String finalLink = PasteUtils.paste("CratesPlus Debug Paste - Version " + cratesPlus.getDescription().getVersion() + "\nBukkit Version: " + cratesPlus.getBukkitVersion() + "\n\nconfig.yml - " + configLink + "\n" + "data.yml - " + dataLink + "\n" + "messages.yml - " + messagesLink + "\n\nPlugin List: " + "\n" + plugins);
+
+							sender.sendMessage(ChatColor.GREEN + "Completed sending debug data, your unique debug link is " + finalLink);
+
+						}
+					});
 					break;
 				case "opener":
 				case "openers":
@@ -104,15 +148,15 @@ public class CrateCommand implements CommandExecutor {
 				case "createbeta":
 					if (args[0].equalsIgnoreCase("createbeta") && false) { // TODO Bring back in 4.2 ;)
 						// Lets try and open a sign to do the name! :D
-						Player player = (Player) sender;
-						try {
-							Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
-							Object packet = signConstructor.newInstance(getBlockPosition(player));
-							SignInputHandler.injectNetty(player);
-							sendPacket(player, packet);
-						} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-							e.printStackTrace();
-						}
+//						Player player = (Player) sender;
+//						try {
+//							Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
+//							Object packet = signConstructor.newInstance(getBlockPosition(player));
+//							SignInputHandler.injectNetty(player);
+//							sendPacket(player, packet);
+//						} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+//							e.printStackTrace();
+//						}
 
 						return true;
 					}
@@ -211,6 +255,34 @@ public class CrateCommand implements CommandExecutor {
 						config.set("Crates." + newName + ".Firework", config.getBoolean("Crates." + crate.getName(false) + ".Firework"));
 					if (config.isSet("Crates." + crate.getName(false) + ".Preview"))
 						config.set("Crates." + newName + ".Preview", config.getBoolean("Crates." + crate.getName(false) + ".Preview"));
+					if (config.isSet("Crates." + crate.getName(false) + ".Permission"))
+						config.set("Crates." + newName + ".Permission", config.getString("Crates." + crate.getName(false) + ".Permission"));
+					if (config.isSet("Crates." + crate.getName(false) + ".Hide Percentages"))
+						config.set("Crates." + newName + ".Hide Percentages", config.getBoolean("Crates." + crate.getName(false) + ".Hide Percentages"));
+					if (config.isSet("Crates." + crate.getName(false) + ".Opener"))
+						config.set("Crates." + newName + ".Opener", config.getString("Crates." + crate.getName(false) + ".Opener"));
+					if (config.isSet("Crates." + crate.getName(false) + ".Cooldown"))
+						config.set("Crates." + newName + ".Cooldown", config.getInt("Crates." + crate.getName(false) + ".Cooldown"));
+
+					// Clone the crate key
+					if (config.isSet("Crates." + crate.getName(false) + ".Key.Item"))
+						config.set("Crates." + newName + ".Key.Item", config.getString("Crates." + crate.getName(false) + ".Key.Item"));
+					if (config.isSet("Crates." + crate.getName(false) + ".Key.Name"))
+						config.set("Crates." + newName + ".Key.Name", config.getString("Crates." + crate.getName(false) + ".Key.Name"));
+					if (config.isSet("Crates." + crate.getName(false) + ".Key.Enchanted"))
+						config.set("Crates." + newName + ".Key.Enchanted", config.getBoolean("Crates." + crate.getName(false) + ".Key.Enchanted"));
+
+					// Rename data fields
+					FileConfiguration dataConfig = cratesPlus.getDataConfig();
+					if (dataConfig.isSet("Crate Locations." + crate.getName(false).toLowerCase())) {
+						dataConfig.set("Crate Locations." + newName.toLowerCase(), dataConfig.getStringList("Crate Locations." + crate.getName(false).toLowerCase()));
+						dataConfig.set("Crate Locations." + crate.getName(false).toLowerCase(), null);
+						try {
+							dataConfig.save(cratesPlus.getDataFile());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
 
 					config.set("Crates." + crate.getName(false), null);
 					cratesPlus.saveConfig();
@@ -352,6 +424,7 @@ public class CrateCommand implements CommandExecutor {
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate key <player/all> [type] [amount] " + ChatColor.YELLOW + "- Give player a random crate key");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate crate <type> [player] " + ChatColor.YELLOW + "- Give player a crate to be placed");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate opener <crate/default> <opener> " + ChatColor.YELLOW + "- Change the opener for a crate (or the default)");
+			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate debug " + ChatColor.YELLOW + "- Generates a debug link for sending info about your server and config");
 
 		}
 
@@ -391,24 +464,36 @@ public class CrateCommand implements CommandExecutor {
 		player.openInventory(inventory);
 	}
 
-	public Object getBlockPosition(Player player) {
-		try {
-			Object handle = player.getClass().getMethod("getHandle").invoke(player);
-			Constructor constructor = ReflectionUtil.getNMSClass("BlockPosition").getConstructor(ReflectionUtil.getNMSClass("Entity"));
-			return constructor.newInstance(handle);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	private String uploadDebugData(String configLink, String dataLink, String messagesLink, String pluginsLink) {
+		String urlStr = "http://mcdebug.xyz/api/v1/submit/?config=" + configLink + "&data=" + dataLink + "&messages=" + messagesLink + "&plugins=" + pluginsLink + "&bukkitVer=" + cratesPlus.getBukkitVersion();
 
-	public void sendPacket(Player player, Object packet) {
+		HttpURLConnection connection = null;
 		try {
-			Object handle = player.getClass().getMethod("getHandle").invoke(player);
-			Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-			playerConnection.getClass().getMethod("sendPacket", ReflectionUtil.getNMSClass("Packet")).invoke(playerConnection, packet);
-		} catch (Exception e) {
-			e.printStackTrace();
+			//Create connection
+			URL url = new URL(urlStr);
+			connection = (HttpURLConnection) url.openConnection();
+//			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			//Send request
+			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+			wr.flush();
+			wr.close();
+
+			//Get Response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			JSONParser jsonParser = new JSONParser();
+			JSONObject obj = (JSONObject) jsonParser.parse(rd.readLine());
+			return "https://mcdebug.xyz/cratesplus/" + obj.get("key");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null;
+		} finally {
+			if (connection == null) {
+				return null;
+			}
+			connection.disconnect();
 		}
 	}
 

@@ -23,7 +23,6 @@ public class Crate {
 	private boolean hidePercentages = false;
 	private double knockback = 0.0;
 	private ArrayList<Winning> winnings = new ArrayList<>();
-	private ArrayList<Integer> percentages = new ArrayList<>();
 	private double totalPercentage = 0;
 	private Key key;
 	private HashMap<String, Location> locations = new HashMap<>();
@@ -55,6 +54,8 @@ public class Crate {
 			this.hidePercentages = cratesPlus.getConfig().getBoolean("Crates." + name + ".Hide Percentages");
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Opener"))
 			this.opener = cratesPlus.getConfig().getString("Crates." + name + ".Opener");
+		if (cratesPlus.getConfig().isSet("Crates." + name + ".Cooldown"))
+			this.cooldown = cratesPlus.getConfig().getInt("Crates." + name + ".Cooldown");
 
 		if (!cratesPlus.getConfig().isSet("Crates." + name + ".Key") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Item") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Name") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Enchanted"))
 			return;
@@ -74,11 +75,6 @@ public class Crate {
 			}
 			totalPercentage = totalPercentage + winning.getPercentage();
 			winnings.add(winning);
-			if (winning.getPercentage() > 0) {
-				for (int i = 0; i < winning.getPercentage(); i++) {
-					percentages.add(winnings.size() - 1);
-				}
-			}
 		}
 	}
 
@@ -148,10 +144,6 @@ public class Crate {
 
 	public double getTotalPercentage() {
 		return totalPercentage;
-	}
-
-	public ArrayList<Integer> getPercentages() {
-		return percentages;
 	}
 
 	public Key getKey() {

@@ -13,6 +13,7 @@ import plus.crates.Winning;
 import java.util.List;
 
 public class CratePreviewEvent extends Event {
+	private static final HandlerList handlers = new HandlerList();
 	private CratesPlus cratesPlus;
 	private Player player;
 	private Crate crate;
@@ -54,7 +55,11 @@ public class CratePreviewEvent extends Event {
 
 	@Override
 	public HandlerList getHandlers() {
-		return null;
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
 	}
 
 	public boolean isCanceled() {

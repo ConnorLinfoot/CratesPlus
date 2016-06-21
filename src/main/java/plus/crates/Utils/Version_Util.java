@@ -41,7 +41,7 @@ public class Version_Util {
 			}
 			holograms.put("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ(), hologram);
 		} else {
-			if (cratesPlus.getMc_version() == CratesPlus.MC_VERSION.MC_1_7) {
+			if (cratesPlus.getBukkitVersion().equals("1.7") || cratesPlus.getBukkitVersion().startsWith("1.7.")) {
 				// Warning that 1.7 needs holographic displays for holograms
 			} else {
 				Hologram hologram = new Hologram(location, lines);

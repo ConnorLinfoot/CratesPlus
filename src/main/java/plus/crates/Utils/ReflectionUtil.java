@@ -1,6 +1,7 @@
 package plus.crates.Utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -134,4 +135,26 @@ public class ReflectionUtil {
 		}
 		return null;
 	}
+
+	public static Object getBlockPosition(Player player) {
+		try {
+			Object handle = player.getClass().getMethod("getHandle").invoke(player);
+			Constructor constructor = ReflectionUtil.getNMSClass("BlockPosition").getConstructor(ReflectionUtil.getNMSClass("Entity"));
+			return constructor.newInstance(handle);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void sendPacket(Player player, Object packet) {
+		try {
+			Object handle = player.getClass().getMethod("getHandle").invoke(player);
+			Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", ReflectionUtil.getNMSClass("Packet")).invoke(playerConnection, packet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

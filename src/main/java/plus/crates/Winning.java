@@ -62,9 +62,17 @@ public class Winning {
 			itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
 		} else if (type.equalsIgnoreCase("command")) {
 			command = true;
-			if (!config.isSet(path + ".Commands") || config.getStringList(path + ".Commands").size() == 0)
+			if (config.isSet(path + ".Commands") && config.getStringList(path + ".Commands").size() != 0) {
+				commands = config.getStringList(path + ".Commands");
+			} else if (config.isSet(path + ".commands") && config.getStringList(path + ".commands").size() != 0) {
+				commands = config.getStringList(path + ".commands");
+			}
+
+			if (commands.isEmpty()) {
+				cratesPlus.getLogger().warning("No \"Commands\" found for " + path);
 				return;
-			commands = config.getStringList(path + ".Commands");
+			}
+
 
 			Material itemType = Material.PAPER;
 			if (config.isSet(path + ".Item Type"))

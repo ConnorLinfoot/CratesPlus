@@ -2,7 +2,6 @@ package plus.crates.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,6 +53,10 @@ public class PlayerInteract implements Listener {
 
 		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 
+		if (crate == null) {
+			return; // Not sure if we should do some warning here? TODO
+		}
+
 		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
 			event.setCancelled(true);
 			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate No Permission", player, crate, null));
@@ -88,7 +91,7 @@ public class PlayerInteract implements Listener {
 					return;
 				}
 
-				if (cratesPlus.getConfigHandler().getDefaultCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getDefaultCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
+				if (crate.getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + crate.getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
 					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getDefaultCooldown();
 					long remaining = whenCooldownEnds - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
@@ -108,20 +111,8 @@ public class PlayerInteract implements Listener {
 				}
 
 				CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType, event.getClickedBlock().getLocation(), cratesPlus);
-				if (!crateOpenEvent.isCanceled()) {
-					Sound sound;
-					try {
-						sound = Sound.valueOf("CHEST_OPEN");
-					} catch (Exception e) {
-						try {
-							sound = Sound.valueOf("BLOCK_CHEST_OPEN");
-						} catch (Exception ee) {
-							return; // This should never happen!
-						}
-					}
-					player.getLocation().getWorld().playSound(player.getLocation(), sound, 10, 1);
+				if (!crateOpenEvent.isCanceled())
 					crateOpenEvent.doEvent();
-				}
 			} else {
 				player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate Open Without Key", player, crate, null));
 				if (crate.getKnockback() != 0) {

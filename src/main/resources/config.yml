@@ -26,8 +26,8 @@ Crates:
 # Opener which is used by default
 Default Opener: BasicGUI
 
-# Cooldown between opening crates
-Cooldown: 5
+# Default cooldown between opening crates
+Default Cooldown: 5
 
 # If true it will stop players without the admin perm breaking crates
 Crate Protection: false

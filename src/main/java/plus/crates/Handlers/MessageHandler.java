@@ -15,7 +15,7 @@ public class MessageHandler {
 
 	public String getMessage(String messageName, Player player, Crate crate, Winning winning) {
 		if (!cratesPlus.getMessagesConfig().isSet(messageName))
-			return null;
+			return "Message \"" + messageName + "\" not configured";
 		String message = cratesPlus.getMessagesConfig().getString(messageName);
 		message = doPlaceholders(message, player, crate, winning);
 		message = ChatColor.translateAlternateColorCodes('&', message);

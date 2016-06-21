@@ -1,4 +1,21 @@
-### Version 4.1.0 Snapshots
+### Version 4.2 Snapshots
+---
+**Snapshot 1** *(Jun 21 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/528/artifact/target/CratesPlus-4.2-SNAPSHOT-1.jar)
+- Fixed per crate cooldowns not working and issues with cooldown in the config.
+- Fixed events so listeners can actually use them now without getting errors.
+- You can now rename a crate using the settings GUI, *should* open a sign GUI for input of text.
+- If no commands found it will display a warning in console.
+- Fixed issues with renames not keeping some data.
+- Holograms/Crate Locations will now update after rename, you may need to restart your server currently for this to take affect.
+- Fixed errors with 1.7 and Barriers in the menus, currently uses a redstone torch on 1.7.
+- Changed the way it handles Bukkit versions. Shouldn't break on new Bukkit updates but will give a warning.
+- Added "debug" arg for generating a report on your server and config to help with errors/issues.
+- Made some changes to the example config file.
+- Will now tell you when it can't find a message instead of just saying "null".
+- A little message will show when the dev of CratesPlus joins your server ;) I'll be reviewing servers and adding them to a list in the future.
+- Removed the chest open sound and added it only into the NoGUI opener as others shouldn't need it nor be forced to use it.
+
+### Version 4.1 Snapshots
 ---
 **Snapshot 8** *(May 27 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/498/artifact/target/CratesPlus-4.1.0-SNAPSHOT-8.jar)
 - Fixed holograms from HolographicDisplays being too low and not removing.
@@ -47,7 +64,7 @@
 - Per crate holograms, thanks to [xorinzor](https://github.com/xorinzor).
 - Better error messages with invalid configuration, thanks to [xorinzor](https://github.com/xorinzor).
 
-### Version 4.0.0 Snapshots
+### Version 4.0 Snapshots
 ---
 **Snapshot 23** *(Mar 18 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/410/artifact/target/CratesPlus-4.0.0-SNAPSHOT-23.jar)
 - Players are no longer forced to keep the GUI open
@@ -173,7 +190,7 @@
 - Minor code cleaning
 - I would recommend not disabling the GUI as the non-gui win doesn't work correctly at the moment. May end up dropping it.
 
-### Version 3.1.0 Snapshots
+### Version 3.1 Snapshots
 ---
 **Snapshot 15** *(Sep 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/191/artifact/target/CratesPlus-3.1-SNAPSHOT-15.jar)
 - Lore's now support color codes
@@ -243,7 +260,7 @@
 **Snapshot 1** *(Jun 14 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/85/artifact/target/CratesPlus-3.1-SNAPSHOT-1.jar)
 - Better invalid item handling, previews will skip invalid items and wins will show an error if no valid item is found after 5 tries
 
-### Version 3.0.0 Snapshots
+### Version 3.0 Snapshots
 ---
 **Snapshot 6** *(Jun 7 2015)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/74/artifact/target/CratesPlus-3.0-SNAPSHOT-6.jar)
 - Changed GUI's and reload GUI option works

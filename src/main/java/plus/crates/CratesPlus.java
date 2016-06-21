@@ -24,6 +24,8 @@ import plus.crates.Utils.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CratesPlus extends JavaPlugin implements Listener {
 	private String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "CratesPlus" + ChatColor.GRAY + "] " + ChatColor.RESET;
@@ -40,33 +42,38 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private CrateHandler crateHandler = new CrateHandler(this);
 	private MessageHandler messageHandler = new MessageHandler(this);
 	private SettingsHandler settingsHandler;
-	private MC_VERSION mc_version = MC_VERSION.OTHER;
+	private String bukkitVersion = "0.0";
 	private Version_Util version_util;
 	private static OpenHandler openHandler;
 
-	public enum MC_VERSION {
-		MC_1_7, MC_1_8, MC_1_9, MC_1_10, OTHER
-	}
-
 	public void onEnable() {
 		Server server = getServer();
+		Pattern pattern = Pattern.compile("(^[^\\-]*)");
+		Matcher matcher = pattern.matcher(server.getBukkitVersion());
+		if (!matcher.find()) {
+			getLogger().severe("Could not find Bukkit version... Disabling plugin");
+			setEnabled(false);
+			return;
+		}
+		bukkitVersion = matcher.group(1);
 
-		if (server.getBukkitVersion().contains("1.10")) {
-			mc_version = MC_VERSION.MC_1_10;
+		if (versionCompare(bukkitVersion, "1.10") > 0) {
+			// This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
+			getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
+			getLogger().warning("Please let me know if there is any errors or issues");
+		}
+
+		if (versionCompare(bukkitVersion, "1.9") > -1) {
+			// Use 1.9+ Util
 			version_util = new Version_1_9(this);
-		} else if (server.getBukkitVersion().contains("1.9")) {
-			mc_version = MC_VERSION.MC_1_9;
-			version_util = new Version_1_9(this);
-		} else if (server.getBukkitVersion().contains("1.8") || server.getBukkitVersion().contains("1.7")) {
-			if (server.getBukkitVersion().contains("1.7")) {
-				mc_version = MC_VERSION.MC_1_7;
-				getLogger().warning("CratesPlus does NOT fully support 1.7, if you have issues please report them but I may not look into it!");
-			} else {
-				mc_version = MC_VERSION.MC_1_8;
+		} else if (versionCompare(bukkitVersion, "1.7") > -1) {
+			// Use Default Util
+			if (bukkitVersion.equals("1.7") || bukkitVersion.startsWith("1.7.")) {
+				getLogger().warning("CratesPlus does NOT fully support 1.7, if you have issues please report them but I may not look into it");
 			}
 			version_util = new Version_Util(this);
 		} else {
-			getLogger().severe("CratesPlus does NOT support \"" + server.getBukkitVersion() + "\" if you believe this is an error please let me know!");
+			getLogger().severe("CratesPlus does NOT support Bukkit " + bukkitVersion + " if you believe this is an error please let me know");
 			if (!getConfig().isSet("Ignore Version") || !getConfig().getBoolean("Ignore Version")) { // People should only ignore this in the case of an error, doing an ignore on a unsupported version could break something
 				setEnabled(false);
 				return;
@@ -76,23 +83,23 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		final ConsoleCommandSender console = server.getConsoleSender();
 		if (getConfig().isSet("Crate Knockback") || (getConfig().isSet("Config Version") && getConfig().getInt("Config Version") < 2)) {
-			String oldConfig = backupConfig();
+			String oldConfig = uploadConfig();
 			convertConfigV2(console, oldConfig);
 		}
 		if (getConfig().getInt("Config Version") == 2) {
-			String oldConfig = backupConfig();
+			String oldConfig = uploadConfig();
 			convertConfigV3(console, oldConfig); // Yay more config converting :/
 		}
 		if (getConfig().getInt("Config Version") == 3) {
-			String oldConfig = backupConfig();
+			String oldConfig = uploadConfig();
 			convertConfigV4(console, oldConfig); // Yay even more config converting xD
 		}
 		if (getConfig().getInt("Config Version") == 4) {
-			String oldConfig = backupConfig();
+			String oldConfig = uploadConfig();
 			convertConfigV5(console, oldConfig); // Oh god...
 		}
 		if (getConfig().getInt("Config Version") == 5) {
-			String oldConfig = backupConfig();
+			String oldConfig = uploadConfig();
 			convertConfigV6(console, oldConfig); // Let me add another one xD ~Xorinzor
 		}
 		cleanUpDeadConfig();
@@ -210,11 +217,13 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	}
 
 	public void onDisable() {
-		for (Map.Entry<String, Crate> crate : configHandler.getCrates().entrySet()) {
-			HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
-			if (!holograms.isEmpty()) {
-				for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())
-					hologram.getValue().destroyAll();
+		if (configHandler != null) {
+			for (Map.Entry<String, Crate> crate : configHandler.getCrates().entrySet()) {
+				HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
+				if (!holograms.isEmpty()) {
+					for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())
+						hologram.getValue().destroyAll();
+				}
 			}
 		}
 	}
@@ -226,8 +235,20 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			getConfig().set("Enable GUI Beta Animation", null);
 	}
 
-	private String backupConfig() {
-		File file = new File(getDataFolder(), "config.yml");
+	public String uploadConfig() {
+		return uploadFile("config.yml");
+	}
+
+	public String uploadData() {
+		return uploadFile("data.yml");
+	}
+
+	public String uploadMessages() {
+		return uploadFile("messages.yml");
+	}
+
+	public String uploadFile(String fileName) {
+		File file = new File(getDataFolder(), fileName);
 		if (!file.exists())
 			return null;
 		LineIterator it;
@@ -451,10 +472,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 	public SettingsHandler getSettingsHandler() {
 		return settingsHandler;
-	}
-
-	public MC_VERSION getMc_version() {
-		return mc_version;
 	}
 
 	public String getPluginPrefix() {
@@ -765,6 +782,25 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			configBackup = oldConfig;
 			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
 		}
+	}
+
+	// Returns true if str1 is newer or equal to str2 (Used for checking if we are 1.8 or higher)
+	private int versionCompare(String str1, String str2) {
+		String[] vals1 = str1.split("\\.");
+		String[] vals2 = str2.split("\\.");
+		int i = 0;
+		while (i < vals1.length && i < vals2.length && vals1[i].equals(vals2[i])) {
+			i++;
+		}
+		if (i < vals1.length && i < vals2.length) {
+			int diff = Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
+			return Integer.signum(diff);
+		}
+		return Integer.signum(vals1.length - vals2.length);
+	}
+
+	public String getBukkitVersion() {
+		return bukkitVersion;
 	}
 
 }

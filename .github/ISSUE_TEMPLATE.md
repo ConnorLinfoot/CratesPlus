@@ -1,8 +1,8 @@
-**Please use one of the issue templates below. Issues not using the templates will likely be closed!**
+**Please use the issue template below. Issues not using the templates will likely be closed! If you are suggesting a feature you do not need to follow the template.**
 
-# Crash, Stacktrace or Configuration issue
+From version 4.1 Snapshot 1 there is a new '/cratesplus debug' command. Running this will give you a single link with all the data I need to help you. If you submit that you won't need to submit your plugin list, version, or any files.
 
-### Link/paste of stack trace
+### Link/paste of stack trace (if any)
 
     You can also simply just use code formatting in markdown!
 ___We need all of the stack trace! Do not cut off parts of it.___
@@ -21,7 +21,3 @@ ___Please upload to pastebin.com and provide link___
 
 ### CratesPlus data.yml
 ___Please upload to pastebin.com and provide link___
-
-# Suggestion
-
-___We love suggestions! Suggestions are fairly unstructured, and will be treated as such___

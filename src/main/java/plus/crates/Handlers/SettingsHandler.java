@@ -50,7 +50,14 @@ public class SettingsHandler {
 
 		/** Reload Config */
 
-		itemStack = new ItemStack(Material.BARRIER);
+		Material material;
+		try {
+			material = Material.valueOf("BARRIER");
+		} catch (Exception i) {
+			material = Material.REDSTONE_TORCH_ON;
+		}
+
+		itemStack = new ItemStack(material);
 		itemMeta = itemStack.getItemMeta();
 		itemMeta.setDisplayName(ChatColor.GREEN + "Reload Config");
 		lore = new ArrayList<>();
@@ -133,10 +140,8 @@ public class SettingsHandler {
 
 		itemStack = new ItemStack(Material.NAME_TAG);
 		itemMeta = itemStack.getItemMeta();
-		itemMeta.setDisplayName(ChatColor.RED + "Rename Crate");
+		itemMeta.setDisplayName(ChatColor.WHITE + "Rename Crate");
 		lore = new ArrayList<>();
-		lore.add("");
-		lore.add(ChatColor.GRAY + "Use /crate rename " + crate.getName(false) + " <new name>");
 		lore.add("");
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
@@ -169,7 +174,15 @@ public class SettingsHandler {
 
 		/** Delete Crate */
 
-		itemStack = new ItemStack(Material.BARRIER);
+		Material material;
+
+		try {
+			material = Material.valueOf("BARRIER");
+		} catch (Exception i) {
+			material = Material.REDSTONE_TORCH_ON;
+		}
+
+		itemStack = new ItemStack(material);
 		itemMeta = itemStack.getItemMeta();
 		itemMeta.setDisplayName(ChatColor.WHITE + "Delete Crate");
 		lore = new ArrayList<>();

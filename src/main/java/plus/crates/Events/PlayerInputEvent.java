@@ -1,24 +1,36 @@
 package plus.crates.Events;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import plus.crates.Utils.SignInputHandler;
 
-public class PlayerInputEvent extends PlayerEvent {
-	public static HandlerList handlerList = new HandlerList();
+public class PlayerInputEvent extends Event {
+	private static final HandlerList handlers = new HandlerList();
+	private Player player;
+	public String[] lines;
 
-	public PlayerInputEvent(Player p, String[] lines) {
-		super(p);
-		//This is were your code goes
-		for (String line : lines) {
-			System.out.println(line);
-		}
+	public PlayerInputEvent(Player player, String[] lines) {
+		this.player = player;
+		this.lines = lines;
 		SignInputHandler.ejectNetty(player);
 	}
 
 	@Override
 	public HandlerList getHandlers() {
-		return handlerList;
+		return handlers;
 	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public String[] getLines() {
+		return lines;
+	}
+
 }

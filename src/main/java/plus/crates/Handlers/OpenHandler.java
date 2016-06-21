@@ -40,6 +40,10 @@ public class OpenHandler {
 		}
 	}
 
+	public String getCratesPlusVersion() {
+		return getCratesPlus().getDescription().getVersion();
+	}
+
 	public Opener getOpener(Crate crate) {
 		if (registered.containsKey(crate.getOpener()))
 			return registered.get(crate.getOpener());

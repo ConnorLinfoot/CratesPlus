@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.connorlinfoot</groupId>
+    <groupId>plus.crates</groupId>
     <artifactId>CratesPlus</artifactId>
     <description>A free and great crates plugin for Minecraft</description>
-    <version>4.1.1</version>
+    <version>4.2-SNAPSHOT-1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.9-R0.1-SNAPSHOT</version>
+            <version>1.10-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.gmail.filoghost</groupId>

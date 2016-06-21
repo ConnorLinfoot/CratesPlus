@@ -11,10 +11,10 @@ import java.util.List;
 
 public class Key {
 	private CratesPlus cratesPlus;
-	private String crateName;
-	private Material material;
-	private String name;
-	private boolean enchanted;
+	private String crateName = "";
+	private Material material = Material.CHEST;
+	private String name = "";
+	private boolean enchanted = false;
 
 	public Key(String crateName, Material material, String name, boolean enchanted, CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;

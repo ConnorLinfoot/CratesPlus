@@ -156,7 +156,7 @@ public class CrateHandler {
 
 		//Show error message about the config file missing a Crates.<crateType>.Key field
 		if (key == null) {
-			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate type: '" + crateType + "'");
+			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate: '" + crateType + "'");
 			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Make sure your config file is correct");
 			return;
 		}
@@ -198,7 +198,7 @@ public class CrateHandler {
 		crateMeta.setLore(lore);
 		crateItem.setItemMeta(crateMeta);
 		player.getInventory().addItem(crateItem);
-		player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "You have been given a " + crate.getName(true) + ChatColor.GREEN + " crate!");
+		player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "You have been given a " + crate.getName(true) + ChatColor.GREEN + " crate");
 	}
 
 	@Deprecated
