@@ -30,7 +30,7 @@ public class SnapshotUpdater {
 
 	private void doCheck() {
 		String data = null;
-		String url = "https://api.connorlinfoot.com/v1/resource/snapshot/cratesplus/";
+		String url = "http://api.connorlinfoot.com/v1/resource/snapshot/cratesplus/";
 		try {
 			data = doCurl(url);
 		} catch (IOException e) {

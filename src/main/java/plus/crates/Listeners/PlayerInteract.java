@@ -110,7 +110,8 @@ public class PlayerInteract implements Listener {
 					}
 				}
 
-				new CrateOpenEvent(player, crateType, event.getClickedBlock().getLocation(), cratesPlus);
+				CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType, event.getClickedBlock().getLocation(), cratesPlus);
+				crateOpenEvent.doEvent();
 			} else {
 				player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate Open Without Key", player, crate, null));
 				if (crate.getKnockback() != 0) {

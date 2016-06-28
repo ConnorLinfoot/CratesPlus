@@ -314,6 +314,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private void checkUpdate(final ConsoleCommandSender console) {
 		String updateBranch = getConfig().getString("Update Branch");
 
+		if (getDescription().getVersion().contains("SNAPSHOT"))
+			updateBranch = "snapshot";//Force snapshot branch on snapshot builds
+
 		String s = updateBranch.toLowerCase();
 		if (s.equals("snapshot")) {
 			console.sendMessage(ChatColor.RED + "WARNING: Snapshot updates are not recommended on production servers");
