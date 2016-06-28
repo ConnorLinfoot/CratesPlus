@@ -1,8 +1,6 @@
 **Please use the issue template below. Issues not using the templates will likely be closed! If you are suggesting a feature you do not need to follow the template.**
 
-If you're having config issues (such as it resetting) first make sure it's a valid YAML file using a [parser](http://yaml-online-parser.appspot.com).
-
-From version 4.1 Snapshot 1 there is a new '/cratesplus debug' command. Running this will give you a single link with all the data I need to help you. If you submit that you won't need to submit your plugin list, version, or any files.
+From version 4.2 Snapshot 1 there is a new '/cratesplus debug' command. Running this will give you a single link with all the data I need to help you. If you submit that you won't need to submit your plugin list, version, or any files.
 
 ### Link/paste of stack trace (if any)
 
