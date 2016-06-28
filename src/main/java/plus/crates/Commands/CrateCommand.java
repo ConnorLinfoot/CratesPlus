@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,11 +18,15 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.Opener;
 import plus.crates.Utils.PasteUtils;
+import plus.crates.Utils.ReflectionUtil;
+import plus.crates.Utils.SignInputHandler;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
@@ -46,19 +51,15 @@ public class CrateCommand implements CommandExecutor {
 			return false;
 		}
 
-		//if (args.length >= 1 && args[0].equalsIgnoreCase("claim")) {
-		//	if (!(sender instanceof Player)) {
-		//		sender.sendMessage(CratesPlus.getPluginPrefix() + ChatColor.RED + "This command must be ran as a player");
-		//		return false;
-		//	}
-		//	doClaim((Player) sender);
-		//	return true;
-		//}
-
 		if (args.length >= 1) {
 			switch (args[0].toLowerCase()) {
 				default:
 					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Unknown arg");
+					break;
+				case "claim":
+					if (sender instanceof Player) {
+						doClaim((Player) sender);
+					}
 					break;
 				case "debug":
 					sender.sendMessage(ChatColor.AQUA + "Gathering debug data...");
@@ -146,21 +147,23 @@ public class CrateCommand implements CommandExecutor {
 					cratesPlus.getSettingsHandler().openSettings((Player) sender);
 					break;
 				case "create":
-				case "createbeta":
-					if (args[0].equalsIgnoreCase("createbeta") && false) { // TODO Bring back in 4.2 ;)
+					if (sender instanceof Player && args.length < 2) {
 						// Lets try and open a sign to do the name! :D
-//						Player player = (Player) sender;
-//						try {
-//							Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
-//							Object packet = signConstructor.newInstance(getBlockPosition(player));
-//							SignInputHandler.injectNetty(player);
-//							sendPacket(player, packet);
-//						} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-//							e.printStackTrace();
-//						}
+						Player player = (Player) sender;
 
+						cratesPlus.addCreating(player.getUniqueId());
+						try {
+							Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
+							Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));
+							SignInputHandler.injectNetty(player);
+							ReflectionUtil.sendPacket(player, packet);
+						} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+							e.printStackTrace();
+							cratesPlus.removeCreating(player.getUniqueId());
+						}
 						return true;
 					}
+
 					if (args.length < 2) {
 						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Correct Usage: /crate create <name>");
 						return false;
@@ -427,6 +430,7 @@ public class CrateCommand implements CommandExecutor {
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate crate <type> [player] " + ChatColor.YELLOW + "- Give player a crate to be placed");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate opener <crate/default> <opener> " + ChatColor.YELLOW + "- Change the opener for a crate (or the default)");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate debug " + ChatColor.YELLOW + "- Generates a debug link for sending info about your server and config");
+			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate claim " + ChatColor.YELLOW + "- Claim any keys that are waiting for you");
 
 		}
 
@@ -455,11 +459,15 @@ public class CrateCommand implements CommandExecutor {
 		Integer i = 0;
 		for (Map.Entry<String, Integer> map : cratesPlus.getCrateHandler().getPendingKey(player.getUniqueId()).entrySet()) {
 			String crateName = map.getKey();
-			Integer amount = map.getValue();
 			Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 			if (crate == null)
 				return; // Crate must have been removed?
-			ItemStack keyItem = crate.getKey().getKeyItem(amount);
+			ItemStack keyItem = crate.getKey().getKeyItem(1);
+			if (map.getValue() > 1) {
+				ItemMeta itemMeta = keyItem.getItemMeta();
+				itemMeta.setDisplayName(itemMeta.getDisplayName() + " x" + map.getValue());
+				keyItem.setItemMeta(itemMeta);
+			}
 			inventory.setItem(i, keyItem);
 			i++;
 		}

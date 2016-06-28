@@ -44,6 +44,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private Version_Util version_util;
 	private static OpenHandler openHandler;
 	private boolean canNBT = true;
+	private ArrayList<UUID> creatingCrate = new ArrayList<>();
 
 	public void onEnable() {
 		Server server = getServer();
@@ -168,6 +169,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		messagesConfig.addDefault("Cant Drop", "&cYou can not drop crate keys");
 		messagesConfig.addDefault("Chance Message", "&d%percentage%% Chance");
 		messagesConfig.addDefault("Inventory Full Claim", "&aYou're inventory is full, you can claim your keys later using /claim");
+		messagesConfig.addDefault("Claim Join", "&aYou currently have keys waiting to be claimed, use /crate to claim");
 
 		try {
 			messagesConfig.save(messagesFile);
@@ -846,4 +848,21 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	public boolean canNBT() {
 		return canNBT;
 	}
+
+	public ArrayList<UUID> getCreatingCrate() {
+		return creatingCrate;
+	}
+
+	public boolean isCreating(UUID uuid) {
+		return creatingCrate.contains(uuid);
+	}
+
+	public void addCreating(UUID uuid) {
+		creatingCrate.add(uuid);
+	}
+
+	public void removeCreating(UUID uuid) {
+		creatingCrate.remove(uuid);
+	}
+
 }

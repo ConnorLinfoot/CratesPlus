@@ -55,7 +55,6 @@ public class Key {
 		if (isEnchanted())
 			keyItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
 		ItemMeta keyItemMeta = keyItem.getItemMeta();
-//        keyMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); // TODO; Make this work when Spigot is being used!!
 		String title = getName().replaceAll("%type%", getCrate().getName(true));
 		keyItemMeta.setDisplayName(title);
 		List<String> lore = new ArrayList<>();

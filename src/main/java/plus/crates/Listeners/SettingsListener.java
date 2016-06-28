@@ -195,6 +195,7 @@ public class SettingsListener implements Listener {
 					ReflectionUtil.sendPacket(player, packet);
 				} catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 					e.printStackTrace();
+					renaming.remove(player.getUniqueId());
 				}
 				event.setCancelled(true);
 			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Color")) {
@@ -330,6 +331,13 @@ public class SettingsListener implements Listener {
 			}
 			Bukkit.dispatchCommand(event.getPlayer(), "crate rename " + name + " " + newName);
 			cratesPlus.getSettingsHandler().openCrate(event.getPlayer(), newName);
+		} else if (cratesPlus.isCreating(event.getPlayer().getUniqueId())) {
+			cratesPlus.removeCreating(event.getPlayer().getUniqueId());
+			String name = "";
+			for (String line : event.getLines()) {
+				name += line;
+			}
+			Bukkit.dispatchCommand(event.getPlayer(), "crate create " + name);
 		}
 	}
 

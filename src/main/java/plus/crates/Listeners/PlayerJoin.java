@@ -22,9 +22,9 @@ public class PlayerJoin implements Listener {
 			event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Your config has been updated. Your old config was backed up to " + cratesPlus.getConfigBackup());
 			cratesPlus.setConfigBackup(null);
 		}
-		//if(CrateHandler.hasPendingKeys(event.getPlayer().getUniqueId())) {
-		//	// TODO Send Message
-		//}
+		if (cratesPlus.getCrateHandler().hasPendingKeys(event.getPlayer().getUniqueId())) {
+			event.getPlayer().sendMessage(cratesPlus.getMessageHandler().getMessage("Claim Join", event.getPlayer(), null, null));
+		}
 	}
 
 }

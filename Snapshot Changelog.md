@@ -1,5 +1,11 @@
 ### Version 4.2 Snapshots
 ---
+**Snapshot 3** *(Jun 28 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/540/artifact/target/CratesPlus-4.2-SNAPSHOT-3.jar)
+- You can now open the claim GUI as an "admin"
+- Minor changes to the claim GUI.
+- Added "Claim Join" message, shown when a player joins who has pending keys to claim.
+- You can now create a crate using signs.
+
 **Snapshot 2** *(Jun 28 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/538/artifact/target/CratesPlus-4.2-SNAPSHOT-2.jar)
 - Fixed per crate holograms not working if you had capitals in your name.
 - Added option for "Chest Sound" with the NoGUI opener.

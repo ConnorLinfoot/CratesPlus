@@ -58,7 +58,6 @@ public class NBTReflectionUtil {
 			Object answer = method.invoke(cis, item);
 			return answer;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -74,7 +73,6 @@ public class NBTReflectionUtil {
 			Object answer = method.invoke(cis, item);
 			return (ItemStack) answer;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -90,7 +88,6 @@ public class NBTReflectionUtil {
 			Object answer = method.invoke(nmsitem);
 			return answer;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
