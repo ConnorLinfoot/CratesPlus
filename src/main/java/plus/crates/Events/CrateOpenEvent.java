@@ -12,7 +12,6 @@ public class CrateOpenEvent extends Event {
 	private CratesPlus cratesPlus;
 	private Player player;
 	private Crate crate;
-	private boolean canceled = false;
 	private Location blockLocation;
 
 	public CrateOpenEvent(Player player, String crateName, Location blockLocation, CratesPlus cratesPlus) {
@@ -33,14 +32,6 @@ public class CrateOpenEvent extends Event {
 
 	public static HandlerList getHandlerList() {
 		return handlers;
-	}
-
-	public boolean isCanceled() {
-		return this.canceled;
-	}
-
-	public void setCanceled(boolean canceled) {
-		this.canceled = canceled;
 	}
 
 	public Player getPlayer() {

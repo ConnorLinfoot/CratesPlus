@@ -2,6 +2,7 @@ package plus.crates.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,11 +37,11 @@ public class CrateCommand implements CommandExecutor {
 	public boolean onCommand(final CommandSender sender, Command command, String string, String[] args) {
 
 		if (sender instanceof Player && !sender.hasPermission("cratesplus.admin")) {
-			//if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("claim"))) {
-			//	// Assume player and show "claim" GUI
-			//	doClaim((Player) sender);
-			//	return true;
-			//}
+			if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("claim"))) {
+				// Assume player and show "claim" GUI
+				doClaim((Player) sender);
+				return true;
+			}
 			sender.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Command No Permission", (Player) sender, null, null));
 			return false;
 		}
@@ -194,7 +195,7 @@ public class CrateCommand implements CommandExecutor {
 					cratesPlus.saveConfig();
 					cratesPlus.reloadConfig();
 
-					cratesPlus.getConfigHandler().getCrates().put(name.toLowerCase(), new Crate(name, cratesPlus));
+					cratesPlus.getConfigHandler().getCrates().put(name.toLowerCase(), new Crate(name, cratesPlus, cratesPlus.getConfigHandler()));
 					cratesPlus.getSettingsHandler().setupCratesInventory();
 
 					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + name + " crate has been created");
@@ -289,7 +290,7 @@ public class CrateCommand implements CommandExecutor {
 					cratesPlus.reloadConfig();
 
 					cratesPlus.getConfigHandler().getCrates().remove(oldName.toLowerCase());
-					cratesPlus.getConfigHandler().getCrates().put(newName.toLowerCase(), new Crate(newName, cratesPlus));
+					cratesPlus.getConfigHandler().getCrates().put(newName.toLowerCase(), new Crate(newName, cratesPlus, cratesPlus.getConfigHandler()));
 					cratesPlus.getSettingsHandler().setupCratesInventory();
 
 					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + oldName + " has been renamed to " + newName);
@@ -331,10 +332,10 @@ public class CrateCommand implements CommandExecutor {
 						}
 					}
 
-					Player player = null;
+					OfflinePlayer offlinePlayer = null;
 					if (!args[1].equalsIgnoreCase("all")) {
-						player = Bukkit.getPlayer(args[1]);
-						if (player == null) {
+						offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
+						if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
 							sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "The player " + args[1] + " was not found");
 							return false;
 						}
@@ -352,27 +353,27 @@ public class CrateCommand implements CommandExecutor {
 							return false;
 						}
 
-						if (player == null) {
+						if (offlinePlayer == null) {
 							for (Player p : Bukkit.getOnlinePlayers()) {
 								cratesPlus.getCrateHandler().giveCrateKey(p, crateType, amount);
 							}
 						} else {
-							cratesPlus.getCrateHandler().giveCrateKey(player, crateType, amount);
+							cratesPlus.getCrateHandler().giveCrateKey(offlinePlayer, crateType, amount);
 						}
 					} else {
-						if (player == null) {
+						if (offlinePlayer == null) {
 							for (Player p : Bukkit.getOnlinePlayers()) {
 								cratesPlus.getCrateHandler().giveCrateKey(p);
 							}
 						} else {
-							cratesPlus.getCrateHandler().giveCrateKey(player);
+							cratesPlus.getCrateHandler().giveCrateKey(offlinePlayer);
 						}
 					}
 
-					if (player == null) {
+					if (offlinePlayer == null) {
 						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Given all players a crate key");
 					} else {
-						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Given " + player.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " a crate key");
+						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Given " + offlinePlayer.getName() + " a crate key");
 					}
 					break;
 				case "crate":
@@ -381,6 +382,7 @@ public class CrateCommand implements CommandExecutor {
 						return false;
 					}
 
+					Player player;
 					if (args.length == 3) {
 						player = Bukkit.getPlayer(args[2]);
 					} else if (sender instanceof Player) {

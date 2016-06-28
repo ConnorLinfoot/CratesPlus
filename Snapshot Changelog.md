@@ -1,5 +1,13 @@
 ### Version 4.2 Snapshots
 ---
+**Snapshot 2** *(Jun 28 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/538/artifact/target/CratesPlus-4.2-SNAPSHOT-2.jar)
+- Fixed per crate holograms not working if you had capitals in your name.
+- Added option for "Chest Sound" with the NoGUI opener.
+- Updating from prior 4.1 to 4.2 will now use the correct opener and not default to the BasicGUI opener.
+- You can now give offline players crate keys, will go into the claim GUI.
+- When keys are given to a player with a full inventory the remaining keys go into the claim GUI.
+- Removed the ability to cancel the CrateOpenEvent as if cancelled keys were still being taken.
+
 **Snapshot 1** *(Jun 21 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/528/artifact/target/CratesPlus-4.2-SNAPSHOT-1.jar)
 - Fixed per crate cooldowns not working and issues with cooldown in the config.
 - Fixed events so listeners can actually use them now without getting errors.

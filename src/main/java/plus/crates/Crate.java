@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Utils.Hologram;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class Crate {
 	private String opener = null;
 	private Integer cooldown = null;
 
-	public Crate(String name, CratesPlus cratesPlus) {
+	public Crate(String name, CratesPlus cratesPlus, ConfigHandler configHandler) {
 		this.cratesPlus = cratesPlus;
 		this.name = name;
 		this.slug = name.toLowerCase();
@@ -67,7 +68,7 @@ public class Crate {
 
 		for (String id : cratesPlus.getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
 			String path = "Crates." + name + ".Winnings." + id;
-			Winning winning = new Winning(this, path, cratesPlus);
+			Winning winning = new Winning(this, path, cratesPlus, configHandler);
 			if (totalPercentage + winning.getPercentage() > 100 || !winning.isValid()) {
 				if (totalPercentage + winning.getPercentage() > 100)
 					Bukkit.getLogger().warning("Your percentages must NOT add up to more than 100%");
@@ -124,7 +125,7 @@ public class Crate {
 		winnings.clear();
 		for (String id : cratesPlus.getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
 			String path = "Crates." + name + ".Winnings." + id;
-			Winning winning = new Winning(this, path, cratesPlus);
+			Winning winning = new Winning(this, path, cratesPlus, cratesPlus.getConfigHandler());
 			if (winning.isValid())
 				winnings.add(winning);
 		}
@@ -211,11 +212,11 @@ public class Crate {
 
 	public void loadHolograms(Location location) {
 		// Do holograms
-		if (cratesPlus.getConfigHandler().getHolograms() == null || cratesPlus.getConfigHandler().getHolograms().isEmpty())
+		if (cratesPlus.getConfigHandler().getHolograms(this.slug) == null || cratesPlus.getConfigHandler().getHolograms(this.slug).isEmpty())
 			return;
 
 		ArrayList<String> list = new ArrayList<>();
-		for (String string : cratesPlus.getConfigHandler().getHologramsForCrate(this.slug))
+		for (String string : cratesPlus.getConfigHandler().getHolograms(this.slug))
 			list.add(cratesPlus.getMessageHandler().doPlaceholders(string, null, this, null));
 		cratesPlus.getVersion_util().createHologram(location, list, this);
 	}

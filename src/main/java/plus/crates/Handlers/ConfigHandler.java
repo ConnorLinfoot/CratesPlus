@@ -15,6 +15,7 @@ public class ConfigHandler {
 	private HashMap<String, List<String>> holograms = new HashMap<>();
 	private HashMap<String, Crate> crates = new HashMap<>();
 	private boolean disableKeySwapping = false;
+	private boolean debugMode = false;
 
 	public ConfigHandler(FileConfiguration config, CratesPlus cratesPlus) {
 		// Load configuration
@@ -22,6 +23,10 @@ public class ConfigHandler {
 			config.set("Default Cooldown", config.getInt("Cooldown"));
 			config.set("Cooldown", null);
 			cratesPlus.saveConfig();
+		}
+
+		if (config.isSet("Debug Mode")) {
+			debugMode = config.getBoolean("Debug Mode", false);
 		}
 
 		if (config.isSet("Disable Key Dropping")) {
@@ -39,13 +44,17 @@ public class ConfigHandler {
 		// Register Crates
 		if (config.isSet("Crates")) {
 			for (String crate : config.getConfigurationSection("Crates").getKeys(false)) {
-				addCrate(crate.toLowerCase(), new Crate(crate, cratesPlus));
+				addCrate(crate.toLowerCase(), new Crate(crate, cratesPlus, this));
 			}
 		}
 
 		// Crate GUI
 		if (config.isSet("Use GUI")) {
-			config.set("Default Opener", "BasicGUI");
+			if (config.getBoolean("Use GUI")) {
+				config.set("Default Opener", "BasicGUI");
+			} else {
+				config.set("Default Opener", "NoGUI");
+			}
 			config.set("Use GUI", null);
 			cratesPlus.saveConfig();
 		}
@@ -64,9 +73,10 @@ public class ConfigHandler {
 		// Crate Holograms
 		defaultHologramText = config.getStringList("Default Hologram Text");
 
-		for (String crate : crates.keySet()) {
-			List<String> crateSpecificHologram = config.getStringList("Crates." + crate + ".Hologram Text");
-			addHologram(crate.toLowerCase(), (config.isSet("Crates." + crate + ".Hologram Text")) ? crateSpecificHologram : defaultHologramText);
+		for (String crateLowerName : crates.keySet()) {
+			Crate crate = crates.get(crateLowerName);
+			List<String> crateSpecificHologram = config.getStringList("Crates." + crate.getName() + ".Hologram Text");
+			holograms.put(crate.getName().toLowerCase(), (config.isSet("Crates." + crate.getName() + ".Hologram Text")) ? crateSpecificHologram : defaultHologramText);
 		}
 	}
 
@@ -96,18 +106,11 @@ public class ConfigHandler {
 		return this.crates;
 	}
 
-	public HashMap<String, List<String>> getHolograms() {
-		return this.holograms;
-	}
-
-	public List<String> getHologramsForCrate(String crateType) {
+	public List<String> getHolograms(String crateType) {
 		return this.holograms.get(crateType.toLowerCase());
 	}
 
-	public void addHologram(String name, List<String> hologramLines) {
-		this.holograms.put(name, hologramLines);
-	}
-
+	@Deprecated
 	public Integer getCrateGUITime() {
 		return crateGUITime;
 	}
@@ -118,6 +121,10 @@ public class ConfigHandler {
 
 	public boolean isDisableKeySwapping() {
 		return disableKeySwapping;
+	}
+
+	public boolean isDebugMode() {
+		return debugMode;
 	}
 
 }

@@ -41,7 +41,7 @@ Crates:
         Type: ITEM
         Item Type: IRON_SWORD
         Item Data: 0
-        Percentage: 50
+        Percentage: 25
         Name: '&6&lSword of Destiny'
         Amount: 1
         Enchantments:
@@ -73,6 +73,15 @@ Crates:
         - DAMAGE_ALL-5
         - DURABILITY-3
         - FIRE_ASPECT-2
+      '4':
+        Type: ITEM
+        Item Type: SPAWN_EGG
+        Percentage: 25
+        Name: '&e&lCreeper Egg'
+        Item Data: 0
+        NBT Data:
+          EntityTag: '{"id":"Creeper"}'
+        Amount: 3
   VIP:
     Knockback: 0.5
     Broadcast: false

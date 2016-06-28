@@ -1,6 +1,7 @@
 package plus.crates.Handlers;
 
 import org.bukkit.*;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -13,6 +14,7 @@ import plus.crates.CratesPlus;
 import plus.crates.Key;
 import plus.crates.Opener.Opener;
 
+import java.io.IOException;
 import java.util.*;
 
 public class CrateHandler {
@@ -23,6 +25,26 @@ public class CrateHandler {
 
 	public CrateHandler(CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
+
+		// Load in any pending keys from the data file
+		YamlConfiguration dataConfig = cratesPlus.getDataConfig();
+
+		if (dataConfig.isSet("Claims")) {
+			for (String uuidStr : dataConfig.getConfigurationSection("Claims").getKeys(false)) {
+				UUID uuid = UUID.fromString(uuidStr);
+				HashMap<String, Integer> keys = new HashMap<>();
+				List<String> dataList = dataConfig.getStringList("Claims." + uuidStr);
+				for (String data : dataList) {
+					String[] args = data.split("\\|");
+					if (args.length == 1) {
+						keys.put(args[0], 1);
+					} else {
+						keys.put(args[0], Integer.valueOf(args[1]));
+					}
+				}
+				pendingKeys.put(uuid, keys);
+			}
+		}
 	}
 
 	public int randInt(int min, int max) {
@@ -118,7 +140,7 @@ public class CrateHandler {
 		fw.setFireworkMeta(fwm);
 	}
 
-	public void giveCrateKey(Player player) {
+	public void giveCrateKey(OfflinePlayer offlinePlayer) {
 		Set<String> crates = cratesPlus.getConfig().getConfigurationSection("Crates").getKeys(false);
 		Integer random = randInt(0, crates.size() - 1);
 		String crateType = "";
@@ -130,52 +152,88 @@ public class CrateHandler {
 			}
 			i++;
 		}
-		giveCrateKey(player, crateType);
+		giveCrateKey(offlinePlayer, crateType);
 	}
 
-	public void giveCrateKey(Player player, String crateType) {
-		giveCrateKey(player, crateType, 1);
+	public void giveCrateKey(OfflinePlayer offlinePlayer, String crateType) {
+		giveCrateKey(offlinePlayer, crateType, 1);
 	}
 
-	public void giveCrateKey(Player player, String crateType, Integer amount) {
-		if (player == null || !player.isOnline()) return;
+	public void giveCrateKey(OfflinePlayer offlinePlayer, String crateType, Integer amount) {
+		if (offlinePlayer == null) return;
+
 		if (crateType == null) {
-			giveCrateKey(player);
+			giveCrateKey(offlinePlayer);
 			return;
 		}
-		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 
-		//If the crate does not exist, tell the user
-		//This also prevents nullpointerexceptions beeing thrown
+		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		if (crate == null) {
-			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
+			if (offlinePlayer.isOnline())
+				((Player) offlinePlayer).sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
 			return;
 		}
 
 		Key key = crate.getKey();
-
-		//Show error message about the config file missing a Crates.<crateType>.Key field
 		if (key == null) {
-			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate: '" + crateType + "'");
-			player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Make sure your config file is correct");
+			if (offlinePlayer.isOnline()) {
+				((Player) offlinePlayer).sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Could not get key for crate: '" + crateType + "'");
+			}
 			return;
 		}
 
-		//if (player.getInventory().firstEmpty() == -1) {
-		//	// Add key to claim
-		//	HashMap<String, Integer> keys = new HashMap<String, Integer>();
-		//	if( CrateHandler.hasPendingKeys(player.getUniqueId()))
-		//		keys = CrateHandler.getPendingKey(player.getUniqueId());
-		//	if( keys.containsKey(crateType) )
-		//		amount = amount + keys.get(crateType);
-		//	keys.put(crateType, amount);
-		//	CrateHandler.pendingKeys.put(player.getUniqueId(), keys);
-		//	player.sendMessage(ChatColor.GREEN + "Do /crate claim");
-		//	return;
-		//}
-		ItemStack keyItem = key.getKeyItem(amount);
-		player.getInventory().addItem(keyItem);
-		player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Key Given", player, crate, null));
+		if (offlinePlayer.isOnline()) {
+			Player player = (Player) offlinePlayer;
+
+			// Check if inventory is full, if so add it to the claim area
+			if (player.getInventory().firstEmpty() == -1) {
+				HashMap<String, Integer> keys = new HashMap<>();
+				if (hasPendingKeys(player.getUniqueId()))
+					keys = getPendingKey(player.getUniqueId());
+				if (keys.containsKey(crateType))
+					amount = amount + keys.get(crateType);
+				keys.put(crateType, amount);
+				pendingKeys.put(player.getUniqueId(), keys);
+				updateKeysData(offlinePlayer.getUniqueId());
+				player.sendMessage(ChatColor.GREEN + "Do /crate claim");
+				return;
+			}
+
+			ItemStack keyItem = key.getKeyItem(amount);
+			HashMap<Integer, ItemStack> remaining = player.getInventory().addItem(keyItem);
+			Integer amountLeft = 0;
+			for (Map.Entry<Integer, ItemStack> item : remaining.entrySet()) {
+				amountLeft += item.getValue().getAmount();
+			}
+			if (amountLeft > 0) {
+				giveCrateKey(offlinePlayer, crateType, amountLeft); // Should put rest into the claim area
+			}
+			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Key Given", player, crate, null));
+		} else {
+			HashMap<String, Integer> keys = new HashMap<>();
+			if (hasPendingKeys(offlinePlayer.getUniqueId()))
+				keys = getPendingKey(offlinePlayer.getUniqueId());
+			if (keys.containsKey(crateType))
+				amount = amount + keys.get(crateType);
+			keys.put(crateType, amount);
+			pendingKeys.put(offlinePlayer.getUniqueId(), keys);
+			updateKeysData(offlinePlayer.getUniqueId());
+		}
+	}
+
+	private void updateKeysData(UUID uuid) {
+		YamlConfiguration dataConfig = cratesPlus.getDataConfig();
+		List<String> data = new ArrayList<>();
+		HashMap<String, Integer> keys = pendingKeys.get(uuid);
+		for (Map.Entry<String, Integer> key : keys.entrySet()) {
+			data.add(key.getKey() + "|" + key.getValue());
+		}
+		dataConfig.set("Claims." + uuid.toString(), data);
+		try {
+			dataConfig.save(cratesPlus.getDataFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Deprecated
@@ -428,6 +486,15 @@ public class CrateHandler {
 
 	public boolean hasPendingKeys(UUID uuid) {
 		return pendingKeys.containsKey(uuid);
+	}
+
+	public void claimKey(UUID uuid, String crate) {
+		HashMap<String, Integer> keys = pendingKeys.get(uuid);
+		Integer amount = keys.get(crate);
+		keys.remove(crate);
+		pendingKeys.put(uuid, keys);
+		updateKeysData(uuid);
+		giveCrateKey(Bukkit.getOfflinePlayer(uuid), crate, amount);
 	}
 
 }

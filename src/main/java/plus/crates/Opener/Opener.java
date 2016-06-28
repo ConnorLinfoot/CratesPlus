@@ -19,7 +19,6 @@ public abstract class Opener {
 	protected Plugin plugin;
 	protected String name;
 	protected boolean async = false;
-	protected boolean running = false;
 
 	public Opener(Plugin plugin, String name) {
 		this(plugin, name, false);
@@ -32,7 +31,6 @@ public abstract class Opener {
 	}
 
 	public void startOpening(final Player player, final Crate crate, final Location blockLocation) {
-		this.running = true;
 		CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().addOpening(player.getUniqueId(), this);
 		Runnable runnable = new Runnable() {
 			@Override
@@ -117,13 +115,8 @@ public abstract class Opener {
 			@Override
 			public void run() {
 				CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().removeOpening(player.getUniqueId());
-				setRunning(false);
 			}
 		});
-	}
-
-	public void setRunning(boolean running) {
-		this.running = running;
 	}
 
 	public abstract void doSetup();

@@ -48,6 +48,15 @@ public class SettingsListener implements Listener {
 					continue;
 				int id = getFreeID(crateName, 1);
 
+//				NBTItem nbtItem = new NBTItem(itemStack);
+//				if( nbtItem.getMap().containsKey("EntityTag")) {
+//					JsonParser parser = new JsonParser();
+//					JsonObject object = parser.parse(String.valueOf(nbtItem.getMap().get("EntityTag"))).getAsJsonObject();
+//
+//					System.out.println(object);
+//					System.out.println(object.get("id").getAsString());
+//				}
+
 				String type = "ITEM";
 				String itemtype = itemStack.getType().toString().toUpperCase();
 				Byte itemData = itemStack.getData().getData();
@@ -55,7 +64,7 @@ public class SettingsListener implements Listener {
 				if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
 					name = itemStack.getItemMeta().getDisplayName();
 				Integer amount = itemStack.getAmount();
-				List<String> enchantments = new ArrayList<String>();
+				List<String> enchantments = new ArrayList<>();
 				if (itemStack.getEnchantments() != null && !itemStack.getEnchantments().isEmpty()) {
 					for (Map.Entry<Enchantment, Integer> entry : itemStack.getEnchantments().entrySet()) {
 						Enchantment enchantment = entry.getKey();
@@ -65,7 +74,7 @@ public class SettingsListener implements Listener {
 				}
 
 
-				List<String> lore = new ArrayList<String>();
+				List<String> lore = new ArrayList<>();
 				if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())
 					lore = itemStack.getItemMeta().getLore();
 

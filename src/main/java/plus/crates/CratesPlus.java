@@ -3,10 +3,7 @@ package plus.crates;
 import com.google.common.io.ByteStreams;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Server;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,6 +21,7 @@ import plus.crates.Utils.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,12 +37,13 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private YamlConfiguration dataConfig;
 	private YamlConfiguration messagesConfig;
 	private ConfigHandler configHandler;
-	private CrateHandler crateHandler = new CrateHandler(this);
+	private CrateHandler crateHandler;
 	private MessageHandler messageHandler = new MessageHandler(this);
 	private SettingsHandler settingsHandler;
 	private String bukkitVersion = "0.0";
 	private Version_Util version_util;
 	private static OpenHandler openHandler;
+	private boolean canNBT = true;
 
 	public void onEnable() {
 		Server server = getServer();
@@ -109,6 +108,32 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		useIndividualHolograms = Bukkit.getPluginManager().isPluginEnabled("IndividualHolograms");
 		useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 
+		try {
+			ItemStack item = new ItemStack(Material.STONE, 1);
+			NBTItem nbtItem = new NBTItem(item);
+
+			nbtItem.setString("stringTest", "TestString");
+			nbtItem.setInteger("intTest", 42);
+			nbtItem.setDouble("doubleTest", 1.5d);
+			nbtItem.setBoolean("booleanTest", true);
+
+			if (!nbtItem.hasKey("stringTest")) {
+				getLogger().info("Does not have key...");
+				canNBT = false;
+			}
+			if (!nbtItem.getString("stringTest").equals("TestString")
+					|| nbtItem.getInteger("intTest") != 42
+					|| nbtItem.getDouble("doubleTest") != 1.5d
+					|| !nbtItem.getBoolean("booleanTest")) {
+				getLogger().info("Key does not equal original value...");
+
+				canNBT = false;
+			}
+		} catch (Exception ex) {
+			getLogger().log(Level.SEVERE, null, ex);
+			canNBT = false;
+		}
+
 		// Check data.yml exists, if not create it!
 		dataFile = new File(getDataFolder(), "data.yml");
 		dataConfig = YamlConfiguration.loadConfiguration(dataFile);
@@ -132,6 +157,18 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			}
 		}
 		messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+
+		messagesConfig.addDefault("Prefix", "&7[&bCratesPlus&7]");
+		messagesConfig.addDefault("Command No Permission", "&cYou do not have the correct permission to run this command");
+		messagesConfig.addDefault("Crate No Permission", "&cYou do not have the correct permission to use this crate");
+		messagesConfig.addDefault("Crate Open Without Key", "&cYou must be holding a %crate% &ckey to open this crate");
+		messagesConfig.addDefault("Key Given", "&aYou have been given a %crate% &acrate key");
+		messagesConfig.addDefault("Broadcast", "&d%displayname% &dopened a %crate% &dcrate");
+		messagesConfig.addDefault("Cant Place", "&cYou can not place crate keys");
+		messagesConfig.addDefault("Cant Drop", "&cYou can not drop crate keys");
+		messagesConfig.addDefault("Chance Message", "&d%percentage%% Chance");
+		messagesConfig.addDefault("Inventory Full Claim", "&aYou're inventory is full, you can claim your keys later using /claim");
+
 		try {
 			messagesConfig.save(messagesFile);
 		} catch (IOException e) {
@@ -150,6 +187,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			}
 		}
 
+		// Load the crate handler
+		crateHandler = new CrateHandler(this);
+
 		// Do Prefix
 		pluginPrefix = ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("Prefix")) + " " + ChatColor.RESET;
 
@@ -159,7 +199,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		// Register Events
 		Bukkit.getPluginManager().registerEvents(new BlockListeners(this), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
-		Bukkit.getPluginManager().registerEvents(new InventoryInteract(), this);
+		Bukkit.getPluginManager().registerEvents(new InventoryInteract(this), this);
 		Bukkit.getPluginManager().registerEvents(new SettingsListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteract(this), this);
 		Bukkit.getPluginManager().registerEvents(new HologramListeners(this), this);
@@ -803,4 +843,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		return bukkitVersion;
 	}
 
+	public boolean canNBT() {
+		return canNBT;
+	}
 }

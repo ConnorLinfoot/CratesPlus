@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
 import java.util.ArrayList;
@@ -26,9 +27,14 @@ public class Winning {
 	private List<String> commands = new ArrayList<>();
 	private List<String> lore = new ArrayList<>();
 
-	public Winning(Crate crate, String path, CratesPlus cratesPlus) {
+	public Winning(Crate crate, String path, CratesPlus cratesPlus, ConfigHandler configHandler) {
 		this.cratesPlus = cratesPlus;
 		this.crate = crate;
+
+		if (configHandler.isDebugMode()) {
+			cratesPlus.getLogger().info("Loading data for \"" + path + "\"");
+		}
+
 		FileConfiguration config = cratesPlus.getConfig();
 		if (!config.isSet(path))
 			return;
@@ -132,9 +138,8 @@ public class Winning {
 		}
 
 		if (config.isSet(path + ".Lore")) {
-			List<?> lines = config.getList(path + ".Lore");
-			for (Object object : lines) {
-				String line = (String) object;
+			List<String> lines = config.getStringList(path + ".Lore");
+			for (String line : lines) {
 				this.lore.add(ChatColor.translateAlternateColorCodes('&', line));
 			}
 		}
