@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import plus.crates.CratesPlus;
 
@@ -36,14 +35,12 @@ public class InventoryInteract implements Listener {
 					String keyName = (String) keyNames[event.getSlot()];
 					if (keyName != null) {
 						cratesPlus.getCrateHandler().claimKey(event.getWhoClicked().getUniqueId(), keyName);
-						((Player) event.getWhoClicked()).performCommand("crate claim");
+						if (cratesPlus.getCrateHandler().hasPendingKeys(event.getWhoClicked().getUniqueId()))
+							((Player) event.getWhoClicked()).performCommand("crate claim");
+						else
+							event.getWhoClicked().closeInventory();
 					}
 				}
-			}
-		} else if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains(" Win") && !event.getInventory().getTitle().contains("Edit ")) {
-			if (event.getInventory().getType() != null && event.getInventory().getType() == InventoryType.CHEST && event.getSlot() != 22 || (event.getCurrentItem() != null)) {
-				event.setCancelled(true);
-				event.getWhoClicked().closeInventory();
 			}
 		}
 	}

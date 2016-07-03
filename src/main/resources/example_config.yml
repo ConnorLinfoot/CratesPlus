@@ -75,12 +75,11 @@ Crates:
         - FIRE_ASPECT-2
       '4':
         Type: ITEM
-        Item Type: SPAWN_EGG
+        Item Type: MONSTER_EGG
         Percentage: 25
         Name: '&e&lCreeper Egg'
         Item Data: 0
-        NBT Data:
-          EntityTag: '{"id":"Creeper"}'
+        Entity Type: CREEPER # This doesn't work yet!
         Amount: 3
   VIP:
     Knockback: 0.5

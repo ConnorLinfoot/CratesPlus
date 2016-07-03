@@ -48,15 +48,6 @@ public class SettingsListener implements Listener {
 					continue;
 				int id = getFreeID(crateName, 1);
 
-//				NBTItem nbtItem = new NBTItem(itemStack);
-//				if( nbtItem.getMap().containsKey("EntityTag")) {
-//					JsonParser parser = new JsonParser();
-//					JsonObject object = parser.parse(String.valueOf(nbtItem.getMap().get("EntityTag"))).getAsJsonObject();
-//
-//					System.out.println(object);
-//					System.out.println(object.get("id").getAsString());
-//				}
-
 				String type = "ITEM";
 				String itemtype = itemStack.getType().toString().toUpperCase();
 				Byte itemData = itemStack.getData().getData();
@@ -92,7 +83,10 @@ public class SettingsListener implements Listener {
 
 			cratesPlus.saveConfig();
 			crate.reloadWinnings();
-			event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Crate winnings updated");
+			if (event.getPlayer() instanceof Player) {
+				Player player = (Player) event.getPlayer();
+				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Crate winnings updated");
+			}
 		}
 	}
 
@@ -329,7 +323,8 @@ public class SettingsListener implements Listener {
 			for (String line : event.getLines()) {
 				newName += line;
 			}
-			Bukkit.dispatchCommand(event.getPlayer(), "crate rename " + name + " " + newName);
+			if (!name.isEmpty() && !newName.isEmpty())
+				Bukkit.dispatchCommand(event.getPlayer(), "crate rename " + name + " " + newName);
 			cratesPlus.getSettingsHandler().openCrate(event.getPlayer(), newName);
 		} else if (cratesPlus.isCreating(event.getPlayer().getUniqueId())) {
 			cratesPlus.removeCreating(event.getPlayer().getUniqueId());
@@ -337,7 +332,8 @@ public class SettingsListener implements Listener {
 			for (String line : event.getLines()) {
 				name += line;
 			}
-			Bukkit.dispatchCommand(event.getPlayer(), "crate create " + name);
+			if (!name.isEmpty())
+				Bukkit.dispatchCommand(event.getPlayer(), "crate create " + name);
 		}
 	}
 

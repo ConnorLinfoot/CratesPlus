@@ -3,6 +3,10 @@ package plus.crates.Opener;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,7 +20,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
-public class BasicGUIOpener extends Opener {
+public class BasicGUIOpener extends Opener implements Listener {
 	private CratesPlus cratesPlus;
 	private HashMap<UUID, Integer> tasks = new HashMap<>();
 	private HashMap<UUID, Inventory> guis = new HashMap<>();
@@ -39,6 +43,7 @@ public class BasicGUIOpener extends Opener {
 			}
 		}
 		length = config.getInt("Length");
+		cratesPlus.getServer().getPluginManager().registerEvents(this, cratesPlus);
 	}
 
 	@Override
@@ -57,7 +62,9 @@ public class BasicGUIOpener extends Opener {
 		final int maxTimeTicks = length * 10;
 		tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, new BukkitRunnable() {
 			public void run() {
-				if (!player.isOnline()) { // TODO, Try and handle DC for players?
+				if (!player.isOnline()) {
+					finish(player);
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "crate key " + player.getName() + " " + crate.getName() + " 1");
 					Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
 					return;
 				}
@@ -125,6 +132,16 @@ public class BasicGUIOpener extends Opener {
 	@Override
 	public void doReopen(Player player, Crate crate, Location location) {
 		player.openInventory(guis.get(player.getUniqueId()));
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains(" Win") && !event.getInventory().getTitle().contains("Edit ")) {
+			if (event.getInventory().getType() != null && event.getInventory().getType() == InventoryType.CHEST && event.getSlot() != 22 || (event.getCurrentItem() != null)) {
+				event.setCancelled(true);
+				event.getWhoClicked().closeInventory();
+			}
+		}
 	}
 
 }

@@ -246,6 +246,8 @@ public class BlockListeners implements Listener {
 		}
 		String crateType = event.getBlock().getMetadata("CrateType").get(0).asString();
 		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+		if (crate == null) // TODO Better handling of crates removed from the config
+			return;
 		Location location = event.getBlock().getLocation();
 
 		if (event.getPlayer().isSneaking() && (cratesPlus.getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {

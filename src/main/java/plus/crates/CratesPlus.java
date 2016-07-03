@@ -3,7 +3,10 @@ package plus.crates;
 import com.google.common.io.ByteStreams;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,7 +24,6 @@ import plus.crates.Utils.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +45,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	private String bukkitVersion = "0.0";
 	private Version_Util version_util;
 	private static OpenHandler openHandler;
-	private boolean canNBT = true;
 	private ArrayList<UUID> creatingCrate = new ArrayList<>();
 
 	public void onEnable() {
@@ -57,7 +58,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 		bukkitVersion = matcher.group(1);
 
-		if (versionCompare(bukkitVersion, "1.10") > 0) {
+		if (versionCompare(bukkitVersion, "1.10.2") > 0) {
 			// This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
 			getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
 			getLogger().warning("Please let me know if there is any errors or issues");
@@ -69,11 +70,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} else if (versionCompare(bukkitVersion, "1.7") > -1) {
 			// Use Default Util
 			if (bukkitVersion.equals("1.7") || bukkitVersion.startsWith("1.7.")) {
-				getLogger().warning("CratesPlus does NOT fully support 1.7, if you have issues please report them but I may not look into it");
+				getLogger().warning("CratesPlus does NOT fully support Bukkit 1.7, if you have issues please report them but I may not look into it");
 			}
 			version_util = new Version_Util(this);
 		} else {
-			getLogger().severe("CratesPlus does NOT support Bukkit " + bukkitVersion + " if you believe this is an error please let me know");
+			getLogger().severe("CratesPlus does NOT support Bukkit " + bukkitVersion + ", if you believe this is an error please let me know");
 			if (!getConfig().isSet("Ignore Version") || !getConfig().getBoolean("Ignore Version")) { // People should only ignore this in the case of an error, doing an ignore on a unsupported version could break something
 				setEnabled(false);
 				return;
@@ -109,32 +110,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		useIndividualHolograms = Bukkit.getPluginManager().isPluginEnabled("IndividualHolograms");
 		useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 
-		try {
-			ItemStack item = new ItemStack(Material.STONE, 1);
-			NBTItem nbtItem = new NBTItem(item);
-
-			nbtItem.setString("stringTest", "TestString");
-			nbtItem.setInteger("intTest", 42);
-			nbtItem.setDouble("doubleTest", 1.5d);
-			nbtItem.setBoolean("booleanTest", true);
-
-			if (!nbtItem.hasKey("stringTest")) {
-				getLogger().info("Does not have key...");
-				canNBT = false;
-			}
-			if (!nbtItem.getString("stringTest").equals("TestString")
-					|| nbtItem.getInteger("intTest") != 42
-					|| nbtItem.getDouble("doubleTest") != 1.5d
-					|| !nbtItem.getBoolean("booleanTest")) {
-				getLogger().info("Key does not equal original value...");
-
-				canNBT = false;
-			}
-		} catch (Exception ex) {
-			getLogger().log(Level.SEVERE, null, ex);
-			canNBT = false;
-		}
-
 		// Check data.yml exists, if not create it!
 		dataFile = new File(getDataFolder(), "data.yml");
 		dataConfig = YamlConfiguration.loadConfiguration(dataFile);
@@ -159,17 +134,38 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 		messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
 
-		messagesConfig.addDefault("Prefix", "&7[&bCratesPlus&7]");
-		messagesConfig.addDefault("Command No Permission", "&cYou do not have the correct permission to run this command");
-		messagesConfig.addDefault("Crate No Permission", "&cYou do not have the correct permission to use this crate");
-		messagesConfig.addDefault("Crate Open Without Key", "&cYou must be holding a %crate% &ckey to open this crate");
-		messagesConfig.addDefault("Key Given", "&aYou have been given a %crate% &acrate key");
-		messagesConfig.addDefault("Broadcast", "&d%displayname% &dopened a %crate% &dcrate");
-		messagesConfig.addDefault("Cant Place", "&cYou can not place crate keys");
-		messagesConfig.addDefault("Cant Drop", "&cYou can not drop crate keys");
-		messagesConfig.addDefault("Chance Message", "&d%percentage%% Chance");
-		messagesConfig.addDefault("Inventory Full Claim", "&aYou're inventory is full, you can claim your keys later using /claim");
-		messagesConfig.addDefault("Claim Join", "&aYou currently have keys waiting to be claimed, use /crate to claim");
+		if (!messagesConfig.isSet("Prefix"))
+			messagesConfig.set("Prefix", "&7[&bCratesPlus&7]");
+
+		if (!messagesConfig.isSet("Command No Permission"))
+			messagesConfig.set("Command No Permission", "&cYou do not have the correct permission to run this command");
+
+		if (!messagesConfig.isSet("Crate No Permission"))
+			messagesConfig.set("Crate No Permission", "&cYou do not have the correct permission to use this crate");
+
+		if (!messagesConfig.isSet("Crate Open Without Key"))
+			messagesConfig.set("Crate Open Without Key", "&cYou must be holding a %crate% &ckey to open this crate");
+
+		if (!messagesConfig.isSet("Key Given"))
+			messagesConfig.set("Key Given", "&aYou have been given a %crate% &acrate key");
+
+		if (!messagesConfig.isSet("Broadcast"))
+			messagesConfig.set("Broadcast", "&d%displayname% &dopened a %crate% &dcrate");
+
+		if (!messagesConfig.isSet("Cant Place"))
+			messagesConfig.set("Cant Place", "&cYou can not place crate keys");
+
+		if (!messagesConfig.isSet("Cant Drop"))
+			messagesConfig.set("Cant Drop", "&cYou can not drop crate keys");
+
+		if (!messagesConfig.isSet("Chance Message"))
+			messagesConfig.set("Chance Message", "&d%percentage%% Chance");
+
+		if (!messagesConfig.isSet("Inventory Full Claim"))
+			messagesConfig.set("Inventory Full Claim", "&aYou're inventory is full, you can claim your keys later using /claim");
+
+		if (!messagesConfig.isSet("Claim Join"))
+			messagesConfig.set("Claim Join", "&aYou currently have keys waiting to be claimed, use /crate to claim");
 
 		try {
 			messagesConfig.save(messagesFile);
@@ -846,10 +842,6 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 	public String getBukkitVersion() {
 		return bukkitVersion;
-	}
-
-	public boolean canNBT() {
-		return canNBT;
 	}
 
 	public ArrayList<UUID> getCreatingCrate() {

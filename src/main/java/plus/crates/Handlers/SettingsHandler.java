@@ -45,7 +45,7 @@ public class SettingsHandler {
 		lore.add("");
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
-		settings.setItem(1, itemStack);
+		settings.setItem(2, itemStack);
 
 
 		/** Reload Config */
@@ -64,7 +64,7 @@ public class SettingsHandler {
 		lore.add("");
 		itemMeta.setLore(lore);
 		itemStack.setItemMeta(itemMeta);
-		settings.setItem(3, itemStack);
+		settings.setItem(6, itemStack);
 	}
 
 	public void setupCratesInventory() {

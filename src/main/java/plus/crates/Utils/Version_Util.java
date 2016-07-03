@@ -3,8 +3,11 @@ package plus.crates.Utils;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.micrlink.individualholograms.IndividualHolograms;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.SpawnEgg;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 
@@ -41,12 +44,12 @@ public class Version_Util {
 			}
 			holograms.put("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ(), hologram);
 		} else {
-			if (cratesPlus.getBukkitVersion().equals("1.7") || cratesPlus.getBukkitVersion().startsWith("1.7.")) {
-				// Warning that 1.7 needs holographic displays for holograms
-			} else {
+			if (cratesPlus.getBukkitVersion().equals("1.8") || cratesPlus.getBukkitVersion().startsWith("1.8.") || cratesPlus.getBukkitVersion().equals("1.9") || cratesPlus.getBukkitVersion().startsWith("1.9.")) {
 				Hologram hologram = new Hologram(location, lines);
 				crate.addHologram(location.getBlock().getLocation(), hologram);
 				hologram.displayAll();
+			} else {
+				cratesPlus.getLogger().warning("Only 1.8 - 1.9 supports the built in holograms, please use HolographicDisplays or Individual Holograms for holograms to work");
 			}
 		}
 	}
@@ -60,6 +63,15 @@ public class Version_Util {
 				holograms.remove("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ());
 			}
 		}
+	}
+
+	public ItemStack getSpawnEgg(EntityType entityType, Integer amount) {
+		ItemStack egg = new ItemStack(Material.MONSTER_EGG, amount);
+		if (entityType != null) {
+			SpawnEgg spawnEgg = new SpawnEgg(entityType);
+			egg.setData(spawnEgg);
+		}
+		return egg;
 	}
 
 }

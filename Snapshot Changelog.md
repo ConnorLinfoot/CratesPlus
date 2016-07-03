@@ -1,12 +1,19 @@
 ### Version 4.2 Snapshots
 ---
-**Snapshot 4** *(Jun 29 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/541/artifact/target/CratesPlus-4.2-SNAPSHOT-4.jar)
+**Snapshot 5** *(Jul 4 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/547/artifact/target/CratesPlus-4.2-SNAPSHOT-5.jar)
+- Built in hologram handler is now locked to 1.8 - 1.9 only as 1.7 and 1.10 does not work with it and it'll be removed in 5.0.
+- Minor fixes for 1.7, finally decided to actually test it.
+- Fixed issue that if it's a players first time playing they can't be given a key.
+- Fixed crates not being recognised when not lowercase with opener command.
+- Disconnecting when using the GUI Opener will now add a key into your claim GUI instead of it being lost. Other openers must handle this themselves.
+
+**Snapshot 4** *(Jun 28 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/541/artifact/target/CratesPlus-4.2-SNAPSHOT-4.jar)
 - Fixed snapshot updater showing an SSL error.
 - Snapshots now force the snapshot updater.
 - Fixed crates not being able to be opened since I changed the CrateOpenEvent.
 
 **Snapshot 3** *(Jun 28 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/540/artifact/target/CratesPlus-4.2-SNAPSHOT-3.jar)
-- You can now open the claim GUI as an "admin"
+- You can now open the claim GUI as an "admin".
 - Minor changes to the claim GUI.
 - Added "Claim Join" message, shown when a player joins who has pending keys to claim.
 - You can now create a crate using signs.

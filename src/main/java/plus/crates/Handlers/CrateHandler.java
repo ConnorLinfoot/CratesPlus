@@ -160,6 +160,10 @@ public class CrateHandler {
 	}
 
 	public void giveCrateKey(OfflinePlayer offlinePlayer, String crateType, Integer amount) {
+		giveCrateKey(offlinePlayer, crateType, amount, true);
+	}
+
+	public void giveCrateKey(OfflinePlayer offlinePlayer, String crateType, Integer amount, boolean showMessage) {
 		if (offlinePlayer == null) return;
 
 		if (crateType == null) {
@@ -195,7 +199,8 @@ public class CrateHandler {
 				keys.put(crateType, amount);
 				pendingKeys.put(player.getUniqueId(), keys);
 				updateKeysData(offlinePlayer.getUniqueId());
-				player.sendMessage(ChatColor.GREEN + "Do /crate claim");
+				if (showMessage)
+					player.sendMessage(ChatColor.GREEN + "Do /crate claim");
 				return;
 			}
 
@@ -208,7 +213,9 @@ public class CrateHandler {
 			if (amountLeft > 0) {
 				giveCrateKey(offlinePlayer, crateType, amountLeft); // Should put rest into the claim area
 			}
-			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Key Given", player, crate, null));
+
+			if (showMessage)
+				player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Key Given", player, crate, null));
 		} else {
 			HashMap<String, Integer> keys = new HashMap<>();
 			if (hasPendingKeys(offlinePlayer.getUniqueId()))
@@ -485,7 +492,7 @@ public class CrateHandler {
 	}
 
 	public boolean hasPendingKeys(UUID uuid) {
-		return pendingKeys.containsKey(uuid);
+		return pendingKeys.containsKey(uuid) && !pendingKeys.get(uuid).isEmpty();
 	}
 
 	public void claimKey(UUID uuid, String crate) {
@@ -494,7 +501,7 @@ public class CrateHandler {
 		keys.remove(crate);
 		pendingKeys.put(uuid, keys);
 		updateKeysData(uuid);
-		giveCrateKey(Bukkit.getOfflinePlayer(uuid), crate, amount);
+		giveCrateKey(Bukkit.getOfflinePlayer(uuid), crate, amount, false);
 	}
 
 }

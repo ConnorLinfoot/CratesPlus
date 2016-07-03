@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,6 +27,7 @@ public class Winning {
 	private ItemStack winningItemStack;
 	private List<String> commands = new ArrayList<>();
 	private List<String> lore = new ArrayList<>();
+	private String entityType = "";
 
 	public Winning(Crate crate, String path, CratesPlus cratesPlus, ConfigHandler configHandler) {
 		this.cratesPlus = cratesPlus;
@@ -58,6 +60,9 @@ public class Winning {
 			Integer itemData = 0;
 			if (config.isSet(path + ".Item Data"))
 				itemData = config.getInt(path + ".Item Data");
+
+			if (config.isSet(path + ".Entity Type"))
+				entityType = config.getString(path + ".Entity Type");
 
 			if (config.isSet(path + ".Percentage"))
 				percentage = config.getDouble(path + ".Percentage");
@@ -97,7 +102,11 @@ public class Winning {
 			Integer amount = 1;
 			if (config.isSet(path + ".Amount"))
 				amount = config.getInt(path + ".Amount");
-			itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
+
+			if (!entityType.isEmpty() && itemType == Material.MONSTER_EGG)
+				itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.valueOf(entityType.toUpperCase()), amount);
+			else
+				itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
 		} else {
 			return;
 		}

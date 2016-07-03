@@ -114,10 +114,10 @@ public class CrateCommand implements CommandExecutor {
 								}
 							} else {
 								if (CratesPlus.getOpenHandler().openerExist(args[2])) {
-									if (cratesPlus.getConfigHandler().getCrate(args[1]) == null) {
+									if (cratesPlus.getConfigHandler().getCrate(args[1].toLowerCase()) == null) {
 										sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "No crate exists with that name");
 									} else {
-										cratesPlus.getConfigHandler().getCrate(args[1]).setOpener(args[2]);
+										cratesPlus.getConfigHandler().getCrate(args[1].toLowerCase()).setOpener(args[2]);
 										sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Set opener to " + args[2]);
 									}
 								} else {
@@ -338,7 +338,7 @@ public class CrateCommand implements CommandExecutor {
 					OfflinePlayer offlinePlayer = null;
 					if (!args[1].equalsIgnoreCase("all")) {
 						offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
-						if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
+						if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) { // Check if the player is online as "hasPlayedBefore" doesn't work until they disconnect?
 							sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "The player " + args[1] + " was not found");
 							return false;
 						}
@@ -439,7 +439,8 @@ public class CrateCommand implements CommandExecutor {
 
 	private void doClaim(Player player) {
 		if (!cratesPlus.getCrateHandler().hasPendingKeys(player.getUniqueId())) {
-			// TODO Send message
+			player.closeInventory();
+			player.sendMessage(ChatColor.RED + "You currently don't have any keys to claim");
 			return;
 		}
 		Integer size = cratesPlus.getCrateHandler().getPendingKey(player.getUniqueId()).size();
