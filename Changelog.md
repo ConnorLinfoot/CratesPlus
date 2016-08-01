@@ -1,3 +1,33 @@
+**4.2** *(Aug 1 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-8-1-9-1-10.5018/download?version=106361)
+- Feature: Crates can now be created and renamed using a sign GUI.
+- Feature: New '/crate debug' for help when reporting issues.
+- Feature: You can now give offline players crate keys, will go into the claim GUI.
+- Feature: When keys are given to a player with a full inventory the remaining keys go into the claim GUI.
+- Feature: Spawn Eggs now work in 1.9+, the plugin will store the data separate for this. See example configuration. Run '/crate testeggs' to test this and report any errors.
+- Improvement: If a winning is a command but has no commands it will now show a warning.
+- Improvement: Changed how it handles different Bukkit versions. Shouldn't break on newer versions but will display a warning.
+- Improvement: Added "Claim Join" message, shown when a player joins who has pending keys to claim.
+- Improvement: Disconnecting when using the GUI Opener will now add a key into your claim GUI instead of it being lost. Other openers must handle this themselves.
+- Improvement: Added "Possible Wins Title" option.
+- Improvement: Removed lines from broadcast message, if you want these add them into the messages.yml and use \n for line breaks.
+- Improvement: Holograms will no longer load in if the crate isn't found at the location registered, it will also remove it from the data.yml, useful if the crate was removed with something such as world edit. Idea from Mammothskier.
+- Improvement: You can no longer edit a crate via the GUI if it has command items. This will hopefully be improved later on.
+- Bug: Fixed per crate cooldowns not working and other issues with cooldowns in the config.
+- Bug: Fixed events so listeners can now actually use them.
+- Bug: Fixed some data being lost upon renaming of a crate.
+- Bug: Fixed issues with 1.7 and barriers in menus and other minor 1.7 issues.
+- Bug: Moved the chest open sound to the NoGUI opener as it shouldn't be used on others.
+- Bug: Fixed per crate holograms not working if you had capitals in your name.
+- Bug: Updating from prior 4.1 to 4.2 will now use the correct opener and not default to the BasicGUI opener.
+- Bug: Removed the ability to cancel the CrateOpenEvent as if cancelled keys were still being taken.
+- Bug: Fixed snapshot updater showing an SSL error.
+- Bug: Fixed crates not being recognised when not lowercase with opener command.
+- Bug: Built in hologram handler is now locked to 1.8 - 1.9 only as 1.7 and 1.10 does not work with it and it'll be removed in 5.0.
+- Bug: Colored names from the settings GUI are now handled with '&' instead of the buggy '§'.
+
+**4.1.1** *(Jun 11 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-8-1-9-1-10.5018/download?version=95734)
+- Feature: Added 1.10 support.
+
 **4.1** *(May 27 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-8-1-9.5018/download?version=91898)
 - Feature: Openers! An easy way for any developer to create a custom way of opening crates!
 - Feature: Holograms can now be per crate.

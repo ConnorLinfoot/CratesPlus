@@ -13,13 +13,14 @@ The latest dev build of this can be downloaded from the link on the image above.
 ## Stable Builds
 You can download stable builds from the [Spigot versions page](https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/history).
 
-## Features and Information
-For full information, commands and features visit the [Spigot thread](https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/).
+## Wiki
+For full information, commands and features visit the [Wiki](https://github.com/ConnorLinfoot/CratesPlus/wiki).
 
 ## Issues
-Please report any issues into the [GitHub issues](https://github.com/ConnorLinfoot/CratesPlus/issues). Do not post them on the Spigot thread. Issues must have information about your server; Please provide plugin list, /version output, and any other server configuration you may have changed.
+Please report any issues into the [GitHub issues](https://github.com/ConnorLinfoot/CratesPlus/issues). Do not post them on the Spigot thread or PM me.
+You can use '/crate debug' to generate a copy of all the data I should need to assist with the issue.
 
-If you report an issue which has been fixed or does not contain the information above it will be closed without any notification.
+If you report an issue which has been fixed or does not contain the information required it may be closed without any notification.
 
 
 ## Changelog
