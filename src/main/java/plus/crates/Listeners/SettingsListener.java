@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,7 +54,7 @@ public class SettingsListener implements Listener {
 				Byte itemData = itemStack.getData().getData();
 				String name = "NONE";
 				if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasDisplayName())
-					name = itemStack.getItemMeta().getDisplayName();
+					name = itemStack.getItemMeta().getDisplayName().replaceAll("§", "&");
 				Integer amount = itemStack.getAmount();
 				List<String> enchantments = new ArrayList<>();
 				if (itemStack.getEnchantments() != null && !itemStack.getEnchantments().isEmpty()) {
@@ -62,6 +63,11 @@ public class SettingsListener implements Listener {
 						Integer level = entry.getValue();
 						enchantments.add(enchantment.getName().toUpperCase() + "-" + level);
 					}
+				}
+
+				EntityType entityType = null;
+				if (itemStack.getType() == Material.MONSTER_EGG) {
+					entityType = cratesPlus.getVersion_util().getEntityTypeFromItemStack(itemStack);
 				}
 
 
@@ -79,6 +85,8 @@ public class SettingsListener implements Listener {
 				config.set(path + ".Amount", amount);
 				config.set(path + ".Enchantments", enchantments);
 				config.set(path + ".Lore", lore);
+				if (entityType != null)
+					config.set(path + ".Entity Type", entityType.toString());
 			}
 
 			cratesPlus.saveConfig();

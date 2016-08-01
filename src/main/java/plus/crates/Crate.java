@@ -253,4 +253,12 @@ public class Crate {
 		cratesPlus.saveConfig();
 	}
 
+	public boolean containsCommandItem() {
+		for (Winning winning : getWinnings()) {
+			if (winning.isCommand())
+				return true;
+		}
+		return false;
+	}
+
 }

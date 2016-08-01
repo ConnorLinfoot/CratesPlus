@@ -70,7 +70,11 @@ public class Winning {
 			Integer amount = 1;
 			if (config.isSet(path + ".Amount"))
 				amount = config.getInt(path + ".Amount");
-			itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
+
+			if (!entityType.isEmpty() && itemType == Material.MONSTER_EGG) {
+				itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.valueOf(entityType.toUpperCase()), amount);
+			} else
+				itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
 		} else if (type.equalsIgnoreCase("command")) {
 			command = true;
 			if (config.isSet(path + ".Commands") && config.getStringList(path + ".Commands").size() != 0) {
@@ -103,10 +107,7 @@ public class Winning {
 			if (config.isSet(path + ".Amount"))
 				amount = config.getInt(path + ".Amount");
 
-			if (!entityType.isEmpty() && itemType == Material.MONSTER_EGG)
-				itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.valueOf(entityType.toUpperCase()), amount);
-			else
-				itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
+			itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
 		} else {
 			return;
 		}

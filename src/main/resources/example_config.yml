@@ -79,7 +79,7 @@ Crates:
         Percentage: 25
         Name: '&e&lCreeper Egg'
         Item Data: 0
-        Entity Type: CREEPER # This doesn't work yet!
+        Entity Type: CREEPER
         Amount: 3
   VIP:
     Knockback: 0.5

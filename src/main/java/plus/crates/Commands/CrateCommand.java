@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +21,7 @@ import plus.crates.Opener.Opener;
 import plus.crates.Utils.PasteUtils;
 import plus.crates.Utils.ReflectionUtil;
 import plus.crates.Utils.SignInputHandler;
+import plus.crates.Utils.SpawnEggNBT;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -55,6 +57,47 @@ public class CrateCommand implements CommandExecutor {
 			switch (args[0].toLowerCase()) {
 				default:
 					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Unknown arg");
+					break;
+				case "testeggs":
+					Player player = null;
+					if (sender instanceof Player)
+						player = (Player) sender;
+
+					sender.sendMessage(ChatColor.AQUA + "Creating creeper egg...");
+					ItemStack itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.CREEPER, 1);
+					sender.sendMessage(ChatColor.AQUA + "Testing creeper egg...");
+					SpawnEggNBT spawnEggNBT = SpawnEggNBT.fromItemStack(itemStack);
+					if (spawnEggNBT.getSpawnedType().equals(EntityType.CREEPER)) {
+						sender.sendMessage(ChatColor.GREEN + "Creeper egg successful");
+						if (player != null)
+							player.getInventory().addItem(itemStack);
+					} else {
+						sender.sendMessage(ChatColor.RED + "Creeper egg failed, please post console on GitHub");
+					}
+
+					sender.sendMessage(ChatColor.AQUA + "Creating spider egg...");
+					itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.SPIDER, 2);
+					sender.sendMessage(ChatColor.AQUA + "Testing spider egg...");
+					spawnEggNBT = SpawnEggNBT.fromItemStack(itemStack);
+					if (spawnEggNBT.getSpawnedType().equals(EntityType.SPIDER)) {
+						sender.sendMessage(ChatColor.GREEN + "Spider egg successful");
+						if (player != null)
+							player.getInventory().addItem(itemStack);
+					} else {
+						sender.sendMessage(ChatColor.RED + "Spider egg failed, please post console on GitHub");
+					}
+
+					sender.sendMessage(ChatColor.AQUA + "Creating silverfish egg...");
+					itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.SILVERFISH, 3);
+					sender.sendMessage(ChatColor.AQUA + "Testing silverfish egg...");
+					spawnEggNBT = SpawnEggNBT.fromItemStack(itemStack);
+					if (spawnEggNBT.getSpawnedType().equals(EntityType.SILVERFISH)) {
+						sender.sendMessage(ChatColor.GREEN + "Silverfish egg successful");
+						if (player != null)
+							player.getInventory().addItem(itemStack);
+					} else {
+						sender.sendMessage(ChatColor.RED + "Silverfish egg failed, please post console on GitHub");
+					}
 					break;
 				case "claim":
 					if (sender instanceof Player) {
@@ -149,7 +192,7 @@ public class CrateCommand implements CommandExecutor {
 				case "create":
 					if (sender instanceof Player && args.length < 2) {
 						// Lets try and open a sign to do the name! :D
-						Player player = (Player) sender;
+						player = (Player) sender;
 
 						cratesPlus.addCreating(player.getUniqueId());
 						try {
@@ -385,7 +428,6 @@ public class CrateCommand implements CommandExecutor {
 						return false;
 					}
 
-					Player player;
 					if (args.length == 3) {
 						player = Bukkit.getPlayer(args[2]);
 					} else if (sender instanceof Player) {

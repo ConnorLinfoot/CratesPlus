@@ -105,7 +105,14 @@ public class SettingsHandler {
 	public void openCrateWinnings(final Player player, String crateName) {
 		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 		if (crate == null) {
-			return; // TODO Error handling here
+			player.sendMessage(ChatColor.RED + "Unable to find " + crateName + " crate");
+			return;
+		}
+
+		if (crate.containsCommandItem()) {
+			player.sendMessage(ChatColor.RED + "You can not currently edit a crate in the GUI which has command items");
+			player.closeInventory();
+			return;
 		}
 
 		final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " Crate Winnings");

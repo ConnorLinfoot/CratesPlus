@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.SpawnEgg;
 import plus.crates.CratesPlus;
 
 public class Version_1_9 extends Version_Util {
@@ -25,13 +24,18 @@ public class Version_1_9 extends Version_Util {
 		player.getInventory().setItemInOffHand(null);
 	}
 
-	public ItemStack getSpawnEgg(EntityType entityType, Integer amount) { // TODO - Make this for working with NBT/1.9+
+	public ItemStack getSpawnEgg(EntityType entityType, Integer amount) {
 		ItemStack egg = new ItemStack(Material.MONSTER_EGG, amount);
 		if (entityType != null) {
-			SpawnEgg spawnEgg = new SpawnEgg(entityType);
-			egg.setData(spawnEgg);
+			SpawnEggNBT spawnEgg = new SpawnEggNBT(entityType);
+			egg = spawnEgg.toItemStack(amount);
 		}
 		return egg;
+	}
+
+	public EntityType getEntityTypeFromItemStack(ItemStack itemStack) {
+		SpawnEggNBT spawnEggNBT = SpawnEggNBT.fromItemStack(itemStack);
+		return spawnEggNBT.getSpawnedType();
 	}
 
 }

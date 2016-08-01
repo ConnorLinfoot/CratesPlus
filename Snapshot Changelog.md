@@ -1,5 +1,10 @@
 ### Version 4.2 Snapshots
 ---
+**Snapshot 7** *(Aug 1 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/578/artifact/target/CratesPlus-4.2-SNAPSHOT-7.jar)
+- Spawn Eggs now work in 1.9+, the plugin will store the data separate for this. See example configuration. Run '/crate testeggs' to test this and report any errors.
+- Colored names from the settings GUI are now handled with '&' instead of the buggy '§'.
+- You can no longer edit a crate via the GUI if it has command items. This will hopefully be improved later on.
+
 **Snapshot 6** *(Aug 1 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/577/artifact/target/CratesPlus-4.2-SNAPSHOT-6.jar)
 - Holograms will no longer load in if the crate isn't found at the location registered, it will also remove it from the data.yml, useful if the crate was removed with something such as world edit. Idea from Mammothskier.
 - Removed lines from broadcast message, if you want these add them into the messages.yml and use \n for line breaks.

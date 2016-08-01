@@ -74,4 +74,9 @@ public class Version_Util {
 		return egg;
 	}
 
+	public EntityType getEntityTypeFromItemStack(ItemStack itemStack) {
+		SpawnEgg spawnEgg = (SpawnEgg) itemStack.getData();
+		return spawnEgg.getSpawnedType();
+	}
+
 }
