@@ -42,7 +42,7 @@ public class CratePreviewEvent extends Event {
 			size = 45;
 		}
 		int i = 0;
-		Inventory inventory = Bukkit.createInventory(null, size, crate.getName(true) + " Possible Wins:");
+		Inventory inventory = Bukkit.createInventory(null, size, crate.getName(true) + " " + cratesPlus.getMessagesConfig().getString("Possible Wins Title"));
 		for (Winning winning : items) {
 			ItemStack itemStack = winning.getPreviewItemStack();
 			if (itemStack == null)

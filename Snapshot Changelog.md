@@ -1,5 +1,10 @@
 ### Version 4.2 Snapshots
 ---
+**Snapshot 6** *(Aug 1 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/577/artifact/target/CratesPlus-4.2-SNAPSHOT-6.jar)
+- Holograms will no longer load in if the crate isn't found at the location registered, it will also remove it from the data.yml, useful if the crate was removed with something such as world edit. Idea from Mammothskier.
+- Removed lines from broadcast message, if you want these add them into the messages.yml and use \n for line breaks.
+- Added "Possible Wins Title" option.
+
 **Snapshot 5** *(Jul 4 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/547/artifact/target/CratesPlus-4.2-SNAPSHOT-5.jar)
 - Built in hologram handler is now locked to 1.8 - 1.9 only as 1.7 and 1.10 does not work with it and it'll be removed in 5.0.
 - Minor fixes for 1.7, finally decided to actually test it.

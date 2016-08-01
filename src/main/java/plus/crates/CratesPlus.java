@@ -3,10 +3,7 @@ package plus.crates;
 import com.google.common.io.ByteStreams;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Server;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -166,6 +163,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		if (!messagesConfig.isSet("Claim Join"))
 			messagesConfig.set("Claim Join", "&aYou currently have keys waiting to be claimed, use /crate to claim");
+
+		if (!messagesConfig.isSet("Possible Wins Title"))
+			messagesConfig.set("Possible Wins Title", "Possible Wins:");
 
 		try {
 			messagesConfig.save(messagesFile);
@@ -431,8 +431,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				}
 				Location locationObj = new Location(Bukkit.getWorld(strings.get(0)), Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
 				Block block = locationObj.getBlock();
-				if (block == null)
+				if (block == null || block.getType().equals(Material.AIR)) {
+					getLogger().warning("No block found at " + location + " removing from data.yml");
+					crate.removeFromConfig(locationObj);
 					continue;
+				}
 				Location location1 = locationObj.getBlock().getLocation().add(0.5, 0.5, 0.5);
 				crate.loadHolograms(location1);
 				final CratesPlus cratesPlus = this;

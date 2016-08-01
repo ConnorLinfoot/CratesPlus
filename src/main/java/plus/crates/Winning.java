@@ -226,16 +226,12 @@ public class Winning {
 				}
 
 				/** Do broadcast */
-				if (crate.isBroadcast()) {
-					Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
+				if (crate.isBroadcast())
 					Bukkit.broadcastMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Broadcast", player, crate, winning));
-					Bukkit.broadcastMessage(ChatColor.DARK_PURPLE + "-------------------------------------------------");
-				}
 
 				/** Spawn firework */
-				if (crate.isFirework()) {
+				if (crate.isFirework())
 					cratesPlus.getCrateHandler().spawnFirework(player.getLocation());
-				}
 			}
 		});
 	}

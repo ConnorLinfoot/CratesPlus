@@ -137,7 +137,7 @@ public class CrateCommand implements CommandExecutor {
 					break;
 				case "reload":
 					cratesPlus.reloadPlugin();
-					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus configuration was reloaded - This feature is not fully supported and may not work correctly");
+					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus was reloaded - This feature is not fully supported and may not work correctly");
 					break;
 				case "settings":
 					if (!(sender instanceof Player)) {
