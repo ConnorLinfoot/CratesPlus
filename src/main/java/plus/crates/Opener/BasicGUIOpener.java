@@ -60,7 +60,7 @@ public class BasicGUIOpener extends Opener implements Listener {
 		guis.put(player.getUniqueId(), winGUI);
 		player.openInventory(winGUI);
 		final int maxTimeTicks = length * 10;
-		tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, new BukkitRunnable() {
+		tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, new Runnable() {
 			public void run() {
 				if (!player.isOnline()) {
 					finish(player);
