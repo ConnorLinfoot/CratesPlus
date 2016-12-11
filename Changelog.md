@@ -1,4 +1,4 @@
-**4.2.2** *(Dec 6 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-10-2.5018/download?version=129396)
+**4.2.2** *(Dec 11 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-10-2.5018/download?version=129396)
 - Feature: Support for Bukkit/Spigot 1.11.
 - Bug: Fixed command being ran async.
 - Bug: Fixed issue with location being null stopping plugin starting correctly.
