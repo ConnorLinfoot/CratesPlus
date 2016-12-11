@@ -55,7 +55,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 		bukkitVersion = matcher.group(1);
 
-		if (versionCompare(bukkitVersion, "1.10.2") > 0) {
+		if (versionCompare(bukkitVersion, "1.11") > 0) {
 			// This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
 			getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
 			getLogger().warning("Please let me know if there is any errors or issues");
@@ -429,7 +429,14 @@ public class CratesPlus extends JavaPlugin implements Listener {
 						}
 					}
 				}
-				Location locationObj = new Location(Bukkit.getWorld(strings.get(0)), Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
+				Location locationObj = null;
+				try {
+					locationObj = new Location(Bukkit.getWorld(strings.get(0)), Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
+				} catch (Exception ignored) {
+				}
+				if (locationObj == null) {
+					continue;
+				}
 				Block block = locationObj.getBlock();
 				if (block == null || block.getType().equals(Material.AIR)) {
 					getLogger().warning("No block found at " + location + " removing from data.yml");
@@ -828,8 +835,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 	}
 
-	// Returns true if str1 is newer or equal to str2 (Used for checking if we are 1.8 or higher)
-	private int versionCompare(String str1, String str2) {
+	// System.out.println(versionCompare("1.6", "1.8")); // -1 as 1.8 is newer
+	// System.out.println(versionCompare("1.7", "1.8")); // -1 as 1.8 is newer
+	// System.out.println(versionCompare("1.8", "1.8")); // 0 as same
+	// System.out.println(versionCompare("1.9", "1.8")); // 1 as 1.9 is newer
+	public int versionCompare(String str1, String str2) {
 		String[] vals1 = str1.split("\\.");
 		String[] vals2 = str2.split("\\.");
 		int i = 0;

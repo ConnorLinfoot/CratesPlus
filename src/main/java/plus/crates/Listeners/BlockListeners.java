@@ -266,7 +266,7 @@ public class BlockListeners implements Listener {
 	}
 
 	public void onBlockBreakLegacy(BlockBreakEvent event) { // This is to support legacy breaks
-		if (EntityType.valueOf("ARMOR_STAND") == null) //Assuming we're on 1.7 or less...
+		if (cratesPlus.versionCompare(cratesPlus.getBukkitVersion(), "1.8") == -1) //Assuming we're on 1.7 or less...
 			return;
 		if (event.getBlock().getState() instanceof Chest) {
 			Chest chest = (Chest) event.getBlock().getState();

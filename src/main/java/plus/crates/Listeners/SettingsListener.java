@@ -323,7 +323,7 @@ public class SettingsListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerInput(PlayerInputEvent event) {
+	public void onPlayerInput(final PlayerInputEvent event) {
 		if (renaming.containsKey(event.getPlayer().getUniqueId())) {
 			String name = renaming.get(event.getPlayer().getUniqueId());
 			renaming.remove(event.getPlayer().getUniqueId());
@@ -340,8 +340,15 @@ public class SettingsListener implements Listener {
 			for (String line : event.getLines()) {
 				name += line;
 			}
-			if (!name.isEmpty())
-				Bukkit.dispatchCommand(event.getPlayer(), "crate create " + name);
+			if (!name.isEmpty()) {
+				final String finalName = name;
+				Bukkit.getScheduler().runTask(cratesPlus, new Runnable() {
+					@Override
+					public void run() {
+						Bukkit.dispatchCommand(event.getPlayer(), "crate create " + finalName);
+					}
+				});
+			}
 		}
 	}
 
