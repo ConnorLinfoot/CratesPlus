@@ -1,3 +1,6 @@
+**4.2.4** *(Dec 21 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-1.5018/download?version=131086)
+- Feature: Support for Bukkit/Spigot 1.11.2.
+
 **4.2.3** *(Dec 20 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-1.5018/download?version=130903)
 - Feature: Support for Bukkit/Spigot 1.11.1.
 
