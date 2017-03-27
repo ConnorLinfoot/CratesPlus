@@ -2,7 +2,7 @@
 
 If you're having config issues (such as it resetting) first make sure it's a valid YAML file using a [parser](http://yaml-online-parser.appspot.com).
 
-Please post a link to your config file and any other information on your server such as plugins and server version. Currently the /creates debug link does not work as intended and will not help.
+Please post a link to your config file and any other information on your server such as plugins and server version. Currently the /crates debug link does not work as intended and will not help.
 
 ### Link/paste of stack trace/error (if any)
 
