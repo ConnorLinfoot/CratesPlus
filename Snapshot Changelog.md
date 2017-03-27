@@ -1,3 +1,13 @@
+### Version 4.3 Snapshots
+---
+**Snapshot 1** *(Mar 27 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/824/artifact/target/CratesPlus-4.3-SNAPSHOT-1.jar)
+- Improvement: Now supports "Block Type Data" for setting the crates data ID.
+- Improvement: Debug link now uses v2 of MC Debug, will allow the link that is shared to be viewed easier and even managed.
+- Improvement: Keys are now checked with their lore as well as the name, this should help prevent plugins with things like /rename exploiting this.
+- Improvement: Added a custom metrics class, will be used with a new MC Stats tool coming soon.
+- Bug: Fixed issue with debug link and config backups, now using GitHub Gist instead of Hastebin.
+- Bug: Hologram warning now only shows up once if it finds an incompatible version.
+
 ### Version 4.2 Snapshots
 ---
 **Snapshot 7** *(Aug 1 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/578/artifact/target/CratesPlus-4.2-SNAPSHOT-7.jar)

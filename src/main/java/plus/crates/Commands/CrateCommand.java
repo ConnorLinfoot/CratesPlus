@@ -130,14 +130,23 @@ public class CrateCommand implements CommandExecutor {
 							sender.sendMessage(ChatColor.AQUA + "Completed plugin list");
 
 							sender.sendMessage(ChatColor.AQUA + "Uploading plugin list...");
-							String pluginsLink = PasteUtils.paste(plugins);
+							String pluginsLink = PasteUtils.paste("plugins.txt", plugins);
 							sender.sendMessage(ChatColor.AQUA + "Completed uploading plugin list");
 
 							sender.sendMessage(ChatColor.AQUA + "Uploading data to MC Debug...");
-							String finalLink = uploadDebugData(configLink, dataLink, messagesLink, pluginsLink);
-//							String finalLink = PasteUtils.paste("CratesPlus Debug Paste - Version " + cratesPlus.getDescription().getVersion() + "\nBukkit Version: " + cratesPlus.getBukkitVersion() + "\n\nconfig.yml - " + configLink + "\n" + "data.yml - " + dataLink + "\n" + "messages.yml - " + messagesLink + "\n\nPlugin List: " + "\n" + plugins);
+							String finalLinks = uploadDebugData(configLink, dataLink, messagesLink, pluginsLink);
+							String[] links = null;
+							if (finalLinks != null) {
+								links = finalLinks.split("\\|");
+							}
 
-							sender.sendMessage(ChatColor.GREEN + "Completed sending debug data, your unique debug link is " + finalLink);
+							sender.sendMessage(ChatColor.GREEN + "Completed uploading debug data!");
+							if( links != null && links.length == 2 ){
+								sender.sendMessage(ChatColor.GREEN + "You can use the following link to manage your data " + ChatColor.GOLD + links[1]);
+								sender.sendMessage(ChatColor.GREEN + "You can use the following link to share your data " + ChatColor.GOLD + links[0]);
+							} else {
+								sender.sendMessage(ChatColor.GREEN + "You can use the following link to share your data " + ChatColor.GOLD + finalLinks);
+							}
 
 						}
 					});
@@ -518,9 +527,9 @@ public class CrateCommand implements CommandExecutor {
 	}
 
 	private String uploadDebugData(String configLink, String dataLink, String messagesLink, String pluginsLink) {
-		String urlStr = "http://mcdebug.xyz/api/v1/submit/?config=" + configLink + "&data=" + dataLink + "&messages=" + messagesLink + "&plugins=" + pluginsLink + "&bukkitVer=" + cratesPlus.getBukkitVersion();
+		String urlStr = "http://mcdebug.xyz/api/v2/submit/?plugin=cratesplus&config=" + configLink + "&data=" + dataLink + "&messages=" + messagesLink + "&plugins=" + pluginsLink + "&bukkitVer=" + cratesPlus.getBukkitVersion();
 
-		HttpURLConnection connection = null;
+		HttpURLConnection connection;
 		try {
 			//Create connection
 			URL url = new URL(urlStr);
@@ -538,15 +547,10 @@ public class CrateCommand implements CommandExecutor {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			JSONParser jsonParser = new JSONParser();
 			JSONObject obj = (JSONObject) jsonParser.parse(rd.readLine());
-			return "https://mcdebug.xyz/cratesplus/" + obj.get("key");
+			return "https://mcdebug.xyz/cratesplus/share/" + obj.get("id") + "|" + "https://mcdebug.xyz/cratesplus/admin/" + obj.get("adminid");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return null;
-		} finally {
-			if (connection == null) {
-				return null;
-			}
-			connection.disconnect();
 		}
 	}
 

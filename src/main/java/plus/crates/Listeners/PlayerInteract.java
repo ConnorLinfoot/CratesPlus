@@ -63,6 +63,7 @@ public class PlayerInteract implements Listener {
 			return;
 		}
 		String title = crate.getKey().getName();
+		String lore = crate.getKey().getLore().toString();
 		if (event.getAction().toString().contains("LEFT")) {
 			if (event.getPlayer().isSneaking())
 				return;
@@ -71,19 +72,21 @@ public class PlayerInteract implements Listener {
 			if (!cratePreviewEvent.isCanceled())
 				cratePreviewEvent.doEvent();
 		} else {
+			/** Opening of Crate **/
 			boolean usingOffHand = false;
 			if (itemOff != null && itemOff.hasItemMeta() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
 				item = itemOff;
 				usingOffHand = true;
 			}
 
-			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) {
+			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) { /** If already opening crate, show GUI for said crate **/
 				cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen(player, crate, event.getClickedBlock().getLocation());
 				event.setCancelled(true);
 				return;
 			}
 
-			if (item != null && item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title)) {
+			/** Checks if holding valid key **/
+			if (item != null && item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
 				event.setCancelled(true);
 
 				if (player.getInventory().firstEmpty() == -1) {

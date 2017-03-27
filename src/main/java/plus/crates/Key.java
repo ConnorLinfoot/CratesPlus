@@ -14,6 +14,7 @@ public class Key {
 	private String crateName = "";
 	private Material material = Material.CHEST;
 	private String name = "";
+	private List<String> lore = null;
 	private boolean enchanted = false;
 
 	public Key(String crateName, Material material, String name, boolean enchanted, CratesPlus cratesPlus) {
@@ -42,6 +43,16 @@ public class Key {
 		this.name = name;
 	}
 
+	public List<String> getLore() {
+		if( this.lore == null || this.lore.size() == 0 ) {
+			this.lore = new ArrayList<>();
+			this.lore.add(ChatColor.GRAY + "Right-Click on a \"" + getCrate().getName(true) + ChatColor.GRAY + "\" crate");
+			this.lore.add(ChatColor.GRAY + "to win an item!");
+			this.lore.add("");
+		}
+		return this.lore;
+	}
+
 	public boolean isEnchanted() {
 		return enchanted;
 	}
@@ -57,10 +68,6 @@ public class Key {
 		ItemMeta keyItemMeta = keyItem.getItemMeta();
 		String title = getName().replaceAll("%type%", getCrate().getName(true));
 		keyItemMeta.setDisplayName(title);
-		List<String> lore = new ArrayList<>();
-		lore.add(ChatColor.GRAY + "Right-Click on a \"" + getCrate().getName(true) + ChatColor.GRAY + "\" crate");
-		lore.add(ChatColor.GRAY + "to win an item!");
-		lore.add("");
 		keyItemMeta.setLore(lore);
 		keyItem.setItemMeta(keyItemMeta);
 		if (amount > 1)

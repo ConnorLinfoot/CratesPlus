@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Wool;
 import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
@@ -61,6 +62,9 @@ public class Winning {
 			if (config.isSet(path + ".Item Data"))
 				itemData = config.getInt(path + ".Item Data");
 
+			if (config.isSet(path + ".Block Type Data"))
+				itemData = config.getInt(path + ".Block Type Data");
+
 			if (config.isSet(path + ".Entity Type"))
 				entityType = config.getString(path + ".Entity Type");
 
@@ -73,8 +77,9 @@ public class Winning {
 
 			if (!entityType.isEmpty() && itemType == Material.MONSTER_EGG) {
 				itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.valueOf(entityType.toUpperCase()), amount);
-			} else
+			} else {
 				itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));
+			}
 		} else if (type.equalsIgnoreCase("command")) {
 			command = true;
 			if (config.isSet(path + ".Commands") && config.getStringList(path + ".Commands").size() != 0) {

@@ -1,7 +1,7 @@
 CratesPlus
 =====================
 
-Sick of paying for crate plugins? CratesPlus is a FREE crates plugin built for Spigot that will allow you to enchance your server. More information can be found on the new website [Crates.Plus](http://crates.plus)!
+Sick of paying for crate plugins? CratesPlus is a FREE crates plugin built for Spigot that will allow you to enhance your server.
 
 [![ghit.me](https://ghit.me/badge.svg?repo=connorlinfoot/CratesPlus)](https://ghit.me/repo/connorlinfoot/CratesPlus)
 

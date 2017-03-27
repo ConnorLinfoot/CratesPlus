@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class Version_Util {
 	private HashMap<String, com.gmail.filoghost.holographicdisplays.api.Hologram> holograms = new HashMap<>();
 	private CratesPlus cratesPlus;
+	private boolean shown_hologram_deprecated_warning = false;
 
 	public Version_Util(CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
@@ -48,7 +49,8 @@ public class Version_Util {
 				Hologram hologram = new Hologram(location, lines);
 				crate.addHologram(location.getBlock().getLocation(), hologram);
 				hologram.displayAll();
-			} else {
+			} else if (!shown_hologram_deprecated_warning) {
+				shown_hologram_deprecated_warning = true;
 				cratesPlus.getLogger().warning("Only 1.8 - 1.9 supports the built in holograms, please use HolographicDisplays or Individual Holograms for holograms to work");
 			}
 		}

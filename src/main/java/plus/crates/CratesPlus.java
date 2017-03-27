@@ -58,7 +58,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		if (versionCompare(bukkitVersion, "1.11.2") > 0) {
 			// This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
 			getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
-			getLogger().warning("Please let me know if there is any errors or issues");
+			getLogger().warning("Please let me know if there are any errors or issues");
 		}
 
 		if (versionCompare(bukkitVersion, "1.9") > -1) {
@@ -67,7 +67,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} else if (versionCompare(bukkitVersion, "1.7") > -1) {
 			// Use Default Util
 			if (bukkitVersion.equals("1.7") || bukkitVersion.startsWith("1.7.")) {
-				getLogger().warning("CratesPlus does NOT fully support Bukkit 1.7, if you have issues please report them but I may not look into it");
+				getLogger().warning("CratesPlus does NOT fully support Bukkit 1.7, if you have issues please report them but they may not be fixed");
 			}
 			version_util = new Version_Util(this);
 		} else {
@@ -180,6 +180,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			try {
 				Metrics metrics = new Metrics(this);
 				metrics.start();
+
+				MetricsCustom metricsCustom = new MetricsCustom(this);
+				metricsCustom.start();
 			} catch (IOException e) {
 				// Failed to submit the stats :-(
 			}
@@ -304,7 +307,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return PasteUtils.paste(lines);
+		return PasteUtils.paste(fileName, lines);
 	}
 
 	private void checkUpdate(final ConsoleCommandSender console) {

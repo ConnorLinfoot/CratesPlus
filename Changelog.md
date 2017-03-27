@@ -14,7 +14,6 @@
 - Bug: Fixed issue with the runnable causing an error on Bukkit 1.7.
 - Bug: Fixed issue when breaking a crate with 1.7 would cause an exception.
 
-
 **4.2** *(Aug 1 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-8-1-9-1-10.5018/download?version=106361)
 - Feature: Crates can now be created and renamed using a sign GUI.
 - Feature: New '/crate debug' for help when reporting issues.
