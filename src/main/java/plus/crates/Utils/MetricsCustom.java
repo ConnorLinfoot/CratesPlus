@@ -126,7 +126,7 @@ public class MetricsCustom {
 
 		// Do we need to create the file?
 		if (configuration.get("guid", null) == null) {
-			configuration.options().header("http://mcstats.org").copyDefaults(true);
+			configuration.options().header("https://mcstats.xyz").copyDefaults(true);
 			configuration.save(configurationFile);
 		}
 
@@ -311,7 +311,7 @@ public class MetricsCustom {
 		File pluginsFolder = plugin.getDataFolder().getParentFile();
 
 		// return => base/plugins/PluginMetrics/config.yml
-		return new File(new File(pluginsFolder, "PluginMetrics"), "config.yml");
+		return new File(new File(pluginsFolder, "MCStatsXYZ"), "config.yml");
 	}
 
 	/**
@@ -446,7 +446,7 @@ public class MetricsCustom {
 		byte[] compressed = gzip(json.toString());
 
 		// Headers
-		connection.addRequestProperty("User-Agent", "MCStats/" + REVISION);
+		connection.addRequestProperty("User-Agent", "MCStatsXYZ/" + REVISION);
 		connection.addRequestProperty("Content-Type", "application/json");
 		connection.addRequestProperty("Content-Encoding", "gzip");
 		connection.addRequestProperty("Content-Length", Integer.toString(compressed.length));

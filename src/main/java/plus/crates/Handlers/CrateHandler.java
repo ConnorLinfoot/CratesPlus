@@ -254,7 +254,7 @@ public class CrateHandler {
 	public void giveCrate(Player player, Crate crate) {
 		if (player == null || !player.isOnline() || crate == null) return;
 
-		ItemStack crateItem = new ItemStack(crate.getBlock());
+		ItemStack crateItem = new ItemStack(crate.getBlock(), 1, crate.getBlockData());
 		ItemMeta crateMeta = crateItem.getItemMeta();
 		crateMeta.setDisplayName(crate.getName(true) + " Crate!");
 		List<String> lore = new ArrayList<String>();

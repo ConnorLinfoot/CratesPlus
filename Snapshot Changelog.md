@@ -1,7 +1,11 @@
 ### Version 4.3 Snapshots
 ---
+**Snapshot 2** *(Mar 27 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/826/artifact/target/CratesPlus-4.3-SNAPSHOT-2.jar)
+- Improvement: Slight tweaks to the custom metrics class for the upcoming MC Stats.
+- Bug: Fixed "Block Data" for the crate itself not working after feature was added in last snapshot.
+
 **Snapshot 1** *(Mar 27 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/824/artifact/target/CratesPlus-4.3-SNAPSHOT-1.jar)
-- Improvement: Now supports "Block Type Data" for setting the crates data ID.
+- Improvement: Now supports "Block Data" for setting the crates data ID.
 - Improvement: Debug link now uses v2 of MC Debug, will allow the link that is shared to be viewed easier and even managed.
 - Improvement: Keys are now checked with their lore as well as the name, this should help prevent plugins with things like /rename exploiting this.
 - Improvement: Added a custom metrics class, will be used with a new MC Stats tool coming soon.

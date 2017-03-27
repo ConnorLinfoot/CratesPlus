@@ -62,9 +62,6 @@ public class Winning {
 			if (config.isSet(path + ".Item Data"))
 				itemData = config.getInt(path + ".Item Data");
 
-			if (config.isSet(path + ".Block Type Data"))
-				itemData = config.getInt(path + ".Block Type Data");
-
 			if (config.isSet(path + ".Entity Type"))
 				entityType = config.getString(path + ".Entity Type");
 

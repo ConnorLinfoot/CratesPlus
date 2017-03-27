@@ -18,6 +18,7 @@ public class Crate {
 	private String slug;
 	private ChatColor color = ChatColor.WHITE;
 	private Material block = Material.CHEST;
+	private Integer blockData = 0;
 	private boolean firework = false;
 	private boolean broadcast = false;
 	private boolean preview = true;
@@ -41,6 +42,8 @@ public class Crate {
 			this.color = ChatColor.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Color").toUpperCase());
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Block"))
 			this.block = Material.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Block").toUpperCase());
+		if (cratesPlus.getConfig().isSet("Crates." + name + ".Block Data"))
+			this.blockData = Integer.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Block Data"));
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Firework"))
 			this.firework = cratesPlus.getConfig().getBoolean("Crates." + name + ".Firework");
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Broadcast"))
@@ -98,6 +101,10 @@ public class Crate {
 
 	public Material getBlock() {
 		return this.block;
+	}
+
+	public short getBlockData() {
+		return (short) (int) this.blockData;
 	}
 
 	public boolean isFirework() {
