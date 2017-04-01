@@ -1,6 +1,6 @@
 ### Version 4.3 Snapshots
 ---
-**Snapshot 3** *(Apr 1 2017)* - [Download](#)
+**Snapshot 3** *(Apr 1 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/835/artifact/target/CratesPlus-4.3-SNAPSHOT-3.jar)
 - Keys lost on death will now be put in the claim GUI instead.
 - Better handling of rename for 1.7.
 - I really like purple.
