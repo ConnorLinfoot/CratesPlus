@@ -1,4 +1,4 @@
-**4.3** *(Apr 1 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-1.5018/download?version=131086)
+**4.3** *(Apr 1 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=151600)
 - Improvement: Now supports "Block Data" for setting the crates data ID.
 - Improvement: Debug link now uses v2 of MC Debug, will allow the link that is shared to be viewed easier and even managed.
 - Improvement: Keys are now checked with their lore as well as the name, this should help prevent plugins with things like /rename exploiting this.

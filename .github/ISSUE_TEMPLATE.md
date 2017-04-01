@@ -2,15 +2,15 @@
 
 If you're having config issues (such as it resetting) first make sure it's a valid YAML file using a [parser](http://yaml-online-parser.appspot.com).
 
-Please post a link to your config file and any other information on your server such as plugins and server version. Currently the /crates debug link does not work as intended and will not help.
+From version 4.3 there is a new '/crates debug' command. Running this will give you a single link with all the data I need to help you. Please run this and submit the share link with your issue.
 
 ### Link/paste of stack trace/error (if any)
 
     You can also simply just use code formatting in markdown!
 ___We need all of the stack trace! Do not cut off parts of it.___
 
-### Config Link and Other Info
-___Enter your config link and other info___
+### Debug Link
+___Enter your debug link from /crates debug___
 
 ### Actions to reproduce (if known):
 ___This may include a build schematic, a video, or detailed instructions to help reconstruct the issue___
