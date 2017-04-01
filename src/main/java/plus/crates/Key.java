@@ -10,77 +10,77 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Key {
-	private CratesPlus cratesPlus;
-	private String crateName = "";
-	private Material material = Material.CHEST;
-	private String name = "";
-	private List<String> lore = null;
-	private boolean enchanted = false;
+    private CratesPlus cratesPlus;
+    private String crateName = "";
+    private Material material = Material.CHEST;
+    private String name = "";
+    private List<String> lore = null;
+    private boolean enchanted = false;
 
-	public Key(String crateName, Material material, String name, boolean enchanted, CratesPlus cratesPlus) {
-		this.cratesPlus = cratesPlus;
-		this.crateName = crateName;
-		if (material == null)
-			material = Material.TRIPWIRE_HOOK;
-		this.material = material;
-		this.name = name;
-		this.enchanted = enchanted;
-	}
+    public Key(String crateName, Material material, String name, boolean enchanted, CratesPlus cratesPlus) {
+        this.cratesPlus = cratesPlus;
+        this.crateName = crateName;
+        if (material == null)
+            material = Material.TRIPWIRE_HOOK;
+        this.material = material;
+        this.name = name;
+        this.enchanted = enchanted;
+    }
 
-	public Material getMaterial() {
-		return material;
-	}
+    public Material getMaterial() {
+        return material;
+    }
 
-	public void setMaterial(Material material) {
-		this.material = material;
-	}
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<String> getLore() {
-		if( this.lore == null || this.lore.size() == 0 ) {
-			this.lore = new ArrayList<>();
-			this.lore.add(ChatColor.GRAY + "Right-Click on a \"" + getCrate().getName(true) + ChatColor.GRAY + "\" crate");
-			this.lore.add(ChatColor.GRAY + "to win an item!");
-			this.lore.add("");
-		}
-		return this.lore;
-	}
+    public List<String> getLore() {
+        if (this.lore == null || this.lore.size() == 0) {
+            this.lore = new ArrayList<>();
+            this.lore.add(ChatColor.GRAY + "Right-Click on a \"" + getCrate().getName(true) + ChatColor.GRAY + "\" crate");
+            this.lore.add(ChatColor.GRAY + "to win an item!");
+            this.lore.add("");
+        }
+        return this.lore;
+    }
 
-	public boolean isEnchanted() {
-		return enchanted;
-	}
+    public boolean isEnchanted() {
+        return enchanted;
+    }
 
-	public void setEnchanted(boolean enchanted) {
-		this.enchanted = enchanted;
-	}
+    public void setEnchanted(boolean enchanted) {
+        this.enchanted = enchanted;
+    }
 
-	public ItemStack getKeyItem(Integer amount) {
-		ItemStack keyItem = new ItemStack(getMaterial());
-		if (isEnchanted())
-			keyItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-		ItemMeta keyItemMeta = keyItem.getItemMeta();
-		String title = getName().replaceAll("%type%", getCrate().getName(true));
-		keyItemMeta.setDisplayName(title);
-		keyItemMeta.setLore(lore);
-		keyItem.setItemMeta(keyItemMeta);
-		if (amount > 1)
-			keyItem.setAmount(amount);
-		return keyItem;
-	}
+    public ItemStack getKeyItem(Integer amount) {
+        ItemStack keyItem = new ItemStack(getMaterial());
+        if (isEnchanted())
+            keyItem.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        ItemMeta keyItemMeta = keyItem.getItemMeta();
+        String title = getName().replaceAll("%type%", getCrate().getName(true));
+        keyItemMeta.setDisplayName(title);
+        keyItemMeta.setLore(lore);
+        keyItem.setItemMeta(keyItemMeta);
+        if (amount > 1)
+            keyItem.setAmount(amount);
+        return keyItem;
+    }
 
-	public String getCrateName() {
-		return crateName;
-	}
+    public String getCrateName() {
+        return crateName;
+    }
 
-	public Crate getCrate() {
-		return cratesPlus.getConfigHandler().getCrate(getCrateName().toLowerCase());
-	}
+    public Crate getCrate() {
+        return cratesPlus.getConfigHandler().getCrate(getCrateName().toLowerCase());
+    }
 
 }
