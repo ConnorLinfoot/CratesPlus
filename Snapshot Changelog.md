@@ -1,10 +1,10 @@
 ### Version 4.3 Snapshots
 ---
 **Snapshot 3** *(Apr 1 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/836/artifact/target/CratesPlus-4.3-SNAPSHOT-3.jar)
-- Keys lost on death will now be put in the claim GUI instead.
-- Better handling of rename for 1.7.
-- I really like purple.
-- No but seriously, I ***really*** like purple. 
+- Improvement: Keys lost on death will now be put in the claim GUI instead.
+- Improvement: Better handling of rename for 1.7.
+- Improvement: I really like purple.
+- Improvement: No but seriously, I ***really*** like purple. 
 
 **Snapshot 2** *(Mar 27 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/826/artifact/target/CratesPlus-4.3-SNAPSHOT-2.jar)
 - Improvement: Slight tweaks to the custom metrics class for the upcoming MC Stats.

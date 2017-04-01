@@ -1,3 +1,15 @@
+**4.3** *(Apr 1 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-1.5018/download?version=131086)
+- Improvement: Now supports "Block Data" for setting the crates data ID.
+- Improvement: Debug link now uses v2 of MC Debug, will allow the link that is shared to be viewed easier and even managed.
+- Improvement: Keys are now checked with their lore as well as the name, this should help prevent plugins with things like /rename exploiting this.
+- Improvement: Added a custom metrics class, will be used with a new MC Stats tool coming soon.
+- Improvement: Keys lost on death will now be put in the claim GUI instead.
+- Improvement: Better handling of rename for 1.7.
+- Improvement: I really like purple.
+- Improvement: No but seriously, I ***really*** like purple. 
+- Bug: Fixed issue with debug link and config backups, now using GitHub Gist instead of Hastebin.
+- Bug: Hologram warning now only shows up once if it finds an incompatible version.
+
 **4.2.4** *(Dec 21 2016)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-1.5018/download?version=131086)
 - Feature: Support for Bukkit/Spigot 1.11.2.
 
