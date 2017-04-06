@@ -1,3 +1,6 @@
+**4.3.1** *(Apr 6 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=152479)
+ - Bug: Fixed issue where keys sometimes didn't have a lore set. Causing said keys to not work.
+
 **4.3** *(Apr 1 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=151600)
 - Improvement: Now supports "Block Data" for setting the crates data ID.
 - Improvement: Debug link now uses v2 of MC Debug, will allow the link that is shared to be viewed easier and even managed.
