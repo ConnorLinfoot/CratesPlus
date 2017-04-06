@@ -68,6 +68,7 @@ public class Key {
         ItemMeta keyItemMeta = keyItem.getItemMeta();
         String title = getName().replaceAll("%type%", getCrate().getName(true));
         keyItemMeta.setDisplayName(title);
+        if (lore == null) lore = getLore();
         keyItemMeta.setLore(lore);
         keyItem.setItemMeta(keyItemMeta);
         if (amount > 1)
