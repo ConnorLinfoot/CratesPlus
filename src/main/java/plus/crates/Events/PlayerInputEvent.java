@@ -6,31 +6,31 @@ import org.bukkit.event.HandlerList;
 import plus.crates.Utils.SignInputHandler;
 
 public class PlayerInputEvent extends Event {
-    private static final HandlerList handlers = new HandlerList();
-    private Player player;
-    public String[] lines;
+	private static final HandlerList handlers = new HandlerList();
+	private Player player;
+	public String[] lines;
 
-    public PlayerInputEvent(Player player, String[] lines) {
-        this.player = player;
-        this.lines = lines;
-        SignInputHandler.ejectNetty(player);
-    }
+	public PlayerInputEvent(Player player, String[] lines) {
+		this.player = player;
+		this.lines = lines;
+		SignInputHandler.ejectNetty(player);
+	}
 
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
+	@Override
+	public HandlerList getHandlers() {
+		return handlers;
+	}
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
+	public static HandlerList getHandlerList() {
+		return handlers;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public String[] getLines() {
-        return lines;
-    }
+	public String[] getLines() {
+		return lines;
+	}
 
 }

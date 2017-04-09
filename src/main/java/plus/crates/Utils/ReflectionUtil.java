@@ -10,151 +10,151 @@ import java.lang.reflect.Method;
 
 public class ReflectionUtil {
 
-    public static final String NMS_PATH = getNMSPackageName();
-    public static final String CB_PATH = getCBPackageName();
+	public static final String NMS_PATH = getNMSPackageName();
+	public static final String CB_PATH = getCBPackageName();
 
-    public static String getNMSPackageName() {
-        return "net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    }
+	public static String getNMSPackageName() {
+		return "net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+	}
 
-    public static String getCBPackageName() {
-        return "org.bukkit.craftbukkit." + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    }
+	public static String getCBPackageName() {
+		return "org.bukkit.craftbukkit." + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+	}
 
-    /**
-     * Class stuff
-     */
+	/**
+	 * Class stuff
+	 */
 
-    public static Class getClass(String name) {
-        try {
-            return Class.forName(name);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public static Class getClass(String name) {
+		try {
+			return Class.forName(name);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static Class getNMSClass(String className) {
-        return getClass(NMS_PATH + "." + className);
-    }
+	public static Class getNMSClass(String className) {
+		return getClass(NMS_PATH + "." + className);
+	}
 
-    public static Class getCBClass(String className) {
-        return getClass(CB_PATH + "." + className);
-    }
+	public static Class getCBClass(String className) {
+		return getClass(CB_PATH + "." + className);
+	}
 
-    /**
-     * Field stuff
-     */
+	/**
+	 * Field stuff
+	 */
 
-    public static Field getField(Class<?> clazz, String fieldName) {
-        try {
-            Field field = clazz.getDeclaredField(fieldName);
+	public static Field getField(Class<?> clazz, String fieldName) {
+		try {
+			Field field = clazz.getDeclaredField(fieldName);
 
-            if (!field.isAccessible()) {
-                field.setAccessible(true);
-            }
+			if (!field.isAccessible()) {
+				field.setAccessible(true);
+			}
 
-            return field;
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+			return field;
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static <T> T getField(Class<?> clazz, String fieldName, Object instance) {
-        try {
-            return (T) getField(clazz, fieldName).get(instance);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public static <T> T getField(Class<?> clazz, String fieldName, Object instance) {
+		try {
+			return (T) getField(clazz, fieldName).get(instance);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static void setField(Class<?> clazz, String fieldName, Object instance, Object value) {
-        try {
-            getField(clazz, fieldName).set(instance, value);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
+	public static void setField(Class<?> clazz, String fieldName, Object instance, Object value) {
+		try {
+			getField(clazz, fieldName).set(instance, value);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Method stuff
-     */
+	/**
+	 * Method stuff
+	 */
 
-    public static Method getMethod(Class<?> clazz, String methodName, Class<?>... params) {
-        try {
-            Method method = clazz.getDeclaredMethod(methodName, params);
+	public static Method getMethod(Class<?> clazz, String methodName, Class<?>... params) {
+		try {
+			Method method = clazz.getDeclaredMethod(methodName, params);
 
-            if (!method.isAccessible()) {
-                method.setAccessible(true);
-            }
+			if (!method.isAccessible()) {
+				method.setAccessible(true);
+			}
 
-            return method;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+			return method;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static <T> T invokeMethod(Method method, Object instance, Object... args) {
-        try {
-            return (T) method.invoke(instance, args);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public static <T> T invokeMethod(Method method, Object instance, Object... args) {
+		try {
+			return (T) method.invoke(instance, args);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static Constructor getConstructor(Class<?> clazz, Class<?>... params) {
-        try {
-            Constructor constructor = clazz.getConstructor(params);
+	public static Constructor getConstructor(Class<?> clazz, Class<?>... params) {
+		try {
+			Constructor constructor = clazz.getConstructor(params);
 
-            if (!constructor.isAccessible()) {
-                constructor.setAccessible(true);
-            }
+			if (!constructor.isAccessible()) {
+				constructor.setAccessible(true);
+			}
 
-            return constructor;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+			return constructor;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static <T> T invokeConstructor(Constructor constructor, Object... args) {
-        try {
-            return (T) constructor.newInstance(args);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public static <T> T invokeConstructor(Constructor constructor, Object... args) {
+		try {
+			return (T) constructor.newInstance(args);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static Object getBlockPosition(Player player) {
-        try {
-            Object handle = player.getClass().getMethod("getHandle").invoke(player);
-            Constructor constructor = ReflectionUtil.getNMSClass("BlockPosition").getConstructor(ReflectionUtil.getNMSClass("Entity"));
-            return constructor.newInstance(handle);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+	public static Object getBlockPosition(Player player) {
+		try {
+			Object handle = player.getClass().getMethod("getHandle").invoke(player);
+			Constructor constructor = ReflectionUtil.getNMSClass("BlockPosition").getConstructor(ReflectionUtil.getNMSClass("Entity"));
+			return constructor.newInstance(handle);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    public static void sendPacket(Player player, Object packet) {
-        try {
-            Object handle = player.getClass().getMethod("getHandle").invoke(player);
-            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-            playerConnection.getClass().getMethod("sendPacket", ReflectionUtil.getNMSClass("Packet")).invoke(playerConnection, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void sendPacket(Player player, Object packet) {
+		try {
+			Object handle = player.getClass().getMethod("getHandle").invoke(player);
+			Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+			playerConnection.getClass().getMethod("sendPacket", ReflectionUtil.getNMSClass("Packet")).invoke(playerConnection, packet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
