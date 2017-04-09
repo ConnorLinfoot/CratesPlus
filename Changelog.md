@@ -1,3 +1,6 @@
+**4.3.2** *(Apr 9 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=153092)
+ - Bug: Fixed an issue that allowed people to use keys multiple times.
+
 **4.3.1** *(Apr 6 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=152479)
  - Bug: Fixed issue where keys sometimes didn't have a lore set. Causing said keys to not work.
 

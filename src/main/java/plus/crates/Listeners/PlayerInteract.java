@@ -33,6 +33,9 @@ public class PlayerInteract implements Listener {
         ItemStack item = cratesPlus.getVersion_util().getItemInPlayersHand(player);
         ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
 
+        player.sendMessage(item.toString());
+        player.sendMessage(itemOff.toString());
+
         String crateType;
         if (event.getClickedBlock().getMetadata("CrateType") == null || event.getClickedBlock().getMetadata("CrateType").isEmpty()) {
             // Try to use the old method of getting the crate!
@@ -74,7 +77,7 @@ public class PlayerInteract implements Listener {
         } else {
             /** Opening of Crate **/
             boolean usingOffHand = false;
-            if (itemOff != null && itemOff.hasItemMeta() && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
+            if (itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
                 item = itemOff;
                 usingOffHand = true;
             }
@@ -86,7 +89,7 @@ public class PlayerInteract implements Listener {
             }
 
             /** Checks if holding valid key **/
-            if (item != null && item.hasItemMeta() && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
+            if (item.hasItemMeta() && !item.getType().equals(Material.AIR) && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
                 event.setCancelled(true);
 
                 if (player.getInventory().firstEmpty() == -1) {
