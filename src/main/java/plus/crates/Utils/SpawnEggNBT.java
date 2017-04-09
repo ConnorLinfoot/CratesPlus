@@ -30,11 +30,7 @@ public class SpawnEggNBT {
         }
     }
 
-    public ItemStack toItemStack() {
-        return toItemStack(1);
-    }
-
-    public ItemStack toItemStack(int amount) {
+    public ItemStack toItemStack(int amount, boolean is_1_11) {
         ItemStack item = new ItemStack(Material.MONSTER_EGG, amount);
         try {
             Class craftItemStack = ReflectionUtil.getCBClass("inventory.CraftItemStack");
@@ -48,7 +44,13 @@ public class SpawnEggNBT {
             }
             Object id = nbtTagCompoundClass.getConstructor().newInstance();
             Method setStringMethod = nbtTagCompoundClass.getDeclaredMethod("setString", String.class, String.class);
-            setStringMethod.invoke(id, "id", type.getName());
+
+            if (is_1_11) {
+                setStringMethod.invoke(id, "id", "minecraft:" + type.getName());
+            } else {
+                setStringMethod.invoke(id, "id", type.getName());
+            }
+
             Method setMethod = nbtTagCompoundClass.getDeclaredMethod("set", String.class, ReflectionUtil.getNMSClass("NBTBase"));
             setMethod.invoke(nbtTagCompound, "EntityTag", id);
             Method setTagMethod = nmsItemStackClass.getDeclaredMethod("setTag", nbtTagCompoundClass);
@@ -76,6 +78,7 @@ public class SpawnEggNBT {
                 Object entityTagCompount = getCompoundMethod.invoke(nbtTagCompound, "EntityTag");
                 Method getStringMethod = nbtTagCompoundClass.getDeclaredMethod("getString", String.class);
                 String type = (String) getStringMethod.invoke(entityTagCompount, "id");
+                type = type.replaceFirst("minecraft:", "");
                 switch (type) {
                     case "CAVESPIDER":
                         type = "CAVE_SPIDER";

@@ -66,6 +66,15 @@ public class Crate {
 
         this.key = new Key(name, Material.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Key.Item")), cratesPlus.getConfig().getString("Crates." + name + ".Key.Name").replaceAll("%type%", getName(true)), cratesPlus.getConfig().getBoolean("Crates." + name + ".Key.Enchanted"), cratesPlus);
 
+        if (cratesPlus.getConfig().isSet("Crates." + name + ".Key.Lore")) {
+            List<String> lore = new ArrayList<>();
+            List<String> lines = cratesPlus.getConfig().getStringList("Crates." + name + ".Key.Lore");
+            for (String line : lines) {
+                lore.add(ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', line));
+            }
+            this.key.setLore(lore);
+        }
+
         if (!cratesPlus.getConfig().isSet("Crates." + name + ".Winnings"))
             return;
 

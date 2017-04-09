@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class Version_Util {
     private HashMap<String, com.gmail.filoghost.holographicdisplays.api.Hologram> holograms = new HashMap<>();
-    private CratesPlus cratesPlus;
+    protected CratesPlus cratesPlus;
     private boolean shown_hologram_deprecated_warning = false;
 
     public Version_Util(CratesPlus cratesPlus) {

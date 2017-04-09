@@ -36,6 +36,9 @@ Crates:
       Item: TRIPWIRE_HOOK
       Name: '%type% Crate Key'
       Enchanted: true
+      Lore:
+      - "This is a Vote key!"
+      - "This is just some &eTEST&r text!"
     Winnings:
       '1':
         Type: ITEM

@@ -53,6 +53,10 @@ public class Key {
         return this.lore;
     }
 
+    public void setLore(List<String> lore) {
+        this.lore = lore;
+    }
+
     public boolean isEnchanted() {
         return enchanted;
     }

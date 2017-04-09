@@ -1,3 +1,6 @@
+**4.3.3** *(Apr 9 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=153094)
+ - Bug: Removed left over debug from last update.
+
 **4.3.2** *(Apr 9 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=153092)
  - Bug: Fixed an issue that allowed people to use keys multiple times.
 
