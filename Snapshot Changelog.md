@@ -1,6 +1,6 @@
 ### Version 4.4 Snapshots
 ---
-**Snapshot 1** *(Apr 9 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/849/artifact/target/CratesPlus-4.4-SNAPSHOT-1.jar)
+**Snapshot 1** *(Apr 9 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/851/artifact/target/CratesPlus-4.4-SNAPSHOT-1.jar)
 - Feature: You can now set the lore of a key in the config file. (Warning: changing the lore WILL break existing keys given to players)
 - Bug: Fixed spawn eggs not working in 1.11+
 
