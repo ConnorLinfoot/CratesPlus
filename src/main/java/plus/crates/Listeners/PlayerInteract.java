@@ -33,9 +33,6 @@ public class PlayerInteract implements Listener {
         ItemStack item = cratesPlus.getVersion_util().getItemInPlayersHand(player);
         ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
 
-        player.sendMessage(item.toString());
-        player.sendMessage(itemOff.toString());
-
         String crateType;
         if (event.getClickedBlock().getMetadata("CrateType") == null || event.getClickedBlock().getMetadata("CrateType").isEmpty()) {
             // Try to use the old method of getting the crate!
