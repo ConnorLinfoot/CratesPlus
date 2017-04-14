@@ -13,10 +13,9 @@ import org.bukkit.material.Wool;
 import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Winning {
 	private CratesPlus cratesPlus;
@@ -216,11 +215,7 @@ public class Winning {
 			@Override
 			public void run() {
 				if (isCommand() && getCommands().size() > 0) {
-					for (String command : getCommands()) {
-						command = command.replaceAll("%name%", player.getName());
-						command = command.replaceAll("%uuid%", player.getUniqueId().toString());
-						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-					}
+					runCommands(player);
 				} else if (!isCommand()) {
 					HashMap<Integer, ItemStack> left = player.getInventory().addItem(winning.getWinningItemStack());
 					for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
@@ -237,6 +232,32 @@ public class Winning {
 					cratesPlus.getCrateHandler().spawnFirework(player.getLocation());
 			}
 		});
+	}
+
+	private void runCommands(Player player) {
+		for (String command : getCommands()) {
+			command = command.replaceAll("%name%", player.getName());
+			command = command.replaceAll("%uuid%", player.getUniqueId().toString());
+			command = command.replaceAll("%displayname%", player.getDisplayName());
+
+			Pattern randPattern = Pattern.compile("%rand;(.*?),(.*?)%");
+			Matcher randMatches = randPattern.matcher(command);
+			int i = 0;
+			while (randMatches.find()) { // find next match
+				String start = randMatches.group(1);
+				String end = randMatches.group(2);
+				try {
+					if (start != null && Integer.valueOf(start) != null && end != null && Integer.valueOf(end) != null) {
+						int val = cratesPlus.getCrateHandler().randInt(Integer.valueOf(start), Integer.valueOf(end));
+						command = command.replaceAll("%rand;" + start + "," + end + "%", String.valueOf(val));
+					}
+				} catch (Exception ignored) {
+				}
+				i++;
+			}
+
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		}
 	}
 
 	public boolean isCommand() {

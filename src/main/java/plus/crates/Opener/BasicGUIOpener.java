@@ -24,7 +24,7 @@ public class BasicGUIOpener extends Opener implements Listener {
 	private CratesPlus cratesPlus;
 	private HashMap<UUID, Integer> tasks = new HashMap<>();
 	private HashMap<UUID, Inventory> guis = new HashMap<>();
-	private int length = 10;
+	private int length = 5;
 
 	public BasicGUIOpener(CratesPlus cratesPlus) {
 		super(cratesPlus, "BasicGUI");

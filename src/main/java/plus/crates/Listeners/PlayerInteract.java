@@ -74,7 +74,7 @@ public class PlayerInteract implements Listener {
 		} else {
 			/** Opening of Crate **/
 			boolean usingOffHand = false;
-			if (itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
+			if (itemOff != null && itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
 				item = itemOff;
 				usingOffHand = true;
 			}
@@ -86,7 +86,7 @@ public class PlayerInteract implements Listener {
 			}
 
 			/** Checks if holding valid key **/
-			if (item.hasItemMeta() && !item.getType().equals(Material.AIR) && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
+			if (item != null && item.hasItemMeta() && !item.getType().equals(Material.AIR) && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
 				event.setCancelled(true);
 
 				if (player.getInventory().firstEmpty() == -1) {

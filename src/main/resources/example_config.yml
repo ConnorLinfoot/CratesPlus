@@ -9,6 +9,7 @@
 # - %crate% - The crate types name.
 # - %prize% - The name of the winning.
 # - %percentage% - Percentage of the winning, useful for "Chance Message".
+# - %rand;100;500% - Generates a random number between two numbers, example is between 100 and 500.
 # ------------------------------------------
 # Don't change the config version!
 
@@ -69,6 +70,7 @@ Crates:
         Commands:
         - 'spawner give %name% spider'
         - 'say %name% opened a crate'
+        - 'say %name% got a random %rand;100;500%'
         Name: '&e&lSpider Spawner'
         Item Data: 0
         Amount: 1
