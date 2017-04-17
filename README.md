@@ -10,6 +10,10 @@ Sick of paying for crate plugins? CratesPlus is a FREE crates plugin built for S
 
 The latest dev build of this can be downloaded from the link on the image above. Please note this version can be buggy and will have uncompleted features and some features may be removed before release. Please backup your config before using a dev build!
 
+### CratesPlus 5.0 Important Notice
+
+The latest development builds are for CratesPlus 5.0, I can NOT stress enough that this version has some major changes which are likely to break things during development. Please don't use this on a live/public server.
+
 ## Stable Builds
 You can download stable builds from the [Spigot versions page](https://www.spigotmc.org/resources/cratesplus-custom-crates-free.5018/history).
 

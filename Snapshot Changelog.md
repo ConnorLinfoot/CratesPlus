@@ -1,3 +1,15 @@
+### Version 5.0 Snapshots
+**I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
+---
+**Snapshot 1** *(Apr 18 2016)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/866/artifact/target/CratesPlus-5.0-SNAPSHOT-1.jar)
+- Feature: Crates now have a "Type" currently only supports "KeyCrate" more will be added very soon.
+- Improvement: Added new options to the BasicGUI opener for rolling/winner messages.
+- Improvement: Removed the built in hologram handler.
+- Improvement: Changed quite a few commands and what they do, the key command still works the same for backwards compatibility.
+- Improvement: Keys now hide enchantments (1.9+)
+- Note: Openers created for versions < 5.0 will not work in 5.0, they need to add the "doesSupport" and state the supported crate types.
+- Note: The claim feature is currently disabled as it's not updated for version 5.0 yet.
+
 ### Version 4.4 Snapshots
 ---
 **Snapshot 3** *(Apr 17 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/864/artifact/target/CratesPlus-4.4-SNAPSHOT-3.jar)

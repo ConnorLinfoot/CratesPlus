@@ -18,9 +18,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.Key;
+import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
-import plus.crates.Key;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,11 @@ public class BlockListeners implements Listener {
 		ItemStack item = event.getItemDrop().getItemStack();
 
 		for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
-			Key key = crate.getValue().getKey();
+			if (!(crate.getValue() instanceof KeyCrate)) {
+				continue;
+			}
+			KeyCrate keyCrate = (KeyCrate) crate.getValue();
+			Key key = keyCrate.getKey();
 			if (key == null)
 				continue;
 			title = key.getName();
@@ -62,9 +67,12 @@ public class BlockListeners implements Listener {
 		String title;
 		List<ItemStack> items = event.getDrops();
 		for (ItemStack item : items) {
-
 			for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
-				Key key = crate.getValue().getKey();
+				if (!(crate.getValue() instanceof KeyCrate)) {
+					continue;
+				}
+				KeyCrate keyCrate = (KeyCrate) crate.getValue();
+				Key key = keyCrate.getKey();
 				if (key == null)
 					continue;
 				title = key.getName();
@@ -86,7 +94,11 @@ public class BlockListeners implements Listener {
 		ItemStack item = event.getItem();
 
 		for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
-			Key key = crate.getValue().getKey();
+			if (!(crate.getValue() instanceof KeyCrate)) {
+				continue;
+			}
+			KeyCrate keyCrate = (KeyCrate) crate.getValue();
+			Key key = keyCrate.getKey();
 			if (key == null)
 				continue;
 			title = key.getName();
@@ -106,9 +118,12 @@ public class BlockListeners implements Listener {
 		if (event.getItem().getItemStack() != null) {
 			String title;
 			ItemStack item = event.getItem().getItemStack();
-
 			for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
-				Key key = crate.getValue().getKey();
+				if (!(crate.getValue() instanceof KeyCrate)) {
+					continue;
+				}
+				KeyCrate keyCrate = (KeyCrate) crate.getValue();
+				Key key = keyCrate.getKey();
 				if (key == null)
 					continue;
 				title = key.getName();
@@ -129,9 +144,12 @@ public class BlockListeners implements Listener {
 		if (!event.getInventory().getType().toString().contains("PLAYER") && event.getCurrentItem() != null) {
 			String title;
 			ItemStack item = event.getCurrentItem();
-
 			for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
-				Key key = crate.getValue().getKey();
+				if (!(crate.getValue() instanceof KeyCrate)) {
+					continue;
+				}
+				KeyCrate keyCrate = (KeyCrate) crate.getValue();
+				Key key = keyCrate.getKey();
 				if (key == null)
 					continue;
 				title = key.getName();
@@ -153,7 +171,11 @@ public class BlockListeners implements Listener {
 		ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
 
 		for (Map.Entry<String, Crate> crate : cratesPlus.getConfigHandler().getCrates().entrySet()) {
-			Key key = crate.getValue().getKey();
+			if (!(crate.getValue() instanceof KeyCrate)) {
+				continue;
+			}
+			KeyCrate keyCrate = (KeyCrate) crate.getValue();
+			Key key = keyCrate.getKey();
 			if (key == null)
 				continue;
 			title = key.getName();
@@ -172,9 +194,13 @@ public class BlockListeners implements Listener {
 		if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains("Crate!")) {
 			final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate!", "");
 			final Crate crate = cratesPlus.getConfigHandler().getCrates().get(ChatColor.stripColor(crateType).toLowerCase());
+			if (!(crate instanceof KeyCrate)) {
+				return;
+			}
+			KeyCrate keyCrate = (KeyCrate) crate;
 			Location location = event.getBlock().getLocation();
-			crate.addLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ(), location);
-			crate.addToConfig(location);
+			keyCrate.addLocation(location.getBlockX() + "-" + location.getBlockY() + "-" + location.getBlockZ(), location);
+			keyCrate.addToConfig(location);
 			// BlockMeta to be used for some stuff in the future!
 			event.getBlock().setMetadata("CrateType", new MetadataValue() {
 				@Override
@@ -234,7 +260,7 @@ public class BlockListeners implements Listener {
 			});
 
 			Location location1 = location.getBlock().getLocation().add(0.5, 0.5, 0.5);
-			crate.loadHolograms(location1);
+			keyCrate.loadHolograms(location1);
 		}
 	}
 
@@ -245,9 +271,14 @@ public class BlockListeners implements Listener {
 			return;
 		}
 		String crateType = event.getBlock().getMetadata("CrateType").get(0).asString();
+		//TODO
 		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		if (crate == null) // TODO Better handling of crates removed from the config
 			return;
+		if (!(crate instanceof KeyCrate)) {
+			return;
+		}
+		KeyCrate keyCrate = (KeyCrate) crate;
 		Location location = event.getBlock().getLocation();
 
 		if (event.getPlayer().isSneaking() && (cratesPlus.getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
@@ -260,9 +291,8 @@ public class BlockListeners implements Listener {
 			return;
 		}
 		location.getBlock().removeMetadata("CrateType", cratesPlus);
-		crate.removeFromConfig(location);
-
-		crate.removeHolograms(location.getBlock().getLocation());
+		keyCrate.removeFromConfig(location);
+		keyCrate.removeHolograms(location.getBlock().getLocation());
 	}
 
 	public void onBlockBreakLegacy(BlockBreakEvent event) { // This is to support legacy breaks

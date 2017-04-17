@@ -13,7 +13,7 @@
 # ------------------------------------------
 # Don't change the config version!
 
-Config Version: 6
+Config Version: 7
 
 # Checks if an update is available and notifies staff
 Update Checks: true
@@ -24,6 +24,7 @@ Metrics: true
 
 Crates:
   Vote:
+    Type: KeyCrate
     Knockback: 0.5
     Broadcast: false
     Firework: false
@@ -89,6 +90,7 @@ Crates:
         Entity Type: CREEPER
         Amount: 3
   VIP:
+    Type: KeyCrate
     Knockback: 0.5
     Broadcast: false
     Firework: false

@@ -1,4 +1,4 @@
-package plus.crates;
+package plus.crates.Crates;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,11 +9,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Wool;
+import plus.crates.CratesPlus;
 import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +36,7 @@ public class Winning {
 		this.cratesPlus = cratesPlus;
 		this.crate = crate;
 
-		if (configHandler.isDebugMode()) {
+		if (configHandler != null && configHandler.isDebugMode()) {
 			cratesPlus.getLogger().info("Loading data for \"" + path + "\"");
 		}
 
@@ -200,11 +203,12 @@ public class Winning {
 
 		previewItemStackItemMeta = previewItemStack.getItemMeta();
 		List<String> lore = new ArrayList<>(this.lore);
-		if (percentage > 0 && !crate.isHidePercentages()) {
-			// Percentage
-			lore.add(ChatColor.LIGHT_PURPLE + "");
-			lore.add(cratesPlus.getMessageHandler().getMessage("Chance Message", null, crate, this));
-		}
+		//TODO
+//		if (percentage > 0 && !crate.isHidePercentages()) {
+//			// Percentage
+//			lore.add(ChatColor.LIGHT_PURPLE + "");
+//			lore.add(cratesPlus.getMessageHandler().getMessage("Chance Message", null, crate, this));
+//		}
 		previewItemStackItemMeta.setLore(lore);
 		previewItemStack.setItemMeta(previewItemStackItemMeta);
 

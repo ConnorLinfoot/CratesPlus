@@ -7,9 +7,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
-import plus.crates.Winning;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +61,7 @@ public abstract class Opener {
 
 	public Winning getWinning(Crate crate) {
 		Winning winning;
+		// TODO
 		if (crate.getTotalPercentage() > 0) {
 			List<Winning> winnings = crate.getWinnings();
 			// Compute the total weight of all items together
@@ -124,5 +125,10 @@ public abstract class Opener {
 	public abstract void doOpen(Player player, Crate crate, Location blockLocation);
 
 	public abstract void doReopen(Player player, Crate crate, Location blockLocation);
+
+	public boolean doesSupport(Crate crate) {
+		getPlugin().getLogger().severe("This opener has not been updated to support CratesPlus v5.0+");
+		return false;
+	}
 
 }

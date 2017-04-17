@@ -15,6 +15,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Commands.CrateCommand;
+import plus.crates.Crates.Crate;
 import plus.crates.Handlers.*;
 import plus.crates.Listeners.*;
 import plus.crates.Utils.*;
@@ -99,6 +100,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		if (getConfig().getInt("Config Version") == 5) {
 			String oldConfig = uploadConfig();
 			convertConfigV6(console, oldConfig); // Let me add another one xD ~Xorinzor
+		}
+		if (getConfig().getInt("Config Version") == 6) {
+			String oldConfig = uploadConfig();
+			convertConfigV7(console, oldConfig); // I mean... what was I expecting for v5?
 		}
 		cleanUpDeadConfig();
 		getConfig().options().copyDefaults(true);
@@ -203,7 +208,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(new InventoryInteract(this), this);
 		Bukkit.getPluginManager().registerEvents(new SettingsListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteract(this), this);
-		Bukkit.getPluginManager().registerEvents(new HologramListeners(this), this);
+//		Bukkit.getPluginManager().registerEvents(new HologramListeners(this), this);
 
 		openHandler = new OpenHandler(this);
 
@@ -258,15 +263,15 @@ public class CratesPlus extends JavaPlugin implements Listener {
 	}
 
 	public void onDisable() {
-		if (configHandler != null) {
-			for (Map.Entry<String, Crate> crate : configHandler.getCrates().entrySet()) {
-				HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
-				if (!holograms.isEmpty()) {
-					for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())
-						hologram.getValue().destroyAll();
-				}
-			}
-		}
+//		if (configHandler != null) {
+//			for (Map.Entry<String, Crate> crate : configHandler.getCrates().entrySet()) {
+//				HashMap<Location, Hologram> holograms = crate.getValue().getHolograms();
+//				if (!holograms.isEmpty()) {
+//					for (Map.Entry<Location, Hologram> hologram : holograms.entrySet())
+//						hologram.getValue().destroyAll();
+//				}
+//			}
+//		}
 	}
 
 	private void cleanUpDeadConfig() {
@@ -443,11 +448,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				Block block = locationObj.getBlock();
 				if (block == null || block.getType().equals(Material.AIR)) {
 					getLogger().warning("No block found at " + location + " removing from data.yml");
-					crate.removeFromConfig(locationObj);
+//					crate.removeFromConfig(locationObj);
 					continue;
 				}
 				Location location1 = locationObj.getBlock().getLocation().add(0.5, 0.5, 0.5);
-				crate.loadHolograms(location1);
+//				crate.loadHolograms(location1);
 				final CratesPlus cratesPlus = this;
 				block.setMetadata("CrateType", new MetadataValue() {
 					@Override
@@ -830,6 +835,30 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		// Set config version
 		getConfig().set("Config Version", 6);
+
+		// Save config
+		saveConfig();
+
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Conversion of config has completed.");
+		if (oldConfig != null && !oldConfig.equalsIgnoreCase("")) {
+			configBackup = oldConfig;
+			console.sendMessage(pluginPrefix + ChatColor.GREEN + "Your old config was backed up to " + oldConfig);
+		}
+	}
+
+	private void convertConfigV7(ConsoleCommandSender console, String oldConfig) {
+		console.sendMessage(pluginPrefix + ChatColor.GREEN + "Converting config to version 7...");
+
+		if (getConfig().isSet("Crates")) {
+			for (String crate : getConfig().getConfigurationSection("Crates").getKeys(false)) {
+				if (!getConfig().isSet("Crates." + crate + ".Type")) {
+					getConfig().set("Crates." + crate + ".Type", "KeyCrate");
+				}
+			}
+		}
+
+		// Set config version
+		getConfig().set("Config Version", 7);
 
 		// Save config
 		saveConfig();

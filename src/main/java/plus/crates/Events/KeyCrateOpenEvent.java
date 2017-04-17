@@ -4,24 +4,26 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
 
-public class CrateOpenEvent extends Event {
+public class KeyCrateOpenEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 	private CratesPlus cratesPlus;
 	private Player player;
-	private Crate crate;
+	private KeyCrate crate;
 	private Location blockLocation;
 
-	public CrateOpenEvent(Player player, String crateName, Location blockLocation, CratesPlus cratesPlus) {
+	public KeyCrateOpenEvent(Player player, KeyCrate crate, Location blockLocation, CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
 		this.player = player;
 		this.blockLocation = blockLocation;
-		this.crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
+		this.crate = crate;
 	}
 
 	public void doEvent() {
+		// TODO
 		CratesPlus.getOpenHandler().getOpener(crate).startOpening(player, crate, blockLocation);
 	}
 

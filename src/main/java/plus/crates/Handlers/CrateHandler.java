@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.Key;
+import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
-import plus.crates.Key;
 import plus.crates.Opener.Opener;
 
 import java.io.IOException;
@@ -175,10 +176,13 @@ public class CrateHandler {
 			return;
 		}
 
-		Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
+		if (!(cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase()) instanceof KeyCrate))
+			return;
+
+		KeyCrate crate = (KeyCrate) cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		if (crate == null) {
 			if (offlinePlayer.isOnline())
-				((Player) offlinePlayer).sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
+				((Player) offlinePlayer).sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "CrateOLD type: '" + crateType + "' does not exist");
 			return;
 		}
 
@@ -258,7 +262,8 @@ public class CrateHandler {
 	public void giveCrate(Player player, Crate crate) {
 		if (player == null || !player.isOnline() || crate == null) return;
 
-		ItemStack crateItem = new ItemStack(crate.getBlock(), 1, crate.getBlockData());
+//		ItemStack crateItem = new ItemStack(crate.getBlock(), 1, crate.getBlockData());
+		ItemStack crateItem = new ItemStack(crate.getBlock(), 1);
 		ItemMeta crateMeta = crateItem.getItemMeta();
 		crateMeta.setDisplayName(crate.getName(true) + " Crate!");
 		List<String> lore = new ArrayList<String>();
@@ -346,7 +351,7 @@ public class CrateHandler {
 				ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
 				ItemMeta itemMeta = itemStack.getItemMeta();
 				List<String> lore = new ArrayList<String>();
-				lore.add(ChatColor.DARK_GRAY + "Crate Command");
+				lore.add(ChatColor.DARK_GRAY + "CrateOLD Command");
 				itemMeta.setLore(lore);
 				itemMeta.setDisplayName(ChatColor.RESET + name);
 				itemStack.setItemMeta(itemMeta);

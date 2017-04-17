@@ -13,7 +13,7 @@
 # ------------------------------------------
 # Don't change the config version!
 
-Config Version: 6
+Config Version: 7
 
 # Checks if an update is available and notifies staff
 Update Checks: true

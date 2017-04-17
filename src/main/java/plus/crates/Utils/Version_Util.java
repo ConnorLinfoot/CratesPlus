@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.SpawnEgg;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
 import plus.crates.CratesPlus;
 
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import java.util.List;
 public class Version_Util {
 	private HashMap<String, com.gmail.filoghost.holographicdisplays.api.Hologram> holograms = new HashMap<>();
 	protected CratesPlus cratesPlus;
-	private boolean shown_hologram_deprecated_warning = false;
 
 	public Version_Util(CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
@@ -46,15 +45,6 @@ public class Version_Util {
 				hologram.appendTextLine(line);
 			}
 			holograms.put("" + location.getWorld().getName() + "|" + location.getBlockX() + "|" + location.getBlockY() + "|" + location.getBlockZ(), hologram);
-		} else {
-			if (cratesPlus.getBukkitVersion().equals("1.8") || cratesPlus.getBukkitVersion().startsWith("1.8.") || cratesPlus.getBukkitVersion().equals("1.9") || cratesPlus.getBukkitVersion().startsWith("1.9.")) {
-				Hologram hologram = new Hologram(location, lines);
-				crate.addHologram(location.getBlock().getLocation(), hologram);
-				hologram.displayAll();
-			} else if (!shown_hologram_deprecated_warning) {
-				shown_hologram_deprecated_warning = true;
-				cratesPlus.getLogger().warning("Only 1.8 - 1.9 supports the built in holograms, please use HolographicDisplays or Individual Holograms for holograms to work");
-			}
 		}
 	}
 

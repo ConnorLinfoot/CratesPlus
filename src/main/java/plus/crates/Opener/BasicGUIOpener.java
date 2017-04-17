@@ -10,10 +10,10 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.KeyCrate;
+import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
-import plus.crates.Winning;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,6 +25,8 @@ public class BasicGUIOpener extends Opener implements Listener {
 	private HashMap<UUID, Integer> tasks = new HashMap<>();
 	private HashMap<UUID, Inventory> guis = new HashMap<>();
 	private int length = 5;
+	private String rollingText = "Rolling...";
+	private String winnerText = "Winner!";
 
 	public BasicGUIOpener(CratesPlus cratesPlus) {
 		super(cratesPlus, "BasicGUI");
@@ -40,9 +42,33 @@ public class BasicGUIOpener extends Opener implements Listener {
 				config.save(getOpenerConfigFile());
 			} catch (IOException e) {
 				e.printStackTrace();
+				return;
 			}
 		}
-		length = config.getInt("Length");
+
+		if (!config.isSet("Rolling Text")) {
+			config.set("Rolling Text", "Rolling...");
+			try {
+				config.save(getOpenerConfigFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+
+		if (!config.isSet("Winner Text")) {
+			config.set("Winner Text", "Winner!");
+			try {
+				config.save(getOpenerConfigFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+
+		length = config.getInt("Length", cratesPlus.getConfigHandler().getCrateGUITime());
+		rollingText = config.getString("Rolling Text", "Rolling...");
+		winnerText = config.getString("Winner Text", "Winner!");
 		cratesPlus.getServer().getPluginManager().registerEvents(this, cratesPlus);
 	}
 
@@ -93,7 +119,7 @@ public class BasicGUIOpener extends Opener implements Listener {
 					ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) cratesPlus.getCrateHandler().randInt(0, 15));
 					ItemMeta itemMeta = itemStack.getItemMeta();
 					if (timer[0] == maxTimeTicks) {
-						itemMeta.setDisplayName(ChatColor.RESET + "Winner!");
+						itemMeta.setDisplayName(ChatColor.RESET + winnerText);
 					} else {
 						Sound sound;
 						try {
@@ -113,7 +139,7 @@ public class BasicGUIOpener extends Opener implements Listener {
 									player.playSound(player.getLocation(), finalSound, (float) 0.2, 2);
 							}
 						});
-						itemMeta.setDisplayName(ChatColor.RESET + "Rolling...");
+						itemMeta.setDisplayName(ChatColor.RESET + rollingText);
 					}
 					itemStack.setItemMeta(itemMeta);
 					winGUI.setItem(i, itemStack);
@@ -142,6 +168,10 @@ public class BasicGUIOpener extends Opener implements Listener {
 				event.getWhoClicked().closeInventory();
 			}
 		}
+	}
+
+	public boolean doesSupport(Crate crate) {
+		return crate instanceof KeyCrate;
 	}
 
 }

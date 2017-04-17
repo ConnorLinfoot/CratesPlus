@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
 import plus.crates.CratesPlus;
 
 import java.io.IOException;
@@ -34,17 +34,18 @@ public class NoGUIOpener extends Opener {
 	@Override
 	public void doOpen(Player player, Crate crate, Location location) {
 		if (chestSound) {
-			Sound sound;
+			Sound sound = null;
 			try {
 				sound = Sound.valueOf("CHEST_OPEN");
 			} catch (Exception e) {
 				try {
 					sound = Sound.valueOf("BLOCK_CHEST_OPEN");
 				} catch (Exception ee) {
-					return; // This should never happen!
+					// This should never happen!
 				}
 			}
-			player.playSound(player.getLocation(), sound, (float) 0.5, 1);
+			if (sound != null)
+				player.playSound(player.getLocation(), sound, (float) 0.5, 1);
 		}
 		getWinning(crate).runWin(player);
 		finish(player);
@@ -53,6 +54,10 @@ public class NoGUIOpener extends Opener {
 	@Override
 	public void doReopen(Player player, Crate crate, Location location) {
 
+	}
+
+	public boolean doesSupport(Crate crate) {
+		return true;
 	}
 
 }

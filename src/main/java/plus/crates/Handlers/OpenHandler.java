@@ -1,6 +1,6 @@
 package plus.crates.Handlers;
 
-import plus.crates.Crate;
+import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.BasicGUIOpener;
 import plus.crates.Opener.NoGUIOpener;
@@ -44,9 +44,10 @@ public class OpenHandler {
 		return getCratesPlus().getDescription().getVersion();
 	}
 
-	public Opener getOpener(Crate crate) {
-		if (registered.containsKey(crate.getOpener()))
-			return registered.get(crate.getOpener());
+	public Opener getOpener(KeyCrate crate) {
+		//TODO
+//		if (registered.containsKey(crate.getOpener()))
+//			return registered.get(crate.getOpener());
 		return getDefaultOpener();
 	}
 
@@ -68,6 +69,10 @@ public class OpenHandler {
 
 	public boolean openerExist(String name) {
 		return registered.containsKey(name);
+	}
+
+	public Opener getOpener(String name) {
+		return registered.get(name);
 	}
 
 	public HashMap<String, Opener> getRegistered() {

@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
-import plus.crates.Winning;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +115,7 @@ public class SettingsHandler {
 			return;
 		}
 
-		final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " Crate Winnings");
+		final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " CrateOLD Winnings");
 
 		for (Winning winning : crate.getWinnings()) {
 			inventory.addItem(winning.getWinningItemStack());
@@ -191,7 +191,7 @@ public class SettingsHandler {
 
 		itemStack = new ItemStack(material);
 		itemMeta = itemStack.getItemMeta();
-		itemMeta.setDisplayName(ChatColor.WHITE + "Delete Crate");
+		itemMeta.setDisplayName(ChatColor.WHITE + "Delete CrateOLD");
 		lore = new ArrayList<>();
 		lore.add("");
 		itemMeta.setLore(lore);

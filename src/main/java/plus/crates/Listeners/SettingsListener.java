@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Events.PlayerInputEvent;
 import plus.crates.Utils.ReflectionUtil;
@@ -35,7 +35,7 @@ public class SettingsListener implements Listener {
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
-		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Crate Winnings")) {
+		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("CrateOLD Winnings")) {
 			String crateName = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate Winnings", ""));
 			Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 			if (crate == null) {
@@ -94,10 +94,10 @@ public class SettingsListener implements Listener {
 			}
 
 			cratesPlus.saveConfig();
-			crate.reloadWinnings();
+//			crate.reloadWinnings(); TODO
 			if (event.getPlayer() instanceof Player) {
 				Player player = (Player) event.getPlayer();
-				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Crate winnings updated");
+				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CrateOLD winnings updated");
 			}
 		}
 	}
@@ -167,7 +167,7 @@ public class SettingsListener implements Listener {
 					if (lastCrate == null)
 						return;
 					Crate crate = cratesPlus.getConfigHandler().getCrates().get(lastCrate.toLowerCase());
-					crate.setColor(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase().replaceAll(" ", "_")));
+					crate.setColor(ChatColor.valueOf(ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName().toUpperCase().replaceAll(" ", "_"))));
 					player.sendMessage(ChatColor.GREEN + "Updated color, you may need to replace the crate for colors to update in holograms");
 				}
 			}
@@ -177,7 +177,7 @@ public class SettingsListener implements Listener {
 				return;
 			}
 
-			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Winnings")) {
+			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit CrateOLD Winnings")) {
 				event.setCancelled(true);
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
 				cratesPlus.getSettingsHandler().openCrateWinnings(player, name);
@@ -190,7 +190,7 @@ public class SettingsListener implements Listener {
 				cratesPlus.getConfigHandler().getCrates().remove(name.toLowerCase());
 				cratesPlus.getSettingsHandler().setupCratesInventory();
 				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + name + " crate has been deleted");
-			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename Crate")) {
+			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename CrateOLD")) {
 				// Let's handle renaming using sign packets ;D
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
 				renaming.put(player.getUniqueId(), name);
@@ -204,9 +204,9 @@ public class SettingsListener implements Listener {
 					renaming.remove(player.getUniqueId());
 				}
 				event.setCancelled(true);
-			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Color")) {
+			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit CrateOLD Color")) {
 				event.setCancelled(true);
-				Inventory inventory = Bukkit.createInventory(null, 18, "Edit Crate Color");
+				Inventory inventory = Bukkit.createInventory(null, 18, "Edit CrateOLD Color");
 
 				ItemStack aqua = new ItemStack(Material.WOOL, 1, (short) 3);
 				ItemMeta aquaMeta = aqua.getItemMeta();

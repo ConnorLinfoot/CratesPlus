@@ -22,7 +22,7 @@ public class InventoryInteract implements Listener {
 			return;
 		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains(" " + cratesPlus.getMessagesConfig().getString("Possible Wins Title"))) {
 			event.setCancelled(true);
-		} else if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Claim Crate Keys")) {
+		} else if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Claim CrateOLD Keys")) {
 			event.setCancelled(true);
 			if (event.getCurrentItem() != null) {
 				ItemStack itemStack = event.getCurrentItem();

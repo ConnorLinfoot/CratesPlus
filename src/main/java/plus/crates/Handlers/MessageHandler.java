@@ -1,11 +1,9 @@
 package plus.crates.Handlers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
 import plus.crates.CratesPlus;
-import plus.crates.Winning;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,7 +16,7 @@ public class MessageHandler {
 		this.cratesPlus = cratesPlus;
 	}
 
-	public String getMessage(String messageName, Player player, Crate crate, Winning winning) {
+	public String getMessage(String messageName, Player player, Crate crate, plus.crates.Crates.Winning winning) {
 		if (!cratesPlus.getMessagesConfig().isSet(messageName))
 			return "Message \"" + messageName + "\" not configured";
 		String message = cratesPlus.getMessagesConfig().getString(messageName);
@@ -30,7 +28,7 @@ public class MessageHandler {
 		return message;
 	}
 
-	public String doPlaceholders(String message, Player player, Crate crate, Winning winning) {
+	public String doPlaceholders(String message, Player player, Crate crate, plus.crates.Crates.Winning winning) {
 		message = ChatColor.translateAlternateColorCodes('&', message);
 		if (player != null)
 			message = message.replaceAll("%name%", player.getName()).replaceAll("%displayname%", player.getDisplayName()).replaceAll("%uuid%", player.getUniqueId().toString());

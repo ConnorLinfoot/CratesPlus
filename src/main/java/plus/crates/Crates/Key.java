@@ -1,10 +1,11 @@
-package plus.crates;
+package plus.crates.Crates;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import plus.crates.CratesPlus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,9 @@ public class Key {
 		String title = getName().replaceAll("%type%", getCrate().getName(true));
 		keyItemMeta.setDisplayName(title);
 		keyItemMeta.setLore(getLore());
+		ArrayList<String> flags = new ArrayList<>();
+		flags.add("HIDE_ENCHANTS");
+		keyItemMeta = cratesPlus.getVersion_util().handleItemFlags(keyItemMeta, flags);
 		keyItem.setItemMeta(keyItemMeta);
 		if (amount > 1)
 			keyItem.setAmount(amount);

@@ -6,28 +6,29 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import plus.crates.Crate;
+import plus.crates.Crates.KeyCrate;
+import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
-import plus.crates.Winning;
 
 import java.util.List;
 
-public class CratePreviewEvent extends Event {
+public class KeyCratePreviewEvent extends Event {
 	private static final HandlerList handlers = new HandlerList();
 	private CratesPlus cratesPlus;
 	private Player player;
-	private Crate crate;
+	private KeyCrate crate;
 	private boolean canceled = false;
 
-	public CratePreviewEvent(Player player, String crateName, CratesPlus cratesPlus) {
+	public KeyCratePreviewEvent(Player player, KeyCrate crate, CratesPlus cratesPlus) {
 		this.cratesPlus = cratesPlus;
 		this.player = player;
-		this.crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
+		this.crate = crate;
 	}
 
 	public void doEvent() {
-		if (!crate.isPreview())
-			return; // Preview is disabled
+		//TODO Add preview disable option back
+//		if (!crate.isPreview())
+//			return; // Preview is disabled
 		List<Winning> items = crate.getWinnings();
 		Integer size = 54;
 		if (items.size() <= 9) {

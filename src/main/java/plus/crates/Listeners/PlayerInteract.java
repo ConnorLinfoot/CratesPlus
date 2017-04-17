@@ -9,10 +9,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import plus.crates.Crate;
+import plus.crates.Crates.Crate;
+import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
-import plus.crates.Events.CrateOpenEvent;
-import plus.crates.Events.CratePreviewEvent;
+import plus.crates.Events.KeyCrateOpenEvent;
+import plus.crates.Events.KeyCratePreviewEvent;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +41,7 @@ public class PlayerInteract implements Listener {
 				return;
 			Chest chest = (Chest) event.getClickedBlock().getState();
 			Inventory chestInventory = chest.getInventory();
-			if (chestInventory.getTitle() == null || !chestInventory.getTitle().contains(" Crate!"))
+			if (chestInventory.getTitle() == null || !chestInventory.getTitle().contains(" CrateOLD!"))
 				return;
 			crateType = ChatColor.stripColor(chestInventory.getTitle().replaceAll(" Crate!", ""));
 		} else {
@@ -57,49 +58,54 @@ public class PlayerInteract implements Listener {
 			return; // Not sure if we should do some warning here? TODO
 		}
 
-		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
-			event.setCancelled(true);
-			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate No Permission", player, crate, null));
+		if (!(crate instanceof KeyCrate)) {
 			return;
 		}
-		String title = crate.getKey().getName();
-		String lore = crate.getKey().getLore().toString();
+
+		KeyCrate keyCrate = (KeyCrate) crate;
+
+		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
+			event.setCancelled(true);
+			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("CrateOLD No Permission", player, crate, null));
+			return;
+		}
+		String title = keyCrate.getKey().getName();
+		String lore = keyCrate.getKey().getLore().toString();
 		if (event.getAction().toString().contains("LEFT")) {
 			if (event.getPlayer().isSneaking())
 				return;
 			/** Do preview */
-			CratePreviewEvent cratePreviewEvent = new CratePreviewEvent(player, crateType, cratesPlus);
+			KeyCratePreviewEvent cratePreviewEvent = new KeyCratePreviewEvent(player, keyCrate, cratesPlus);
 			if (!cratePreviewEvent.isCanceled())
 				cratePreviewEvent.doEvent();
 		} else {
-			/** Opening of Crate **/
 			boolean usingOffHand = false;
 			if (itemOff != null && itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
 				item = itemOff;
 				usingOffHand = true;
 			}
 
-			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) { /** If already opening crate, show GUI for said crate **/
+			if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) {
 				cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen(player, crate, event.getClickedBlock().getLocation());
 				event.setCancelled(true);
 				return;
 			}
 
-			/** Checks if holding valid key **/
 			if (item != null && item.hasItemMeta() && !item.getType().equals(Material.AIR) && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
 				event.setCancelled(true);
 
 				if (player.getInventory().firstEmpty() == -1) {
-					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a Crate while your inventory is full");
+					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a CrateOLD while your inventory is full");
 					return;
 				}
 
-				if (crate.getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + crate.getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
-					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getDefaultCooldown();
-					long remaining = whenCooldownEnds - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
-					return;
-				}
+				// TODO add cooldown back!
+//				if (crate.getCooldown() > 0 && lastOpended.containsKey(player.getUniqueId().toString()) && lastOpended.get(player.getUniqueId().toString()) + crate.getCooldown() > TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())) {
+//					long whenCooldownEnds = lastOpended.get(player.getUniqueId().toString()) + cratesPlus.getConfigHandler().getDefaultCooldown();
+//					long remaining = whenCooldownEnds - TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+//					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You must wait another " + remaining + " seconds before opening another crate");
+//					return;
+//				}
 
 				lastOpended.put(player.getUniqueId().toString(), TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())); // Store time in seconds of when the player opened the crate
 
@@ -113,12 +119,12 @@ public class PlayerInteract implements Listener {
 					}
 				}
 
-				CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType, event.getClickedBlock().getLocation(), cratesPlus);
+				KeyCrateOpenEvent crateOpenEvent = new KeyCrateOpenEvent(player, keyCrate, event.getClickedBlock().getLocation(), cratesPlus);
 				crateOpenEvent.doEvent();
 			} else {
 				player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate Open Without Key", player, crate, null));
-				if (crate.getKnockback() != 0) {
-					player.setVelocity(player.getLocation().getDirection().multiply(-crate.getKnockback()));
+				if (keyCrate.getKnockback() != 0) {
+					player.setVelocity(player.getLocation().getDirection().multiply(-keyCrate.getKnockback()));
 				}
 				event.setCancelled(true);
 			}
