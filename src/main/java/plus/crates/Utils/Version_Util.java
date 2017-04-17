@@ -7,12 +7,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.SpawnEgg;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Version_Util {
 	private HashMap<String, com.gmail.filoghost.holographicdisplays.api.Hologram> holograms = new HashMap<>();
@@ -79,6 +81,10 @@ public class Version_Util {
 	public EntityType getEntityTypeFromItemStack(ItemStack itemStack) {
 		SpawnEgg spawnEgg = (SpawnEgg) itemStack.getData();
 		return spawnEgg.getSpawnedType();
+	}
+
+	public ItemMeta handleItemFlags(ItemMeta itemMeta, List<String> flags) {
+		return itemMeta;
 	}
 
 }

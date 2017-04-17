@@ -124,6 +124,14 @@ public class Winning {
 		}
 
 		ItemMeta previewItemStackItemMeta = previewItemStack.getItemMeta();
+		if (config.isSet(path + ".Metadata") && config.get(path + ".Metadata") instanceof ItemMeta) {
+			previewItemStackItemMeta = (ItemMeta) config.get(path + ".Metadata");
+		}
+
+		if (config.isSet(path + ".Flags")) {
+			previewItemStackItemMeta = cratesPlus.getVersion_util().handleItemFlags(previewItemStackItemMeta, config.getStringList(path + ".Flags"));
+		}
+
 		String displayName = "";
 		if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
 			displayName = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
@@ -155,8 +163,15 @@ public class Winning {
 			}
 		}
 
-
 		ItemMeta winningItemStackItemMeta = winningItemStack.getItemMeta();
+		if (config.isSet(path + ".Metadata") && config.get(path + ".Metadata") instanceof ItemMeta) {
+			winningItemStackItemMeta = (ItemMeta) config.get(path + ".Metadata");
+		}
+
+		if (config.isSet(path + ".Flags")) {
+			winningItemStackItemMeta = cratesPlus.getVersion_util().handleItemFlags(winningItemStackItemMeta, config.getStringList(path + ".Flags"));
+		}
+
 		displayName = "";
 		if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
 			displayName = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
@@ -180,6 +195,7 @@ public class Winning {
 					winningItemStack.addUnsafeEnchantment(enchantment1, level);
 			}
 		}
+
 		this.winningItemStack = winningItemStack;
 
 		previewItemStackItemMeta = previewItemStack.getItemMeta();
@@ -242,8 +258,7 @@ public class Winning {
 
 			Pattern randPattern = Pattern.compile("%rand;(.*?),(.*?)%");
 			Matcher randMatches = randPattern.matcher(command);
-			int i = 0;
-			while (randMatches.find()) { // find next match
+			while (randMatches.find()) {
 				String start = randMatches.group(1);
 				String end = randMatches.group(2);
 				try {
@@ -253,7 +268,6 @@ public class Winning {
 					}
 				} catch (Exception ignored) {
 				}
-				i++;
 			}
 
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);

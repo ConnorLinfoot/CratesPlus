@@ -52,6 +52,8 @@ Crates:
         - DAMAGE_ALL-3
         Lore:
         - "Testing123"
+        Flags:
+        - "HIDE_ENCHANTS"
       '2':
         Type: ITEM
         Item Type: DIAMOND_SWORD

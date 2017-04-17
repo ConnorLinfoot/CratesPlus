@@ -1,7 +1,11 @@
 ### Version 4.4 Snapshots
 ---
+**Snapshot 3** *(Apr 17 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/864/artifact/target/CratesPlus-4.4-SNAPSHOT-3.jar)
+- Feature: Added support for storing all meta data when using the built in GUI for managing winnings. This includes enchantments, potions, books, player heads etc.
+- Feature: Added support for ItemFlags (1.9+). Check the list of [Flags](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html).
+
 **Snapshot 2** *(Apr 14 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/859/artifact/target/CratesPlus-4.4-SNAPSHOT-2.jar)
-- Features: Added new command placeholder "rand" for generating a random number (Example: %rand;100;500% would generate a number between 100 and 500)
+- Feature: Added new command placeholder "rand" for generating a random number (Example: %rand;100;500% would generate a number between 100 and 500)
 - Enchantment: Added %displayname% placeholder to commands.
 - Enchantment: Changed "BasicGUI" default length to 5.
 - Bug: Fixed NPE with player interact.
