@@ -1,11 +1,21 @@
+**4.4** *(Apr 17 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=155087)
+- Feature: You can now set the lore of a key in the config file. (Warning: changing the lore WILL break existing keys given to players)
+- Feature: Added support for storing all meta data when using the built in GUI for managing winnings. This includes enchantments, potions, books, player heads etc.
+- Feature: Added support for ItemFlags (1.9+). Check the list of [Flags](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/inventory/ItemFlag.html).
+- Feature: Added new command placeholder "rand" for generating a random number (Example: %rand;100;500% would generate a number between 100 and 500)
+- Improvement: Added %displayname% placeholder to commands.
+- Improvement: Changed "BasicGUI" default length to 5.
+- Bug: Fixed NPE with player interact.
+- Bug: Fixed spawn eggs not working in 1.11+
+
 **4.3.3** *(Apr 9 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=153094)
- - Bug: Removed left over debug from last update.
+- Bug: Removed left over debug from last update.
 
 **4.3.2** *(Apr 9 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=153092)
- - Bug: Fixed an issue that allowed people to use keys multiple times.
+- Bug: Fixed an issue that allowed people to use keys multiple times.
 
 **4.3.1** *(Apr 6 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=152479)
- - Bug: Fixed issue where keys sometimes didn't have a lore set. Causing said keys to not work.
+- Bug: Fixed issue where keys sometimes didn't have a lore set. Causing said keys to not work.
 
 **4.3** *(Apr 1 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=151600)
 - Improvement: Now supports "Block Data" for setting the crates data ID.

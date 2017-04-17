@@ -86,8 +86,8 @@ public class SettingsListener implements Listener {
 				config.set(path + ".Enchantments", enchantments);
 				config.set(path + ".Lore", lore);
 
-				// Testing better item support...
-				config.set(path + ".Metadata", itemStack.getItemMeta());
+				if (itemStack.hasItemMeta())
+					config.set(path + ".Metadata", itemStack.getItemMeta()); // Set Item Meta
 
 				if (entityType != null)
 					config.set(path + ".Entity Type", entityType.toString());
