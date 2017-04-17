@@ -1,6 +1,7 @@
 ### Version 5.0 Snapshots
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
+
 **Snapshot 1** *(Apr 18 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/866/artifact/target/CratesPlus-5.0-SNAPSHOT-1.jar)
 - Feature: Crates now have a "Type" currently only supports "KeyCrate" more will be added very soon.
 - Improvement: Added new options to the BasicGUI opener for rolling/winner messages.
