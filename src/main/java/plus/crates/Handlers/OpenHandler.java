@@ -1,6 +1,6 @@
 package plus.crates.Handlers;
 
-import plus.crates.Crates.KeyCrate;
+import plus.crates.Crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.BasicGUIOpener;
 import plus.crates.Opener.NoGUIOpener;
@@ -44,16 +44,19 @@ public class OpenHandler {
 		return getCratesPlus().getDescription().getVersion();
 	}
 
-	public Opener getOpener(KeyCrate crate) {
+	public Opener getOpener(Crate crate) {
 		//TODO
 //		if (registered.containsKey(crate.getOpener()))
 //			return registered.get(crate.getOpener());
-		return getDefaultOpener();
+		return getDefaultOpener(crate);
 	}
 
-	public Opener getDefaultOpener() {
-		if (registered.containsKey(defaultOpener))
-			return registered.get(defaultOpener);
+	public Opener getDefaultOpener(Crate crate) {
+		if (registered.containsKey(defaultOpener)) {
+			Opener opener = registered.get(defaultOpener);
+			if (opener.doesSupport(crate))
+				return opener;
+		}
 		return registered.get("NoGUI");
 	}
 

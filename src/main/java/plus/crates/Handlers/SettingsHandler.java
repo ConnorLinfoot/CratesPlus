@@ -115,7 +115,7 @@ public class SettingsHandler {
 			return;
 		}
 
-		final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " CrateOLD Winnings");
+		final Inventory inventory = Bukkit.createInventory(null, 54, "Edit " + crate.getName(false) + " Crate Winnings");
 
 		for (Winning winning : crate.getWinnings()) {
 			inventory.addItem(winning.getWinningItemStack());
@@ -191,7 +191,7 @@ public class SettingsHandler {
 
 		itemStack = new ItemStack(material);
 		itemMeta = itemStack.getItemMeta();
-		itemMeta.setDisplayName(ChatColor.WHITE + "Delete CrateOLD");
+		itemMeta.setDisplayName(ChatColor.WHITE + "Delete Crate");
 		lore = new ArrayList<>();
 		lore.add("");
 		itemMeta.setLore(lore);

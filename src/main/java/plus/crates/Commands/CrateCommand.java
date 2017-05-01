@@ -18,7 +18,7 @@ import plus.crates.Crates.Crate;
 import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.Opener;
-import plus.crates.Utils.PasteUtils;
+import plus.crates.Utils.MCDebug;
 import plus.crates.Utils.SpawnEggNBT;
 
 import java.io.BufferedReader;
@@ -125,7 +125,7 @@ public class CrateCommand implements CommandExecutor {
 							sender.sendMessage(ChatColor.AQUA + "Completed plugin list");
 
 							sender.sendMessage(ChatColor.AQUA + "Uploading plugin list...");
-							String pluginsLink = PasteUtils.paste("plugins.txt", plugins);
+							String pluginsLink = MCDebug.paste("plugins.txt", plugins);
 							sender.sendMessage(ChatColor.AQUA + "Uploaded plugin list");
 
 							sender.sendMessage(ChatColor.AQUA + "Uploading data to MC Debug...");
@@ -180,13 +180,13 @@ public class CrateCommand implements CommandExecutor {
 //					cratesPlus.reloadPlugin();
 //					sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CratesPlus was reloaded - This feature is not fully supported and may not work correctly");
 //					break;
-				case "settings":
-					if (!(sender instanceof Player)) {
-						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "This command must be ran as a player");
-						return false;
-					}
-					cratesPlus.getSettingsHandler().openSettings((Player) sender);
-					break;
+//				case "settings":
+//					if (!(sender instanceof Player)) {
+//						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "This command must be ran as a player");
+//						return false;
+//					}
+//					cratesPlus.getSettingsHandler().openSettings((Player) sender);
+//					break;
 //				case "create":
 //					if (sender instanceof Player && args.length < 2) {
 //						// Lets try and open a sign to do the name! :D
@@ -492,7 +492,7 @@ public class CrateCommand implements CommandExecutor {
 						return false;
 					}
 
-					if (cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase()) == null) {
+					if (cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase()) == null || !(cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase()) instanceof KeyCrate)) {
 						sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "KeyCrate not found");
 						return false;
 					}
@@ -507,10 +507,10 @@ public class CrateCommand implements CommandExecutor {
 			// Help Messages
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "----- CratePlus v" + cratesPlus.getDescription().getVersion() + " Help -----");
 //			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate reload " + ChatColor.YELLOW + "- Reload configuration for CratesPlus (Experimental)");
-			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate settings " + ChatColor.YELLOW + "- Edit settings of CratesPlus and crate winnings");
-			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate create <name> " + ChatColor.YELLOW + "- Create a new crate");
-			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate rename <old name> <new name> " + ChatColor.YELLOW + "- Rename a crate");
-			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate delete <name> " + ChatColor.YELLOW + "- Delete a crate");
+//			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate settings " + ChatColor.YELLOW + "- Edit settings of CratesPlus and crate winnings");
+//			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate create <name> " + ChatColor.YELLOW + "- Create a new crate");
+//			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate rename <old name> <new name> " + ChatColor.YELLOW + "- Rename a crate");
+//			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate delete <name> " + ChatColor.YELLOW + "- Delete a crate");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate give <player/all> [crate] [amount] " + ChatColor.YELLOW + "- Give player a crate/key, if no crate given it will be random");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate crate <type> [player] " + ChatColor.YELLOW + "- Give player a crate to be placed, for use by admins");
 			sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.AQUA + "/crate debug " + ChatColor.YELLOW + "- Generates a debug link for sending info about your server and config");

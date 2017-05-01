@@ -16,8 +16,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import plus.crates.Commands.CrateCommand;
 import plus.crates.Crates.Crate;
+import plus.crates.Crates.KeyCrate;
 import plus.crates.Handlers.*;
-import plus.crates.Listeners.*;
+import plus.crates.Listeners.BlockListeners;
+import plus.crates.Listeners.InventoryInteract;
+import plus.crates.Listeners.PlayerInteract;
+import plus.crates.Listeners.PlayerJoin;
 import plus.crates.Utils.*;
 
 import java.io.*;
@@ -65,6 +69,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		if (versionCompare(bukkitVersion, "1.9") > -1) {
 			// Use 1.9+ Util
 			version_util = new Version_1_9(this);
+		} else if (versionCompare(bukkitVersion, "1.8") > -1) {
+			// Use 1.8 Util
+			version_util = new Version_1_8(this);
 		} else if (versionCompare(bukkitVersion, "1.7") > -1) {
 			// Use Default Util
 			if (bukkitVersion.equals("1.7") || bukkitVersion.startsWith("1.7.")) {
@@ -206,8 +213,8 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(new BlockListeners(this), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
 		Bukkit.getPluginManager().registerEvents(new InventoryInteract(this), this);
-		Bukkit.getPluginManager().registerEvents(new SettingsListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteract(this), this);
+//		Bukkit.getPluginManager().registerEvents(new SettingsListener(this), this);
 //		Bukkit.getPluginManager().registerEvents(new HologramListeners(this), this);
 
 		openHandler = new OpenHandler(this);
@@ -312,7 +319,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return PasteUtils.paste(fileName, lines);
+		return MCDebug.paste(fileName, lines);
 	}
 
 	private void checkUpdate(final ConsoleCommandSender console) {
@@ -422,6 +429,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 			final Crate crate = configHandler.getCrate(name.toLowerCase());
 			if (crate == null)
 				continue;
+			if (!(crate instanceof KeyCrate))
+				continue;
+			KeyCrate keyCrate = (KeyCrate) crate;
 			String path = "Crate Locations." + name;
 			List<String> locations = dataConfig.getStringList(path);
 
@@ -448,11 +458,11 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				Block block = locationObj.getBlock();
 				if (block == null || block.getType().equals(Material.AIR)) {
 					getLogger().warning("No block found at " + location + " removing from data.yml");
-//					crate.removeFromConfig(locationObj);
+					keyCrate.removeFromConfig(locationObj);
 					continue;
 				}
 				Location location1 = locationObj.getBlock().getLocation().add(0.5, 0.5, 0.5);
-//				crate.loadHolograms(location1);
+				keyCrate.loadHolograms(location1);
 				final CratesPlus cratesPlus = this;
 				block.setMetadata("CrateType", new MetadataValue() {
 					@Override

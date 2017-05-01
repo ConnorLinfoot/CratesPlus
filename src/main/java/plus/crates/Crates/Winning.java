@@ -14,9 +14,7 @@ import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Utils.EnchantmentUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +23,7 @@ public class Winning {
 	private Crate crate;
 	private boolean valid = false;
 	private boolean command = false;
+	private boolean always = false;
 	private double percentage = 0;
 	private ItemStack previewItemStack;
 	private ItemStack winningItemStack;
@@ -46,6 +45,10 @@ public class Winning {
 
 		if (!config.isSet(path + ".Type"))
 			return;
+
+		if (config.isSet(path + ".Always"))
+			always = config.getBoolean(path + ".Always");
+
 		String type = config.getString(path + ".Type");
 		ItemStack itemStack;
 		if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("block")) {
@@ -229,29 +232,29 @@ public class Winning {
 		return winningItemStack.clone(); // Clone it so it can't be changed and because Bukkit resets the stack size? Check issue #198 on this bug.
 	}
 
-	public void runWin(final Player player) {
+	public ItemStack runWin(final Player player) {
 		final Winning winning = this;
-		Bukkit.getScheduler().runTask(cratesPlus, new Runnable() {
-			@Override
-			public void run() {
-				if (isCommand() && getCommands().size() > 0) {
+
+		if (isCommand() && getCommands().size() > 0) {
+			Bukkit.getScheduler().runTask(cratesPlus, new Runnable() {
+				@Override
+				public void run() {
 					runCommands(player);
-				} else if (!isCommand()) {
-					HashMap<Integer, ItemStack> left = player.getInventory().addItem(winning.getWinningItemStack());
-					for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
-						player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
-					}
 				}
+			});
+		} else if (!isCommand()) {
+			return winning.getWinningItemStack();
+		}
 
-				/** Do broadcast */
-				if (crate.isBroadcast())
-					Bukkit.broadcastMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Broadcast", player, crate, winning));
+		/** Do broadcast */
+		if (crate.isBroadcast())
+			Bukkit.broadcastMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Broadcast", player, crate, winning));
 
-				/** Spawn firework */
-				if (crate.isFirework())
-					cratesPlus.getCrateHandler().spawnFirework(player.getLocation());
-			}
-		});
+		/** Spawn firework */
+		if (crate.isFirework())
+			cratesPlus.getCrateHandler().spawnFirework(player.getLocation());
+
+		return null;
 	}
 
 	private void runCommands(Player player) {
@@ -260,7 +263,7 @@ public class Winning {
 			command = command.replaceAll("%uuid%", player.getUniqueId().toString());
 			command = command.replaceAll("%displayname%", player.getDisplayName());
 
-			Pattern randPattern = Pattern.compile("%rand;(.*?),(.*?)%");
+			Pattern randPattern = Pattern.compile("%rand;(.*?)[,|;](.*?)%");
 			Matcher randMatches = randPattern.matcher(command);
 			while (randMatches.find()) {
 				String start = randMatches.group(1);
@@ -268,7 +271,7 @@ public class Winning {
 				try {
 					if (start != null && Integer.valueOf(start) != null && end != null && Integer.valueOf(end) != null) {
 						int val = cratesPlus.getCrateHandler().randInt(Integer.valueOf(start), Integer.valueOf(end));
-						command = command.replaceAll("%rand;" + start + "," + end + "%", String.valueOf(val));
+						command = command.replaceAll("%rand;" + start + "," + end + "%", String.valueOf(val)).replaceAll("%rand;" + start + ";" + end + "%", String.valueOf(val));
 					}
 				} catch (Exception ignored) {
 				}
@@ -289,4 +292,9 @@ public class Winning {
 	public List<String> getCommands() {
 		return commands;
 	}
+
+	public boolean isAlways() {
+		return always;
+	}
+
 }

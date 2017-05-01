@@ -47,7 +47,8 @@ public class NoGUIOpener extends Opener {
 			if (sound != null)
 				player.playSound(player.getLocation(), sound, (float) 0.5, 1);
 		}
-		getWinning(crate).runWin(player);
+		crate.handleWin(player);
+//		getWinning(crate).runWin(player);
 		finish(player);
 	}
 

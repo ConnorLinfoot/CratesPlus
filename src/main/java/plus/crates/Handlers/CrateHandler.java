@@ -182,7 +182,7 @@ public class CrateHandler {
 		KeyCrate crate = (KeyCrate) cratesPlus.getConfigHandler().getCrates().get(crateType.toLowerCase());
 		if (crate == null) {
 			if (offlinePlayer.isOnline())
-				((Player) offlinePlayer).sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "CrateOLD type: '" + crateType + "' does not exist");
+				((Player) offlinePlayer).sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Crate type: '" + crateType + "' does not exist");
 			return;
 		}
 
@@ -265,7 +265,7 @@ public class CrateHandler {
 //		ItemStack crateItem = new ItemStack(crate.getBlock(), 1, crate.getBlockData());
 		ItemStack crateItem = new ItemStack(crate.getBlock(), 1);
 		ItemMeta crateMeta = crateItem.getItemMeta();
-		crateMeta.setDisplayName(crate.getName(true) + " Crate!");
+		crateMeta.setDisplayName(crate.getName(true) + " Crate");
 		List<String> lore = new ArrayList<String>();
 		lore.add(ChatColor.GRAY + "Place this crate somewhere!");
 		lore.add("");
@@ -351,7 +351,7 @@ public class CrateHandler {
 				ItemStack itemStack = new ItemStack(Material.EMPTY_MAP);
 				ItemMeta itemMeta = itemStack.getItemMeta();
 				List<String> lore = new ArrayList<String>();
-				lore.add(ChatColor.DARK_GRAY + "CrateOLD Command");
+				lore.add(ChatColor.DARK_GRAY + "Crate Command");
 				itemMeta.setLore(lore);
 				itemMeta.setDisplayName(ChatColor.RESET + name);
 				itemStack.setItemMeta(itemMeta);

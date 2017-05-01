@@ -35,7 +35,7 @@ public class SettingsListener implements Listener {
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
-		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("CrateOLD Winnings")) {
+		if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Crate Winnings")) {
 			String crateName = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate Winnings", ""));
 			Crate crate = cratesPlus.getConfigHandler().getCrates().get(crateName.toLowerCase());
 			if (crate == null) {
@@ -97,7 +97,7 @@ public class SettingsListener implements Listener {
 //			crate.reloadWinnings(); TODO
 			if (event.getPlayer() instanceof Player) {
 				Player player = (Player) event.getPlayer();
-				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "CrateOLD winnings updated");
+				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Crate winnings updated");
 			}
 		}
 	}
@@ -177,7 +177,7 @@ public class SettingsListener implements Listener {
 				return;
 			}
 
-			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit CrateOLD Winnings")) {
+			if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Winnings")) {
 				event.setCancelled(true);
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
 				cratesPlus.getSettingsHandler().openCrateWinnings(player, name);
@@ -190,7 +190,7 @@ public class SettingsListener implements Listener {
 				cratesPlus.getConfigHandler().getCrates().remove(name.toLowerCase());
 				cratesPlus.getSettingsHandler().setupCratesInventory();
 				player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + name + " crate has been deleted");
-			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename CrateOLD")) {
+			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Rename Crate")) {
 				// Let's handle renaming using sign packets ;D
 				String name = ChatColor.stripColor(event.getInventory().getTitle().replaceAll("Edit ", "").replaceAll(" Crate", ""));
 				renaming.put(player.getUniqueId(), name);
@@ -204,9 +204,9 @@ public class SettingsListener implements Listener {
 					renaming.remove(player.getUniqueId());
 				}
 				event.setCancelled(true);
-			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit CrateOLD Color")) {
+			} else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("Edit Crate Color")) {
 				event.setCancelled(true);
-				Inventory inventory = Bukkit.createInventory(null, 18, "Edit CrateOLD Color");
+				Inventory inventory = Bukkit.createInventory(null, 18, "Edit Crate Color");
 
 				ItemStack aqua = new ItemStack(Material.WOOL, 1, (short) 3);
 				ItemMeta aquaMeta = aqua.getItemMeta();

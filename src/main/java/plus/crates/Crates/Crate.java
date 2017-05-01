@@ -5,10 +5,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.Opener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Crate {
 	protected CratesPlus cratesPlus;
@@ -58,9 +62,12 @@ public abstract class Crate {
 			String path = "Crates." + name + ".Winnings." + id;
 			Winning winning = new Winning(this, path, cratesPlus, null);
 			if (totalPercentage + winning.getPercentage() > 100 || !winning.isValid()) {
-				if (totalPercentage + winning.getPercentage() > 100)
+				if (totalPercentage + winning.getPercentage() > 100) {
 					Bukkit.getLogger().warning("Your percentages must NOT add up to more than 100%");
-				break;
+					break;
+				}
+				Bukkit.getLogger().warning(path + " is an invalid winning.");
+				continue;
 			}
 			totalPercentage = totalPercentage + winning.getPercentage();
 			winnings.add(winning);
@@ -128,6 +135,15 @@ public abstract class Crate {
 		return winnings;
 	}
 
+	public ArrayList<Winning> getWinningsExcludeAlways() {
+		ArrayList<Winning> winningsExcludeAlways = new ArrayList<>();
+		for (Winning winning : getWinnings()) {
+			if (!winning.isAlways())
+				winningsExcludeAlways.add(winning);
+		}
+		return winningsExcludeAlways;
+	}
+
 	public boolean containsCommandItem() {
 		for (Winning winning : getWinnings()) {
 			if (winning.isCommand())
@@ -148,6 +164,68 @@ public abstract class Crate {
 
 	public void give(OfflinePlayer offlinePlayer, Integer amount) {
 
+	}
+
+	public void handleWin(Player player) {
+		for (Winning winning : getWinnings()) {
+			if (winning.isAlways()) {
+				ItemStack itemStack = winning.runWin(player);
+				if (itemStack != null) {
+					// By default we'll give the item to the player
+					HashMap<Integer, ItemStack> left = player.getInventory().addItem(itemStack);
+					for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+						player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
+					}
+				}
+			}
+		}
+
+		// By default run win on the last win and give item
+		ItemStack itemStack = getRandomWinning(this).runWin(player);
+		if (itemStack != null) {
+			HashMap<Integer, ItemStack> left = player.getInventory().addItem(itemStack);
+			for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+				player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
+			}
+		}
+	}
+
+	public Winning getRandomWinning(Crate crate) {
+		Winning winning;
+		if (crate.getTotalPercentage() > 0) {
+			List<Winning> winnings = crate.getWinningsExcludeAlways();
+			// Compute the total weight of all items together
+			double totalWeight = 0.0d;
+			for (Winning winning1 : winnings) {
+				if (winning1.isAlways())
+					continue;
+				totalWeight += winning1.getPercentage();
+			}
+
+			// Now choose a random item
+			int randomIndex = -1;
+			double random = Math.random() * totalWeight;
+			for (int i = 0; i < winnings.size(); ++i) {
+				random -= winnings.get(i).getPercentage();
+				if (random <= 0.0d) {
+					randomIndex = i;
+					break;
+				}
+			}
+			winning = winnings.get(randomIndex);
+		} else {
+			System.out.println(crate.getWinnings().size());
+			System.out.println(crate.getWinnings().size());
+			System.out.println(crate.getWinnings().size());
+			System.out.println(crate.getWinnings().size());
+			System.out.println(crate.getWinnings().size());
+			System.out.println(crate.getWinningsExcludeAlways().size());
+			System.out.println(crate.getWinningsExcludeAlways().size());
+			System.out.println(crate.getWinningsExcludeAlways().size());
+			System.out.println(crate.getWinningsExcludeAlways().size());
+			winning = crate.getWinningsExcludeAlways().get(CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randInt(0, crate.getWinningsExcludeAlways().size() - 1));
+		}
+		return winning;
 	}
 
 }

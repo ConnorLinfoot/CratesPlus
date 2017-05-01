@@ -41,9 +41,9 @@ public class PlayerInteract implements Listener {
 				return;
 			Chest chest = (Chest) event.getClickedBlock().getState();
 			Inventory chestInventory = chest.getInventory();
-			if (chestInventory.getTitle() == null || !chestInventory.getTitle().contains(" CrateOLD!"))
+			if (chestInventory.getTitle() == null || !chestInventory.getTitle().contains(" Crate"))
 				return;
-			crateType = ChatColor.stripColor(chestInventory.getTitle().replaceAll(" Crate!", ""));
+			crateType = ChatColor.stripColor(chestInventory.getTitle().replaceAll(" Crate", ""));
 		} else {
 			crateType = event.getClickedBlock().getMetadata("CrateType").get(0).asString();
 		}
@@ -66,7 +66,7 @@ public class PlayerInteract implements Listener {
 
 		if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
 			event.setCancelled(true);
-			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("CrateOLD No Permission", player, crate, null));
+			player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate No Permission", player, crate, null));
 			return;
 		}
 		String title = keyCrate.getKey().getName();
@@ -95,7 +95,7 @@ public class PlayerInteract implements Listener {
 				event.setCancelled(true);
 
 				if (player.getInventory().firstEmpty() == -1) {
-					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a CrateOLD while your inventory is full");
+					player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "You can't open a Crate while your inventory is full");
 					return;
 				}
 

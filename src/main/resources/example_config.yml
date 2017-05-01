@@ -105,6 +105,54 @@ Crates:
     Hologram Text:
      - 'This crate will have'
      - 'Its own hologram text!'
+  FoodSupply:
+    Type: SupplyCrate
+    Block: CHEST
+    Color: LIGHT_PURPLE
+    Minimum: 3
+    Maximum: 6
+    Winnings:
+      '1':
+        Type: COMMAND
+        Commands:
+        - 'heal %name%'
+        - 'tell %name% You have been healed!'
+        Always: true # Makes this reward always happen (Does not count towards the minimum and maximum)
+      '2':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 5
+        Percentage: 10
+      '3':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 10
+        Percentage: 10
+      '4':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 3
+        Percentage: 20
+      '5':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 5
+        Percentage: 20
+      '6':
+        Type: ITEM
+        Item Type: APPLE
+        Amount: 12
+        Percentage: 20
+      '7':
+        Type: ITEM
+        Item Type: COOKED_BEEF
+        Amount: 32
+        Percentage: 15
+      '8':
+        Type: ITEM
+        Item Type: COOKED_BEEF
+        Amount: 64
+        Percentage: 5
 
 # Opener which is used by default
 Default Opener: BasicGUI

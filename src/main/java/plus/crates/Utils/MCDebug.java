@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class PasteUtils {
+public class MCDebug {
 
 	public synchronized static String paste(String name, String contents) {
 		String desc = "";

@@ -3,14 +3,10 @@ package plus.crates.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.CratesPlus;
 
-import java.util.List;
-
-public class Version_1_9 extends Version_Util {
+public class Version_1_9 extends Version_1_8 {
 
 	public Version_1_9(CratesPlus cratesPlus) {
 		super(cratesPlus);
@@ -40,22 +36,6 @@ public class Version_1_9 extends Version_Util {
 	public EntityType getEntityTypeFromItemStack(ItemStack itemStack) {
 		SpawnEggNBT spawnEggNBT = SpawnEggNBT.fromItemStack(itemStack);
 		return spawnEggNBT.getSpawnedType();
-	}
-
-	public ItemMeta handleItemFlags(ItemMeta itemMeta, List<String> flags) {
-		if (flags.size() > 0) {
-			for (String flag : flags) {
-				try {
-					ItemFlag itemFlag = ItemFlag.valueOf(flag.toUpperCase());
-					if (itemFlag != null) {
-						itemMeta.addItemFlags(itemFlag);
-					}
-				} catch (Exception ignored) {
-
-				}
-			}
-		}
-		return itemMeta;
 	}
 
 }

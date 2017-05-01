@@ -13,7 +13,6 @@ import plus.crates.CratesPlus;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public abstract class Opener {
 	protected Plugin plugin;
@@ -60,31 +59,7 @@ public abstract class Opener {
 	}
 
 	public Winning getWinning(Crate crate) {
-		Winning winning;
-		// TODO
-		if (crate.getTotalPercentage() > 0) {
-			List<Winning> winnings = crate.getWinnings();
-			// Compute the total weight of all items together
-			double totalWeight = 0.0d;
-			for (Winning winning1 : winnings) {
-				totalWeight += winning1.getPercentage();
-			}
-
-			// Now choose a random item
-			int randomIndex = -1;
-			double random = Math.random() * totalWeight;
-			for (int i = 0; i < winnings.size(); ++i) {
-				random -= winnings.get(i).getPercentage();
-				if (random <= 0.0d) {
-					randomIndex = i;
-					break;
-				}
-			}
-			winning = winnings.get(randomIndex);
-		} else {
-			winning = crate.getWinnings().get(CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randInt(0, crate.getWinnings().size() - 1));
-		}
-		return winning;
+		return null;
 	}
 
 	public File getOpenerConfigFile() {

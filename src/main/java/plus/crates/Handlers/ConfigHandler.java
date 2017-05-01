@@ -3,6 +3,7 @@ package plus.crates.Handlers;
 import org.bukkit.configuration.file.FileConfiguration;
 import plus.crates.Crates.Crate;
 import plus.crates.Crates.KeyCrate;
+import plus.crates.Crates.SupplyCrate;
 import plus.crates.CratesPlus;
 
 import java.util.HashMap;
@@ -46,9 +47,14 @@ public class ConfigHandler {
 		if (config.isSet("Crates")) {
 			for (String crate : config.getConfigurationSection("Crates").getKeys(false)) {
 				String type = config.getString("Crates." + crate + ".Type", "");
-				switch (type.toLowerCase()) {
+				switch (type.toLowerCase().replaceAll(" ", "")) {
 					case "keycrate":
+					case "key":
 						addCrate(crate.toLowerCase(), new KeyCrate(cratesPlus, crate));
+						break;
+					case "supplycrate":
+					case "supply":
+						addCrate(crate.toLowerCase(), new SupplyCrate(cratesPlus, crate));
 						break;
 					default:
 						cratesPlus.getLogger().warning("Invalid \"Type\" set for crate \"" + crate + "\"");
@@ -57,7 +63,7 @@ public class ConfigHandler {
 			}
 		}
 
-		// CrateOLD GUI
+		// Crate GUI
 		if (config.isSet("Use GUI")) {
 			if (config.getBoolean("Use GUI")) {
 				config.set("Default Opener", "BasicGUI");
@@ -72,14 +78,14 @@ public class ConfigHandler {
 		if (config.isSet("Default Opener"))
 			defaultOpener = config.getString("Default Opener");
 
-		// CrateOLD GUI Time, this is now moved into the BasicGUI opener
+		// Crate GUI Time, this is now moved into the BasicGUI opener
 		if (config.isSet("GUI Time")) {
 			crateGUITime = config.getInt("GUI Time");
 			config.set("GUI Time", null);
 			cratesPlus.saveConfig();
 		}
 
-		// CrateOLD Holograms
+		// Crate Holograms
 		defaultHologramText = config.getStringList("Default Hologram Text");
 
 		for (String crateLowerName : crates.keySet()) {
