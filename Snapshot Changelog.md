@@ -1,6 +1,7 @@
 ### Version 5.0 Snapshots
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
+
 **Snapshot 2** *(Apr 25 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/885/artifact/target/CratesPlus-5.0-SNAPSHOT-2.jar)
 - Featured: Added "SupplyCrate" type, see example config.
 - Improvement: Added 1.8 support with Item Flags.
