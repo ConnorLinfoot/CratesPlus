@@ -206,12 +206,11 @@ public class Winning {
 
 		previewItemStackItemMeta = previewItemStack.getItemMeta();
 		List<String> lore = new ArrayList<>(this.lore);
-		//TODO
-//		if (percentage > 0 && !crate.isHidePercentages()) {
-//			// Percentage
-//			lore.add(ChatColor.LIGHT_PURPLE + "");
-//			lore.add(cratesPlus.getMessageHandler().getMessage("Chance Message", null, crate, this));
-//		}
+		if (percentage > 0 && !crate.isHidePercentages()) {
+			if (cratesPlus.getMessageHandler().getMessageBool("Chance Message Gap"))
+				lore.add(ChatColor.LIGHT_PURPLE + "");
+			lore.add(cratesPlus.getMessageHandler().getMessage("Chance Message", null, crate, this).replaceAll("\\n", ""));
+		}
 		previewItemStackItemMeta.setLore(lore);
 		previewItemStack.setItemMeta(previewItemStackItemMeta);
 

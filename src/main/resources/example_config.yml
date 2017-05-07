@@ -172,3 +172,6 @@ Default Hologram Text:
 - "%crate%"
 - "Right-Click to Open!"
 - "Left-Click to Preview!"
+
+# Delay in seconds after player joins, default is no delay
+Claim Message Delay: 2

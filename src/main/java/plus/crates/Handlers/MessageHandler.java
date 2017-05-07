@@ -28,6 +28,10 @@ public class MessageHandler {
 		return message;
 	}
 
+	public boolean getMessageBool(String messageName) {
+		return cratesPlus.getMessagesConfig().getBoolean(messageName, false);
+	}
+
 	public String doPlaceholders(String message, Player player, Crate crate, plus.crates.Crates.Winning winning) {
 		message = ChatColor.translateAlternateColorCodes('&', message);
 		if (player != null)

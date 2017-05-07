@@ -12,6 +12,7 @@ import java.util.List;
 public class ConfigHandler {
 	private Integer defaultCooldown = 5;
 	private Integer crateGUITime = 10;
+	private Integer claimMessageDelay = 0;
 	private String defaultOpener = "NoGUI";
 	private List<String> defaultHologramText;
 	private HashMap<String, List<String>> holograms = new HashMap<>();
@@ -36,6 +37,9 @@ public class ConfigHandler {
 			config.set("Disable Key Dropping", null);
 			cratesPlus.saveConfig();
 		}
+
+		if (config.isSet("Claim Message Delay"))
+			claimMessageDelay = config.getInt("Claim Message Delay", 0);
 
 		if (config.isSet("Disable Key Swapping"))
 			disableKeySwapping = config.getBoolean("Disable Key Swapping");
@@ -140,6 +144,10 @@ public class ConfigHandler {
 
 	public boolean isDebugMode() {
 		return debugMode;
+	}
+
+	public Integer getClaimMessageDelay() {
+		return claimMessageDelay;
 	}
 
 }

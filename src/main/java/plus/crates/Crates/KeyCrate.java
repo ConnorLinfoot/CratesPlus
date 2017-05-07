@@ -14,7 +14,6 @@ public class KeyCrate extends Crate {
 	protected Key key;
 	protected HashMap<String, Location> locations = new HashMap<>();
 	protected boolean preview = true;
-	protected boolean hidePercentages = false;
 	protected double knockback = 0.0;
 
 	public KeyCrate(CratesPlus cratesPlus, String name) {
@@ -27,8 +26,6 @@ public class KeyCrate extends Crate {
 			this.preview = cratesPlus.getConfig().getBoolean("Crates." + name + ".Preview");
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Knockback"))
 			this.knockback = cratesPlus.getConfig().getDouble("Crates." + name + ".Knockback");
-		if (cratesPlus.getConfig().isSet("Crates." + name + ".Hide Percentages"))
-			this.hidePercentages = cratesPlus.getConfig().getBoolean("Crates." + name + ".Hide Percentages");
 
 		if (!cratesPlus.getConfig().isSet("Crates." + name + ".Key") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Item") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Name") || !cratesPlus.getConfig().isSet("Crates." + name + ".Key.Enchanted"))
 			return;

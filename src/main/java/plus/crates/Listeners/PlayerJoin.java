@@ -27,7 +27,14 @@ public class PlayerJoin implements Listener {
 					cratesPlus.setConfigBackup(null);
 				}
 				if (cratesPlus.getCrateHandler().hasPendingKeys(event.getPlayer().getUniqueId())) {
-					event.getPlayer().sendMessage(cratesPlus.getMessageHandler().getMessage("Claim Join", event.getPlayer(), null, null));
+					if (cratesPlus.getConfigHandler().getClaimMessageDelay() > -1) {
+						Bukkit.getScheduler().runTaskLater(cratesPlus, new Runnable() {
+							@Override
+							public void run() {
+								event.getPlayer().sendMessage(cratesPlus.getMessageHandler().getMessage("Claim Join", event.getPlayer(), null, null));
+							}
+						}, cratesPlus.getConfigHandler().getClaimMessageDelay() > 0 ? (20 * cratesPlus.getConfigHandler().getClaimMessageDelay()) : 0);
+					}
 				}
 			}
 		}, 1L);

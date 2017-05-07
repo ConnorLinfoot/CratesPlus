@@ -25,6 +25,7 @@ public abstract class Crate {
 	protected double totalPercentage = 0;
 	protected boolean firework = false;
 	protected boolean broadcast = false;
+	protected boolean hidePercentages = false;
 	protected String opener = null;
 	protected Integer cooldown = null;
 
@@ -40,6 +41,8 @@ public abstract class Crate {
 	}
 
 	protected void loadCrate() {
+		if (cratesPlus.getConfig().isSet("Crates." + name + ".Hide Percentages"))
+			this.hidePercentages = cratesPlus.getConfig().getBoolean("Crates." + name + ".Hide Percentages");
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Color"))
 			this.color = ChatColor.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Color").toUpperCase());
 		if (cratesPlus.getConfig().isSet("Crates." + name + ".Block"))
@@ -226,6 +229,10 @@ public abstract class Crate {
 			winning = crate.getWinningsExcludeAlways().get(CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randInt(0, crate.getWinningsExcludeAlways().size() - 1));
 		}
 		return winning;
+	}
+
+	public boolean isHidePercentages() {
+		return hidePercentages;
 	}
 
 }

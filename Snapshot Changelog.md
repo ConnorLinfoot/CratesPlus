@@ -2,8 +2,12 @@
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
 
+**Snapshot 3** *(May 7 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/893/artifact/target/CratesPlus-5.0-SNAPSHOT-3.jar)
+- Feature: Added "Claim Message Delay" config option.
+- Improvement: Added "Chance Message Gap" config option to disable the gap added by percentages.
+
 **Snapshot 2** *(May 2 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/885/artifact/target/CratesPlus-5.0-SNAPSHOT-2.jar)
-- Featured: Added "SupplyCrate" type, see example config.
+- Feature: Added "SupplyCrate" type, see example config.
 - Improvement: Added 1.8 support with Item Flags.
 - Improvement: Changed the regex for the %rand% placeholder to match some broken examples as well as the original regex.
 - Bug: Holograms should work again when the server restarts.

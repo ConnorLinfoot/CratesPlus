@@ -60,6 +60,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 		}
 		bukkitVersion = matcher.group(1);
 
+		if (getConfig().isSet("Bukkit Version"))
+			bukkitVersion = getConfig().getString("Bukkit Version");
+
 		if (versionCompare(bukkitVersion, "1.11.2") > 0) {
 			// This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
 			getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
@@ -169,6 +172,9 @@ public class CratesPlus extends JavaPlugin implements Listener {
 
 		if (!messagesConfig.isSet("Chance Message"))
 			messagesConfig.set("Chance Message", "&d%percentage%% Chance");
+
+		if (!messagesConfig.isSet("Chance Message Gap"))
+			messagesConfig.set("Chance Message Gap", true);
 
 		if (!messagesConfig.isSet("Inventory Full Claim"))
 			messagesConfig.set("Inventory Full Claim", "&aYou're inventory is full, you can claim your keys later using /claim");
