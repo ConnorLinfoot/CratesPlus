@@ -1,0 +1,10 @@
+machine:
+  java:
+    version: oraclejdk7
+dependencies:
+  pre:
+    - java -version
+    - mvn -version
+    - mvn clean package install
+  override:
+    - mvn dependency:resolve
