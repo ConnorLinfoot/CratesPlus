@@ -6,5 +6,6 @@ dependencies:
     - java -version
     - mvn -version
     - mvn clean package install
+    - mv target/*.jar $CIRCLE_ARTIFACTS/
   override:
     - mvn dependency:resolve
