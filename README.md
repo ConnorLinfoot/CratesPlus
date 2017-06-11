@@ -6,7 +6,7 @@ Sick of paying for crate plugins? CratesPlus is a FREE crates plugin built for S
 [![ghit.me](https://ghit.me/badge.svg?repo=connorlinfoot/CratesPlus)](https://ghit.me/repo/connorlinfoot/CratesPlus)
 
 ## Development Build
-[![CircleCI](https://circleci.com/gh/ConnorLinfoot/CratesPlus/tree/master.svg?style=svg)](http://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/latest/download)
+[![CircleCI](https://circleci.com/gh/ConnorLinfoot/CratesPlus/tree/master.svg?style=svg)](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/latest/download)
 
 The latest dev build of this can be downloaded from the link on the image above. Please note this version can be buggy and will have uncompleted features and some features may be removed before release. Please backup your config before using a dev build!
 
