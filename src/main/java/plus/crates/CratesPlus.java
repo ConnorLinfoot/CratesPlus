@@ -461,6 +461,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
 				if (locationObj == null) {
 					continue;
 				}
+				// TODO this still seems to cause errors, try and investigate
 				Block block = locationObj.getBlock();
 				if (block == null || block.getType().equals(Material.AIR)) {
 					getLogger().warning("No block found at " + location + " removing from data.yml");
