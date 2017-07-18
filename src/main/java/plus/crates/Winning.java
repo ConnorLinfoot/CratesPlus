@@ -92,7 +92,7 @@ public class Winning {
 
 			Material itemType = Material.PAPER;
 			if (config.isSet(path + ".Item Type"))
-				itemType = Material.getMaterial(config.getString(path + ".Item Type"));
+				itemType = Material.getMaterial(config.getString(path + ".Item Type").toUpperCase());
 
 			if (itemType == null)
 				return;

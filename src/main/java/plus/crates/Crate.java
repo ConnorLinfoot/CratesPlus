@@ -139,11 +139,13 @@ public class Crate {
 	public void reloadWinnings() {
 		cratesPlus.reloadConfig();
 		winnings.clear();
-		for (String id : cratesPlus.getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
-			String path = "Crates." + name + ".Winnings." + id;
-			Winning winning = new Winning(this, path, cratesPlus, cratesPlus.getConfigHandler());
-			if (winning.isValid())
-				winnings.add(winning);
+		if( cratesPlus.getConfig().getConfigurationSection("Crates." + name + ".Winnings") != null ) {
+			for (String id : cratesPlus.getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
+				String path = "Crates." + name + ".Winnings." + id;
+				Winning winning = new Winning(this, path, cratesPlus, cratesPlus.getConfigHandler());
+				if (winning.isValid())
+					winnings.add(winning);
+			}
 		}
 	}
 

@@ -47,6 +47,8 @@ public class CratePreviewEvent extends Event {
 			ItemStack itemStack = winning.getPreviewItemStack();
 			if (itemStack == null)
 				continue;
+			if( i > size - 1 )
+				break;
 			inventory.setItem(i, itemStack);
 			i++;
 		}

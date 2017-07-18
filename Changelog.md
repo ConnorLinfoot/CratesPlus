@@ -1,6 +1,10 @@
+**4.4.2** *(Jul 18 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12.5018/download?version=172748)
+- Bug: Fixed an error if you had more than 54 items to preview. This will include pagination in a future update.
+- Bug: Added a null check to prevent an NPE if you didn't define winnings.
+- Bug: Now forcing item types to be uppercase for commands just like items.
+
 **4.4.1** *(Jun 9 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12.5018/download?version=164332)
 - Feature: Support for Bukkit/Spigot 1.12.
-
 
 **4.4** *(Apr 17 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-11-2.5018/download?version=155087)
 - Feature: You can now set the lore of a key in the config file. (Warning: changing the lore WILL break existing keys given to players)
