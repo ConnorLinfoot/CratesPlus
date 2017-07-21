@@ -7,7 +7,7 @@
     <groupId>plus.crates</groupId>
     <artifactId>CratesPlus</artifactId>
     <description>Free crates plugin built for Bukkit/Spigot.</description>
-    <version>5.0-SNAPSHOT-3</version>
+    <version>5.0-SNAPSHOT-4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -2,7 +2,14 @@
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
 
-**Snapshot 3** *(May 7 2017)* - [Download](http://ci.connorlinfoot.com:8080/job/CratesPlus/894/artifact/target/CratesPlus-5.0-SNAPSHOT-3.jar)
+**Snapshot 4** *(Jul 21 2017)* - [Download](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/79/download)
+- Feature: New "Destroy Block" option for SupplyCrates to destroy the block when placed.
+- Improvement: Slightly changed how block data is loaded to prevent exceptions being thrown.
+- Improvement: Rewritten the way holograms are handled.
+- Improvement: Changed quite a bit around Winnings, should be more stable now.
+- Improvement: Minimum and Maximum options now work for SupplyCrates.
+
+**Snapshot 3** *(May 7 2017)* - [Download](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/75/download)
 - Feature: Added "Claim Message Delay" config option.
 - Improvement: Added "Chance Message Gap" config option to disable the gap added by percentages.
 

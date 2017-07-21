@@ -16,110 +16,122 @@ import java.util.List;
 import java.util.Map;
 
 public class SupplyCrate extends Crate {
-	private List<String> lore = null;
-	private Integer minimum = 1;
-	private Integer maximum = 1;
+    private List<String> lore = null;
+    private Integer minimum = 1;
+    private Integer maximum = 1;
+    private boolean destroyBlock = false;
 
-	public SupplyCrate(CratesPlus cratesPlus, String name) {
-		super(cratesPlus, name);
-	}
+    public SupplyCrate(CratesPlus cratesPlus, String name) {
+        super(cratesPlus, name);
+        loadCrate();
+    }
 
-	protected void loadCrate() {
-		super.loadCrate();
+    protected void loadCrate() {
+        if (cratesPlus.getConfig().isSet("Crates." + name + ".Lore"))
+            this.lore = cratesPlus.getConfig().getStringList("Crates." + name + ".Lore");
 
-		if (cratesPlus.getConfig().isSet("Crates." + name + ".Lore"))
-			this.lore = cratesPlus.getConfig().getStringList("Crates." + name + ".Lore");
+        if (cratesPlus.getConfig().isSet("Crates." + name + ".Minimum"))
+            this.minimum = cratesPlus.getConfig().getInt("Crates." + name + ".Minimum");
+        else
+            this.minimum = 1;
 
-		if (cratesPlus.getConfig().isSet("Crates." + name + ".Minimum"))
-			this.minimum = cratesPlus.getConfig().getInt("Crates." + name + ".Minimum");
-		else
-			this.minimum = 1;
+        if (cratesPlus.getConfig().isSet("Crates." + name + ".Maximum"))
+            this.maximum = cratesPlus.getConfig().getInt("Crates." + name + ".Maximum");
+        else
+            this.maximum = 1;
 
-		if (cratesPlus.getConfig().isSet("Crates." + name + ".Maximum"))
-			this.maximum = cratesPlus.getConfig().getInt("Crates." + name + ".Maximum");
-		else
-			this.maximum = 1;
+        if (cratesPlus.getConfig().isSet("Crates." + name + ".Destroy Block"))
+            this.destroyBlock = cratesPlus.getConfig().getBoolean("Crates." + name + ".Destroy Block", false);
 
-		if (this.maximum > this.getWinningsExcludeAlways().size())
-			this.maximum = this.getWinningsExcludeAlways().size();
+        if (this.maximum > this.getWinningsExcludeAlways().size())
+            this.maximum = this.getWinningsExcludeAlways().size();
 
-		if (this.minimum > this.getWinningsExcludeAlways().size())
-			this.minimum = this.getWinningsExcludeAlways().size();
+        if (this.minimum > this.getWinningsExcludeAlways().size())
+            this.minimum = this.getWinningsExcludeAlways().size();
 
-		if (this.minimum < 1)
-			this.minimum = 1;
+        if (this.minimum < 1)
+            this.minimum = 1;
 
-		if (this.maximum < this.minimum)
-			this.maximum = this.minimum;
-	}
+        if (this.maximum < this.minimum)
+            this.maximum = this.minimum;
+    }
 
-	public void give(OfflinePlayer offlinePlayer, Integer amount) {
-		if (offlinePlayer == null || !offlinePlayer.isOnline()) return; // TODO add offline player support
-		Player player = (Player) offlinePlayer;
-		if (player.getInventory().firstEmpty() == -1) {
-			// TODO Inventory full, do something for this!
-			player.sendMessage(ChatColor.RED + "Inventory full, I'll do something for this soon...");
-		} else {
-			player.getInventory().addItem(getCrateItemStack(amount));
-		}
-	}
+    public void give(OfflinePlayer offlinePlayer, Integer amount) {
+        if (offlinePlayer == null || !offlinePlayer.isOnline()) return; // TODO add offline player support
+        Player player = (Player) offlinePlayer;
+        if (player.getInventory().firstEmpty() == -1) {
+            // TODO Inventory full, do something for this!
+            player.sendMessage(ChatColor.RED + "Inventory full, I'll do something for this soon...");
+        } else {
+            player.getInventory().addItem(getCrateItemStack(amount));
+        }
+    }
 
-	public void handleWin(Player player) {
-		// TODO Error maybe? as we require the location!
-	}
+    public Winning handleWin(Player player) {
+        // TODO Error maybe? as we require the location!
+        return null;
+    }
 
-	public void handleWin(Player player, Block blockPlaced) {
-		if (blockPlaced == null || blockPlaced.getType().equals(Material.AIR))
-			return;
-		ArrayList<ItemStack> itemStacks = new ArrayList<>();
+    public void handleWins(Player player, Block blockPlaced) {
+        if (blockPlaced == null || blockPlaced.getType().equals(Material.AIR))
+            return;
+        ArrayList<ItemStack> itemStacks = new ArrayList<>();
 
-		for (Winning winning : getWinnings()) {
-			if (winning.isAlways()) {
-				ItemStack itemStack = winning.runWin(player);
-				if (itemStack != null) {
-					itemStacks.add(itemStack);
-				}
-			}
-		}
+        for (Winning winning : getWinnings()) {
+            if (winning.isAlways()) {
+                ItemStack itemStack = winning.runWin(player);
+                if (itemStack != null) {
+                    itemStacks.add(itemStack);
+                }
+            }
+        }
 
-		// By default run win on the last win and give item
-		ItemStack itemStack = getRandomWinning(this).runWin(player);
-		if (itemStack != null) {
-			itemStacks.add(itemStack);
-		}
+        // By default run win on the last win and give item
+        int wins_amount = cratesPlus.getCrateHandler().randInt(minimum, maximum);
+        for (int i = 0; i < wins_amount; i++) {
+            Winning winning = getRandomWinning();
+            ItemStack itemStack = winning.runWin(player);
+            if (itemStack != null) {
+                itemStacks.add(itemStack);
+            }
+        }
 
-		if (blockPlaced.getType().equals(Material.CHEST)) {
-			Chest chest = (Chest) blockPlaced.getState();
-			for (ItemStack itemStack1 : itemStacks) {
-				chest.getInventory().addItem(itemStack1);
-			}
-		} else {
-			for (ItemStack itemStack1 : itemStacks) {
-				HashMap<Integer, ItemStack> left = player.getInventory().addItem(itemStack1);
-				for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
-					player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
-				}
-			}
-		}
-	}
+        if (blockPlaced.getType().equals(Material.CHEST) || blockPlaced.getType().equals(Material.TRAPPED_CHEST)) {
+            Chest chest = (Chest) blockPlaced.getState();
+            for (ItemStack itemStack1 : itemStacks) {
+                chest.getInventory().addItem(itemStack1);
+            }
+        } else {
+            for (ItemStack itemStack1 : itemStacks) {
+                HashMap<Integer, ItemStack> left = player.getInventory().addItem(itemStack1);
+                for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
+                    player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
+                }
+            }
+        }
 
-	private ItemStack getCrateItemStack(Integer amount) {
-		// TODO add data ID support
-		ItemStack itemStack = new ItemStack(getBlock(), amount);
-		ItemMeta itemMeta = itemStack.getItemMeta();
-		itemMeta.setDisplayName(getName(true) + " Crate");
-		itemMeta.setLore(getLore());
-		itemStack.setItemMeta(itemMeta);
-		return itemStack;
-	}
+        if (destroyBlock) {
+            blockPlaced.setType(Material.AIR);
+        }
+    }
 
-	private List<String> getLore() {
-		if (this.lore == null || this.lore.size() == 0) {
-			this.lore = new ArrayList<>();
-			this.lore.add(ChatColor.GRAY + "Place this crate to open!");
-			this.lore.add("");
-		}
-		return this.lore;
-	}
+    private ItemStack getCrateItemStack(Integer amount) {
+        // TODO add data ID support
+        ItemStack itemStack = new ItemStack(getBlock(), amount);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(getName(true) + " Crate");
+        itemMeta.setLore(getLore());
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    private List<String> getLore() {
+        if (this.lore == null || this.lore.size() == 0) {
+            this.lore = new ArrayList<>();
+            this.lore.add(ChatColor.GRAY + "Place this crate to open!");
+            this.lore.add("");
+        }
+        return this.lore;
+    }
 
 }
