@@ -1,3 +1,6 @@
+**4.4.5** *(Feb 14 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-2.5018/download?version=208286)
+- Bug: Updated the URL for Spigot update checks as the old one is now disabled.
+
 **4.4.4** *(Sep 25 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-2.5018/download?version=186440)
 - Feature: Support for Bukkit/Spigot 1.12.2.
 
