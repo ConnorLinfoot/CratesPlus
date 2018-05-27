@@ -1,26 +1,40 @@
 package plus.crates.Handlers;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import plus.crates.Crates.Crate;
-import plus.crates.Crates.KeyCrate;
-import plus.crates.Crates.SupplyCrate;
+import plus.crates.Configs.*;
+import plus.crates.Crates.*;
 import plus.crates.CratesPlus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ConfigHandler {
+    private final CratesPlus cratesPlus;
     private Integer defaultCooldown = 5;
     private Integer crateGUITime = 10;
     private Integer claimMessageDelay = 0;
-    private String defaultOpener = "NoGUI";
     private List<String> defaultHologramText;
     private HashMap<String, List<String>> holograms = new HashMap<>();
     private HashMap<String, Crate> crates = new HashMap<>();
     private boolean disableKeySwapping = false;
     private boolean debugMode = false;
+    private List<ConfigVersion> configVersions = new ArrayList<>();
 
     public ConfigHandler(FileConfiguration config, CratesPlus cratesPlus) {
+        this.cratesPlus = cratesPlus;
+
+        // Register config versions
+        configVersions.add(new Version2(cratesPlus));
+        configVersions.add(new Version3(cratesPlus));
+        configVersions.add(new Version4(cratesPlus));
+        configVersions.add(new Version5(cratesPlus));
+        configVersions.add(new Version6(cratesPlus));
+        configVersions.add(new Version7(cratesPlus));
+
+        // Actually update configs
+        updateConfigs();
+
         // Load configuration
         if (config.isSet("Cooldown")) {
             config.set("Default Cooldown", config.getInt("Cooldown"));
@@ -50,20 +64,7 @@ public class ConfigHandler {
         // Register Crates
         if (config.isSet("Crates")) {
             for (String crate : config.getConfigurationSection("Crates").getKeys(false)) {
-                String type = config.getString("Crates." + crate + ".Type", "");
-                switch (type.toLowerCase().replaceAll(" ", "")) {
-                    case "keycrate":
-                    case "key":
-                        addCrate(crate.toLowerCase(), new KeyCrate(cratesPlus, crate));
-                        break;
-                    case "supplycrate":
-                    case "supply":
-                        addCrate(crate.toLowerCase(), new SupplyCrate(cratesPlus, crate));
-                        break;
-                    default:
-                        cratesPlus.getLogger().warning("Invalid \"Type\" set for crate \"" + crate + "\"");
-                        break;
-                }
+                registerCrate(cratesPlus, config, crate);
             }
         }
 
@@ -78,9 +79,7 @@ public class ConfigHandler {
             cratesPlus.saveConfig();
         }
 
-        // Default Opener
-        if (config.isSet("Default Opener"))
-            defaultOpener = config.getString("Default Opener");
+        // TODO Load openers here?
 
         // Crate GUI Time, this is now moved into the BasicGUI opener
         if (config.isSet("GUI Time")) {
@@ -96,6 +95,12 @@ public class ConfigHandler {
             Crate crate = crates.get(crateLowerName);
             List<String> crateSpecificHologram = config.getStringList("Crates." + crate.getName() + ".Hologram Text");
             holograms.put(crate.getName().toLowerCase(), (config.isSet("Crates." + crate.getName() + ".Hologram Text")) ? crateSpecificHologram : defaultHologramText);
+        }
+    }
+
+    private void updateConfigs() {
+        for (ConfigVersion configVersion : configVersions) {
+            configVersion.shouldUpdate(true);
         }
     }
 
@@ -134,10 +139,6 @@ public class ConfigHandler {
         return crateGUITime;
     }
 
-    public String getDefaultOpener() {
-        return defaultOpener;
-    }
-
     public boolean isDisableKeySwapping() {
         return disableKeySwapping;
     }
@@ -148,6 +149,42 @@ public class ConfigHandler {
 
     public Integer getClaimMessageDelay() {
         return claimMessageDelay;
+    }
+
+    public void registerCrate(CratesPlus cratesPlus, FileConfiguration config, String crateName) {
+        if (config.isSet("Crates." + crateName)) {
+            String type = config.getString("Crates." + crateName + ".Type", "");
+            switch (type.toLowerCase().replaceAll(" ", "")) {
+                case "keycrate":
+                case "key":
+                    addCrate(crateName.toLowerCase(), new KeyCrate(this, crateName));
+                    break;
+                /*case "virtual":
+                case "virtualcrate":
+                    addCrate(crateName.toLowerCase(), new VirtualCrate(this, crateName));
+                    break;*/
+                case "supplycrate":
+                case "supply":
+                    addCrate(crateName.toLowerCase(), new SupplyCrate(this, crateName));
+                    break;
+                case "dropcrate":
+                case "drop":
+                    addCrate(crateName.toLowerCase(), new DropCrate(this, crateName));
+                    break;
+                case "mystery":
+                case "mysterycrate":
+                case "mysterybox":
+                    addCrate(crateName.toLowerCase(), new MysteryCrate(this, crateName));
+                    break;
+                default:
+                    cratesPlus.getLogger().warning("Invalid \"Type\" set for crate \"" + crateName + "\"");
+                    break;
+            }
+        }
+    }
+
+    public CratesPlus getCratesPlus() {
+        return cratesPlus;
     }
 
 }

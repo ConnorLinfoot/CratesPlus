@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import plus.crates.Crates.Crate;
 import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
-import plus.crates.Events.KeyCrateOpenEvent;
-import plus.crates.Events.KeyCratePreviewEvent;
+import plus.crates.Events.CrateOpenEvent;
+import plus.crates.Handlers.MessageHandler;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -66,7 +66,7 @@ public class PlayerInteract implements Listener {
 
         if (crate.getPermission() != null && !player.hasPermission(crate.getPermission())) {
             event.setCancelled(true);
-            player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate No Permission", player, crate, null));
+            MessageHandler.sendMessage(player, "&cYou do not have the correct permission to use this crate", crate, null);
             return;
         }
         String title = keyCrate.getKey().getName();
@@ -74,10 +74,7 @@ public class PlayerInteract implements Listener {
         if (event.getAction().toString().contains("LEFT")) {
             if (event.getPlayer().isSneaking())
                 return;
-            /** Do preview */
-            KeyCratePreviewEvent cratePreviewEvent = new KeyCratePreviewEvent(player, keyCrate, cratesPlus);
-            if (!cratePreviewEvent.isCanceled())
-                cratePreviewEvent.doEvent();
+            keyCrate.openPreviewGUI(player);
         } else {
             boolean usingOffHand = false;
             if (itemOff != null && itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
@@ -119,10 +116,10 @@ public class PlayerInteract implements Listener {
                     }
                 }
 
-                KeyCrateOpenEvent crateOpenEvent = new KeyCrateOpenEvent(player, keyCrate, event.getClickedBlock().getLocation(), cratesPlus);
+                CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, keyCrate, event.getClickedBlock().getLocation(), cratesPlus);
                 crateOpenEvent.doEvent();
             } else {
-                player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate Open Without Key", player, crate, null));
+                MessageHandler.sendMessage(player, "&cYou must be holding a %crate% &ckey to open this crate", crate, null);
                 if (keyCrate.getKnockback() != 0) {
                     player.setVelocity(player.getLocation().getDirection().multiply(-keyCrate.getKnockback()));
                 }

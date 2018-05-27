@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import plus.crates.CratesPlus;
+import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Opener.Opener;
 
 import java.util.ArrayList;
@@ -15,22 +16,23 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Crate {
-    protected CratesPlus cratesPlus;
+    protected final ConfigHandler configHandler;
     protected String name;
     protected String slug;
+    protected String opener = null;
     protected ChatColor color = ChatColor.WHITE;
     protected Material block = Material.CHEST;
+    protected int blockData = 0;
     protected String permission = null;
     protected ArrayList<Winning> winnings = new ArrayList<>();
     protected double totalPercentage = 0;
     protected boolean firework = false;
     protected boolean broadcast = false;
     protected boolean hidePercentages = false;
-    protected String opener = null;
     protected Integer cooldown = null;
 
-    public Crate(CratesPlus cratesPlus, String name) {
-        this.cratesPlus = cratesPlus;
+    public Crate(ConfigHandler configHandler, String name) {
+        this.configHandler = configHandler;
         this.name = name;
         this.slug = name.toLowerCase();
         loadCrateBase();
@@ -42,13 +44,16 @@ public abstract class Crate {
 
     protected abstract void loadCrate();
 
-    protected void loadCrateBase() {
+    private void loadCrateBase() {
+        CratesPlus cratesPlus = configHandler.getCratesPlus();
         if (cratesPlus.getConfig().isSet("Crates." + name + ".Hide Percentages"))
             this.hidePercentages = cratesPlus.getConfig().getBoolean("Crates." + name + ".Hide Percentages");
         if (cratesPlus.getConfig().isSet("Crates." + name + ".Color"))
             this.color = ChatColor.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Color").toUpperCase());
         if (cratesPlus.getConfig().isSet("Crates." + name + ".Block"))
             this.block = Material.valueOf(cratesPlus.getConfig().getString("Crates." + name + ".Block").toUpperCase());
+        if (cratesPlus.getConfig().isSet("Crates." + name + ".Block Data"))
+            this.blockData = cratesPlus.getConfig().getInt("Crates." + name + ".Block Data", 0);
         if (cratesPlus.getConfig().isSet("Crates." + name + ".Permission"))
             this.permission = cratesPlus.getConfig().getString("Crates." + name + ".Permission");
         if (cratesPlus.getConfig().isSet("Crates." + name + ".Firework"))
@@ -67,11 +72,7 @@ public abstract class Crate {
             for (String id : cratesPlus.getConfig().getConfigurationSection("Crates." + name + ".Winnings").getKeys(false)) {
                 String path = "Crates." + name + ".Winnings." + id;
                 Winning winning = new Winning(this, path, cratesPlus, null);
-                if (totalPercentage + winning.getPercentage() > 100 || !winning.isValid()) {
-                    if (totalPercentage + winning.getPercentage() > 100) {
-                        Bukkit.getLogger().warning("Your percentages must NOT add up to more than 100%");
-                        break;
-                    }
+                if (!winning.isValid()) {
                     Bukkit.getLogger().warning(path + " is an invalid winning.");
                     continue;
                 }
@@ -82,7 +83,11 @@ public abstract class Crate {
     }
 
     public CratesPlus getCratesPlus() {
-        return cratesPlus;
+        return configHandler.getCratesPlus();
+    }
+
+    public ConfigHandler getConfigHandler() {
+        return configHandler;
     }
 
     public void setName(String name) {
@@ -118,8 +123,20 @@ public abstract class Crate {
         this.block = block;
     }
 
+    public String getOpener() {
+        return opener;
+    }
+
+    public void setOpener(String opener) {
+        this.opener = opener;
+    }
+
     public Material getBlock() {
         return block;
+    }
+
+    public int getBlockData() {
+        return blockData;
     }
 
     public void setPermission(String permission) {
@@ -169,11 +186,22 @@ public abstract class Crate {
         }
     }
 
-    public void give(OfflinePlayer offlinePlayer, Integer amount) {
-
+    public void giveAllOffline(Integer amount) {
+        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+            give(player, amount);
+        }
     }
 
+    public abstract boolean give(OfflinePlayer offlinePlayer, Integer amount);
+
     public Winning handleWin(Player player) {
+        return handleWin(player, null);
+    }
+
+    public Winning handleWin(Player player, Winning actualWinning) {
+        if (actualWinning == null)
+            actualWinning = getRandomWinning();
+
         for (Winning winning : getWinnings()) {
             if (winning.isAlways()) {
                 ItemStack itemStack = winning.runWin(player);
@@ -187,19 +215,17 @@ public abstract class Crate {
             }
         }
 
-        // By default run win on the last win and give item
-        Winning winning = getRandomWinning();
-        ItemStack itemStack = winning.runWin(player);
+        ItemStack itemStack = actualWinning.runWin(player);
         if (itemStack != null) {
             HashMap<Integer, ItemStack> left = player.getInventory().addItem(itemStack);
             for (Map.Entry<Integer, ItemStack> item : left.entrySet()) {
                 player.getLocation().getWorld().dropItemNaturally(player.getLocation(), item.getValue());
             }
         }
-        return winning;
+        return actualWinning;
     }
 
-    protected Winning getRandomWinning() {
+    public Winning getRandomWinning() {
         Winning winning;
         if (getTotalPercentage() > 0) {
             List<Winning> winnings = getWinningsExcludeAlways();
@@ -223,15 +249,6 @@ public abstract class Crate {
             }
             winning = winnings.get(randomIndex);
         } else {
-            System.out.println(getWinnings().size());
-            System.out.println(getWinnings().size());
-            System.out.println(getWinnings().size());
-            System.out.println(getWinnings().size());
-            System.out.println(getWinnings().size());
-            System.out.println(getWinningsExcludeAlways().size());
-            System.out.println(getWinningsExcludeAlways().size());
-            System.out.println(getWinningsExcludeAlways().size());
-            System.out.println(getWinningsExcludeAlways().size());
             winning = getWinningsExcludeAlways().get(CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().randInt(0, getWinningsExcludeAlways().size() - 1));
         }
         return winning;
@@ -239,6 +256,10 @@ public abstract class Crate {
 
     public boolean isHidePercentages() {
         return hidePercentages;
+    }
+
+    public void onDisable() {
+
     }
 
 }

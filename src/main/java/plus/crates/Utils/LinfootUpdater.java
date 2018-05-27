@@ -11,26 +11,30 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SnapshotUpdater {
-    private CratesPlus cratesPlus;
-    private SnapshotUpdater.UpdateResult result = SnapshotUpdater.UpdateResult.DISABLED;
+public class LinfootUpdater {
+    private final CratesPlus cratesPlus;
+    private final String branch;
+    private LinfootUpdater.UpdateResult result = LinfootUpdater.UpdateResult.FAILED;
     private String version;
 
     public enum UpdateResult {
         NO_UPDATE,
-        DISABLED,
-        FAIL_HTTP,
-        SNAPSHOT_UPDATE_AVAILABLE
+        FAILED,
+        SNAPSHOT_UPDATE_AVAILABLE,
+        UPDATE_AVAILABLE
     }
 
-    public SnapshotUpdater(CratesPlus cratesPlus) {
+    public LinfootUpdater(CratesPlus cratesPlus, String branch) {
+        if (branch.equalsIgnoreCase("spigot"))
+            branch = "release";
         this.cratesPlus = cratesPlus;
+        this.branch = branch;
         doCheck();
     }
 
     private void doCheck() {
         String data = null;
-        String url = "http://api.connorlinfoot.com/v1/resource/snapshot/cratesplus/";
+        String url = "http://api.connorlinfoot.com/v1/resource/" + branch + "/cratesplus/";
         try {
             data = doCurl(url);
         } catch (IOException e) {
@@ -43,8 +47,13 @@ public class SnapshotUpdater {
                 String newestVersion = obj.get("version") + "." + obj.get("snapshot");
                 String currentVersion = cratesPlus.getDescription().getVersion().replaceAll("-SNAPSHOT-", "."); // Changes 4.0.0-SNAPSHOT-4 to 4.0.0.4
                 if (Integer.parseInt(newestVersion.replace(".", "")) > Integer.parseInt(currentVersion.replace(".", ""))) {
-                    result = UpdateResult.SNAPSHOT_UPDATE_AVAILABLE;
-                    version = obj.get("version") + "-SNAPSHOT-" + obj.get("snapshot");
+                    if (branch.equalsIgnoreCase("snapshot")) {
+                        result = UpdateResult.UPDATE_AVAILABLE;
+                        version = obj.get("version").toString();
+                    } else {
+                        result = UpdateResult.SNAPSHOT_UPDATE_AVAILABLE;
+                        version = obj.get("version") + "-SNAPSHOT-" + obj.get("snapshot");
+                    }
                 } else {
                     result = UpdateResult.NO_UPDATE;
                 }

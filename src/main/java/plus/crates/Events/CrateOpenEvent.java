@@ -5,17 +5,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import plus.crates.Crates.Crate;
-import plus.crates.Crates.KeyCrate;
+import plus.crates.Crates.VirtualCrate;
 import plus.crates.CratesPlus;
 
-public class KeyCrateOpenEvent extends Event {
+public class CrateOpenEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private CratesPlus cratesPlus;
     private Player player;
-    private KeyCrate crate;
+    private Crate crate;
     private Location blockLocation;
 
-    public KeyCrateOpenEvent(Player player, KeyCrate crate, Location blockLocation, CratesPlus cratesPlus) {
+    public CrateOpenEvent(Player player, Crate crate, Location blockLocation, CratesPlus cratesPlus) {
         this.cratesPlus = cratesPlus;
         this.player = player;
         this.blockLocation = blockLocation;
@@ -23,8 +23,11 @@ public class KeyCrateOpenEvent extends Event {
     }
 
     public void doEvent() {
-        // TODO
-        CratesPlus.getOpenHandler().getOpener(crate).startOpening(player, crate, blockLocation);
+        if (getCrate() instanceof VirtualCrate) {
+            ((VirtualCrate) getCrate()).openGUI(getPlayer());
+        } else {
+            CratesPlus.getOpenHandler().getOpener(getCrate()).startOpening(getPlayer(), getCrate(), getBlockLocation());
+        }
     }
 
     @Override

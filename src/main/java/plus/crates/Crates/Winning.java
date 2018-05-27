@@ -11,7 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.CratesPlus;
 import plus.crates.Handlers.ConfigHandler;
-import plus.crates.Utils.EnchantmentUtil;
+import plus.crates.Handlers.MessageHandler;
+import plus.crates.Utils.LinfootUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +195,7 @@ public class Winning {
                 Integer level = 1;
                 if (args.length > 1)
                     level = Integer.valueOf(args[1]);
-                Enchantment enchantment1 = EnchantmentUtil.getEnchantmentFromNiceName(args[0].toUpperCase());
+                Enchantment enchantment1 = LinfootUtil.getEnchantmentFromNiceName(args[0].toUpperCase());
                 if (enchantment1 == null)
                     Bukkit.getLogger().warning("Invalid enchantment \"" + args[0].toUpperCase() + "\" found for item \"" + ChatColor.stripColor(displayName) + "\"");
                 else
@@ -207,9 +208,9 @@ public class Winning {
         previewItemStackItemMeta = previewItemStack.getItemMeta();
         List<String> lore = new ArrayList<>(this.lore);
         if (percentage > 0 && !crate.isHidePercentages()) {
-            if (cratesPlus.getMessageHandler().getMessageBool("Chance Message Gap"))
+            if (cratesPlus.getConfig().getBoolean("Chance Message Gap", true))
                 lore.add(ChatColor.LIGHT_PURPLE + "");
-            lore.add(cratesPlus.getMessageHandler().getMessage("Chance Message", null, crate, this).replaceAll("\\n", ""));
+            lore.add(MessageHandler.getMessage("&d%percentage%% Chance", null, crate, this).replaceAll("\\n", ""));
         }
         previewItemStackItemMeta.setLore(lore);
         previewItemStack.setItemMeta(previewItemStackItemMeta);
@@ -235,21 +236,14 @@ public class Winning {
         final Winning winning = this;
 
         if (isCommand() && getCommands().size() > 0) {
-            Bukkit.getScheduler().runTask(cratesPlus, new Runnable() {
-                @Override
-                public void run() {
-                    runCommands(player);
-                }
-            });
+            Bukkit.getScheduler().runTask(cratesPlus, () -> runCommands(player));
         } else if (!isCommand()) {
             return winning.getWinningItemStack();
         }
 
-        /** Do broadcast */
         if (crate.isBroadcast())
-            Bukkit.broadcastMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Broadcast", player, crate, winning));
+            Bukkit.broadcastMessage(cratesPlus.getPluginPrefix() + MessageHandler.getMessage("&d%displayname% &dopened a %crate% &dcrate", player, crate, winning));
 
-        /** Spawn firework */
         if (crate.isFirework())
             cratesPlus.getCrateHandler().spawnFirework(player.getLocation());
 

@@ -15,7 +15,6 @@ import plus.crates.Crates.KeyCrate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.Opener;
 
-import java.io.IOException;
 import java.util.*;
 
 public class CrateHandler {
@@ -28,7 +27,7 @@ public class CrateHandler {
         this.cratesPlus = cratesPlus;
 
         // Load in any pending keys from the data file
-        YamlConfiguration dataConfig = cratesPlus.getDataConfig();
+        YamlConfiguration dataConfig = cratesPlus.getStorageHandler().getFlatConfig();
 
         if (dataConfig.isSet("Claims")) {
             for (String uuidStr : dataConfig.getConfigurationSection("Claims").getKeys(false)) {
@@ -208,7 +207,7 @@ public class CrateHandler {
                 pendingKeys.put(player.getUniqueId(), keys);
                 updateKeysData(offlinePlayer.getUniqueId());
                 if (showMessage)
-                    player.sendMessage(ChatColor.GREEN + "Do /crate claim");
+                    MessageHandler.sendMessage(player, "&aYou're inventory is full, you can claim your keys later using /crate", crate, null);
                 return;
             }
 
@@ -223,7 +222,7 @@ public class CrateHandler {
             }
 
             if (showMessage)
-                player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Key Given", player, crate, null));
+                MessageHandler.sendMessage(player, "&aYou have been given a %crate% &acrate key", crate, null);
         } else {
             HashMap<String, Integer> keys = new HashMap<>();
             if (hasPendingKeys(offlinePlayer.getUniqueId()))
@@ -237,18 +236,14 @@ public class CrateHandler {
     }
 
     private void updateKeysData(UUID uuid) {
-        YamlConfiguration dataConfig = cratesPlus.getDataConfig();
+        YamlConfiguration dataConfig = cratesPlus.getStorageHandler().getFlatConfig();
         List<String> data = new ArrayList<>();
         HashMap<String, Integer> keys = pendingKeys.get(uuid);
         for (Map.Entry<String, Integer> key : keys.entrySet()) {
             data.add(key.getKey() + "|" + key.getValue());
         }
         dataConfig.set("Claims." + uuid.toString(), data);
-        try {
-            dataConfig.save(cratesPlus.getDataFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        cratesPlus.getStorageHandler().saveFlat();
     }
 
     @Deprecated
@@ -262,8 +257,7 @@ public class CrateHandler {
     public void giveCrate(Player player, Crate crate) {
         if (player == null || !player.isOnline() || crate == null) return;
 
-//		ItemStack crateItem = new ItemStack(crate.getBlock(), 1, crate.getBlockData());
-        ItemStack crateItem = new ItemStack(crate.getBlock(), 1);
+        ItemStack crateItem = new ItemStack(crate.getBlock(), 1, (short) crate.getBlockData());
         ItemMeta crateMeta = crateItem.getItemMeta();
         crateMeta.setDisplayName(crate.getName(true) + " Crate");
         List<String> lore = new ArrayList<String>();

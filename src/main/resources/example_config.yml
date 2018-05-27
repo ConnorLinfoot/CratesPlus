@@ -23,6 +23,11 @@ Update Branch: "spigot"
 Metrics: true
 
 Crates:
+  Virtual:
+    Type: VirtualCrate
+    Block: ENDER_CHEST
+    Crates:
+    - Vote
   Vote:
     Type: KeyCrate
     Knockback: 0.5
@@ -153,6 +158,57 @@ Crates:
         Item Type: COOKED_BEEF
         Amount: 64
         Percentage: 5
+  MysteryCrate:
+    Type: MysteryCrate
+    Block: ENDER_CHEST
+    Icon: ENDER_CHEST
+    GUI Title: "My Secret Boxes"
+    Item Title: "Secret Box"
+    Lore:
+      - "Click to open this crate!"
+    Color: GREEN
+    Winnings:
+      '1':
+        Type: COMMAND
+        Commands:
+        - 'heal %name%'
+        - 'tell %name% You have been healed!'
+        Always: true # Makes this reward always happen
+      '2':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 5
+        Percentage: 10
+      '3':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 10
+        Percentage: 10
+      '4':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 3
+        Percentage: 20
+      '5':
+        Type: ITEM
+        Item Type: COOKED_CHICKEN
+        Amount: 5
+        Percentage: 20
+      '6':
+        Type: ITEM
+        Item Type: APPLE
+        Amount: 12
+        Percentage: 20
+      '7':
+        Type: ITEM
+        Item Type: COOKED_BEEF
+        Amount: 32
+        Percentage: 15
+      '8':
+        Type: ITEM
+        Item Type: COOKED_BEEF
+        Amount: 64
+        Percentage: 5
 
 # Opener which is used by default
 Default Opener: BasicGUI
@@ -175,3 +231,12 @@ Default Hologram Text:
 
 # Delay in seconds after player joins, default is no delay
 Claim Message Delay: 2
+
+# What type of storage system to use. Supports FLAT, SQLite or MySQL.
+Storage Type: FLAT
+
+# Only required if the above is set to MySQL
+MySQL Host: localhost
+MySQL User: username
+MySQL Pass: password
+MySQL Database: database

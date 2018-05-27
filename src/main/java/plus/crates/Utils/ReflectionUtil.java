@@ -29,7 +29,6 @@ public class ReflectionUtil {
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return null;
     }

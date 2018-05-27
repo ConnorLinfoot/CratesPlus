@@ -3,6 +3,7 @@ package plus.crates.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.SpawnEgg;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -88,6 +89,8 @@ public class SpawnEggNBT {
                 if (entityType == null || !entityType.isAlive())
                     return null;
                 return new SpawnEggNBT(entityType);
+            } else if (itemStack.getData() instanceof SpawnEgg) {
+                return new SpawnEggNBT(((SpawnEgg) itemStack.getData()).getSpawnedType());
             }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();

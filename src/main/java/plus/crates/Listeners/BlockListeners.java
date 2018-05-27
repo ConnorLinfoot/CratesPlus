@@ -16,11 +16,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
-import plus.crates.Crates.Crate;
-import plus.crates.Crates.Key;
-import plus.crates.Crates.KeyCrate;
-import plus.crates.Crates.SupplyCrate;
+import plus.crates.Crates.*;
 import plus.crates.CratesPlus;
+import plus.crates.Events.CrateOpenEvent;
+import plus.crates.Handlers.MessageHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class BlockListeners implements Listener {
             title = key.getName();
 
             if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-                event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Cant Drop", event.getPlayer(), crate.getValue(), null));
+                MessageHandler.sendMessage(event.getPlayer(), "&cYou can not drop crate keys", crate.getValue(), null);
                 event.setCancelled(true);
                 return;
             }
@@ -184,7 +183,7 @@ public class BlockListeners implements Listener {
             }
 
             if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().contains(title)) {
-                event.getPlayer().sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Cant Place", event.getPlayer(), crate.getValue(), null));
+                MessageHandler.sendMessage(event.getPlayer(), "&cYou can not place crate keys", crate.getValue(), null);
                 event.setCancelled(true);
                 return;
             }
@@ -194,12 +193,15 @@ public class BlockListeners implements Listener {
             final String crateType = item.getItemMeta().getDisplayName().replaceAll(" Crate", "");
             final Crate crate = cratesPlus.getConfigHandler().getCrate(ChatColor.stripColor(crateType).toLowerCase());
 
-            if (crate instanceof SupplyCrate) {
+            if (crate instanceof MysteryCrate) {
+                // TODO????????
+            } else if (crate instanceof SupplyCrate) {
                 System.out.println(crate.toString());
                 // Handle supply crate
                 SupplyCrate supplyCrate = (SupplyCrate) crate;
                 if (!event.isCancelled()) {
-                    supplyCrate.handleWins(player, event.getBlockPlaced());
+                    CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, supplyCrate, event.getBlock().getLocation(), cratesPlus);
+                    crateOpenEvent.doEvent();
                 }
             } else if (crate instanceof KeyCrate) {
                 KeyCrate keyCrate = (KeyCrate) crate;

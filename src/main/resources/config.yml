@@ -15,9 +15,12 @@
 
 Config Version: 7
 
+# Plugin Prefix
+Prefix: "&7[&bCratesPlus&7]"
+
 # Checks if an update is available and notifies staff
 Update Checks: true
-Update Branch: "spigot"
+Update Branch: "release"
 
 # Uploads anonymous data about your server, used for general statics
 Metrics: true
@@ -36,8 +39,19 @@ Crate Protection: false
 # Disable players being allowed to drop keys to other players, putting them in a chest, or even drop them on death
 Disable Key Swapping: false
 
+Chance Message Gap: true
+
 # %crate% can be used to show the crate name
 Default Hologram Text:
 - "%crate%"
 - "Right-Click to Open!"
 - "Left-Click to Preview!"
+
+# What type of storage system to use. Supports FLAT, SQLite or MySQL.
+Storage Type: FLAT
+
+# Only required if the above is set to MySQL
+MySQL Host: localhost
+MySQL User: username
+MySQL Pass: password
+MySQL Database: database

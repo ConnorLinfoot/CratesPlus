@@ -1,3 +1,12 @@
+**4.4.5** *(Feb 14 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-2.5018/download?version=208286)
+- Bug: Updated the URL for Spigot update checks as the old one is now disabled.
+
+**4.4.4** *(Sep 25 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-2.5018/download?version=186440)
+- Feature: Support for Bukkit/Spigot 1.12.2.
+
+**4.4.3** *(Aug 3 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-1.5018/download?version=176069)
+- Feature: Support for Bukkit/Spigot 1.12.1.
+
 **4.4.2** *(Jul 18 2017)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12.5018/download?version=172748)
 - Bug: Fixed an error if you had more than 54 items to preview. This will include pagination in a future update.
 - Bug: Added a null check to prevent an NPE if you didn't define winnings.

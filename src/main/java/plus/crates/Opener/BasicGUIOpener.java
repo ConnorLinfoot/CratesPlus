@@ -11,7 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.Crates.Crate;
-import plus.crates.Crates.KeyCrate;
 import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
 
@@ -27,6 +26,7 @@ public class BasicGUIOpener extends Opener implements Listener {
     private int length = 5;
     private String rollingText = "Rolling...";
     private String winnerText = "Winner!";
+    private boolean sound = true;
 
     public BasicGUIOpener(CratesPlus cratesPlus) {
         super(cratesPlus, "BasicGUI");
@@ -66,9 +66,20 @@ public class BasicGUIOpener extends Opener implements Listener {
             }
         }
 
+        if (!config.isSet("Sound")) {
+            config.set("Sound", true);
+            try {
+                config.save(getOpenerConfigFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+
         length = config.getInt("Length", cratesPlus.getConfigHandler().getCrateGUITime());
         rollingText = config.getString("Rolling Text", "Rolling...");
         winnerText = config.getString("Winner Text", "Winner!");
+        sound = config.getBoolean("Sound", true);
         cratesPlus.getServer().getPluginManager().registerEvents(this, cratesPlus);
     }
 
@@ -86,38 +97,39 @@ public class BasicGUIOpener extends Opener implements Listener {
         guis.put(player.getUniqueId(), winGUI);
         player.openInventory(winGUI);
         final int maxTimeTicks = length * 10;
-        tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, new Runnable() {
-            public void run() {
-                if (!player.isOnline()) {
-                    finish(player);
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "crate key " + player.getName() + " " + crate.getName() + " 1");
-                    Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
-                    return;
-                }
-                Integer i = 0;
-                while (i < 45) {
-                    if (i == 22) {
-                        i++;
-                        if (crate.getWinnings().size() == currentItem[0])
-                            currentItem[0] = 0;
-                        final Winning winning;
-                        if (timer[0] == maxTimeTicks) {
-                            winning = crate.handleWin(player);
-                        } else {
-                            winning = crate.getWinnings().get(currentItem[0]);
-                        }
-
-                        final ItemStack currentItemStack = winning.getPreviewItemStack();
-                        winGUI.setItem(22, currentItemStack);
-
-                        currentItem[0]++;
-                        continue;
-                    }
-                    ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) cratesPlus.getCrateHandler().randInt(0, 15));
-                    ItemMeta itemMeta = itemStack.getItemMeta();
+        tasks.put(player.getUniqueId(), Bukkit.getScheduler().runTaskTimerAsynchronously(cratesPlus, () -> {
+            if (!player.isOnline()) {
+                finish(player);
+                //TODO Want to re-explore what we should do here, this happens if the player logs off mid-opening.
+                Bukkit.getScheduler().runTask(cratesPlus, () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "crate key " + player.getName() + " " + crate.getName() + " 1"));
+                Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
+                return;
+            }
+            Integer i = 0;
+            while (i < 45) {
+                if (i == 22) {
+                    i++;
+                    if (crate.getWinnings().size() == currentItem[0])
+                        currentItem[0] = 0;
+                    final Winning winning;
                     if (timer[0] == maxTimeTicks) {
-                        itemMeta.setDisplayName(ChatColor.RESET + winnerText);
+                        winning = crate.handleWin(player);
                     } else {
+                        winning = crate.getWinnings().get(currentItem[0]);
+                    }
+
+                    final ItemStack currentItemStack = winning.getPreviewItemStack();
+                    winGUI.setItem(22, currentItemStack);
+
+                    currentItem[0]++;
+                    continue;
+                }
+                ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) cratesPlus.getCrateHandler().randInt(0, 15));
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                if (timer[0] == maxTimeTicks) {
+                    itemMeta.setDisplayName(ChatColor.RESET + winnerText);
+                } else {
+                    if (sound) {
                         Sound sound;
                         try {
                             sound = Sound.valueOf("NOTE_PIANO");
@@ -129,26 +141,23 @@ public class BasicGUIOpener extends Opener implements Listener {
                             }
                         }
                         final Sound finalSound = sound;
-                        Bukkit.getScheduler().runTask(cratesPlus, new Runnable() {
-                            @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTitle() != null && player.getOpenInventory().getTitle().contains(" Win"))
-                                    player.playSound(player.getLocation(), finalSound, (float) 0.2, 2);
-                            }
+                        Bukkit.getScheduler().runTask(cratesPlus, () -> {
+                            if (player.getOpenInventory().getTitle() != null && player.getOpenInventory().getTitle().contains(" Win"))
+                                player.playSound(player.getLocation(), finalSound, (float) 0.2, 2);
                         });
-                        itemMeta.setDisplayName(ChatColor.RESET + rollingText);
                     }
-                    itemStack.setItemMeta(itemMeta);
-                    winGUI.setItem(i, itemStack);
-                    i++;
+                    itemMeta.setDisplayName(ChatColor.RESET + rollingText);
                 }
-                if (timer[0] == maxTimeTicks) {
-                    finish(player);
-                    Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
-                    return;
-                }
-                timer[0]++;
+                itemStack.setItemMeta(itemMeta);
+                winGUI.setItem(i, itemStack);
+                i++;
             }
+            if (timer[0] == maxTimeTicks) {
+                finish(player);
+                Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()));
+                return;
+            }
+            timer[0]++;
         }, 0L, 2L).getTaskId());
     }
 
@@ -168,7 +177,7 @@ public class BasicGUIOpener extends Opener implements Listener {
     }
 
     public boolean doesSupport(Crate crate) {
-        return crate instanceof KeyCrate;
+        return true;
     }
 
 }

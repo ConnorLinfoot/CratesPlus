@@ -5,12 +5,14 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import plus.crates.Utils.SignInputHandler;
 
+import java.util.ArrayList;
+
 public class PlayerInputEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private Player player;
-    public String[] lines;
+    public ArrayList<String> lines;
 
-    public PlayerInputEvent(Player player, String[] lines) {
+    public PlayerInputEvent(Player player, ArrayList<String> lines) {
         this.player = player;
         this.lines = lines;
         SignInputHandler.ejectNetty(player);
@@ -29,7 +31,7 @@ public class PlayerInputEvent extends Event {
         return player;
     }
 
-    public String[] getLines() {
+    public ArrayList<String> getLines() {
         return lines;
     }
 

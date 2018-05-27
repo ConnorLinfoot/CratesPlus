@@ -1,38 +1,90 @@
 package plus.crates.Handlers;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import plus.crates.Crates.Crate;
+import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class MessageHandler {
-    private CratesPlus cratesPlus;
+    private static CratesPlus cratesPlus;
+    private static YamlConfiguration config;
+    private static File file;
+    private static HashMap<String, String> messages = new HashMap<>();
+    public static boolean testMessages = false;
 
-    public MessageHandler(CratesPlus cratesPlus) {
-        this.cratesPlus = cratesPlus;
+    public static void loadMessageConfiguration(CratesPlus cratesPlus, YamlConfiguration config, File file) {
+        MessageHandler.cratesPlus = cratesPlus;
+        MessageHandler.config = config;
+        MessageHandler.file = file;
+
+        handleConversion();
+
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String getMessage(String messageName, Player player, Crate crate, plus.crates.Crates.Winning winning) {
-        if (!cratesPlus.getMessagesConfig().isSet(messageName))
-            return "Message \"" + messageName + "\" not configured";
-        String message = cratesPlus.getMessagesConfig().getString(messageName);
-        message = doPlaceholders(message, player, crate, winning);
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        if (isAprilFools()) {
-            message = ChatColor.LIGHT_PURPLE + ChatColor.stripColor(message);
+    private static void handleConversion() {
+        if (cratesPlus == null || config == null || file == null) {
+            return;
         }
+
+        if (!config.isSet("Messages Version")) {
+            config.set("Messages Version", 2);
+
+            HashMap<String, String> oldKeys = new HashMap<>();
+            oldKeys.put("Command No Permission", "&cYou do not have the correct permission to run this command");
+            oldKeys.put("Crate No Permission", "&cYou do not have the correct permission to use this crate");
+            oldKeys.put("Crate Open Without Key", "&cYou must be holding a %crate% &ckey to open this crate");
+            oldKeys.put("Key Given", "&aYou have been given a %crate% &acrate key");
+            oldKeys.put("Broadcast", "&d%displayname% &dopened a %crate% &dcrate");
+            oldKeys.put("Cant Place", "&cYou can not place crate keys");
+            oldKeys.put("Cant Drop", "&cYou can not drop crate keys");
+            oldKeys.put("Chance Message", "&d%percentage%% Chance");
+            oldKeys.put("Inventory Full Claim", "&aYou're inventory is full, you can claim your keys later using /crate");
+            oldKeys.put("Claim Join", "&aYou currently have keys waiting to be claimed, use /crate to claim");
+            oldKeys.put("Possible Wins Title", "Possible Wins:");
+
+            oldKeys.forEach((key, value) -> {
+                if (config.isSet(key)) {
+                    config.set(value, config.getString(key));
+                    config.set(key, null);
+                }
+            });
+
+            cratesPlus.getConfig().set("Prefix", config.getString("Prefix", "&7[&bCratesPlus&7]"));
+            config.set("Prefix", null);
+            cratesPlus.getConfig().set("Chance Message Gap", config.getBoolean("Chance Message Gap", true));
+            config.set("Chance Message Gap", null);
+            cratesPlus.saveConfig();
+
+            try {
+                config.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static String getMessageFromConfig(String message) {
+        if (testMessages) {
+            return "TRANSLATED(" + message + ChatColor.RESET + ") ";
+        }
+        if (messages.containsKey(message))
+            return message;
+        // TODO Insert into config reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         return message;
     }
 
-    public boolean getMessageBool(String messageName) {
-        return cratesPlus.getMessagesConfig().getBoolean(messageName, false);
-    }
-
-    public String doPlaceholders(String message, Player player, Crate crate, plus.crates.Crates.Winning winning) {
+    public static String convertPlaceholders(String message, Player player, Crate crate, Winning winning) {
         message = ChatColor.translateAlternateColorCodes('&', message);
         if (player != null)
             message = message.replaceAll("%name%", player.getName()).replaceAll("%displayname%", player.getDisplayName()).replaceAll("%uuid%", player.getUniqueId().toString());
@@ -43,10 +95,13 @@ public class MessageHandler {
         return message;
     }
 
-    public boolean isAprilFools() {
-        DateFormat df = new SimpleDateFormat("dd/MM");
-        Date dateobj = new Date();
-        return df.format(dateobj).equals("01/04");
+    public static String getMessage(String message, Player player, Crate crate, Winning winning) {
+        message = getMessageFromConfig(message);
+        return ChatColor.translateAlternateColorCodes('&', convertPlaceholders(message, player, crate, winning));
+    }
+
+    public static void sendMessage(Player player, String message, Crate crate, Winning winning) {
+        player.sendMessage(cratesPlus.getPluginPrefix() + getMessage(message, player, crate, winning));
     }
 
 }

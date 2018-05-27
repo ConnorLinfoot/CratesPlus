@@ -17,7 +17,7 @@ public class MCDebug {
         String desc = "";
 
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL("https://api.github.com/gists").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://api.mcdebug.xyz/v3/paste/").openConnection();
             connection.setRequestMethod("POST");
             connection.setDoInput(true);
             connection.setDoOutput(true);
@@ -40,28 +40,23 @@ public class MCDebug {
             if (connection.getResponseCode() >= 400) {
                 return null;
             }
-
+//            StringWriter writer = new StringWriter();
+//            IOUtils.copy(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8), writer);
+//            String theString = writer.toString();
+//            System.out.println(theString);
             JsonObject response = new Gson().fromJson(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8), JsonObject.class);
-            String pasteUrl = response.get("html_url").getAsString();
             connection.disconnect();
-
-            try {
-                connection = (HttpURLConnection) new URL("https://git.io").openConnection();
-                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                connection.setDoOutput(true);
-                try (OutputStream os = connection.getOutputStream()) {
-                    os.write(("url=" + pasteUrl).getBytes(StandardCharsets.UTF_8));
+            System.out.println(response.toString());
+            if (response.has("success")) {
+                if (response.get("success").getAsBoolean()) {
+                    return response.get("url").getAsString();
+                } else {
+                    return response.get("error").getAsString();
                 }
-                pasteUrl = connection.getHeaderField("Location");
-                connection.disconnect();
-            } catch (Exception e) {
-                // ignored
             }
-
-            return pasteUrl;
         } catch (Exception e) {
-            return null;
         }
+        return null;
     }
 
 }

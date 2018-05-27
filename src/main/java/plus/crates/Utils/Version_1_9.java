@@ -28,7 +28,7 @@ public class Version_1_9 extends Version_1_8 {
         ItemStack egg = new ItemStack(Material.MONSTER_EGG, amount);
         if (entityType != null) {
             SpawnEggNBT spawnEgg = new SpawnEggNBT(entityType);
-            egg = spawnEgg.toItemStack(amount, cratesPlus.versionCompare(cratesPlus.getBukkitVersion(), "1.11") > -1);
+            egg = spawnEgg.toItemStack(amount, LinfootUtil.versionCompare(cratesPlus.getBukkitVersion(), "1.11") > -1);
         }
         return egg;
     }

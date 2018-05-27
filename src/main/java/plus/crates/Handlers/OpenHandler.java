@@ -5,6 +5,7 @@ import plus.crates.CratesPlus;
 import plus.crates.Opener.BasicGUIOpener;
 import plus.crates.Opener.NoGUIOpener;
 import plus.crates.Opener.Opener;
+import plus.crates.Opener.SupplyOpener;
 
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
 public class OpenHandler {
     private CratesPlus cratesPlus;
     private HashMap<String, Opener> registered = new HashMap<>();
-    private String defaultOpener;
+    private HashMap<String, String> defaults = new HashMap<>();
 
     public OpenHandler(CratesPlus cratesPlus) {
         this.cratesPlus = cratesPlus;
@@ -24,7 +25,13 @@ public class OpenHandler {
     private void registerDefaults() {
         registerOpener(new BasicGUIOpener(cratesPlus));
         registerOpener(new NoGUIOpener(cratesPlus));
-        defaultOpener = cratesPlus.getConfigHandler().getDefaultOpener();
+        registerOpener(new SupplyOpener(cratesPlus));
+
+        defaults.put("keycrate", "BasicGUI");
+        defaults.put("supplycrate", "Supply");
+        defaults.put("dropcrate", "Supply");
+        defaults.put("mysterycrate", "BasicGUI");
+//        defaultOpener = cratesPlus.getConfigHandler().getDefaultOpener(); // TODO - Load above from config
     }
 
     public void registerOpener(Opener opener) {
@@ -35,6 +42,8 @@ public class OpenHandler {
         try {
             opener.doSetup();
             registered.put(opener.getName(), opener);
+            if (getCratesPlus().getConfigHandler().isDebugMode())
+                getCratesPlus().getLogger().info("[DEBUG] Opener \"" + opener.getName() + "\" has been registered");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,25 +54,19 @@ public class OpenHandler {
     }
 
     public Opener getOpener(Crate crate) {
-        //TODO
-//		if (registered.containsKey(crate.getOpener()))
-//			return registered.get(crate.getOpener());
+        if (registered.containsKey(crate.getOpener()) && registered.get(crate.getOpener()).doesSupport(crate))
+            return registered.get(crate.getOpener());
         return getDefaultOpener(crate);
     }
 
     public Opener getDefaultOpener(Crate crate) {
-        if (registered.containsKey(defaultOpener)) {
-            Opener opener = registered.get(defaultOpener);
+        String name = crate.getClass().getName().toLowerCase();
+        if (defaults.containsKey(name)) {
+            Opener opener = registered.get(defaults.get(name));
             if (opener.doesSupport(crate))
                 return opener;
         }
         return registered.get("NoGUI");
-    }
-
-    public void setDefaultOpener(String defaultOpener) {
-        this.defaultOpener = defaultOpener;
-        cratesPlus.getConfig().set("Default Opener", defaultOpener);
-        cratesPlus.saveConfig();
     }
 
     public CratesPlus getCratesPlus() {

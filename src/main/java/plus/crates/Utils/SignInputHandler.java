@@ -4,10 +4,12 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import plus.crates.Events.PlayerInputEvent;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SignInputHandler {
@@ -30,11 +32,32 @@ public class SignInputHandler {
                 channel.pipeline().addAfter("decoder", "update_sign", new MessageToMessageDecoder<Object>() {
                     @Override
                     protected void decode(ChannelHandlerContext channelHandlerContext, Object object, List list) throws Exception {
-                        if (object.toString().contains("PacketPlayInUpdateSign")) {
-                            Object packet = ReflectionUtil.getNMSClass("PacketPlayInUpdateSign").cast(object);
-                            Bukkit.getPluginManager().callEvent(new PlayerInputEvent(player, (String[]) packet.getClass().getMethod("b").invoke(packet)));
+                        try {
+                            if (object.toString().contains("PacketPlayInUpdateSign")) {
+                                Class iChatBaseComponentClass = ReflectionUtil.getNMSClass("IChatBaseComponent");
+                                Object packet = ReflectionUtil.getNMSClass("PacketPlayInUpdateSign").cast(object);
+                                Object response = packet.getClass().getMethod("b").invoke(packet);
+                                ArrayList<String> lines = new ArrayList<>();
+
+                                Object[] signLines = (Object[]) response;
+                                for (Object line : signLines) {
+                                    if (line instanceof String) {
+                                        lines.add((String) line);
+                                    } else if (iChatBaseComponentClass != null && iChatBaseComponentClass.isAssignableFrom(line.getClass())) {
+                                        lines.add((String) iChatBaseComponentClass.getMethod("getText").invoke(iChatBaseComponentClass.cast(line)));
+                                    }
+                                }
+
+                                if (lines.isEmpty()) {
+                                    player.sendMessage(ChatColor.RED + "Unable to handle input");
+                                } else {
+                                    Bukkit.getPluginManager().callEvent(new PlayerInputEvent(player, lines));
+                                }
+                            }
+                            list.add(object);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        list.add(object);
                     }
                 });
             }

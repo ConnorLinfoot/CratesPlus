@@ -2,6 +2,25 @@
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
 
+**Snapshot 5** *(May 27 2018)* - [Download](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/80/download)
+- Important: CratesPlus v5 now requires Java 8, sorry to that 2.2% on Java 7.
+- Feature: Added `DropCrate` type which is an extension to `SupplyCrate`, see example config.
+- Improvement: Now using a new GUI Util I've built for previews and other GUIs.
+- Improvement: Removed 100% requirement considering we moved to a "weight" based system a while back.
+- Improvement: SupplyCrates (and DropCrates) now put items in random slots.
+- Improvement: Overhaul of the config update system, now a little cleaner but should work the same as before.
+- Improvement: Added a `Data` option for keys.
+- Improvement: Added a `Block Data` option for crates.
+- Improvement: Added `Lore` support for keys.
+- Improvement: Added `Sound` option for BasicGUI opener.
+- Bug: Fixed an issue with egg type detection in 1.8.
+- Removed KeyCratePreviewEvent as it's not required.
+- Openers per crate should now work again.
+- Lots of previously disabled command arguments are now enabled again, they're probably broken.
+- Added new configuration options for storage and MySQL. Along with these new options came a lot of rewrites to how data is stored including how locations are handled.
+- Again, a lot of code has been shifted around or re-written. Expect things to burn in a very large fire!
+- Changed the updater so it's now always using my own API to check for updaters, whether on "release" (previously known as "spigot") or "snapshot" branch.
+
 **Snapshot 4** *(Jul 21 2017)* - [Download](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/79/download)
 - Feature: New "Destroy Block" option for SupplyCrates to destroy the block when placed.
 - Improvement: Slightly changed how block data is loaded to prevent exceptions being thrown.

@@ -31,12 +31,7 @@ public abstract class Opener {
 
     public void startOpening(final Player player, final Crate crate, final Location blockLocation) {
         CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().addOpening(player.getUniqueId(), this);
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                doOpen(player, crate, blockLocation);
-            }
-        };
+        Runnable runnable = () -> doOpen(player, crate, blockLocation);
         if (isAsync()) {
             // Start the opening as a async task
             Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
@@ -87,12 +82,7 @@ public abstract class Opener {
     }
 
     protected void finish(final Player player) {
-        Bukkit.getScheduler().runTask(getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().removeOpening(player.getUniqueId());
-            }
-        });
+        Bukkit.getScheduler().runTask(getPlugin(), () -> CratesPlus.getOpenHandler().getCratesPlus().getCrateHandler().removeOpening(player.getUniqueId()));
     }
 
     public abstract void doSetup();

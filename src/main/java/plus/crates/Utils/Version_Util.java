@@ -5,7 +5,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.SpawnEgg;
 import plus.crates.CratesPlus;
 
 import java.util.List;
@@ -31,16 +30,12 @@ public class Version_Util {
 
     public ItemStack getSpawnEgg(EntityType entityType, Integer amount) {
         ItemStack egg = new ItemStack(Material.MONSTER_EGG, amount);
-        if (entityType != null) {
-            SpawnEgg spawnEgg = new SpawnEgg(entityType);
-            egg.setData(spawnEgg);
-        }
+        egg.setDurability(entityType.getTypeId());
         return egg;
     }
 
     public EntityType getEntityTypeFromItemStack(ItemStack itemStack) {
-        SpawnEgg spawnEgg = (SpawnEgg) itemStack.getData();
-        return spawnEgg.getSpawnedType();
+        return EntityType.fromId(itemStack.getTypeId());
     }
 
     public ItemMeta handleItemFlags(ItemMeta itemMeta, List<String> flags) {
