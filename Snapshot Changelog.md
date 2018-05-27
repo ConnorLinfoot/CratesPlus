@@ -2,7 +2,7 @@
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
 
-**Snapshot 5** *(May 27 2018)* - [Download](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/80/download)
+**Snapshot 5** *(May 27 2018)* - [Download](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/81/download)
 - Important: CratesPlus v5 now requires Java 8, sorry to that 2.2% on Java 7.
 - Feature: Added `DropCrate` type which is an extension to `SupplyCrate`, see example config.
 - Improvement: Now using a new GUI Util I've built for previews and other GUIs.

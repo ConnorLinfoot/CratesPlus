@@ -91,7 +91,7 @@ public class DropCrate extends SupplyCrate implements Listener {
         if (location.getBlock().getType().equals(Material.AIR)) {
             location.getBlock().setType(getBlock());
             location.getBlock().setData((byte) getBlockData());
-            Bukkit.broadcastMessage("Crate dropped at " + location.toString());
+            System.out.println("Crate dropped at " + location.toString());
             drops.add(location);
             // TODO Broadcast, populate and what not
 
