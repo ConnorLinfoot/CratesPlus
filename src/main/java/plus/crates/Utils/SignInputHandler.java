@@ -32,6 +32,7 @@ public class SignInputHandler {
                     protected void decode(ChannelHandlerContext channelHandlerContext, Object object, List list) throws Exception {
                         if (object.toString().contains("PacketPlayInUpdateSign")) {
                             Object packet = ReflectionUtil.getNMSClass("PacketPlayInUpdateSign").cast(object);
+                            // TODO fix this
                             Bukkit.getPluginManager().callEvent(new PlayerInputEvent(player, (String[]) packet.getClass().getMethod("b").invoke(packet)));
                         }
                         list.add(object);
