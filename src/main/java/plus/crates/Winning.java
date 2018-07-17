@@ -138,9 +138,6 @@ public class Winning {
             previewItemStackItemMeta = cratesPlus.getVersion_util().handleItemFlags(previewItemStackItemMeta, config.getStringList(path + ".Flags"));
         }
 
-        System.out.println(previewItemStack);
-        System.out.println(previewItemStackItemMeta);
-
         String displayName = "";
         if (config.isSet(path + ".Name") && !config.getString(path + ".Name").equals("NONE"))
             displayName = ChatColor.translateAlternateColorCodes('&', config.getString(path + ".Name"));
