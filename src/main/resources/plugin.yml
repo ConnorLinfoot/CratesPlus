@@ -1,6 +1,7 @@
 name: CratesPlus
 description: ${project.description}
 main: plus.crates.CratesPlus
+api-version: 1.13
 version: ${project.version}
 author: Connor Linfoot
 softdepend: [HolographicDisplays,IndividualHolograms]
