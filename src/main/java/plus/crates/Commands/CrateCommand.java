@@ -105,6 +105,11 @@ public class CrateCommand implements CommandExecutor {
                     }
                     break;
                 case "debug":
+                    if(true ) {
+                        sender.sendMessage(ChatColor.RED + "The debug command is currently disabled due to an issue. Please provide your config.yml, data.yml, server version and a plugin list when reporting an issue.");
+                        return true;
+                    }
+
                     sender.sendMessage(ChatColor.AQUA + "Gathering debug data...");
 
                     Bukkit.getScheduler().runTaskAsynchronously(cratesPlus, new Runnable() {

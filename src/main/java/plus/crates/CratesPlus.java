@@ -55,7 +55,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         }
         bukkitVersion = matcher.group(1);
 
-        if (versionCompare(bukkitVersion, "1.13") > 0) {
+        if (versionCompare(bukkitVersion, "1.13.1") > 0) {
             // This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
             getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
             getLogger().warning("Please let me know if there are any errors or issues");
