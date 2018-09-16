@@ -90,7 +90,8 @@ public class DropCrate extends SupplyCrate implements Listener {
         location = world.getHighestBlockAt(location).getLocation().clone().add(0, 0, 0);
         if (location.getBlock().getType().equals(Material.AIR)) {
             location.getBlock().setType(getBlock());
-            location.getBlock().setData((byte) getBlockData());
+            // TODO idk how to handle the below, is it even needed with 1.13? So reflection if thats the case...
+//            location.getBlock().setData((byte) getBlockData());
             System.out.println("Crate dropped at " + location.toString());
             drops.add(location);
             // TODO Broadcast, populate and what not

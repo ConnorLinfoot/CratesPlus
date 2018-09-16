@@ -1,6 +1,9 @@
 package plus.crates.Opener;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.Crates.Crate;
 import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
+import plus.crates.Utils.LegacyMaterial;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -124,7 +128,7 @@ public class BasicGUIOpener extends Opener implements Listener {
                     currentItem[0]++;
                     continue;
                 }
-                ItemStack itemStack = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) cratesPlus.getCrateHandler().randInt(0, 15));
+                ItemStack itemStack = new ItemStack(LegacyMaterial.STAINED_GLASS_PANE.getMaterial(), 1, (short) cratesPlus.getCrateHandler().randInt(0, 15));
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 if (timer[0] == maxTimeTicks) {
                     itemMeta.setDisplayName(ChatColor.RESET + winnerText);

@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import plus.crates.CratesPlus;
 import plus.crates.Handlers.ConfigHandler;
 import plus.crates.Handlers.MessageHandler;
+import plus.crates.Utils.LegacyMaterial;
 import plus.crates.Utils.LinfootUtil;
 
 import java.util.ArrayList;
@@ -58,8 +59,6 @@ public class Winning {
                 itemType = Material.getMaterial(config.getString(path + ".Item Type").toUpperCase());
             else if (config.isSet(path + ".Block Type"))
                 itemType = Material.getMaterial(config.getString(path + ".Block Type").toUpperCase());
-            else if (config.isSet(path + ".Item ID"))
-                itemType = Material.getMaterial(config.getInt(path + ".Item ID"));
 
             if (itemType == null)
                 return;
@@ -78,7 +77,7 @@ public class Winning {
             if (config.isSet(path + ".Amount"))
                 amount = config.getInt(path + ".Amount");
 
-            if (!entityType.isEmpty() && itemType == Material.MONSTER_EGG) {
+            if (!entityType.isEmpty() && itemType == LegacyMaterial.MONSTER_EGG.getMaterial()) {
                 itemStack = cratesPlus.getVersion_util().getSpawnEgg(EntityType.valueOf(entityType.toUpperCase()), amount);
             } else {
                 itemStack = new ItemStack(itemType, amount, Short.parseShort(String.valueOf(itemData)));

@@ -13,6 +13,7 @@ import plus.crates.Crates.Winning;
 import plus.crates.CratesPlus;
 import plus.crates.Events.PlayerInputEvent;
 import plus.crates.Utils.GUI;
+import plus.crates.Utils.LegacyMaterial;
 import plus.crates.Utils.ReflectionUtil;
 import plus.crates.Utils.SignInputHandler;
 
@@ -59,7 +60,7 @@ public class SettingsHandler implements Listener {
         try {
             material = Material.valueOf("BARRIER");
         } catch (Exception i) {
-            material = Material.REDSTONE_TORCH_ON;
+            material = LegacyMaterial.REDSTONE_TORCH_ON.getMaterial();
         }
 
         itemStack = new ItemStack(material);
@@ -194,7 +195,7 @@ public class SettingsHandler implements Listener {
 
         // Edit Crate Color
 
-        itemStack = new ItemStack(Material.WOOL, 1, (short) 3);
+        itemStack = new ItemStack(LegacyMaterial.REDSTONE_TORCH_ON.getMaterial(), 1, (short) 3);
         itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.WHITE + "Edit Crate Color");
         lore = new ArrayList<>();
@@ -211,7 +212,7 @@ public class SettingsHandler implements Listener {
         try {
             material = Material.valueOf("BARRIER");
         } catch (Exception i) {
-            material = Material.REDSTONE_TORCH_ON;
+            material = LegacyMaterial.REDSTONE_TORCH_ON.getMaterial();
         }
 
         itemStack = new ItemStack(material);

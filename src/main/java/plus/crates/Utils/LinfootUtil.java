@@ -16,7 +16,6 @@ public class LinfootUtil {
         Enchantment enchantment = null;
         try {
             enchantment = Enchantment.getByName(name);
-            enchantment = Enchantment.getById(Integer.parseInt(name));
         } catch (Exception ignored) {
         }
 

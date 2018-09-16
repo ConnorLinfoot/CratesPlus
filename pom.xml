@@ -7,7 +7,7 @@
     <groupId>plus.crates</groupId>
     <artifactId>CratesPlus</artifactId>
     <description>Free crates plugin built for Bukkit/Spigot.</description>
-    <version>5.0-SNAPSHOT-5</version>
+    <version>5.0-SNAPSHOT-6</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.12.1-R0.1-SNAPSHOT</version>
+            <version>1.13.1-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.gmail.filoghost</groupId>

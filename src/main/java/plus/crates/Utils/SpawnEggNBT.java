@@ -1,6 +1,5 @@
 package plus.crates.Utils;
 
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.SpawnEgg;
@@ -32,7 +31,7 @@ public class SpawnEggNBT {
     }
 
     public ItemStack toItemStack(int amount, boolean is_1_11) {
-        ItemStack item = new ItemStack(Material.MONSTER_EGG, amount);
+        ItemStack item = new ItemStack(LegacyMaterial.MONSTER_EGG.getMaterial(), amount);
         try {
             Class craftItemStack = ReflectionUtil.getCBClass("inventory.CraftItemStack");
             Method asNMSCopyMethod = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
@@ -65,7 +64,7 @@ public class SpawnEggNBT {
     }
 
     public static SpawnEggNBT fromItemStack(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getType() != Material.MONSTER_EGG)
+        if (itemStack == null || itemStack.getType() != LegacyMaterial.MONSTER_EGG.getMaterial())
             return null;
         try {
             Class craftItemStack = ReflectionUtil.getCBClass("inventory.CraftItemStack");

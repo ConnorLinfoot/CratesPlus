@@ -1,10 +1,10 @@
 package plus.crates.Utils;
 
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.SpawnEgg;
 import plus.crates.CratesPlus;
 
 import java.util.List;
@@ -29,13 +29,14 @@ public class Version_Util {
     }
 
     public ItemStack getSpawnEgg(EntityType entityType, Integer amount) {
-        ItemStack egg = new ItemStack(Material.MONSTER_EGG, amount);
+        ItemStack egg = new ItemStack(LegacyMaterial.MONSTER_EGG.getMaterial(), amount);
         egg.setDurability(entityType.getTypeId());
         return egg;
     }
 
     public EntityType getEntityTypeFromItemStack(ItemStack itemStack) {
-        return EntityType.fromId(itemStack.getTypeId());
+        SpawnEgg spawnEgg = (SpawnEgg) itemStack.getData();
+        return spawnEgg.getSpawnedType();
     }
 
     public ItemMeta handleItemFlags(ItemMeta itemMeta, List<String> flags) {

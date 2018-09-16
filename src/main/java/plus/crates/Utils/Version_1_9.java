@@ -1,6 +1,5 @@
 package plus.crates.Utils;
 
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +24,7 @@ public class Version_1_9 extends Version_1_8 {
     }
 
     public ItemStack getSpawnEgg(EntityType entityType, Integer amount) {
-        ItemStack egg = new ItemStack(Material.MONSTER_EGG, amount);
+        ItemStack egg = new ItemStack(LegacyMaterial.MONSTER_EGG.getMaterial(), amount);
         if (entityType != null) {
             SpawnEggNBT spawnEgg = new SpawnEggNBT(entityType);
             egg = spawnEgg.toItemStack(amount, LinfootUtil.versionCompare(cratesPlus.getBukkitVersion(), "1.11") > -1);
