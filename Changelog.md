@@ -1,4 +1,4 @@
-**4.5** *(???)* - [Download](#)
+**4.5** *(Sep 16 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-2.5018/download?version=240554)
 - Feature: Support for Bukkit/Spigot 1.13.
 - Removal: Removed support for winning `Item ID`, use `Item Type` instead.
 - Removal: Removed support for Enchantment ID's, use Enchantment names instead.
