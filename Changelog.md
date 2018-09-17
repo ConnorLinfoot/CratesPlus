@@ -1,4 +1,4 @@
-**4.5.1** *(Sep 17 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-13-1.5018/download?version=240596)
+**4.5.1** *(Sep 17 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-13-1.5018/download?version=240597)
 - Bug: Fixed an issue that caused opening crates to not work on some 1.13.1 builds. This was due to the display name no longer returning its color codes, I am not yet sure if this is intended but this build does fix it in the meantime.
 
 **4.5** *(Sep 16 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-12-2.5018/download?version=240554)

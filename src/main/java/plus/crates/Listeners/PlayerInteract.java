@@ -86,7 +86,7 @@ public class PlayerInteract implements Listener {
             }
 
             /** Checks if holding valid key **/
-            if (item != null && item.hasItemMeta() && !item.getType().equals(Material.AIR) && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getDisplayName().equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
+            if (item != null && item.hasItemMeta() && !item.getType().equals(Material.AIR) && item.getItemMeta().getDisplayName() != null && ChatColor.stripColor(item.getItemMeta().getDisplayName()).equals(title) && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().equals(lore)) {
                 event.setCancelled(true);
 
                 if (player.getInventory().firstEmpty() == -1) {
