@@ -62,7 +62,7 @@ public class PlayerInteract implements Listener {
             player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate No Permission", player, crate, null));
             return;
         }
-        String title = crate.getKey().getName();
+        String title = ChatColor.stripColor(crate.getKey().getName());
         String lore = crate.getKey().getLore().toString();
         if (event.getAction().toString().contains("LEFT")) {
             if (event.getPlayer().isSneaking())
