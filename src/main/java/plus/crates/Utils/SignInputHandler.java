@@ -6,9 +6,12 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import plus.crates.CratesPlus;
 import plus.crates.Events.PlayerInputEvent;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +39,20 @@ public class SignInputHandler {
                             if (object.toString().contains("PacketPlayInUpdateSign")) {
                                 Class iChatBaseComponentClass = ReflectionUtil.getNMSClass("IChatBaseComponent");
                                 Object packet = ReflectionUtil.getNMSClass("PacketPlayInUpdateSign").cast(object);
-                                Object response = packet.getClass().getMethod("b").invoke(packet);
+                                Method method = null;
+
+                                try {
+                                    method = packet.getClass().getMethod("c");
+                                } catch (Exception e) {
+                                    // Ignore it, this is mostly for 1.13+ support
+                                }
+
+                                if (method == null) {
+                                    method = packet.getClass().getMethod("b");
+                                }
+
                                 ArrayList<String> lines = new ArrayList<>();
+                                Object response = method.invoke(packet);
 
                                 Object[] signLines = (Object[]) response;
                                 for (Object line : signLines) {
@@ -51,7 +66,7 @@ public class SignInputHandler {
                                 if (lines.isEmpty()) {
                                     player.sendMessage(ChatColor.RED + "Unable to handle input");
                                 } else {
-                                    Bukkit.getPluginManager().callEvent(new PlayerInputEvent(player, lines));
+                                    Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(CratesPlus.class), () -> Bukkit.getPluginManager().callEvent(new PlayerInputEvent(player, lines)));
                                 }
                             }
                             list.add(object);

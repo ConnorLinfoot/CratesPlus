@@ -2,6 +2,15 @@
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
 
+**Snapshot 7** *(Sep 22 2018)* - [Download](https://api.connorlinfoot.com/v2/ci/artifact/CratesPlus/107/download)
+- Progress has been made towards making `/crate settings` work as expected. There may still be issues and `Edit Crate Winnings` is still disabled for now. 
+- Improvement: Added support for Key names to use colors with `&`.
+- Bug: Fixed an issue that caused 1.13+ to crash when attempting to use any sign GUI.
+- Bug: Fixed an issue that prevent the crate claim GUI from allowing you from taking keys if you had "Disable Key Swapping" enabled, thanks mostm.
+- Bug: Fixed an issue that caused `null` to sometimes appear if there was no name set for a winning item.
+- Bug: Fixed the "Preview" option being ignored.
+- Brought forward changes from v4.5.1.
+
 **Snapshot 6** *(Sep 16 2018)* - [Download](https://api.connorlinfoot.com/v2/ci/artifact/CratesPlus/102/download)
 - Brought forward changes from v4.5.
 

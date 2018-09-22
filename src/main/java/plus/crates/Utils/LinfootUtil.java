@@ -68,7 +68,6 @@ public class LinfootUtil {
         Map<String, Object> vals = config.getConfigurationSection(fromPath).getValues(true);
         String toDot = toPath.equals("") ? "" : ".";
         for (String s : vals.keySet()) {
-            System.out.println(s);
             Object val = vals.get(s);
             if (val instanceof List)
                 val = new ArrayList((List) val);

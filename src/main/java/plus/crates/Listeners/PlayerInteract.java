@@ -69,15 +69,17 @@ public class PlayerInteract implements Listener {
             MessageHandler.sendMessage(player, "&cYou do not have the correct permission to use this crate", crate, null);
             return;
         }
-        String title = keyCrate.getKey().getName();
+        String title = ChatColor.stripColor(keyCrate.getKey().getName());
         String lore = keyCrate.getKey().getLore().toString();
         if (event.getAction().toString().contains("LEFT")) {
             if (event.getPlayer().isSneaking())
                 return;
-            keyCrate.openPreviewGUI(player);
+
+            if (keyCrate.isPreview())
+                keyCrate.openPreviewGUI(player);
         } else {
             boolean usingOffHand = false;
-            if (itemOff != null && itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && itemOff.getItemMeta().getDisplayName().equals(title)) {
+            if (itemOff != null && itemOff.hasItemMeta() && !itemOff.getType().equals(Material.AIR) && itemOff.getItemMeta().getDisplayName() != null && ChatColor.stripColor(itemOff.getItemMeta().getDisplayName()).equals(title)) {
                 item = itemOff;
                 usingOffHand = true;
             }

@@ -113,6 +113,10 @@ public abstract class Crate {
 
     public void setColor(ChatColor color) {
         this.color = color;
+        String path = "Crates." + name + ".Color";
+        getCratesPlus().getConfig().set(path, color.name());
+        getCratesPlus().saveConfig();
+        getCratesPlus().reloadPlugin();
     }
 
     public ChatColor getColor() {

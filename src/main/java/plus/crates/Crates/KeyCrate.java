@@ -46,6 +46,10 @@ public class KeyCrate extends Crate {
         this.key = key;
     }
 
+    public boolean isPreview() {
+        return preview;
+    }
+
     public HashMap<String, Location> getLocations() {
         return locations;
     }

@@ -2,6 +2,7 @@ package plus.crates.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -191,16 +192,22 @@ public class CrateCommand implements CommandExecutor {
                     cratesPlus.getSettingsHandler().openSettings((Player) sender);
                     break;
                 case "create":
+                    // TODO Handle different crate types lol, default is KeyCrate for now
                     if (sender instanceof Player && args.length < 2) {
                         // Lets try and open a sign to do the name! :D
                         player = (Player) sender;
 
                         cratesPlus.addCreating(player.getUniqueId());
                         try {
+                            //Send fake sign cause 1.13
+                            player.sendBlockChange(player.getLocation(), Material.SIGN, (byte) 0);
+
                             Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
                             Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));
                             SignInputHandler.injectNetty(player);
                             ReflectionUtil.sendPacket(player, packet);
+
+                            player.sendBlockChange(player.getLocation(), player.getLocation().getBlock().getType(), player.getLocation().getBlock().getData());
                         } catch (Exception e) {
                             e.printStackTrace();
                             cratesPlus.removeCreating(player.getUniqueId());
@@ -239,6 +246,7 @@ public class CrateCommand implements CommandExecutor {
                     config.set("Crates." + name + ".Preview", true);
                     config.set("Crates." + name + ".Block", "CHEST");
                     config.set("Crates." + name + ".Color", "WHITE");
+                    config.set("Crates." + name + ".Type", "KeyCrate");
                     cratesPlus.saveConfig();
                     cratesPlus.reloadConfig();
 

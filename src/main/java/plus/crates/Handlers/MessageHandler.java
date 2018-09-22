@@ -88,10 +88,20 @@ public class MessageHandler {
         message = ChatColor.translateAlternateColorCodes('&', message);
         if (player != null)
             message = message.replaceAll("%name%", player.getName()).replaceAll("%displayname%", player.getDisplayName()).replaceAll("%uuid%", player.getUniqueId().toString());
+
         if (crate != null)
             message = message.replaceAll("%crate%", crate.getName(true) + ChatColor.RESET);
-        if (winning != null)
-            message = message.replaceAll("%prize%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET).replaceAll("%winning%", winning.getWinningItemStack().getItemMeta().getDisplayName() + ChatColor.RESET).replaceAll("%percentage%", String.valueOf(winning.getPercentage()));
+
+        if (winning != null) {
+            String name;
+            if (winning.getWinningItemStack().hasItemMeta() && winning.getWinningItemStack().getItemMeta().hasDisplayName()) {
+                name = winning.getWinningItemStack().getItemMeta().getDisplayName();
+            } else {
+                name = winning.getWinningItemStack().getType().name();
+                name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            }
+            message = message.replaceAll("%prize%", name + ChatColor.RESET).replaceAll("%winning%", name + ChatColor.RESET).replaceAll("%percentage%", String.valueOf(winning.getPercentage()));
+        }
         return message;
     }
 
