@@ -1,10 +1,10 @@
 CratesPlus
 =====================
 
-CratesPlus is a highly used and feature rich crates plugin, that supports Bukkit + Spigot from version 1.7 all the way to 1.13.1.
+CratesPlus is a highly used and feature rich crates plugin, that supports Bukkit + Spigot from version 1.7 all the way to 1.14.2.
 
 ## Development Build
-[![CircleCI](https://circleci.com/gh/ConnorLinfoot/CratesPlus/tree/master.svg?style=svg)](https://api.connorlinfoot.com/v1/ci/artifact/CratesPlus/latest/download)
+[![CircleCI](https://circleci.com/gh/ConnorLinfoot/CratesPlus/tree/master.svg?style=svg)](https://api.linfoot.dev/v2/ci/artifact/CratesPlus/latest/download)
 
 The latest dev build of this can be downloaded from the link on the image above. Please note this version can be buggy and will have uncompleted features and some features may be removed before release. Please backup your config before using a dev build!
 
