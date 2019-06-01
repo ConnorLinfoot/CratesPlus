@@ -18,11 +18,12 @@ public class InventoryInteract implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory() == null || (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Edit ")))
+        String title = event.getView().getTitle();
+        if (title.contains("Edit "))
             return;
-        if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains(" " + cratesPlus.getMessagesConfig().getString("Possible Wins Title"))) {
+        if (title.contains(" " + cratesPlus.getMessagesConfig().getString("Possible Wins Title"))) {
             event.setCancelled(true);
-        } else if (event.getInventory().getTitle() != null && event.getInventory().getTitle().contains("Claim Crate Keys")) {
+        } else if (title.contains("Claim Crate Keys")) {
             event.setCancelled(true);
             if (event.getCurrentItem() != null) {
                 ItemStack itemStack = event.getCurrentItem();

@@ -270,7 +270,8 @@ public class BlockListeners implements Listener {
             return;
         if (event.getBlock().getState() instanceof Chest) {
             Chest chest = (Chest) event.getBlock().getState();
-            if (chest.getInventory().getTitle() != null && chest.getInventory().getTitle().contains("Crate!")) {
+            String title = chest.getCustomName();
+            if (title != null && title.contains("Crate!")) {
                 Location location = chest.getLocation();
 
                 if (event.getPlayer().isSneaking() && (cratesPlus.getConfig().getBoolean("Crate Protection") && !event.getPlayer().hasPermission("cratesplus.admin"))) {
@@ -284,8 +285,8 @@ public class BlockListeners implements Listener {
                 }
                 for (Entity entity : location.getWorld().getEntities()) {
                     if (entity.isDead() || entity.getType() != EntityType.ARMOR_STAND) continue;
-                    String name = chest.getInventory().getTitle().replace(" Crate!", "");
-                    if (name != null && entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ()) {
+                    String name = title.replace(" Crate!", "");
+                    if (entity.getLocation().getBlockX() == chest.getX() && entity.getLocation().getBlockZ() == chest.getZ()) {
                         entity.remove();
                     }
                 }

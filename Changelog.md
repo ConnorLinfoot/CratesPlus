@@ -1,3 +1,6 @@
+**4.5.2** *(Jun 1 2019)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-13-1.5018/download?version=276471)
+- Feature: Support for Bukkit/Spigot 1.14 - 1.14.2.
+
 **4.5.1** *(Sep 17 2018)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-13-1.5018/download?version=240597)
 - Bug: Fixed an issue that caused opening crates to not work on some 1.13.1 builds. This was due to the display name no longer returning its color codes, I am not yet sure if this is intended but this build does fix it in the meantime.
 

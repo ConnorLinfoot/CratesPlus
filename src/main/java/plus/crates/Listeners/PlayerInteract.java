@@ -34,15 +34,15 @@ public class PlayerInteract implements Listener {
         ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
 
         String crateType;
-        if (event.getClickedBlock().getMetadata("CrateType") == null || event.getClickedBlock().getMetadata("CrateType").isEmpty()) {
+        if (event.getClickedBlock().getMetadata("CrateType").isEmpty()) {
             // Try to use the old method of getting the crate!
             if (event.getClickedBlock().getType() != Material.CHEST)
                 return;
             Chest chest = (Chest) event.getClickedBlock().getState();
-            Inventory chestInventory = chest.getInventory();
-            if (chestInventory.getTitle() == null || !chestInventory.getTitle().contains(" Crate!"))
+            String title = chest.getCustomName();
+            if (title != null && title.contains(" Crate!"))
                 return;
-            crateType = ChatColor.stripColor(chestInventory.getTitle().replaceAll(" Crate!", ""));
+            crateType = ChatColor.stripColor(title.replaceAll(" Crate!", ""));
         } else {
             crateType = event.getClickedBlock().getMetadata("CrateType").get(0).asString();
         }
