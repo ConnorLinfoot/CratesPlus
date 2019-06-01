@@ -164,7 +164,7 @@ public class SettingsHandler implements Listener {
                 renaming.put(player.getUniqueId(), crateName);
                 try {
                     //Send fake sign cause 1.13
-                    player.sendBlockChange(player.getLocation(), Material.SIGN, (byte) 0);
+                    player.sendBlockChange(player.getLocation(), Material.valueOf("SIGN"), (byte) 0);
 
                     Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
                     Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));

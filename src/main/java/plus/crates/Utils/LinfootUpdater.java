@@ -34,7 +34,7 @@ public class LinfootUpdater {
 
     private void doCheck() {
         String data = null;
-        String url = "http://api.connorlinfoot.com/v1/resource/" + branch + "/cratesplus/";
+        String url = "http://api.connorlinfoot.com/v2/resource/" + branch + "/cratesplus/";
         try {
             data = doCurl(url);
         } catch (IOException e) {

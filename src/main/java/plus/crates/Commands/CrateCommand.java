@@ -200,7 +200,7 @@ public class CrateCommand implements CommandExecutor {
                         cratesPlus.addCreating(player.getUniqueId());
                         try {
                             //Send fake sign cause 1.13
-                            player.sendBlockChange(player.getLocation(), Material.SIGN, (byte) 0);
+                            player.sendBlockChange(player.getLocation(), Material.valueOf("SIGN"), (byte) 0);
 
                             Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
                             Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));
@@ -332,9 +332,12 @@ public class CrateCommand implements CommandExecutor {
                     break;
                 case "key":
                     cratesPlus.getLogger().warning("\"/crate key\" was used but is deprecated from version 5, please use \"give\" instead.");
+                    if (sender instanceof Player) {
+                        sender.sendMessage("\"/crate key\" was used but is deprecated from version 5, please use \"give\" instead.");
+                    }
                 case "give":
                     if (args.length < 3) {
-                        sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Correct Usage: /crate give <player/all> <crate> [amount]");
+                        sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Correct Usage: /crate give <player/all/alloffline> <crate> [amount]");
                         return false;
                     }
 
@@ -349,7 +352,7 @@ public class CrateCommand implements CommandExecutor {
                     }
 
                     OfflinePlayer offlinePlayer = null;
-                    if (!args[1].equalsIgnoreCase("all")) {
+                    if (!args[1].equalsIgnoreCase("all") && !args[1].equalsIgnoreCase("alloffline")) {
                         offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
                         if (offlinePlayer == null || (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())) { // Check if the player is online as "hasPlayedBefore" doesn't work until they disconnect?
                             sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "The player " + args[1] + " was not found");
@@ -371,7 +374,7 @@ public class CrateCommand implements CommandExecutor {
                             sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Given all online players a crate/key");
                         } else if (args[1].equalsIgnoreCase("alloffline")) {
                             /**
-                             * TODO TEST THIS
+                             * TODO TEST THIS and maybe give better explanation when they do `/crate give`?
                              */
                             crate.giveAllOffline(amount);
                             sender.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.GREEN + "Given all online and offline players a crate/key");
@@ -466,6 +469,12 @@ public class CrateCommand implements CommandExecutor {
                 @Override
                 public void doClick(Player player, GUI gui) {
                     cratesPlus.getCrateHandler().claimKey(player.getUniqueId(), crateName);
+                    if (cratesPlus.getCrateHandler().hasPendingKeys(player.getUniqueId())) {
+                        GUI.ignoreClosing.add(player.getUniqueId());
+                        doClaim(player);
+                    } else {
+                        player.closeInventory();
+                    }
                 }
             });
             i++;

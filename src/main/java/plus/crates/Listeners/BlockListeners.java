@@ -137,7 +137,7 @@ public class BlockListeners implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!cratesPlus.getConfigHandler().isDisableKeySwapping() || event.getInventory().getTitle().equals("Claim Crate Keys"))
+        if (!cratesPlus.getConfigHandler().isDisableKeySwapping() || event.getView().getTitle().equals("Claim Crate Keys"))
             return;
         if (!event.getInventory().getType().toString().contains("PLAYER") && event.getCurrentItem() != null) {
             String title;
