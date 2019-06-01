@@ -2,7 +2,7 @@
 ---
 **I can not stress enough that this update contains some major changes and rewrites, during development a lot of things will likely be broken and you should not run it on a live/public server.**
 
-**Snapshot 8** *(Jun 1 2019)* - [Download](https://api.linfoot.dev/v2/ci/artifact/CratesPlus/112/download)
+**Snapshot 8** *(Jun 1 2019)* - [Download](https://api.linfoot.dev/v2/ci/artifact/CratesPlus/114/download)
 - Feature: Added `alloffline` as an arg for `/crate give`, to give all offline AND online players said crate/key.
 - Improvement: Claim Crate GUI will now reload/close upon claiming keys.
 - Brought forward changes from v4.5.2, including 1.14 support.
