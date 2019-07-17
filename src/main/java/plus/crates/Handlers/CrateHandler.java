@@ -205,7 +205,7 @@ public class CrateHandler {
                 pendingKeys.put(player.getUniqueId(), keys);
                 updateKeysData(offlinePlayer.getUniqueId());
                 if (showMessage)
-                    player.sendMessage(ChatColor.GREEN + "Do /crate claim");
+                    player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Inventory Full Claim", player, crate, null));
                 return;
             }
 
