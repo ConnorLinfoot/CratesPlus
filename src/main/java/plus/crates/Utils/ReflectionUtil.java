@@ -1,6 +1,7 @@
 package plus.crates.Utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -25,7 +26,7 @@ public class ReflectionUtil {
      * Class stuff
      */
 
-    public static Class getClass(String name) {
+    public static Class<?> getClass(String name) {
         try {
             return Class.forName(name);
         } catch (ClassNotFoundException e) {
@@ -34,11 +35,15 @@ public class ReflectionUtil {
         return null;
     }
 
-    public static Class getNMSClass(String className) {
+    public static Class<?> getNMSClass(String className) {
         return getClass(NMS_PATH + "." + className);
     }
 
-    public static Class getCBClass(String className) {
+    public static Class<?> getNMSClassAsArray(String className) {
+        return getClass("[L" + NMS_PATH + "." + className + ";");
+    }
+
+    public static Class<?> getCBClass(String className) {
         return getClass(CB_PATH + "." + className);
     }
 
@@ -136,11 +141,15 @@ public class ReflectionUtil {
         return null;
     }
 
+    @Deprecated
     public static Object getBlockPosition(Player player) {
+        return getBlockPosition(player.getLocation());
+    }
+
+    public static Object getBlockPosition(Location location) {
         try {
-            Object handle = player.getClass().getMethod("getHandle").invoke(player);
-            Constructor constructor = ReflectionUtil.getNMSClass("BlockPosition").getConstructor(ReflectionUtil.getNMSClass("Entity"));
-            return constructor.newInstance(handle);
+            Constructor<?> constructor = ReflectionUtil.getNMSClass("BlockPosition").getConstructor(int.class, int.class, int.class);
+            return constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,6 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,7 @@ import plus.crates.Utils.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,7 +57,7 @@ public class CratesPlus extends JavaPlugin implements Listener {
         }
         bukkitVersion = matcher.group(1);
 
-        if (versionCompare(bukkitVersion, "1.14.2") > 0) {
+        if (versionCompare(bukkitVersion, "1.16.4") > 0) {
             // This means the plugin is using something newer than the latest tested build... we'll show a warning but carry on as usual
             getLogger().warning("CratesPlus has not yet been officially tested with Bukkit " + bukkitVersion + " but should still work");
             getLogger().warning("Please let me know if there are any errors or issues");
@@ -411,8 +413,10 @@ public class CratesPlus extends JavaPlugin implements Listener {
     }
 
     private void loadMetaData() {
-        if (!dataConfig.isSet("Crate Locations"))
+        if (!dataConfig.isSet("Crate Locations")) {
             return;
+        }
+
         for (String name : dataConfig.getConfigurationSection("Crate Locations").getKeys(false)) {
             final Crate crate = configHandler.getCrate(name.toLowerCase());
             if (crate == null)
@@ -420,94 +424,36 @@ public class CratesPlus extends JavaPlugin implements Listener {
             String path = "Crate Locations." + name;
             List<String> locations = dataConfig.getStringList(path);
 
-            for (String location : locations) {
-                List<String> strings = Arrays.asList(location.split("\\|"));
-                if (strings.size() < 4)
-                    continue; // Somethings broke?
-                if (strings.size() > 4) {
-                    // Somethings broke? But we'll try and fix it!
-                    for (int i = 0; i < strings.size(); i++) {
-                        if (strings.get(i).isEmpty() || strings.get(i).equals("")) {
-                            strings.remove(i);
-                        }
-                    }
+            for (String locStr : locations) {
+                List<String> parts = Arrays.asList(locStr.split("\\|"));
+
+                if (parts.size() > 4) {
+                    // Somehow there is extra data, lets try removing any empty ones
+                    parts.removeIf(String::isEmpty);
                 }
-                Location locationObj = null;
-                try {
-                    locationObj = new Location(Bukkit.getWorld(strings.get(0)), Double.parseDouble(strings.get(1)), Double.parseDouble(strings.get(2)), Double.parseDouble(strings.get(3)));
-                } catch (Exception ignored) {
+
+                if (parts.size() < 4) {
+                    continue; // Somethings broke, lets ignore it
                 }
-                if (locationObj == null) {
+
+                World world = Bukkit.getWorld(parts.get(0));
+                if (world == null) {
+                    getLogger().log(Level.WARNING, "Failed to load crate in world %s that no longer exists!", parts.get(0));
                     continue;
                 }
-                Block block = locationObj.getBlock();
-                if (block == null || block.getType().equals(Material.AIR)) {
-                    getLogger().warning("No block found at " + location + " removing from data.yml");
-                    crate.removeFromConfig(locationObj);
+
+                Location location = new Location(world, Double.parseDouble(parts.get(1)), Double.parseDouble(parts.get(2)), Double.parseDouble(parts.get(3)));
+                Block block = location.getBlock();
+                if (block.getType().equals(Material.AIR)) {
+                    getLogger().log(Level.WARNING, "No block found at %s removing from data.yml", locStr);
+                    crate.removeFromConfig(location);
                     continue;
                 }
-                Location location1 = locationObj.getBlock().getLocation().add(0.5, 0.5, 0.5);
-                crate.loadHolograms(location1);
-                final CratesPlus cratesPlus = this;
-                block.setMetadata("CrateType", new MetadataValue() {
-                    @Override
-                    public Object value() {
-                        return crate.getName(false);
-                    }
 
-                    @Override
-                    public int asInt() {
-                        return 0;
-                    }
-
-                    @Override
-                    public float asFloat() {
-                        return 0;
-                    }
-
-                    @Override
-                    public double asDouble() {
-                        return 0;
-                    }
-
-                    @Override
-                    public long asLong() {
-                        return 0;
-                    }
-
-                    @Override
-                    public short asShort() {
-                        return 0;
-                    }
-
-                    @Override
-                    public byte asByte() {
-                        return 0;
-                    }
-
-                    @Override
-                    public boolean asBoolean() {
-                        return false;
-                    }
-
-                    @Override
-                    public String asString() {
-                        return value().toString();
-                    }
-
-                    @Override
-                    public Plugin getOwningPlugin() {
-                        return cratesPlus;
-                    }
-
-                    @Override
-                    public void invalidate() {
-
-                    }
-                });
+                Location centred = location.getBlock().getLocation().add(0.5, 0.5, 0.5);
+                crate.loadHolograms(centred);
+                block.setMetadata(Constants.METADATA_KEY, new FixedMetadataValue(this, crate.getName(false)));
             }
-
-
         }
     }
 

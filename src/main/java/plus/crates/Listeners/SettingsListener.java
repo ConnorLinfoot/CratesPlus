@@ -2,6 +2,7 @@ package plus.crates.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -196,9 +197,12 @@ public class SettingsListener implements Listener {
                 String name = ChatColor.stripColor(title.replaceAll("Edit ", "").replaceAll(" Crate", ""));
                 renaming.put(player.getUniqueId(), name);
                 try {
-                    Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
-                    Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));
-                    SignInputHandler.injectNetty(player);
+                    Constructor<?> signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
+                    Location location = player.getLocation();
+                    location.setY(0);
+                    Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(location));
+                    SignInputHandler.injectNetty(cratesPlus, player);
+                    player.sendBlockChange(location, LegacyMaterial.SIGN_POST.getMaterial(), (byte) 0);
                     ReflectionUtil.sendPacket(player, packet);
                 } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                     player.sendMessage(cratesPlus.getPluginPrefix() + ChatColor.RED + "Please use /crate rename <old> <new>");

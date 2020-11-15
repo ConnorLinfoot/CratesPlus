@@ -9,7 +9,9 @@ public enum LegacyMaterial {
     EMPTY_MAP("MAP"),
     STAINED_GLASS_PANE("LEGACY_STAINED_GLASS_PANE"),
     MONSTER_EGG("LEGACY_MONSTER_EGG"),
-    REDSTONE_TORCH_ON("LEGACY_REDSTONE_TORCH_ON");
+    REDSTONE_TORCH_ON("LEGACY_REDSTONE_TORCH_ON"),
+    SIGN_POST("OAK_SIGN"),
+    ;
     private static boolean is113;
 
     static {

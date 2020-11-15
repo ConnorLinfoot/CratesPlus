@@ -1,3 +1,9 @@
+**4.5.3** *(Nov 15 2020)* - [Download](https://www.spigotmc.org/resources/5018/download?version=367260)
+- Feature: Support for Bukkit/Spigot 1.16.4. Other versions should work from 1.8 to 1.16, but only 1.8 and 1.16.4 were specifically tested.
+- Bug: Fixed an issue in some versions of Spigot where interacting with chests would throw an exception.
+- Bug: Fixed the sign UI not working in most cases.
+- Note: This version now requires Java 8, although this should impact next to nobody.
+
 **4.5.2** *(Jun 1 2019)* - [Download](https://www.spigotmc.org/resources/cratesplus-free-crates-plugin-1-7-1-13-1.5018/download?version=276471)
 - Feature: Support for Bukkit/Spigot 1.14 - 1.14.2.
 

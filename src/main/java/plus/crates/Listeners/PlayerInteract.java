@@ -2,6 +2,7 @@ package plus.crates.Listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Events.CrateOpenEvent;
 import plus.crates.Events.CratePreviewEvent;
+import plus.crates.Utils.Constants;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -28,24 +30,19 @@ public class PlayerInteract implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (event.getClickedBlock() == null || event.getClickedBlock().getType() == Material.AIR)
+        Block clickedBlock = event.getClickedBlock();
+        if (clickedBlock == null || clickedBlock.getType() == Material.AIR) {
             return;
+        }
+
+        if (!clickedBlock.hasMetadata(Constants.METADATA_KEY)) {
+            return;
+        }
+
+        String crateType = clickedBlock.getMetadata(Constants.METADATA_KEY).get(0).asString();
+
         ItemStack item = cratesPlus.getVersion_util().getItemInPlayersHand(player);
         ItemStack itemOff = cratesPlus.getVersion_util().getItemInPlayersOffHand(player);
-
-        String crateType;
-        if (event.getClickedBlock().getMetadata("CrateType").isEmpty()) {
-            // Try to use the old method of getting the crate!
-            if (event.getClickedBlock().getType() != Material.CHEST)
-                return;
-            Chest chest = (Chest) event.getClickedBlock().getState();
-            String title = chest.getCustomName();
-            if (title != null && title.contains(" Crate!"))
-                return;
-            crateType = ChatColor.stripColor(title.replaceAll(" Crate!", ""));
-        } else {
-            crateType = event.getClickedBlock().getMetadata("CrateType").get(0).asString();
-        }
 
         if (!cratesPlus.getConfig().isSet("Crates." + crateType)) {
             return;
@@ -80,7 +77,7 @@ public class PlayerInteract implements Listener {
             }
 
             if (cratesPlus.getCrateHandler().hasOpening(player.getUniqueId())) { /** If already opening crate, show GUI for said crate **/
-                cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen(player, crate, event.getClickedBlock().getLocation());
+                cratesPlus.getCrateHandler().getOpening(player.getUniqueId()).doReopen(player, crate, clickedBlock.getLocation());
                 event.setCancelled(true);
                 return;
             }
@@ -113,7 +110,7 @@ public class PlayerInteract implements Listener {
                     }
                 }
 
-                CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType, event.getClickedBlock().getLocation(), cratesPlus);
+                CrateOpenEvent crateOpenEvent = new CrateOpenEvent(player, crateType, clickedBlock.getLocation(), cratesPlus);
                 crateOpenEvent.doEvent();
             } else {
                 player.sendMessage(cratesPlus.getPluginPrefix() + cratesPlus.getMessageHandler().getMessage("Crate Open Without Key", player, crate, null));

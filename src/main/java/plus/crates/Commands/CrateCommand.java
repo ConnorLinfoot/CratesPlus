@@ -1,8 +1,6 @@
 package plus.crates.Commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,10 +16,7 @@ import org.json.simple.parser.JSONParser;
 import plus.crates.Crate;
 import plus.crates.CratesPlus;
 import plus.crates.Opener.Opener;
-import plus.crates.Utils.PasteUtils;
-import plus.crates.Utils.ReflectionUtil;
-import plus.crates.Utils.SignInputHandler;
-import plus.crates.Utils.SpawnEggNBT;
+import plus.crates.Utils.*;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -32,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class CrateCommand implements CommandExecutor {
     private CratesPlus cratesPlus;
@@ -105,7 +101,7 @@ public class CrateCommand implements CommandExecutor {
                     }
                     break;
                 case "debug":
-                    if(true ) {
+                    if (true) {
                         sender.sendMessage(ChatColor.RED + "The debug command is currently disabled due to an issue. Please provide your config.yml, data.yml, server version and a plugin list when reporting an issue.");
                         return true;
                     }
@@ -210,12 +206,15 @@ public class CrateCommand implements CommandExecutor {
 
                         cratesPlus.addCreating(player.getUniqueId());
                         try {
-                            Constructor signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
-                            Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(player));
-                            SignInputHandler.injectNetty(player);
+                            Constructor<?> signConstructor = ReflectionUtil.getNMSClass("PacketPlayOutOpenSignEditor").getConstructor(ReflectionUtil.getNMSClass("BlockPosition"));
+                            Location location = player.getLocation();
+                            location.setY(0);
+                            Object packet = signConstructor.newInstance(ReflectionUtil.getBlockPosition(location));
+                            SignInputHandler.injectNetty(cratesPlus, player);
+                            player.sendBlockChange(location, LegacyMaterial.SIGN_POST.getMaterial(), (byte) 0);
                             ReflectionUtil.sendPacket(player, packet);
-                        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                            e.printStackTrace();
+                        } catch (Exception e) {
+                            cratesPlus.getLogger().log(Level.SEVERE, "Failed to display sign!", e);
                             cratesPlus.removeCreating(player.getUniqueId());
                         }
                         return true;
